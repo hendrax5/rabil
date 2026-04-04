@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import { showSuccess, showError } from '@/lib/sweetalert';
-import { Server, Plus, Loader2, Trash2, Edit2, CheckCircle2, XCircle, Eye, EyeOff, Shield, FileCode, Copy, Check, Search, RefreshCw, MapPin, Radio, X, Navigation } from 'lucide-react';
+import { Server, Plus, Loader2, Trash2, Edit2, CheckCircle2, XCircle, Eye, EyeOff, Shield, FileCode, Copy, Check, Search, RefreshCw, MapPin, Radio, X, Navigation, Download } from 'lucide-react';
 import { useTranslation } from '@/hooks/useTranslation';
 
 // Dynamic import MapPicker
@@ -458,6 +458,20 @@ export default function RoutersPage() {
     }
   };
 
+  const downloadRadiusScript = () => {
+    const script = generateRadiusScript();
+    const routerName = radiusScriptRouter?.name?.replace(/[^a-zA-Z0-9]/g, '_') || 'router';
+    const blob = new Blob([script], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `AIBILL_${routerName}_setup.rsc`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
   const handleSetupIsolir = async (routerId: string) => {
     setSettingUpIsolir(routerId);
     try {
@@ -900,9 +914,14 @@ export default function RoutersPage() {
                 <h2 className="text-sm font-semibold text-gray-900 dark:text-white">{t('network.radiusSetupScript')}</h2>
                 <p className="text-[10px] text-gray-500">{radiusScriptRouter.name}</p>
               </div>
-              <button onClick={copyRadiusScript} className="flex items-center gap-1.5 px-2.5 py-1 text-xs bg-primary text-white rounded-md hover:bg-primary/90">
-                {copiedScript ? <><Check className="w-3 h-3" /> {t('common.copied')}</> : <><Copy className="w-3 h-3" /> {t('common.copy')}</>}
-              </button>
+              <div className="flex gap-2">
+                <button onClick={downloadRadiusScript} className="flex items-center gap-1.5 px-2.5 py-1 text-xs bg-indigo-600 text-white rounded-md hover:bg-indigo-700">
+                  <Download className="w-3 h-3" /> Download .rsc
+                </button>
+                <button onClick={copyRadiusScript} className="flex items-center gap-1.5 px-2.5 py-1 text-xs bg-primary text-white rounded-md hover:bg-primary/90">
+                  {copiedScript ? <><Check className="w-3 h-3" /> {t('common.copied')}</> : <><Copy className="w-3 h-3" /> {t('common.copy')}</>}
+                </button>
+              </div>
             </div>
             <div className="p-4 space-y-3">
               {/* Router & RADIUS Info */}
