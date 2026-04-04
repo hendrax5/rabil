@@ -635,7 +635,16 @@ export default function RoutersPage() {
                     type="checkbox" 
                     id="autoVpn" 
                     checked={formData.autoVpn} 
-                    onChange={(e) => setFormData({...formData, autoVpn: e.target.checked})}
+                    onChange={(e) => {
+                      const isChecked = e.target.checked;
+                      setFormData({
+                        ...formData, 
+                        autoVpn: isChecked,
+                        username: isChecked && !formData.username ? `router_${Math.random().toString(36).substring(2, 6)}` : formData.username,
+                        password: isChecked && !formData.password ? Math.random().toString(36).substring(2, 10) : formData.password,
+                        secret: isChecked && formData.secret === 'secret123' ? Math.random().toString(36).substring(2, 12) : formData.secret
+                      });
+                    }}
                     className="w-4 h-4 text-indigo-600 rounded border-indigo-300 focus:ring-indigo-500"
                   />
                   <label htmlFor="autoVpn" className="text-[11px] font-semibold text-indigo-900 dark:text-indigo-200 cursor-pointer">
