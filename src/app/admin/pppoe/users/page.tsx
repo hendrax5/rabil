@@ -5,7 +5,7 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { useState, useEffect } from 'react';
 import {
   Plus, Pencil, Trash2, Users, CheckCircle2, MapPin, Map, MoreVertical,
-  Shield, ShieldOff, Ban, Download, Upload, Search, Filter, X, Eye, EyeOff, RefreshCcw,
+  Shield, ShieldOff, Ban, Download, Upload, Search, Filter, X, Eye, EyeOff, RefreshCcw, Router
 } from 'lucide-react';
 import MapPicker from '@/components/MapPicker';
 import UserDetailModal from '@/components/UserDetailModal';
@@ -63,6 +63,31 @@ export default function PppoeUsersPage() {
   const [formData, setFormData] = useState({
     username: '', password: '', profileId: '', routerId: '', name: '', phone: '',
     email: '', address: '', latitude: '', longitude: '', ipAddress: '', expiredAt: '',
+  });
+
+  // Assign Modem states
+  const [isAssignModalOpen, setIsAssignModalOpen] = useState(false);
+  const [userToAssign, setUserToAssign] = useState<PppoeUser | null>(null);
+  const [assignTab, setAssignTab] = useState<'acs' | 'olt'>('acs');
+  
+  const [unassignedDevices, setUnassignedDevices] = useState<any[]>([]);
+  const [loadingDevices, setLoadingDevices] = useState(false);
+  const [assignFormData, setAssignFormData] = useState({
+    deviceId: '',
+    saveWifi: true,
+    wifiSsid: '',
+    wifiPassword: '12345678',
+    macAddress: ''
+  });
+  const [assigning, setAssigning] = useState(false);
+
+  // OLT Discovery states
+  const [olts, setOlts] = useState<any[]>([]);
+  const [selectedOltId, setSelectedOltId] = useState('');
+  const [uncfgOnus, setUncfgOnus] = useState<any[]>([]);
+  const [loadingUncfg, setLoadingUncfg] = useState(false);
+  const [oltAssignData, setOltAssignData] = useState({
+    sn: '', board: '', port: '', vlan: ''
   });
 
   useEffect(() => { loadData(); }, []);
@@ -222,6 +247,140 @@ export default function PppoeUsersPage() {
         doc.save(`PPPoE-Users-${new Date().toISOString().split('T')[0]}.pdf`);
       }
     } catch (error) { console.error('PDF error:', error); await showError('PDF export failed'); }
+  };
+
+  const openAssignModal = async (user: PppoeUser) => {
+    setUserToAssign(user);
+    setIsAssignModalOpen(true);
+    setLoadingDevices(true);
+    setAssignTab('acs');
+    setSelectedOltId('');
+    setUncfgOnus([]);
+    setOltAssignData({ sn: '', board: '', port: '', vlan: '' });
+    
+    try {
+      const [acsRes, oltRes] = await Promise.all([
+        fetch('/api/settings/genieacs/devices?unassigned=true'),
+        fetch('/api/network/olts')
+      ]);
+      if (acsRes.ok) {
+        const data = await acsRes.json();
+        setUnassignedDevices(data.devices || []);
+      } else {
+        await showError('Gagal mengambil daftar modem dari ACS');
+      }
+      if (oltRes.ok) {
+        const data = await oltRes.json();
+        // Only load ZTE OLTs for auto discovery
+        setOlts((data.olts || []).filter((o: any) => o.vendor === 'zte'));
+      }
+    } catch (e) {
+      console.error(e);
+      await showError('Gagal memuat preferensi');
+    } finally {
+      setLoadingDevices(false);
+    }
+  };
+
+  const handleFetchUncfgOnus = async (oltId: string) => {
+    setSelectedOltId(oltId);
+    if (!oltId) return setUncfgOnus([]);
+    
+    setLoadingUncfg(true);
+    try {
+      const res = await fetch(`/api/network/olts/${oltId}/uncfg`);
+      const data = await res.json();
+      if (res.ok) {
+        setUncfgOnus(data.data || []);
+      } else {
+        await showError(data.error || 'Gagal memuat modem dari OLT');
+      }
+    } catch (e) {
+      await showError('Gagal terhubung ke backend OLT');
+    } finally {
+      setLoadingUncfg(false);
+    }
+  };
+
+  const handleAssignOlt = async () => {
+    if (!userToAssign || !selectedOltId || !oltAssignData.sn || !oltAssignData.vlan) return;
+    
+    setAssigning(true);
+    try {
+      const payload = {
+        board: oltAssignData.board,
+        port: oltAssignData.port,
+        sn: oltAssignData.sn,
+        name: userToAssign.username,
+        vlan: oltAssignData.vlan
+      };
+
+      const res = await fetch(`/api/network/olts/${selectedOltId}/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      if (res.ok) {
+        await showSuccess(`Registrasi OLT Berhasil! ONT sedang reboot. Pindah ke tab GenieACS dalam ~2 menit untuk assign PPPoE.`);
+        // Don't close modal, just clear selection and wait so they can assign ACS later
+        setOltAssignData({ sn: '', board: '', port: '', vlan: '' });
+        handleFetchUncfgOnus(selectedOltId);
+        setAssignTab('acs');
+        setLoadingDevices(true);
+        const acsRes = await fetch('/api/settings/genieacs/devices?unassigned=true');
+        if (acsRes.ok) {
+          const d = await acsRes.json();
+          setUnassignedDevices(d.devices || []);
+        }
+        setLoadingDevices(false);
+      } else {
+        const error = await res.json();
+        await showError(`Gagal: ${error.error || 'Terjadi kesalahan CLI'}`);
+      }
+    } catch (e) {
+      console.error(e);
+      await showError('Gagal mengeksekusi script OLT');
+    } finally {
+      setAssigning(false);
+    }
+  };
+
+  const handleAssignModem = async () => {
+    if (!userToAssign || !assignFormData.deviceId) return;
+    
+    setAssigning(true);
+    try {
+      const payload = {
+        pppoeUserId: userToAssign.id,
+        ...(assignFormData.saveWifi && {
+          wifiSsid: assignFormData.wifiSsid,
+          wifiPassword: assignFormData.wifiPassword
+        })
+      };
+
+      const res = await fetch(`/api/settings/genieacs/devices/${assignFormData.deviceId}/assign`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      if (res.ok) {
+        await showSuccess(`Modem berhasil di-assign ke ${userToAssign.username} dan sedang diprovisioning!`);
+        setIsAssignModalOpen(false);
+        setUserToAssign(null);
+        setAssignFormData({ deviceId: '', saveWifi: true, wifiSsid: '', wifiPassword: '12345678', macAddress: '' });
+        loadData(); // Memuat ulang data
+      } else {
+        const error = await res.json();
+        await showError(`Gagal: ${error.error || 'Terjadi kesalahan'}`);
+      }
+    } catch (e) {
+      console.error(e);
+      await showError('Gagal mengirim perintah provisioning ke sistem');
+    } finally {
+      setAssigning(false);
+    }
   };
 
   // Sync from MikroTik functions
@@ -457,10 +616,11 @@ export default function PppoeUsersPage() {
                           )}
                         </div>
                         <button onClick={() => handleEdit(user)} className="p-1 text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 rounded"><Pencil className="h-3 w-3" /></button>
-                        <button onClick={() => setDeleteUserId(user.id)} className="p-1 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded"><Trash2 className="h-3 w-3" /></button>
-                      </div>
-                    </td>
-                  </tr>
+                                <button onClick={() => setDeleteUserId(user.id)} className="p-1 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded"><Trash2 className="h-3 w-3" /></button>
+                                <button onClick={() => openAssignModal(user)} className="p-1 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded" title="Assign Modem (Auto Provisioning)"><Router className="h-3 w-3" /></button>
+                              </div>
+                            </td>
+                          </tr>
                 ))
               )}
             </tbody>
@@ -754,6 +914,239 @@ export default function PppoeUsersPage() {
                   </>
                 )}
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Assign Modem Dialog */}
+      {isAssignModalOpen && userToAssign && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white dark:bg-gray-900 rounded-lg shadow-xl max-w-lg w-full max-h-[90vh] overflow-hidden flex flex-col">
+            <div className="px-4 py-3 border-b dark:border-gray-800">
+              <h2 className="text-sm font-semibold flex items-center gap-2">
+                <Router className="h-4 w-4 text-blue-600" />
+                Assign Modem untuk {userToAssign.username}
+              </h2>
+              <p className="text-[10px] text-gray-500">Auto Provisioning Modem via TR-069</p>
+            </div>
+            
+            <div className="p-4 space-y-3 overflow-y-auto flex-1">
+              <div className="flex border-b dark:border-gray-800 mb-2">
+                <button
+                  className={`px-4 py-2 text-xs font-medium border-b-2 ${assignTab === 'acs' ? 'border-blue-600 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
+                  onClick={() => setAssignTab('acs')}
+                >
+                  Modem di ACS (Existing)
+                </button>
+                <button
+                  className={`px-4 py-2 text-xs font-medium border-b-2 ${assignTab === 'olt' ? 'border-blue-600 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
+                  onClick={() => setAssignTab('olt')}
+                >
+                  Scan OLT (Modem Baru)
+                </button>
+              </div>
+
+              {assignTab === 'acs' && (
+                <>
+                  {loadingDevices ? (
+                    <div className="flex items-center justify-center py-4">
+                      <RefreshCcw className="h-4 w-4 animate-spin text-gray-400" />
+                      <span className="ml-2 text-xs text-gray-500">Memuat daftar modem...</span>
+                    </div>
+                  ) : (
+                    <>
+                      <div>
+                        <label className="block text-[10px] font-medium mb-1">Pilih Modem (GenieACS) *</label>
+                        <select 
+                          value={assignFormData.deviceId} 
+                          onChange={(e: any) => {
+                            const dev = unassignedDevices.find((d: any) => d._id === e.target.value);
+                            setAssignFormData({ ...assignFormData, deviceId: e.target.value, macAddress: dev?.mac || dev?.summary?.mac || '' });
+                          }}
+                          className="w-full px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800"
+                        >
+                          <option value="">-- Pilih Modem Tersedia --</option>
+                          {unassignedDevices.map((d: any) => (
+                            <option key={d._id} value={d._id}>
+                              {d.summary?.productClass || 'Router'} - {d._id} (IP: {d.summary?.ip})
+                            </option>
+                          ))}
+                        </select>
+                        {unassignedDevices.length === 0 && (
+                          <p className="text-[10px] text-red-500 mt-1">Tidak ada modem baru/tersedia di ACS.</p>
+                        )}
+                      </div>
+
+                      <div className="border-t dark:border-gray-800 pt-3 mt-3">
+                        <label className="flex items-center gap-2 mb-2 cursor-pointer">
+                          <input 
+                            type="checkbox" 
+                            checked={assignFormData.saveWifi}
+                            onChange={(e: any) => setAssignFormData({...assignFormData, saveWifi: e.target.checked})}
+                            className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                          />
+                          <span className="text-xs font-medium">Otomatis Konfigurasi Wi-Fi</span>
+                        </label>
+
+                        {assignFormData.saveWifi && (
+                          <div className="grid grid-cols-2 gap-3 pl-6">
+                            <div>
+                              <label className="block text-[10px] text-gray-500 mb-1">WLAN SSID</label>
+                              <input 
+                                type="text" 
+                                value={assignFormData.wifiSsid} 
+                                onChange={(e: any) => setAssignFormData({...assignFormData, wifiSsid: e.target.value})}
+                                className="w-full px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-[10px] text-gray-500 mb-1">Wi-Fi Password</label>
+                              <input 
+                                type="text" 
+                                value={assignFormData.wifiPassword} 
+                                onChange={(e: any) => setAssignFormData({...assignFormData, wifiPassword: e.target.value})}
+                                className="w-full px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800"
+                              />
+                            </div>
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="p-2 bg-blue-50 dark:bg-blue-900/20 rounded text-[10px] text-blue-700 dark:text-blue-300 mt-2">
+                        <p className="font-medium mb-1">ℹ️ Informasi Provisioning:</p>
+                        <ul className="list-disc list-inside space-y-0.5 ml-1">
+                          <li>PPPoE Username: <span className="font-mono">{userToAssign.username}</span></li>
+                          <li>PPPoE Password: <span className="font-mono">***</span> (sesuai database RADIUS)</li>
+                          <li>Parameter akan dipush langsung ke modem via GenieACS.</li>
+                        </ul>
+                      </div>
+                    </>
+                  )}
+                </>
+              )}
+
+              {assignTab === 'olt' && (
+                <div className="space-y-3">
+                  <div>
+                    <label className="block text-[10px] font-medium mb-1">Pilih OLT *</label>
+                    <select 
+                      value={selectedOltId} 
+                      onChange={(e: any) => handleFetchUncfgOnus(e.target.value)}
+                      className="w-full px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800"
+                    >
+                      <option value="">-- Pilih OLT ZTE --</option>
+                      {olts.map((o: any) => (
+                        <option key={o.id} value={o.id}>
+                          {o.name} ({o.ipAddress})
+                        </option>
+                      ))}
+                    </select>
+                    {olts.length === 0 && (
+                      <p className="text-[10px] text-red-500 mt-1">Belum ada OLT ZTE terdaftar.</p>
+                    )}
+                  </div>
+
+                  {selectedOltId && (
+                    <div className="border border-gray-200 dark:border-gray-800 rounded p-2">
+                      <div className="flex items-center justify-between mb-2">
+                        <label className="text-[10px] font-medium text-gray-500">Unconfigured ONUs</label>
+                        <button 
+                          onClick={() => handleFetchUncfgOnus(selectedOltId)}
+                          className="p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded text-gray-500"
+                          title="Refresh"
+                        >
+                          <RefreshCcw className={`h-3 w-3 ${loadingUncfg ? 'animate-spin text-teal-600' : ''}`} />
+                        </button>
+                      </div>
+                      
+                      {loadingUncfg ? (
+                        <div className="text-center py-4 text-xs text-gray-500">Memindai OLT...</div>
+                      ) : uncfgOnus.length === 0 ? (
+                        <div className="text-center py-4 text-xs text-red-500">Tidak ada modem unconfigured di OLT ini. Pastikan modem telah terhubung dengan ODP dengan redaman stabil.</div>
+                      ) : (
+                        <div className="space-y-2 max-h-40 overflow-y-auto">
+                          {uncfgOnus.map((onu: any, i) => (
+                            <label key={i} className={`flex items-center gap-2 p-2 rounded border cursor-pointer ${oltAssignData.sn === onu.sn ? 'border-teal-500 bg-teal-50 dark:bg-teal-900/20' : 'border-gray-200 dark:border-gray-700'}`}>
+                              <input 
+                                type="radio" 
+                                name="select_onu" 
+                                checked={oltAssignData.sn === onu.sn}
+                                onChange={() => setOltAssignData({ ...oltAssignData, sn: onu.sn, board: onu.board, port: onu.port })}
+                                className="w-3 h-3 text-teal-600"
+                              />
+                              <div className="flex-1">
+                                <p className="text-xs font-medium font-mono">{onu.sn}</p>
+                                <p className="text-[10px] text-gray-500">Board: {onu.board} | Port: {onu.port}</p>
+                              </div>
+                            </label>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {oltAssignData.sn && (
+                    <div>
+                      <label className="block text-[10px] font-medium mb-1">VLAN ID *</label>
+                      <input 
+                        type="number" 
+                        value={oltAssignData.vlan} 
+                        onChange={(e: any) => setOltAssignData({...oltAssignData, vlan: e.target.value})}
+                        placeholder="Contoh: 100"
+                        className="w-full px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800"
+                      />
+                      <p className="text-[10px] text-gray-500 mt-1">Masukkan ID VLAN management/PPPoE yang berlaku di line/NAS ini.</p>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+
+            <div className="px-4 py-3 border-t dark:border-gray-800 flex justify-end gap-2">
+              <button 
+                onClick={() => { setIsAssignModalOpen(false); setUserToAssign(null); }}
+                className="px-3 py-1.5 text-xs border dark:border-gray-700 rounded hover:bg-gray-50 dark:hover:bg-gray-800"
+              >
+                {t('common.cancel')}
+              </button>
+              {assignTab === 'acs' ? (
+                <button 
+                  onClick={handleAssignModem}
+                  disabled={!assignFormData.deviceId || assigning}
+                  className="px-4 py-1.5 text-xs bg-blue-600 hover:bg-blue-700 text-white rounded disabled:opacity-50 flex items-center gap-1.5"
+                >
+                  {assigning ? (
+                    <>
+                      <RefreshCcw className="h-3 w-3 animate-spin" />
+                      Provisioning...
+                    </>
+                  ) : (
+                    <>
+                      <Router className="h-3 w-3" />
+                      Push Config
+                    </>
+                  )}
+                </button>
+              ) : (
+                <button 
+                  onClick={handleAssignOlt}
+                  disabled={!oltAssignData.sn || !oltAssignData.vlan || assigning}
+                  className="px-4 py-1.5 text-xs bg-teal-600 hover:bg-teal-700 text-white rounded disabled:opacity-50 flex items-center gap-1.5"
+                >
+                  {assigning ? (
+                    <>
+                      <RefreshCcw className="h-3 w-3 animate-spin" />
+                      Mengeksekusi...
+                    </>
+                  ) : (
+                    <>
+                      <Router className="h-3 w-3" />
+                      Register ke OLT
+                    </>
+                  )}
+                </button>
+              )}
             </div>
           </div>
         </div>

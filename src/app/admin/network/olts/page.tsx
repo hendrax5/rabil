@@ -58,6 +58,11 @@ export default function OLTsPage() {
     status: 'active',
     followRoad: false,
     routerIds: [] as string[],
+    vendor: 'zte',
+    connection: 'ssh',
+    port: '22',
+    username: '',
+    password: '',
   });
 
   useEffect(() => {
@@ -89,6 +94,11 @@ export default function OLTsPage() {
       status: 'active',
       followRoad: false,
       routerIds: [],
+      vendor: 'zte',
+      connection: 'ssh',
+      port: '22',
+      username: '',
+      password: '',
     });
   };
 
@@ -102,6 +112,11 @@ export default function OLTsPage() {
       status: olt.status,
       followRoad: olt.followRoad,
       routerIds: olt.routers.map(r => r.router.id),
+      vendor: (olt as any).vendor || 'zte',
+      connection: (olt as any).connection || 'ssh',
+      port: (olt as any).port?.toString() || '22',
+      username: (olt as any).username || '',
+      password: (olt as any).password || '',
     });
     setIsDialogOpen(true);
   };
@@ -453,6 +468,64 @@ export default function OLTsPage() {
                     onChange={(e) => setFormData({ ...formData, longitude: e.target.value })}
                     required
                     placeholder="Longitude"
+                    className="w-full px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-3 gap-3 pt-2">
+                <div>
+                  <label className="block text-[10px] font-medium mb-1">Vendor/Tipe</label>
+                  <select
+                    value={formData.vendor}
+                    onChange={(e) => setFormData({ ...formData, vendor: e.target.value })}
+                    className="w-full px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800"
+                  >
+                    <option value="zte">ZTE</option>
+                    <option value="huawei">Huawei</option>
+                    <option value="vsol">VSOL / HiSoft</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-[10px] font-medium mb-1">Method</label>
+                  <select
+                    value={formData.connection}
+                    onChange={(e) => setFormData({ ...formData, connection: e.target.value })}
+                    className="w-full px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800"
+                  >
+                    <option value="ssh">SSH</option>
+                    <option value="telnet">Telnet</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-[10px] font-medium mb-1">Port</label>
+                  <input
+                    type="number"
+                    value={formData.port}
+                    onChange={(e) => setFormData({ ...formData, port: e.target.value })}
+                    placeholder={formData.connection === 'ssh' ? '22' : '23'}
+                    className="w-full px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800"
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-3 mb-2">
+                <div>
+                  <label className="block text-[10px] font-medium mb-1">Username (Management)</label>
+                  <input
+                    type="text"
+                    value={formData.username}
+                    onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+                    placeholder="admin"
+                    className="w-full px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[10px] font-medium mb-1">Password (Management)</label>
+                  <input
+                    type="password"
+                    value={formData.password}
+                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                    placeholder="***"
                     className="w-full px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800"
                   />
                 </div>

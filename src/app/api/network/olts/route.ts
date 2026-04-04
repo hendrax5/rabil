@@ -47,7 +47,7 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { name, ipAddress, latitude, longitude, status, routerIds, ponPorts, followRoad } = body;
+    const { name, ipAddress, latitude, longitude, status, routerIds, ponPorts, followRoad, vendor, username, password, port, connection } = body;
 
     if (!name || !ipAddress || latitude === undefined || longitude === undefined) {
       return NextResponse.json(
@@ -68,6 +68,11 @@ export async function POST(request: NextRequest) {
         longitude: parseFloat(longitude),
         status: status || 'active',
         followRoad: followRoad || false,
+        vendor: vendor || 'zte',
+        username,
+        password,
+        port: port ? parseInt(port) : 22,
+        connection: connection || 'ssh',
       },
     });
 
@@ -100,7 +105,7 @@ export async function POST(request: NextRequest) {
 export async function PUT(request: NextRequest) {
   try {
     const body = await request.json();
-    const { id, name, ipAddress, latitude, longitude, status, routerIds, followRoad } = body;
+    const { id, name, ipAddress, latitude, longitude, status, routerIds, followRoad, vendor, username, password, port, connection } = body;
 
     if (!id) {
       return NextResponse.json(
@@ -119,6 +124,11 @@ export async function PUT(request: NextRequest) {
         ...(longitude !== undefined && { longitude: parseFloat(longitude) }),
         ...(status && { status }),
         ...(followRoad !== undefined && { followRoad }),
+        ...(vendor && { vendor }),
+        ...(username !== undefined && { username }),
+        ...(password !== undefined && { password }),
+        ...(port !== undefined && { port: parseInt(port) }),
+        ...(connection && { connection }),
       },
     });
 

@@ -697,6 +697,11 @@ model networkOLT {
   longitude  Float
   status     String              @default("active")
   followRoad Boolean             @default(false)
+  vendor     String              @default("zte")
+  username   String?
+  password   String?
+  port       Int                 @default(22)
+  connection String              @default("ssh") // "ssh" or "telnet"
   createdAt  DateTime            @default(now())
   updatedAt  DateTime            @updatedAt
   odcs       networkODC[]
