@@ -83,9 +83,10 @@ $DOCKER_CMD --env-file .env up -d --build --remove-orphans
 # 6. Menambahkan Routing VPN ke Host OS (Agar Server Fisik bisa PING ke 172.26.0.1 Mikrotik)
 echo "🌐 [5/5] Menyinkronkan Routing VPN ke Host OS Linux..."
 sleep 3
-L2TP_IP=$($DOCKER_CMD exec l2tp hostname -i | awk '{print $1}' || echo "")
+L2TP_IP=$($DOCKER_CMD exec -T l2tp hostname -i | awk '{print $1}' || echo "")
 if [ -n "$L2TP_IP" ]; then
     ip route add 172.26.0.0/24 via "$L2TP_IP" 2>/dev/null || true
+    ip route replace 172.26.0.0/24 via "$L2TP_IP" 2>/dev/null || true
     echo "✅ Routing 172.26.0.0/24 -> $L2TP_IP berhasil ditambahkan ke Server OS!"
 else
     echo "⚠️ Gagal mendeteksi IP Container L2TP."
