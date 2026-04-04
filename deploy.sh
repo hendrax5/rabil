@@ -77,8 +77,8 @@ echo "🧹 [3/4] Menghentikan kontainer yang sedang berjalan..."
 $DOCKER_CMD down
 
 # 5. Bangun ulang struktur container tanpa cache (memastikan package.json & library baru terinstall)
-echo "🏗️ [4/4] Membangun ulan dan menyalakan server (Build & Run)..."
-$DOCKER_CMD up -d --build --remove-orphans
+echo "🏗️ [4/4] Membangun ulang dan menyalakan server (Build & Run)..."
+$DOCKER_CMD --env-file .env up -d --build --remove-orphans
 
 # 5. Selesai
 echo "============================================"
