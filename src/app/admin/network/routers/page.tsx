@@ -394,17 +394,22 @@ export default function RoutersPage() {
 /ip service set api disabled=no
 
 # 2. Setup Koneksi VPN L2TP (AIBILL Cloud)
-/interface l2tp-client add connect-to=${serverHostname} disabled=no name=VPN-AIBILL password=${vpnPass} profile=default-encryption use-ipsec=yes ipsec-secret=${vpnIpsecSecret} user=${vpnUser}
-/ip route add dst-address=10.88.0.0/21 gateway=VPN-AIBILL comment="AIBILL Docker Subnet Routing"
+/interface l2tp-client remove [find name="VPN-AIBILL"]
+/interface l2tp-client add connect-to=${serverHostname} disabled=no name="VPN-AIBILL" password="${vpnPass}" profile=default-encryption use-ipsec=yes ipsec-secret="${vpnIpsecSecret}" user="${vpnUser}"
+/ip route remove [find comment="AIBILL Docker Subnet Routing"]
+/ip route add dst-address=10.88.0.0/21 gateway="VPN-AIBILL" comment="AIBILL Docker Subnet Routing"
 
 # 3. Bypass Firewall Mikrotik agar AIBILL bisa akses API (Cegah Timeout)
-/ip firewall filter add action=accept chain=input in-interface=VPN-AIBILL place-before=0 comment="AIBILL API & Ping" 2>/dev/null || true
+/ip firewall filter remove [find comment="AIBILL API & Ping"]
+/ip firewall filter add action=accept chain=input in-interface="VPN-AIBILL" place-before=0 comment="AIBILL API & Ping"
 
 # 4. Buat User API Akses AIBILL
-/user add name=${vpnUser} group=full password=${vpnPass} comment="User API AIBILL" 2>/dev/null || /user set ${vpnUser} password=${vpnPass} group=full
+/user remove [find name="${vpnUser}"]
+/user add name="${vpnUser}" group=full password="${vpnPass}" comment="User API AIBILL"
 
 # 5. Setup AIBILL RADIUS - ${radiusScriptRouter.name}
-/radius add address=${radiusServer} secret=${radiusSecret} authentication-port=1812 accounting-port=1813 timeout=3000ms service=ppp,hotspot,login comment="AIBILL RADIUS"
+/radius remove [find comment="AIBILL RADIUS"]
+/radius add address=${radiusServer} secret="${radiusSecret}" authentication-port=1812 accounting-port=1813 timeout=3000ms service=ppp,hotspot,login comment="AIBILL RADIUS"
 /ip hotspot profile set use-radius=yes radius-accounting=yes radius-interim-update=00:05:00 [find name!=""]
 /ppp aaa set use-radius=yes accounting=yes interim-update=00:05:00
 /radius incoming set accept=yes port=3799`;
