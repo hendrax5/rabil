@@ -66,6 +66,7 @@ export default function RoutersPage() {
   const [radiusScriptRouter, setRadiusScriptRouter] = useState<Router | null>(null);
   const [radiusServerIp, setRadiusServerIp] = useState<string | null>(null);
   const [copiedScript, setCopiedScript] = useState(false);
+  const [vpnIpsecPsk, setVpnIpsecPsk] = useState('aibill-secret');
   const [detectingNas, setDetectingNas] = useState<string | null>(null);
   const [showMapPicker, setShowMapPicker] = useState(false);
   
@@ -99,9 +100,24 @@ export default function RoutersPage() {
   useEffect(() => {
     loadRoutersAndStatus();
     loadOlts();
+    loadSystemEnv();
     const interval = setInterval(() => checkRoutersStatus(), 30000);
     return () => clearInterval(interval);
   }, []);
+
+  const loadSystemEnv = async () => {
+    try {
+      const res = await fetch('/api/system/env');
+      if (res.ok) {
+        const data = await res.json();
+        if (data && data.vpnIpsecPsk) {
+          setVpnIpsecPsk(data.vpnIpsecPsk);
+        }
+      }
+    } catch (err) {
+      console.error('Failed to load system env', err);
+    }
+  };
 
   const loadOlts = async () => {
     try {
@@ -370,7 +386,8 @@ export default function RoutersPage() {
     const vpnUser = radiusScriptRouter.username;
     const vpnPass = radiusScriptRouter.password;
     const serverHostname = typeof window !== 'undefined' ? window.location.hostname : 'IP_SERVER_AIBILL';
-    const vpnIpsecSecret = process.env.NEXT_PUBLIC_VPN_IPSEC_PSK || 'aibill-secret';
+    // Use the state loaded from backend API
+    const vpnIpsecSecret = vpnIpsecPsk;
 
     if (isAutoVpn) {
       return `# 1. Aktifkan Layanan API (Dibutuhkan AIBILL Dashboard)
