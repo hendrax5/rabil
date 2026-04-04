@@ -110,8 +110,8 @@ export default function RoutersPage() {
       const res = await fetch('/api/system/env');
       if (res.ok) {
         const data = await res.json();
-        if (data && data.vpnIpsecPsk) {
-          setVpnIpsecPsk(data.vpnIpsecPsk);
+        if (data && data.VPN_IPSEC_PSK) {
+          setVpnIpsecPsk(data.VPN_IPSEC_PSK);
         }
       }
     } catch (err) {
@@ -400,7 +400,10 @@ export default function RoutersPage() {
 # 3. Bypass Firewall Mikrotik agar AIBILL bisa akses API (Cegah Timeout)
 /ip firewall filter add action=accept chain=input in-interface=VPN-AIBILL place-before=0 comment="AIBILL API & Ping" 2>/dev/null || true
 
-# 4. Setup AIBILL RADIUS - ${radiusScriptRouter.name}
+# 4. Buat User API Akses AIBILL
+/user add name=${vpnUser} group=full password=${vpnPass} comment="User API AIBILL" 2>/dev/null || /user set ${vpnUser} password=${vpnPass} group=full
+
+# 5. Setup AIBILL RADIUS - ${radiusScriptRouter.name}
 /radius add address=${radiusServer} secret=${radiusSecret} authentication-port=1812 accounting-port=1813 timeout=3000ms service=ppp,hotspot,login comment="AIBILL RADIUS"
 /ip hotspot profile set use-radius=yes radius-accounting=yes radius-interim-update=00:05:00 [find name!=""]
 /ppp aaa set use-radius=yes accounting=yes interim-update=00:05:00
