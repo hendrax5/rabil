@@ -397,7 +397,10 @@ export default function RoutersPage() {
 /interface l2tp-client add connect-to=${serverHostname} disabled=no name=VPN-AIBILL password=${vpnPass} profile=default-encryption use-ipsec=yes ipsec-secret=${vpnIpsecSecret} user=${vpnUser}
 /ip route add dst-address=10.88.0.0/21 gateway=VPN-AIBILL comment="AIBILL Docker Subnet Routing"
 
-# 3. Setup AIBILL RADIUS - ${radiusScriptRouter.name}
+# 3. Bypass Firewall Mikrotik agar AIBILL bisa akses API (Cegah Timeout)
+/ip firewall filter add action=accept chain=input in-interface=VPN-AIBILL place-before=0 comment="AIBILL API & Ping" 2>/dev/null || true
+
+# 4. Setup AIBILL RADIUS - ${radiusScriptRouter.name}
 /radius add address=${radiusServer} secret=${radiusSecret} authentication-port=1812 accounting-port=1813 timeout=3000ms service=ppp,hotspot,login comment="AIBILL RADIUS"
 /ip hotspot profile set use-radius=yes radius-accounting=yes radius-interim-update=00:05:00 [find name!=""]
 /ppp aaa set use-radius=yes accounting=yes interim-update=00:05:00
