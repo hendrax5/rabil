@@ -70,6 +70,11 @@ export default function RoutersPage() {
   const [detectingNas, setDetectingNas] = useState<string | null>(null);
   const [showMapPicker, setShowMapPicker] = useState(false);
   
+  const [scriptAcsEnabled, setScriptAcsEnabled] = useState(false);
+  const [scriptPppoeEnabled, setScriptPppoeEnabled] = useState(false);
+  const [scriptAcsIface, setScriptAcsIface] = useState('ether2');
+  const [scriptPppoeIface, setScriptPppoeIface] = useState('ether2');
+  
   // OLT Uplink states
   const [olts, setOlts] = useState<OLT[]>([]);
   const [showUplinkModal, setShowUplinkModal] = useState(false);
@@ -389,8 +394,75 @@ export default function RoutersPage() {
     // Use the state loaded from backend API
     const vpnIpsecSecret = vpnIpsecPsk;
 
+    const generateAcsConfig = () => {
+       if (!scriptAcsEnabled) return '';
+       
+       const routerIndex = routers.findIndex(r => r.id === radiusScriptRouter.id);
+       // Base VLAN = 100
+       const vlanNum = 100 + Math.max(0, routerIndex);
+       const vlanId = vlanNum.toString();
+       const iface = scriptAcsIface || 'ether2';
+       
+       // Deterministic Subnet Allocation
+       // Network: 10.X.0.0/21 where X is vlanNum. This covers 10.X.0.0 to 10.X.7.255
+       const scriptAcsGateway = `10.${vlanNum}.0.1/21`;
+       const network = `10.${vlanNum}.0.0/21`;
+       const pool = `10.${vlanNum}.0.10-10.${vlanNum}.7.254`;
+       const gwIp = `10.${vlanNum}.0.1`;
+       
+       return `\n\n# ==========================================
+# 6. Setup AIBILL GenieACS (TR-069 Management)
+# ==========================================
+/interface vlan remove [find name="vlan-acs-${vlanId}"]
+/interface vlan add name="vlan-acs-${vlanId}" vlan-id=${vlanId} interface="${iface}" comment="VLAN Management ACS"
+/ip address remove [find interface="vlan-acs-${vlanId}"]
+/ip address add address=${scriptAcsGateway} interface="vlan-acs-${vlanId}" comment="IP Gateway ACS"
+/ip pool remove [find name="pool-acs-${vlanId}"]
+/ip pool add name="pool-acs-${vlanId}" ranges=${pool}
+/ip dhcp-server remove [find name="dhcp-acs-${vlanId}"]
+/ip dhcp-server add name="dhcp-acs-${vlanId}" interface="vlan-acs-${vlanId}" address-pool="pool-acs-${vlanId}" disabled=no comment="DHCP Server ACS"
+/ip dhcp-server network remove [find gateway="${gwIp}"]
+/ip dhcp-server network add address=${network} gateway=${gwIp} dns-server=8.8.8.8 comment="DHCP Network ACS"
+/ip firewall nat remove [find comment="NAT ACS ${vlanId}"]
+/ip firewall nat add action=masquerade chain=srcnat src-address=${network} out-interface="${isAutoVpn ? 'VPN-AIBILL' : 'ether1'}" comment="NAT ACS ${vlanId}"`;
+    };
+
+    const generatePppoeConfig = () => {
+       if (!scriptPppoeEnabled) return '';
+       
+       const routerIndex = routers.findIndex(r => r.id === radiusScriptRouter.id);
+       // Base VLAN for PPPoE = 200
+       const vlanNum = 200 + Math.max(0, routerIndex);
+       const vlanId = vlanNum.toString();
+       const iface = scriptPppoeIface || 'ether2';
+       
+       // Deterministic Subnet Allocation for PPPoE
+       // Network: 10.X.0.0/21 where X is vlanNum. Covers 10.X.0.0 to 10.X.7.255
+       const network = `10.${vlanNum}.0.0/21`;
+       const pool = `10.${vlanNum}.0.10-10.${vlanNum}.7.254`;
+       const gwIp = `10.${vlanNum}.0.1`;
+       
+       return `\n\n# ==========================================
+# 7. Setup VLAN & IP Pool untuk PPPoE Client
+# ==========================================
+/interface vlan remove [find name="vlan-pppoe-${vlanId}"]
+/interface vlan add name="vlan-pppoe-${vlanId}" vlan-id=${vlanId} interface="${iface}" comment="VLAN PPPoE NAS"
+/ip pool remove [find name="pool-pppoe-${vlanId}"]
+/ip pool add name="pool-pppoe-${vlanId}" ranges=${pool}
+/ppp profile remove [find name="profile-pppoe-${vlanId}"]
+/ppp profile add name="profile-pppoe-${vlanId}" local-address=${gwIp} remote-address="pool-pppoe-${vlanId}" dns-server=8.8.8.8,1.1.1.1 use-radius=yes comment="Profile PPPoE NAS"
+/interface pppoe-server server remove [find service-name="pppoe-server-${vlanId}"]
+/interface pppoe-server server add service-name="pppoe-server-${vlanId}" interface="vlan-pppoe-${vlanId}" default-profile="profile-pppoe-${vlanId}" disabled=no
+/ip firewall nat remove [find comment="NAT PPPoE ${vlanId}"]
+/ip firewall nat add action=masquerade chain=srcnat src-address=${network} out-interface="${isAutoVpn ? 'VPN-AIBILL' : 'ether1'}" comment="NAT PPPoE ${vlanId}"
+/ip address remove [find interface="vlan-pppoe-${vlanId}"]
+/ip address add address=${gwIp}/21 interface="vlan-pppoe-${vlanId}" comment="IP Gateway PPPoE"`;
+    };
+
+    let script = '';
+
     if (isAutoVpn) {
-      return `# 1. Aktifkan Layanan API (Dibutuhkan AIBILL Dashboard)
+      script = `# 1. Aktifkan Layanan API (Dibutuhkan AIBILL Dashboard)
 /ip service set api disabled=no
 
 # 2. Setup Koneksi VPN L2TP (AIBILL Cloud)
@@ -413,9 +485,8 @@ export default function RoutersPage() {
 /ip hotspot profile set use-radius=yes radius-accounting=yes radius-interim-update=00:05:00 [find name!=""]
 /ppp aaa set use-radius=yes accounting=yes interim-update=00:05:00
 /radius incoming set accept=yes port=3799`;
-    }
-
-    return `# 1. Aktifkan Layanan API (Dibutuhkan AIBILL Dashboard)
+    } else {
+      script = `# 1. Aktifkan Layanan API (Dibutuhkan AIBILL Dashboard)
 /ip service set api disabled=no
 
 # 2. (OPSIONAL) Setup L2TP VPN - Gunakan Jika Router berada di balik NAT
@@ -428,6 +499,9 @@ export default function RoutersPage() {
 /ip hotspot profile set use-radius=yes radius-accounting=yes radius-interim-update=00:05:00 [find name!=""]
 /ppp aaa set use-radius=yes accounting=yes interim-update=00:05:00
 /radius incoming set accept=yes port=3799`;
+    }
+
+    return script + generateAcsConfig() + generatePppoeConfig();
   };
 
   const copyRadiusScript = async () => {
@@ -957,6 +1031,60 @@ export default function RoutersPage() {
                     )}
                   </div>
                 </div>
+              </div>
+              
+              {/* ACS Config Form (Option A: Fully Automatic) */}
+              <div className="bg-gray-50 dark:bg-gray-800 p-3 rounded-lg border border-gray-200 dark:border-gray-700">
+                <div className="flex items-center justify-between">
+                   <h3 className="text-xs font-semibold text-gray-900 dark:text-white flex items-center gap-1.5">
+                     <Radio className="w-3.5 h-3.5 text-indigo-500" />
+                     Sertakan Konfigurasi TR-069 GenieACS <span className="text-amber-500 text-[10px] ml-1 font-normal">(Opsional)</span>
+                   </h3>
+                   <label className="flex items-center cursor-pointer">
+                      <input type="checkbox" checked={scriptAcsEnabled} onChange={e => setScriptAcsEnabled(e.target.checked)} className="sr-only peer" />
+                      <div className="w-7 h-4 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all dark:border-gray-600 peer-checked:bg-indigo-500 relative"></div>
+                   </label>
+                </div>
+                {scriptAcsEnabled && (
+                  <div className="mt-3 p-2 bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-100 dark:border-indigo-800 rounded text-xs text-indigo-800 dark:text-indigo-300 space-y-1">
+                     <p>✅ <b>Sistem Auto-Kalkulasi (Opsi A) Aktif:</b> AIBILL secara otomatis mengalokasikan parameter berikut untuk NAS ini (No. {routers.findIndex(r => r.id === radiusScriptRouter?.id) + 1}):</p>
+                     <ul className="list-disc list-inside ml-2">
+                        <li><b>VLAN ID:</b> {100 + Math.max(0, routers.findIndex(r => r.id === radiusScriptRouter?.id))}</li>
+                        <li><b>Manajemen Subnet (Gateway):</b> 10.{100 + Math.max(0, routers.findIndex(r => r.id === radiusScriptRouter?.id))}.0.1/21</li>
+                     </ul>
+                     <div className="mt-2 text-[10px] text-gray-500 dark:text-gray-400">
+                       <label className="block mb-1">Pilih Port arah OLT <span className="text-red-500">*</span></label>
+                       <input type="text" value={scriptAcsIface} onChange={e => setScriptAcsIface(e.target.value)} placeholder="Misal: ether2, sfp1" className="w-48 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded px-2 py-1 focus:outline-none focus:border-indigo-500" />
+                     </div>
+                  </div>
+                )}
+              </div>
+
+              {/* PPPoE Config Form */}
+              <div className="bg-gray-50 dark:bg-gray-800 p-3 rounded-lg border border-gray-200 dark:border-gray-700">
+                <div className="flex items-center justify-between">
+                   <h3 className="text-xs font-semibold text-gray-900 dark:text-white flex items-center gap-1.5">
+                     <Radio className="w-3.5 h-3.5 text-blue-500" />
+                     Sertakan Konfigurasi VLAN PPPoE <span className="text-amber-500 text-[10px] ml-1 font-normal">(Opsional)</span>
+                   </h3>
+                   <label className="flex items-center cursor-pointer">
+                      <input type="checkbox" checked={scriptPppoeEnabled} onChange={e => setScriptPppoeEnabled(e.target.checked)} className="sr-only peer" />
+                      <div className="w-7 h-4 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all dark:border-gray-600 peer-checked:bg-blue-500 relative"></div>
+                   </label>
+                </div>
+                {scriptPppoeEnabled && (
+                  <div className="mt-3 p-2 bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800 rounded text-xs text-blue-800 dark:text-blue-300 space-y-1">
+                     <p>✅ <b>Sistem Auto-Kalkulasi (Opsi A) Aktif:</b> AIBILL secara otomatis mengalokasikan parameter berikut untuk PPPoE NAS ini (No. {routers.findIndex(r => r.id === radiusScriptRouter?.id) + 1}):</p>
+                     <ul className="list-disc list-inside ml-2">
+                        <li><b>VLAN ID:</b> {200 + Math.max(0, routers.findIndex(r => r.id === radiusScriptRouter?.id))}</li>
+                        <li><b>IP Pool PPPoE:</b> 10.{200 + Math.max(0, routers.findIndex(r => r.id === radiusScriptRouter?.id))}.0.10 - 10.{200 + Math.max(0, routers.findIndex(r => r.id === radiusScriptRouter?.id))}.7.254</li>
+                     </ul>
+                     <div className="mt-2 text-[10px] text-gray-500 dark:text-gray-400">
+                       <label className="block mb-1">Pilih Port arah OLT <span className="text-red-500">*</span></label>
+                       <input type="text" value={scriptPppoeIface} onChange={e => setScriptPppoeIface(e.target.value)} placeholder="Misal: ether2, sfp1" className="w-48 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded px-2 py-1 focus:outline-none focus:border-blue-500" />
+                     </div>
+                  </div>
+                )}
               </div>
               
               {/* Script */}
