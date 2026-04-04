@@ -1,21 +1,51 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { prisma } from '@/lib/prisma';
+import crypto from 'crypto';
+
+const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY || 'default-encryption-key-change-this-32';
+const ALGORITHM = 'aes-256-cbc';
+
+function decrypt(text: string): string {
+  try {
+    const parts = text.split(':');
+    const iv = Buffer.from(parts[0], 'hex');
+    const encryptedText = parts[1];
+    const decipher = crypto.createDecipheriv(ALGORITHM, Buffer.from(ENCRYPTION_KEY.slice(0, 32)), iv);
+    let decrypted = decipher.update(encryptedText, 'hex', 'utf8');
+    decrypted += decipher.final('utf8');
+    return decrypted;
+  } catch (e) {
+    return '';
+  }
+}
 
 // POST - Test GenieACS connection
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { host, username, password } = body;
+    let { host, username, password } = body;
 
-    if (!host || !username || !password) {
+    if (!host) {
       return NextResponse.json(
         { 
           success: false,
-          error: 'Host, username, and password are required' 
+          error: 'Host URL is required' 
         },
         { status: 400 }
       );
     }
 
+    // If UI obscured the password (hasPassword: true passed as empty string)
+    // Or if password wasn't provided, try fetching it from DB to perform the test
+    if (!password) {
+      const existing = await prisma.genieacsSettings.findFirst({
+        where: { host: host }
+      });
+      if (existing && existing.password) {
+        password = decrypt(existing.password);
+        username = existing.username || username;
+      }
+    }
     // Validate host URL format
     let validatedHost = host;
     try {
@@ -36,13 +66,18 @@ export async function POST(request: NextRequest) {
     const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
 
     try {
+      const fetchHeaders: HeadersInit = {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      };
+      
+      if (username || password) {
+        fetchHeaders['Authorization'] = 'Basic ' + Buffer.from(`${username || ''}:${password || ''}`).toString('base64');
+      }
+
       const response = await fetch(`${validatedHost}/devices?limit=1`, {
         method: 'GET',
-        headers: {
-          'Authorization': 'Basic ' + Buffer.from(`${username}:${password}`).toString('base64'),
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
+        headers: fetchHeaders,
         signal: controller.signal,
       });
 
