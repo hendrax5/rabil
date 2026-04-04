@@ -1,0 +1,43 @@
+FROM ubuntu:22.04
+
+# Avoid user interaction during installation
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install -y \
+    freeradius \
+    freeradius-mysql \
+    freeradius-utils \
+    freeradius-rest \
+    iproute2 \
+    iputils-ping \
+    dos2unix \
+    tzdata \
+    && rm -rf /var/lib/apt/lists/*
+
+ENV TZ=Asia/Jakarta
+
+COPY freeradius-config/mods-enabled-sql /etc/freeradius/3.0/mods-available/sql
+COPY freeradius-config/mods-enabled-rest /etc/freeradius/3.0/mods-available/rest
+COPY freeradius-config/sites-enabled-default /etc/freeradius/3.0/sites-available/default
+COPY freeradius-config/clients.conf /etc/freeradius/3.0/clients.conf
+
+COPY freeradius-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/freeradius-entrypoint.sh
+
+RUN dos2unix /etc/freeradius/3.0/mods-available/sql \
+    /etc/freeradius/3.0/mods-available/rest \
+    /etc/freeradius/3.0/sites-available/default \
+    /etc/freeradius/3.0/clients.conf \
+    /usr/local/bin/freeradius-entrypoint.sh 2>/dev/null || true
+
+RUN rm -f /etc/freeradius/3.0/mods-enabled/sql /etc/freeradius/3.0/mods-enabled/rest /etc/freeradius/3.0/sites-enabled/default \
+    && ln -s /etc/freeradius/3.0/mods-available/sql /etc/freeradius/3.0/mods-enabled/sql \
+    && ln -s /etc/freeradius/3.0/mods-available/rest /etc/freeradius/3.0/mods-enabled/rest \
+    && ln -s /etc/freeradius/3.0/sites-available/default /etc/freeradius/3.0/sites-enabled/default
+
+RUN chown -R freerad:freerad /etc/freeradius/3.0
+
+EXPOSE 1812/udp
+EXPOSE 1813/udp
+
+CMD ["freeradius-entrypoint.sh"]

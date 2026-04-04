@@ -1,0 +1,159 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: aibill-app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=mysql://${DB_USER:-root}:${DB_PASSWORD:-root123}@db:3306/${DB_NAME:-aibill_radius}?connection_limit=250&pool_timeout=40
+      - DB_HOST=db
+      - DB_USER=${DB_USER:-root}
+      - DB_PASSWORD=${DB_PASSWORD:-root123}
+      - DB_NAME=${DB_NAME:-aibill_radius}
+      - NEXTAUTH_SECRET=${NEXTAUTH_SECRET:-changeme_to_long_random_string}
+      - NEXTAUTH_URL=${NEXT_PUBLIC_APP_URL:-http://localhost:3000}
+      - NEXT_PUBLIC_APP_NAME=${NEXT_PUBLIC_APP_NAME:-AIBILL RADIUS ISP}
+      - NEXT_PUBLIC_APP_URL=${NEXT_PUBLIC_APP_URL:-http://localhost:3000}
+      - NEXT_PUBLIC_TIMEZONE=${TZ:-Asia/Jakarta}
+      - TZ=${TZ:-Asia/Jakarta}
+      - NODE_ENV=production
+      - NODE_OPTIONS="--max-old-space-size=4096"
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - vpn_data:/vpn_data
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: mysql:8.0
+    container_name: aibill-db
+    restart: unless-stopped
+    # Optimized for massive throughput (100K+ users)
+    command: --max_connections=10000 --innodb_buffer_pool_size=2G --default-authentication-plugin=mysql_native_password
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD:-root123}
+      - MYSQL_DATABASE=${DB_NAME:-aibill_radius}
+      # Do not set MYSQL_USER to 'root' as the MySQL image rejects it. 
+      # Root is automatically created via MYSQL_ROOT_PASSWORD.
+      # - MYSQL_USER=${DB_USER:-root}
+      # - MYSQL_PASSWORD=${DB_PASSWORD:-root123}
+      - TZ=${TZ:-Asia/Jakarta}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  freeradius:
+    build:
+      context: .
+      dockerfile: Dockerfile.freeradius
+    container_name: aibill-freeradius
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - "1812:1812/udp"
+      - "1813:1813/udp"
+    environment:
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_USER=${DB_USER:-root}
+      - DB_PASSWORD=${DB_PASSWORD:-root123}
+      - DB_NAME=${DB_NAME:-aibill_radius}
+      - API_URL=http://app:3000
+      - TZ=${TZ:-Asia/Jakarta}
+    depends_on:
+      db:
+        condition: service_healthy
+      app:
+        condition: service_started
+
+  wg-easy:
+    image: ghcr.io/wg-easy/wg-easy
+    container_name: aibill-vpn
+    restart: unless-stopped
+    environment:
+      - LANG=en
+      - WG_HOST=${WG_HOST:-127.0.0.1}
+      - PASSWORD_HASH=$$2a$$12$$vOMH/YwO5pWt4W5plpDVx.UseTfrkfbcObU39iN.8f8CuqiDFFF6W
+      - PORT=51821
+      - WG_PORT=51820
+    volumes:
+      - wg_data:/etc/wireguard
+      - /lib/modules:/lib/modules
+    privileged: true
+    ports:
+      - "51820:51820/udp"
+      - "51821:51821/tcp"
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    sysctls:
+      - net.ipv4.ip_forward=1
+      - net.ipv4.conf.all.src_valid_mark=1
+
+  l2tp-vpn:
+    image: hwdsl2/ipsec-vpn-server:latest
+    container_name: aibill-l2tp
+    restart: unless-stopped
+    command: /bin/sh -c "iptables -t nat -I POSTROUTING -d 172.25.0.0/16 -j ACCEPT; (while true; do if [ -f /vpn_data/chap-secrets ]; then cp /vpn_data/chap-secrets /etc/ppp/chap-secrets; fi; sleep 5; done) & /opt/src/run.sh"
+    environment:
+      - VPN_IPSEC_PSK=${VPN_IPSEC_PSK:-aibill-secret}
+      - VPN_USER=${VPN_USER:-admin}
+      - VPN_PASSWORD=${VPN_PASSWORD:-admin123}
+      - VPN_L2TP_NET=172.26.0.0/24
+      - VPN_L2TP_LOCAL=172.26.0.1
+      - VPN_L2TP_POOL=172.26.0.2-172.26.0.254
+    ports:
+      - "500:500/udp"
+      - "4500:4500/udp"
+    privileged: true
+    volumes:
+      - vpn_data:/etc/ipsec.d
+      - vpn_data:/vpn_data
+
+  mongo-acs:
+    image: mongo:4.4
+    container_name: aibill-mongo-acs
+    restart: unless-stopped
+    volumes:
+      - mongo_acs_data:/data/db
+
+  genieacs:
+    image: drumsergio/genieacs:1.2.9
+    container_name: aibill-genieacs
+    restart: unless-stopped
+    ports:
+      - "3005:3005"   # Web UI
+      - "7547:7547"   # TR-069 CPE port
+      - "7557:7557"   # NBI API
+      - "7567:7567"   # File server
+    environment:
+      - GENIEACS_MONGODB_CONNECTION_URL=mongodb://mongo-acs:27017/genieacs
+    depends_on:
+      - mongo-acs
+
+volumes:
+  mysql_data:
+  wg_data:
+  vpn_data:
+  mongo_acs_data:
+
+networks:
+  default:
+    ipam:
+      config:
+        - subnet: 172.25.0.0/16
+

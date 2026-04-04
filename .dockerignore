@@ -1,0 +1,34 @@
+# dependencies
+node_modules
+npm-debug.log
+yarn-error.log
+yarn.lock
+package-lock.json
+
+# next.js
+.next
+out
+build
+
+# database and env
+.env
+.env.production
+.env*.local
+
+# git
+.git
+.gitignore
+
+# misc
+temp
+backup
+CHANGELOG.md
+CHAT_MEMORY.md
+*.md
+docs/
+
+# docker volumes (if accidentally created locally)
+mysql_data
+wg_data
+vpn_data
+mongo_acs_data
