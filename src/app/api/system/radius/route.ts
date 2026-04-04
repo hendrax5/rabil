@@ -52,8 +52,8 @@ export async function POST(request: NextRequest) {
       );
     }
     
-    // Restart FreeRADIUS service
-    await execAsync('systemctl restart freeradius');
+    // FreeRADIUS restart is managed by dynamic SQL clients / Docker.
+    console.log('FreeRADIUS restart skipped requested from API.');
     
     // Wait a bit and check status
     await new Promise(resolve => setTimeout(resolve, 2000));

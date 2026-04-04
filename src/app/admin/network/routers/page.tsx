@@ -369,13 +369,15 @@ export default function RoutersPage() {
     
     const vpnUser = radiusScriptRouter.username;
     const vpnPass = radiusScriptRouter.password;
+    const serverHostname = typeof window !== 'undefined' ? window.location.hostname : 'IP_SERVER_AIBILL';
+    const vpnIpsecSecret = process.env.NEXT_PUBLIC_VPN_IPSEC_PSK || 'aibill-secret';
 
     if (isAutoVpn) {
       return `# 1. Aktifkan Layanan API (Dibutuhkan AIBILL Dashboard)
 /ip service set api disabled=no
 
 # 2. Setup Koneksi VPN L2TP (AIBILL Cloud)
-/interface l2tp-client add connect-to=[SERVER_IP_TERSEMBUNYI] disabled=no name=VPN-AIBILL password=${vpnPass} profile=default-encryption use-ipsec=yes ipsec-secret=aibill-secret user=${vpnUser}
+/interface l2tp-client add connect-to=${serverHostname} disabled=no name=VPN-AIBILL password=${vpnPass} profile=default-encryption use-ipsec=yes ipsec-secret=${vpnIpsecSecret} user=${vpnUser}
 /ip route add dst-address=10.88.0.0/21 gateway=VPN-AIBILL comment="AIBILL Docker Subnet Routing"
 
 # 3. Setup AIBILL RADIUS - ${radiusScriptRouter.name}
@@ -389,7 +391,7 @@ export default function RoutersPage() {
 /ip service set api disabled=no
 
 # 2. (OPSIONAL) Setup L2TP VPN - Gunakan Jika Router berada di balik NAT
-# /interface l2tp-client add connect-to=IP_SERVER_AIBILL disabled=no name=VPN-AIBILL password=admin123 profile=default-encryption use-ipsec=yes ipsec-secret=aibill-secret user=admin
+# /interface l2tp-client add connect-to=${serverHostname} disabled=no name=VPN-AIBILL password=admin123 profile=default-encryption use-ipsec=yes ipsec-secret=${vpnIpsecSecret} user=admin
 # /ip route add dst-address=10.88.0.0/21 gateway=VPN-AIBILL comment="AIBILL Docker Subnet Routing"
 
 # 3. Setup AIBILL RADIUS - ${radiusScriptRouter.name}

@@ -19,6 +19,7 @@ services:
       - NEXTAUTH_URL=${NEXT_PUBLIC_APP_URL:-http://localhost:3000}
       - NEXT_PUBLIC_APP_NAME=${NEXT_PUBLIC_APP_NAME:-AIBILL RADIUS ISP}
       - NEXT_PUBLIC_APP_URL=${NEXT_PUBLIC_APP_URL:-http://localhost:3000}
+      - NEXT_PUBLIC_VPN_IPSEC_PSK=${VPN_IPSEC_PSK:-aibill-secret}
       - NEXT_PUBLIC_TIMEZONE=${TZ:-Asia/Jakarta}
       - TZ=${TZ:-Asia/Jakarta}
       - NODE_ENV=production

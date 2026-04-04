@@ -49,6 +49,7 @@ fi
 echo "Routing VPN subnets directly to VPN containers..."
 L2TP_IP=$(getent hosts aibill-l2tp | awk '{ print $1 }')
 if [ -n "$L2TP_IP" ]; then
+    ip route add 172.26.0.0/24 via "$L2TP_IP" 2>/dev/null || true
     ip route add 192.168.42.0/24 via "$L2TP_IP" 2>/dev/null || true
 fi
 
