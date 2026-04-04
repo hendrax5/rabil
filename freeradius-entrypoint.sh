@@ -18,7 +18,9 @@ sed -i 's/^\(\s*\)filter_username/\1#filter_username #/' /etc/freeradius/3.0/sit
 echo "Configuring zero-NAT routing for Mikrotik VPN links..."
 L2TP_IP=$(getent hosts aibill-l2tp | awk '{ print $1 }')
 if [ -n "$L2TP_IP" ]; then
-    echo "Routing 192.168.42.0/24 directly via L2TP Server ($L2TP_IP)..."
+    echo "Routing 172.26.0.0/24 directly via L2TP Server ($L2TP_IP)..."
+    ip route add 172.26.0.0/24 via "$L2TP_IP" 2>/dev/null || true
+    # Fallback to old route if needed
     ip route add 192.168.42.0/24 via "$L2TP_IP" 2>/dev/null || true
 fi
 

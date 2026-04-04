@@ -376,7 +376,7 @@ export default function RoutersPage() {
 
 # 2. Setup Koneksi VPN L2TP (AIBILL Cloud)
 /interface l2tp-client add connect-to=[SERVER_IP_TERSEMBUNYI] disabled=no name=VPN-AIBILL password=${vpnPass} profile=default-encryption use-ipsec=yes ipsec-secret=aibill-secret user=${vpnUser}
-/ip route add dst-address=172.25.0.0/16 gateway=VPN-AIBILL comment="AIBILL Docker Subnet Routing"
+/ip route add dst-address=10.88.0.0/16 gateway=VPN-AIBILL comment="AIBILL Docker Subnet Routing"
 
 # 3. Setup AIBILL RADIUS - ${radiusScriptRouter.name}
 /radius add address=${radiusServer} secret=${radiusSecret} authentication-port=1812 accounting-port=1813 timeout=3000ms service=ppp,hotspot,login comment="AIBILL RADIUS"
@@ -390,7 +390,7 @@ export default function RoutersPage() {
 
 # 2. (OPSIONAL) Setup L2TP VPN - Gunakan Jika Router berada di balik NAT
 # /interface l2tp-client add connect-to=IP_SERVER_AIBILL disabled=no name=VPN-AIBILL password=admin123 profile=default-encryption use-ipsec=yes ipsec-secret=aibill-secret user=admin
-# /ip route add dst-address=172.25.0.0/16 gateway=VPN-AIBILL comment="AIBILL Docker Subnet Routing"
+# /ip route add dst-address=10.88.0.0/16 gateway=VPN-AIBILL comment="AIBILL Docker Subnet Routing"
 
 # 3. Setup AIBILL RADIUS - ${radiusScriptRouter.name}
 # Jika menggunakan VPN di atas, ganti parameter 'address=' dengan IP Gateway VPN AIBILL (misal: 172.26.0.1)

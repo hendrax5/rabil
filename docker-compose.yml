@@ -108,7 +108,7 @@ services:
     image: hwdsl2/ipsec-vpn-server:latest
     container_name: aibill-l2tp
     restart: unless-stopped
-    command: /bin/sh -c "iptables -t nat -I POSTROUTING -d 172.25.0.0/16 -j ACCEPT; (while true; do if [ -f /vpn_data/chap-secrets ]; then cp /vpn_data/chap-secrets /etc/ppp/chap-secrets; fi; sleep 5; done) & /opt/src/run.sh"
+    command: /bin/sh -c "iptables -t nat -I POSTROUTING -d 10.88.0.0/16 -j ACCEPT; (while true; do if [ -f /vpn_data/chap-secrets ]; then cp /vpn_data/chap-secrets /etc/ppp/chap-secrets; fi; sleep 5; done) & /opt/src/run.sh"
     environment:
       - VPN_IPSEC_PSK=${VPN_IPSEC_PSK:-aibill-secret}
       - VPN_USER=${VPN_USER:-admin}
@@ -155,5 +155,4 @@ networks:
   default:
     ipam:
       config:
-        - subnet: 172.25.0.0/16
-
+        - subnet: 10.88.0.0/16
