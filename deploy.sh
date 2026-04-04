@@ -12,6 +12,17 @@ echo "============================================"
 echo "🚀 Memulai Deployment AIBILL ke Production..."
 echo "============================================"
 
+# Fungsi untuk mendeteksi perintah docker compose
+if command -v docker-compose &> /dev/null; then
+    DOCKER_CMD="docker-compose"
+elif docker --help | grep -q "compose"; then
+    DOCKER_CMD="docker compose"
+else
+    echo "❌ Error: Docker Compose tidak ditemukan. Harap install Docker Compose terlebih dahulu."
+    exit 1
+fi
+echo "🐳 Menggunakan perintah: $DOCKER_CMD"
+
 # 1. Pastikan berada di direktori project
 # cd "$(dirname "$0")"
 
@@ -63,11 +74,11 @@ fi
 
 # 4. Hapus environment lama (membersihkan iptables & rule lama)
 echo "🧹 [3/4] Menghentikan kontainer yang sedang berjalan..."
-docker-compose down
+$DOCKER_CMD down
 
 # 5. Bangun ulang struktur container tanpa cache (memastikan package.json & library baru terinstall)
 echo "🏗️ [4/4] Membangun ulan dan menyalakan server (Build & Run)..."
-docker-compose up -d --build --remove-orphans
+$DOCKER_CMD up -d --build --remove-orphans
 
 # 5. Selesai
 echo "============================================"
