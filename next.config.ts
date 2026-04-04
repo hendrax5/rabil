@@ -6,6 +6,7 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  serverExternalPackages: ['ssh2', 'telnet-client'],
 };
 
 export default nextConfig;
