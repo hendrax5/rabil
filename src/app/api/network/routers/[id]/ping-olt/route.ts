@@ -62,6 +62,7 @@ export async function POST(
 
     try {
       await conn.connect();
+          conn.on('error', (err: any) => console.warn('Trapped routeros error:', err.message || err));
     } catch (connError: any) {
       return NextResponse.json(
         { 

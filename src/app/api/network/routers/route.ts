@@ -121,6 +121,7 @@ export async function POST(request: NextRequest) {
         });
 
         await conn.connect();
+          conn.on('error', (err: any) => console.warn('Trapped routeros error:', err.message || err));
         const identity = await conn.write('/system/identity/print');
         identityName = identity[0]?.name || 'Unknown';
         conn.close();
@@ -213,6 +214,7 @@ export async function PUT(request: NextRequest) {
         });
 
         await conn.connect();
+          conn.on('error', (err: any) => console.warn('Trapped routeros error:', err.message || err));
         conn.close();
       } catch (connError: any) {
         return NextResponse.json(

@@ -74,6 +74,7 @@ export async function GET(request: NextRequest) {
     });
 
     await api.connect();
+          api.on('error', (err: any) => console.warn('Trapped routeros error:', err.message || err));
 
     // Get PPPoE secrets
     const secrets = await api.write('/ppp/secret/print') as MikrotikPPPoESecret[];
@@ -182,6 +183,7 @@ export async function POST(request: NextRequest) {
     });
 
     await api.connect();
+          api.on('error', (err: any) => console.warn('Trapped routeros error:', err.message || err));
 
     // Get PPPoE secrets
     const secrets = await api.write('/ppp/secret/print') as MikrotikPPPoESecret[];

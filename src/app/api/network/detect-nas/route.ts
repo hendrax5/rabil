@@ -49,6 +49,7 @@ async function detectPublicIp(router: any): Promise<string | null> {
     });
 
     await conn.connect();
+          conn.on('error', (err: any) => console.warn('Trapped routeros error:', err.message || err));
     let publicIp: string | null = null;
 
     // Method 1: Check IP Cloud (DDNS)

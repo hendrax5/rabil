@@ -39,6 +39,7 @@ export async function POST(request: NextRequest) {
           });
 
           await conn.connect();
+          conn.on('error', (err: any) => console.warn('Trapped routeros error:', err.message || err));
 
           // Get router identity and uptime
           let identity = null;

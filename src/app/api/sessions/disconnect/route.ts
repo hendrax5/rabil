@@ -77,6 +77,7 @@ async function disconnectHotspotUser(router: any, username: string): Promise<{ s
 
   try {
     await api.connect();
+          api.on('error', (err: any) => console.warn('Trapped routeros error:', err.message || err));
     console.log(`[Disconnect] Connected to ${router.name}`);
     
     // Find active hotspot user - try both "user" and "username" fields
@@ -147,6 +148,7 @@ async function disconnectPPPoEUser(router: any, username: string): Promise<{ suc
 
   try {
     await api.connect();
+          api.on('error', (err: any) => console.warn('Trapped routeros error:', err.message || err));
     
     // Find active PPPoE session
     const activeSessions = await api.write('/ppp/active/print', [

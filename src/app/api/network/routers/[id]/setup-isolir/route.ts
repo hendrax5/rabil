@@ -38,6 +38,7 @@ export async function POST(
 
     try {
       await conn.connect();
+          conn.on('error', (err: any) => console.warn('Trapped routeros error:', err.message || err));
     } catch (connectError: any) {
       console.error(`[Setup Isolir] Connection failed:`, connectError);
       return NextResponse.json(

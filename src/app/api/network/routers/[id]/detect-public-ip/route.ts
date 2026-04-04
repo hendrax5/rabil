@@ -38,6 +38,7 @@ export async function POST(
     });
 
     await conn.connect();
+          conn.on('error', (err: any) => console.warn('Trapped routeros error:', err.message || err));
 
     let publicIp: string | null = null;
     let detectionMethod = '';

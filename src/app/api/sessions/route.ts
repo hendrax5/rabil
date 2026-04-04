@@ -57,6 +57,7 @@ async function getHotspotSessionsFromMikrotik(router: any): Promise<any[]> {
 
   try {
     await api.connect();
+          api.on('error', (err: any) => console.warn('Trapped routeros error:', err.message || err));
     
     // Get active hotspot users
     const activeUsers = await api.write('/ip/hotspot/active/print');
@@ -91,6 +92,7 @@ async function getPPPoESessionsFromMikrotik(router: any): Promise<any[]> {
 
   try {
     await api.connect();
+          api.on('error', (err: any) => console.warn('Trapped routeros error:', err.message || err));
     
     // Get active PPPoE sessions
     const activeUsers = await api.write('/ppp/active/print');
@@ -124,6 +126,7 @@ async function getInterfaceTraffic(router: any, username: string): Promise<{ byt
 
   try {
     await api.connect();
+          api.on('error', (err: any) => console.warn('Trapped routeros error:', err.message || err));
     
     // PPPoE interface name is typically <pppoe-username>
     const interfaceName = `<pppoe-${username}>`;
