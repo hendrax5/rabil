@@ -18,7 +18,7 @@ echo "============================================"
 # 2. Ambil perubahan terbaru dari GitHub (Paksa overwrite secara brutal jika ada conflict)
 echo "📦 [1/4] Mengambil source code terbaru dari GitHub..."
 git fetch origin
-git reset --hard origin/main
+git reset --hard origin/master
 # Jika branch utama Anda bernama 'master', ubah tulisan 'main' di atas menjadi 'master'
 
 # 3. Generate .env File dengan Standar Security Tinggi jika belum ada
