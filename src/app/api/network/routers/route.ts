@@ -266,9 +266,33 @@ export async function DELETE(request: NextRequest) {
       return NextResponse.json({ error: 'Router ID is required' }, { status: 400 });
     }
 
+    const routerToDelete = await prisma.router.findUnique({
+      where: { id },
+    });
+
+    if (!routerToDelete) {
+      return NextResponse.json({ error: 'Router not found' }, { status: 404 });
+    }
+
     await prisma.router.delete({
       where: { id },
     });
+
+    // Cleanup associated autoVpn L2TP account if it exists
+    if (routerToDelete.ipAddress?.startsWith('172.26.0.')) {
+      try {
+        await prisma.vpnAccount.deleteMany({
+          where: {
+            username: routerToDelete.username,
+            type: 'L2TP',
+            staticIp: routerToDelete.ipAddress,
+          }
+        });
+        await syncChapSecrets();
+      } catch (vpnErr) {
+        console.error('Failed to delete associated VPN account:', vpnErr);
+      }
+    }
 
     // Restart FreeRADIUS to reload NAS table
     await reloadFreeRadius();
