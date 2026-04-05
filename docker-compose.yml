@@ -110,7 +110,7 @@ services:
     image: hwdsl2/ipsec-vpn-server:latest
     container_name: aibill-l2tp
     restart: unless-stopped
-    command: /bin/sh -c "(while true; do sleep 5; if ! iptables -C FORWARD -j ACCEPT 2>/dev/null; then iptables -I FORWARD -j ACCEPT; fi; if ! iptables -t nat -C POSTROUTING -d 10.88.0.0/16 -j ACCEPT 2>/dev/null; then iptables -t nat -I POSTROUTING -d 10.88.0.0/16 -j ACCEPT; fi; if [ -f /vpn_data/chap-secrets ]; then cp /vpn_data/chap-secrets /etc/ppp/chap-secrets; chmod 600 /etc/ppp/chap-secrets; chown root:root /etc/ppp/chap-secrets; fi; done) & exec /opt/src/run.sh"
+    command: /bin/sh -c "(while true; do sleep 5; if ! iptables -C FORWARD -j ACCEPT 2>/dev/null; then iptables -I FORWARD -j ACCEPT; fi; if ! iptables -t nat -C POSTROUTING -d 10.88.0.0/16 -j ACCEPT 2>/dev/null; then iptables -t nat -I POSTROUTING -d 10.88.0.0/16 -j ACCEPT; fi; done) & exec /opt/src/run.sh"
     environment:
       - VPN_IPSEC_PSK=${VPN_IPSEC_PSK:-aibill-secret}
       - VPN_USER=${VPN_USER:-admin}
