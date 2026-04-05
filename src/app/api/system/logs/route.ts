@@ -18,8 +18,8 @@ const ALLOWED_CONTAINERS = [
 export async function GET(req: Request) {
   try {
     const session = await getServerSession(authOptions);
-    // Allow admins to view logs
-    if (!session || !['superadmin', 'admin'].includes((session.user as any)?.role)) {
+    const userRole = ((session?.user as any)?.role || '').toUpperCase();
+    if (!session || !['SUPERADMIN', 'ADMIN'].includes(userRole)) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
     }
 
