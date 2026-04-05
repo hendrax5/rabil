@@ -21,7 +21,7 @@ export async function GET(req: Request) {
   try {
     const session = await getServerSession(authOptions);
     const userRole = ((session?.user as any)?.role || '').toUpperCase();
-    if (!session || !['SUPERADMIN', 'ADMIN'].includes(userRole)) {
+    if (!session || !['SUPERADMIN', 'SUPER_ADMIN', 'ADMIN'].includes(userRole)) {
       return NextResponse.json({ 
         error: `Unauthorized (Role: ${userRole || 'NONE'})`, 
         sessionExists: !!session 
