@@ -224,6 +224,7 @@ export default function RoutersPage() {
       secret: router.secret || 'secret123',
       latitude: router.latitude?.toString() || '',
       longitude: router.longitude?.toString() || '',
+      autoVpn: false,
     });
     setIsDialogOpen(true);
   };
@@ -450,7 +451,7 @@ export default function RoutersPage() {
 /ip pool remove [find name="pool-pppoe-${vlanId}"]
 /ip pool add name="pool-pppoe-${vlanId}" ranges=${pool}
 /ppp profile remove [find name="profile-pppoe-${vlanId}"]
-/ppp profile add name="profile-pppoe-${vlanId}" local-address=${gwIp} remote-address="pool-pppoe-${vlanId}" dns-server=8.8.8.8 use-radius=yes comment="Profile PPPoE NAS"
+/ppp profile add name="profile-pppoe-${vlanId}" local-address=${gwIp} remote-address="pool-pppoe-${vlanId}" dns-server=8.8.8.8 comment="Profile PPPoE NAS"
 /interface pppoe-server server remove [find service-name="pppoe-server-${vlanId}"]
 /interface pppoe-server server add service-name="pppoe-server-${vlanId}" interface="vlan-pppoe-${vlanId}" default-profile="profile-pppoe-${vlanId}" disabled=no
 /ip firewall nat remove [find comment="NAT PPPoE ${vlanId}"]
