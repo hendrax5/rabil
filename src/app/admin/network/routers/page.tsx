@@ -474,7 +474,7 @@ export default function RoutersPage() {
 
 # 3. Bypass Firewall Mikrotik agar AIBILL bisa akses API (Cegah Timeout)
 /ip firewall filter remove [find comment="AIBILL API & Ping"]
-/ip firewall filter add action=accept chain=input in-interface="VPN-AIBILL" place-before=0 comment="AIBILL API & Ping"
+/ip firewall filter add action=accept chain=input in-interface="VPN-AIBILL" comment="AIBILL API & Ping"
 
 # 4. Buat User API Akses AIBILL
 /user remove [find name="${vpnUser}"]
