@@ -161,46 +161,46 @@ function NavItem({ item, pendingCount, collapsed, t, onNavigate }: { item: MenuI
         <button
           onClick={() => setIsOpen(!isOpen)}
           className={cn(
-            'w-full flex items-center gap-2.5 px-3 py-2.5 text-sm font-medium rounded-md transition-all duration-200',
+            'w-full flex items-center gap-2.5 px-2.5 py-2.5 text-xs font-bold rounded-xl transition-all duration-300 group',
             isActive
-              ? 'bg-primary/10 text-primary dark:bg-primary/20 shadow-sm'
-              : 'text-slate-600 hover:bg-primary/5 hover:text-primary dark:text-slate-400 dark:hover:bg-primary/10 dark:hover:text-primary-foreground',
+              ? 'text-cyan-400 bg-cyan-500/10 border border-cyan-400/30 shadow-[0_0_15px_rgba(0,255,255,0.15),inset_0_1px_0_rgba(255,255,255,0.05)]'
+              : 'text-muted-foreground hover:text-foreground hover:bg-primary/10 border border-transparent hover:border-primary/20',
           )}
         >
           <span className={cn(
-            'flex-shrink-0 p-1 rounded',
-            isActive ? 'text-primary' : 'text-gray-500 dark:text-gray-400'
+            'flex-shrink-0 p-1.5 rounded-lg transition-all duration-300',
+            isActive ? 'text-cyan-400 bg-cyan-500/10 drop-shadow-[0_0_8px_rgba(0,255,255,0.8)]' : 'text-muted-foreground group-hover:text-cyan-400'
           )}>
             {item.icon}
           </span>
           {!collapsed && (
             <>
-              <span className="flex-1 text-left truncate">{t(item.titleKey)}</span>
-              <ChevronDown className={cn('w-3.5 h-3.5 transition-transform', isOpen && 'rotate-180')} />
+              <span className="flex-1 text-left truncate tracking-wide">{t(item.titleKey)}</span>
+              <ChevronDown className={cn('w-3.5 h-3.5 transition-transform duration-300', isOpen && 'rotate-180')} />
             </>
           )}
         </button>
         {!collapsed && (
           <div className={cn(
-            'overflow-hidden transition-all duration-150',
-            isOpen ? 'max-h-64 opacity-100 mt-0.5' : 'max-h-0 opacity-0'
+            'overflow-hidden transition-all duration-300 ease-in-out',
+            isOpen ? 'max-h-96 opacity-100 mt-1' : 'max-h-0 opacity-0'
           )}>
-            <div className="ml-3 pl-3 border-l border-gray-200 dark:border-gray-700 space-y-0.5">
+            <div className="ml-4 pl-3 border-l-2 border-cyan-500/20 space-y-1">
               {item.children.map((child) => (
                 <Link
                   key={child.href}
                   href={child.href}
                   onClick={onNavigate}
                   className={cn(
-                    'flex items-center justify-between px-3 py-2 text-xs rounded-md transition-all duration-200',
+                    'flex items-center justify-between px-3 py-2 text-xs rounded-lg transition-all duration-200 group/item',
                     pathname === child.href
-                      ? 'bg-primary text-primary-foreground shadow-sm'
-                      : 'text-slate-600 hover:bg-primary/5 hover:text-primary dark:text-slate-400 dark:hover:bg-primary/10'
+                      ? 'text-cyan-400 bg-cyan-500/10 border border-cyan-400/20 shadow-[0_0_10px_rgba(0,255,255,0.1)]'
+                      : 'text-muted-foreground hover:text-foreground hover:bg-primary/10'
                   )}
                 >
-                  <span>{t(child.titleKey)}</span>
+                  <span className="tracking-wide">{t(child.titleKey)}</span>
                   {child.badge === 'pending' && pendingCount > 0 && (
-                    <span className="bg-red-500 text-white text-[9px] px-1 py-0.5 rounded-full font-bold min-w-[16px] text-center">
+                    <span className="bg-red-500 text-white text-[9px] px-1.5 py-0.5 rounded-md font-bold min-w-[18px] text-center shadow-[0_0_8px_rgba(255,0,0,0.5)] animate-pulse">
                       {pendingCount}
                     </span>
                   )}
@@ -218,16 +218,21 @@ function NavItem({ item, pendingCount, collapsed, t, onNavigate }: { item: MenuI
       href={item.href!}
       onClick={onNavigate}
       className={cn(
-        'flex items-center gap-2.5 px-3 py-2.5 text-sm font-medium rounded-md transition-all duration-200',
+        'flex items-center gap-2.5 px-2.5 py-2.5 text-xs font-bold rounded-xl transition-all duration-300 group',
         pathname === item.href
-          ? 'bg-primary text-primary-foreground shadow-sm'
-          : 'text-slate-600 hover:bg-primary/5 hover:text-primary dark:text-slate-400 dark:hover:bg-primary/10 dark:hover:text-primary-foreground',
+          ? 'text-cyan-400 bg-cyan-500/10 border border-cyan-400/30 shadow-[0_0_15px_rgba(0,255,255,0.15),inset_0_1px_0_rgba(255,255,255,0.05)]'
+          : 'text-muted-foreground hover:text-foreground hover:bg-primary/10 border border-transparent hover:border-primary/20',
       )}
     >
-      <span className="flex-shrink-0 p-1 rounded">
+      <span className={cn(
+        'flex-shrink-0 p-1.5 rounded-lg transition-all duration-300',
+        pathname === item.href ? 'text-cyan-400 bg-cyan-500/10 drop-shadow-[0_0_8px_rgba(0,255,255,0.8)]' : 'text-muted-foreground group-hover:text-cyan-400'
+      )}>
         {item.icon}
       </span>
-      {!collapsed && <span className="truncate">{t(item.titleKey)}</span>}
+      {!collapsed && (
+        <span className="truncate tracking-wide">{t(item.titleKey)}</span>
+      )}
     </Link>
   );
 }
@@ -395,40 +400,55 @@ function AdminLayoutContent({
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
+    <div className="min-h-screen bg-background relative overflow-hidden">
+      {/* Cyberpunk Background Effects */}
+      <div className="fixed inset-0 pointer-events-none z-0">
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-cyan-500/5 rounded-full blur-[100px] animate-pulse" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-pink-500/5 rounded-full blur-[100px] animate-pulse delay-1000" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60%] h-[60%] bg-purple-500/3 rounded-full blur-[120px]" />
+        <div className="absolute inset-0 bg-[repeating-linear-gradient(0deg,transparent,transparent_2px,rgba(0,255,255,0.01)_2px,rgba(0,255,255,0.01)_4px)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(0,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(0,255,255,0.02)_1px,transparent_1px)] bg-[size:50px_50px]" />
+      </div>
+
       {/* Mobile overlay */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden"
+          className="fixed inset-0 bg-black/80 backdrop-blur-md z-40 lg:hidden transition-opacity duration-300"
           onClick={() => setSidebarOpen(false)}
         />
       )}
 
-      {/* Sidebar */}
+      {/* Sidebar - Cyberpunk */}
       <aside className={cn(
-        'fixed top-0 left-0 z-50 h-screen w-64 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-xl border-r border-gray-200/50 dark:border-gray-800/50 transition-all duration-300 ease-[cubic-bezier(0.25,1,0.5,1)] shadow-[4px_0_24px_-12px_rgba(0,0,0,0.1)]',
+        'fixed top-0 left-0 z-50 h-[100dvh] w-[280px] sm:w-64 transition-transform duration-300 ease-out',
+        'bg-background/95 backdrop-blur-xl',
+        'border-r border-cyan-500/20',
+        'shadow-[5px_0_30px_rgba(0,255,255,0.1),inset_-1px_0_0_rgba(255,255,255,0.05)]',
         'lg:translate-x-0',
         sidebarOpen ? 'translate-x-0' : '-translate-x-full'
       )}>
+        {/* Top neon line */}
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-400 to-transparent" />
+
         <div className="flex flex-col h-full">
           {/* Logo */}
-          <div className="flex items-center justify-between px-3 py-3 border-b border-gray-100 dark:border-gray-800">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-gradient-to-br from-primary to-indigo-600 rounded-lg flex items-center justify-center shadow-md">
-                <span className="text-white font-bold text-sm">{company.name.charAt(0)}</span>
+          <div className="flex-shrink-0 flex items-center justify-between px-3 sm:px-4 py-2.5 sm:py-3 border-b border-cyan-500/20 bg-gradient-to-r from-cyan-500/5 via-transparent to-pink-500/5">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-gradient-to-br from-cyan-500 to-cyan-400 flex items-center justify-center border border-cyan-400/50 shadow-[0_0_20px_rgba(0,255,255,0.4),inset_0_1px_0_rgba(255,255,255,0.2)] animate-pulse">
+                <span className="text-black font-black text-xs sm:text-sm">{company.name.charAt(0)}</span>
               </div>
-              <div>
-                <h1 className="text-sm font-semibold text-gray-900 dark:text-white truncate">
+              <div className="min-w-0 flex-1">
+                <h1 className="text-[11px] sm:text-xs font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-cyan-300 to-pink-400 drop-shadow-[0_0_10px_rgba(0,255,255,0.5)] truncate max-w-[130px] sm:max-w-[110px]">
                   {company.name}
                 </h1>
-                <p className="text-[10px] text-gray-500 dark:text-gray-400">Billing System</p>
+                <p className="text-[9px] sm:text-[10px] text-cyan-400/60 tracking-[0.15em] sm:tracking-[0.2em] uppercase font-medium">Billing System</p>
               </div>
             </div>
             <button
               onClick={() => setSidebarOpen(false)}
-              className="lg:hidden p-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md"
+              className="lg:hidden p-2 sm:p-1.5 hover:bg-primary/20 rounded-lg sm:rounded-md text-muted-foreground hover:text-primary transition-colors border border-transparent hover:border-primary/30 active:scale-95"
             >
-              <X className="w-4 h-4" />
+              <X className="w-5 h-5 sm:w-4 sm:h-4" />
             </button>
           </div>
 
