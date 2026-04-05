@@ -176,6 +176,7 @@ const menuItems: MenuItem[] = [
       { titleKey: 'nav.database', href: '/admin/settings/database', requiredPermission: 'settings.view' },
       { titleKey: 'nav.cronJobs', href: '/admin/settings/cron', requiredPermission: 'settings.cron' },
       { titleKey: 'nav.genieacs', href: '/admin/settings/genieacs', requiredPermission: 'settings.genieacs' },
+      { titleKey: 'nav.systemLogs', href: '/admin/settings/logs', requiredPermission: 'settings.view' },
     ],
   },
 ];

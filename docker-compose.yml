@@ -28,6 +28,7 @@ services:
       - NET_ADMIN
     volumes:
       - vpn_data:/vpn_data
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     depends_on:
       db:
         condition: service_healthy
