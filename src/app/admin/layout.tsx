@@ -26,6 +26,9 @@ import {
   Router,
   AlertTriangle,
   Timer,
+  Package,
+  Headset,
+  Wrench,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAppStore } from '@/lib/store';
@@ -136,6 +139,24 @@ const menuItems: MenuItem[] = [
     icon: <Shield className="w-4 h-4" />,
     href: '/admin/management',
     requiredPermission: 'users.view',
+  },
+  {
+    titleKey: 'nav.inventory',
+    icon: <Package className="w-4 h-4" />,
+    href: '/admin/inventory',
+    requiredPermission: 'network.view',
+  },
+  {
+    titleKey: 'nav.tickets',
+    icon: <Headset className="w-4 h-4" />,
+    href: '/admin/tickets',
+    requiredPermission: 'customers.view',
+  },
+  {
+    titleKey: 'nav.technicians',
+    icon: <Wrench className="w-4 h-4" />,
+    href: '/admin/technicians',
+    requiredPermission: 'network.view',
   },
   {
     titleKey: 'nav.settingsMenu',

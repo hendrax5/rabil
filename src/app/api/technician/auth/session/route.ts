@@ -1,0 +1,56 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { jwtVerify } from 'jose';
+import { prisma } from '@/lib/prisma';
+
+export async function GET(req: NextRequest) {
+  try {
+    // Get token from cookie
+    const token = req.cookies.get('technician-token')?.value;
+
+    if (!token) {
+      return NextResponse.json(
+        { error: 'Not authenticated' },
+        { status: 401 }
+      );
+    }
+
+    // Verify JWT
+    const secret = new TextEncoder().encode(
+      process.env.JWT_SECRET || 'your-secret-key-change-this-in-production'
+    );
+
+    const { payload } = await jwtVerify(token, secret);
+
+    // Get technician from database
+    const technician = await prisma.technician.findUnique({
+      where: { id: payload.id as string },
+      select: {
+        id: true,
+        name: true,
+        phoneNumber: true,
+        email: true,
+        isActive: true,
+        createdAt: true,
+        lastLoginAt: true,
+      },
+    });
+
+    if (!technician || !technician.isActive) {
+      return NextResponse.json(
+        { error: 'Technician not found or inactive' },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json({
+      success: true,
+      technician,
+    });
+  } catch (error) {
+    console.error('Get technician session error:', error);
+    return NextResponse.json(
+      { error: 'Invalid or expired session' },
+      { status: 401 }
+    );
+  }
+}

@@ -304,6 +304,7 @@ model pppoeUser {
   syncedToRadius Boolean        @default(false)
   routerId       String?
   invoices       invoice[]
+  tickets        ticket[]
   profile        pppoeProfile   @relation(fields: [profileId], references: [id])
   router         router?        @relation(fields: [routerId], references: [id])
   salesId        String?
@@ -959,4 +960,205 @@ model vpnAccount {
   @@index([type])
   @@index([isActive])
   @@map("vpn_accounts")
+}
+
+// Inventory Management Models
+model inventoryCategory {
+  id          String          @id @default(cuid())
+  name        String          @unique
+  description String?         @db.Text
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  items       inventoryItem[]
+
+  @@map("inventory_categories")
+}
+
+model inventorySupplier {
+  id          String          @id @default(cuid())
+  name        String          @unique
+  contactName String?
+  phone       String?
+  email       String?
+  address     String?         @db.Text
+  notes       String?         @db.Text
+  isActive    Boolean         @default(true)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  items       inventoryItem[]
+
+  @@map("inventory_suppliers")
+}
+
+model inventoryItem {
+  id              String              @id @default(cuid())
+  sku             String              @unique // Stock Keeping Unit
+  name            String
+  description     String?             @db.Text
+  categoryId      String?
+  supplierId      String?
+  unit            String              @default("pcs") // Unit of measurement (pcs, box, meter, etc)
+  minimumStock    Int                 @default(0) // Alert when stock below this
+  currentStock    Int                 @default(0)
+  purchasePrice   Int                 @default(0) // Harga beli
+  sellingPrice    Int                 @default(0) // Harga jual
+  location        String?             // Storage location
+  notes           String?             @db.Text
+  isActive        Boolean             @default(true)
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
+  category        inventoryCategory?  @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  supplier        inventorySupplier?  @relation(fields: [supplierId], references: [id], onDelete: SetNull)
+  movements       inventoryMovement[]
+
+  @@index([categoryId])
+  @@index([supplierId])
+  @@index([sku])
+  @@map("inventory_items")
+}
+
+model inventoryMovement {
+  id            String        @id @default(cuid())
+  itemId        String
+  movementType  String        // IN (masuk), OUT (keluar), ADJUSTMENT (penyesuaian)
+  quantity      Int
+  previousStock Int
+  newStock      Int
+  referenceNo   String?       // Nomor referensi (PO, DO, invoice, etc)
+  notes         String?       @db.Text
+  userId        String?       // User yang melakukan transaksi
+  userName      String?       // Nama user
+  createdAt     DateTime      @default(now())
+  item          inventoryItem @relation(fields: [itemId], references: [id], onDelete: Cascade)
+
+  @@index([itemId])
+  @@index([movementType])
+  @@index([createdAt])
+  @@map("inventory_movements")
+}
+
+// Work Order & Technician Management Models
+model technician {
+  id            String         @id @default(cuid())
+  name          String
+  phoneNumber   String         @unique
+  email         String?
+  isActive      Boolean        @default(true)
+  requireOtp    Boolean        @default(true)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  lastLoginAt   DateTime?
+  otpTokens     technicianOtp[]
+  workOrders    workOrder[]
+
+  @@index([phoneNumber])
+  @@index([isActive])
+  @@map("technicians")
+}
+
+model technicianOtp {
+  id            String      @id @default(cuid())
+  technicianId  String
+  phoneNumber   String
+  otpCode       String
+  isUsed        Boolean     @default(false)
+  expiresAt     DateTime
+  createdAt     DateTime    @default(now())
+  technician    technician  @relation(fields: [technicianId], references: [id], onDelete: Cascade)
+
+  @@index([technicianId])
+  @@index([phoneNumber])
+  @@index([otpCode])
+  @@index([expiresAt])
+  @@map("technician_otps")
+}
+
+model workOrder {
+  id              String      @id @default(cuid())
+  technicianId    String?
+  customerName    String
+  customerPhone   String
+  customerAddress String      @db.Text
+  issueType       String      // CONNECTION, SLOW_SPEED, NO_INTERNET, DEVICE_ISSUE, etc
+  description     String      @db.Text
+  priority        String      @default("MEDIUM") // LOW, MEDIUM, HIGH, URGENT
+  status          String      @default("OPEN") // OPEN, ASSIGNED, IN_PROGRESS, COMPLETED, CANCELLED
+  scheduledDate   DateTime?
+  estimatedHours  Float?
+  notes           String?     @db.Text
+  technicianNotes String?     @db.Text
+  completedAt     DateTime?
+  assignedAt      DateTime?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  technician      technician? @relation(fields: [technicianId], references: [id], onDelete: SetNull)
+
+  @@index([technicianId])
+  @@index([status])
+  @@index([priority])
+  @@index([createdAt])
+  @@map("work_orders")
+}
+
+model ticket {
+  id              String          @id @default(cuid())
+  ticketNumber    String          @unique
+  customerId      String?
+  customerName    String
+  customerEmail   String?
+  customerPhone   String
+  subject         String
+  description     String          @db.Text
+  categoryId      String?
+  priority        String          @default("MEDIUM") // LOW, MEDIUM, HIGH, URGENT
+  status          String          @default("OPEN") // OPEN, IN_PROGRESS, WAITING_CUSTOMER, RESOLVED, CLOSED
+  assignedToId    String?
+  assignedToType  String?         // ADMIN, TECHNICIAN
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  closedAt        DateTime?
+  resolvedAt      DateTime?
+  lastResponseAt  DateTime?
+  customer        pppoeUser?      @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  category        ticketCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  messages        ticketMessage[]
+
+  @@index([ticketNumber])
+  @@index([customerId])
+  @@index([categoryId])
+  @@index([status])
+  @@index([priority])
+  @@index([assignedToId])
+  @@index([createdAt])
+  @@map("tickets")
+}
+
+model ticketMessage {
+  id            String    @id @default(cuid())
+  ticketId      String
+  senderType    String    // CUSTOMER, ADMIN, TECHNICIAN, SYSTEM
+  senderId      String?
+  senderName    String
+  message       String    @db.Text
+  isInternal    Boolean   @default(false)
+  attachments   String?   @db.Text // JSON array of file paths
+  createdAt     DateTime  @default(now())
+  ticket        ticket    @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+
+  @@index([ticketId])
+  @@index([createdAt])
+  @@map("ticket_messages")
+}
+
+model ticketCategory {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  description String?  @db.Text
+  color       String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  tickets     ticket[]
+
+  @@map("ticket_categories")
 }
