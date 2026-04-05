@@ -143,14 +143,23 @@ const menuItems: MenuItem[] = [
   {
     titleKey: 'nav.inventory',
     icon: <Package className="w-4 h-4" />,
-    href: '/admin/inventory',
     requiredPermission: 'network.view',
+    children: [
+      { titleKey: 'nav.inventoryItems', href: '/admin/inventory/items', requiredPermission: 'network.view' },
+      { titleKey: 'nav.inventoryMovements', href: '/admin/inventory/movements', requiredPermission: 'network.view' },
+      { titleKey: 'nav.inventoryCategories', href: '/admin/inventory/categories', requiredPermission: 'network.view' },
+      { titleKey: 'nav.inventorySuppliers', href: '/admin/inventory/suppliers', requiredPermission: 'network.view' },
+    ],
   },
   {
     titleKey: 'nav.tickets',
     icon: <Headset className="w-4 h-4" />,
-    href: '/admin/tickets',
     requiredPermission: 'customers.view',
+    children: [
+      { titleKey: 'nav.allTickets', href: '/admin/tickets', requiredPermission: 'customers.view' },
+      { titleKey: 'nav.ticketCategories', href: '/admin/tickets/categories', requiredPermission: 'customers.view' },
+      { titleKey: 'nav.systemCategories', href: '/admin/tickets/system-categories', requiredPermission: 'customers.view' },
+    ],
   },
   {
     titleKey: 'nav.technicians',
