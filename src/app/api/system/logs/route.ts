@@ -4,6 +4,8 @@ import { authOptions } from '@/lib/auth';
 import { exec } from 'child_process';
 import { promisify } from 'util';
 
+export const dynamic = 'force-dynamic';
+
 const execAsync = promisify(exec);
 
 const ALLOWED_CONTAINERS = [
@@ -20,7 +22,10 @@ export async function GET(req: Request) {
     const session = await getServerSession(authOptions);
     const userRole = ((session?.user as any)?.role || '').toUpperCase();
     if (!session || !['SUPERADMIN', 'ADMIN'].includes(userRole)) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
+      return NextResponse.json({ 
+        error: `Unauthorized (Role: ${userRole || 'NONE'})`, 
+        sessionExists: !!session 
+      }, { status: 403 });
     }
 
     const { searchParams } = new URL(req.url);
