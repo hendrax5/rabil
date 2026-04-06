@@ -7,8 +7,9 @@ services:
       dockerfile: Dockerfile
     container_name: aibill-app
     restart: unless-stopped
-    ports:
-      - "3000:3000"
+    # Port 3000 is now accessible only via Caddy reverse proxy on port 443 OR locally on host
+    expose:
+      - "3000"
     environment:
       - DATABASE_URL=mysql://${DB_USER:-root}:${DB_PASSWORD:-root123}@db:3306/${DB_NAME:-aibill_radius}?connection_limit=250&pool_timeout=40
       - DB_HOST=db
@@ -148,11 +149,31 @@ services:
     depends_on:
       - mongo-acs
 
+  caddy:
+    image: caddy:2-alpine
+    container_name: aibill-caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp" # Required for HTTP/3
+    environment:
+      - DOMAIN=${APP_DOMAIN:-localhost}
+      - SSL_EMAIL=${SSL_EMAIL:-admin@localhost}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - app
+
 volumes:
   mysql_data:
   wg_data:
   vpn_data:
   mongo_acs_data:
+  caddy_data:
+  caddy_config:
 
 networks:
   default:
