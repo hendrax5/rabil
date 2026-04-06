@@ -1,5 +1,5 @@
 import { Client } from 'ssh2';
-const Telnet = require('telnet-client');
+const { Telnet } = require('telnet-client');
 
 export interface UncfgOnu {
   board: string;
