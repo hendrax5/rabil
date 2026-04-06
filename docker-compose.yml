@@ -118,8 +118,10 @@ services:
       - VPN_L2TP_NET=172.26.0.0/24
       - VPN_L2TP_LOCAL=172.26.0.1
       - VPN_L2TP_POOL=172.26.0.2-172.26.0.254
+    ports:
+      - "500:500/udp"
+      - "4500:4500/udp"
     privileged: true
-    network_mode: "host"
     volumes:
       - vpn_data:/etc/ipsec.d
       - vpn_data:/vpn_data
