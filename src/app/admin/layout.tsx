@@ -162,10 +162,13 @@ const menuItems: MenuItem[] = [
     ],
   },
   {
-    titleKey: 'Technicians',
+    titleKey: 'nav.technicians',
     icon: <Wrench className="w-4 h-4" />,
-    href: '/admin/technicians',
     requiredPermission: 'network.view',
+    children: [
+      { titleKey: 'nav.technicianList', href: '/admin/technicians', requiredPermission: 'network.view' },
+      { titleKey: 'nav.workOrders', href: '/admin/technicians/work-orders', requiredPermission: 'network.view' },
+    ],
   },
   {
     titleKey: 'nav.settingsMenu',
