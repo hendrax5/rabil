@@ -32,15 +32,11 @@ export async function GET(
       port: olt.port || 22,
       username: olt.username,
       password: olt.password,
+      protocol: olt.connection,
       readyTimeout: 10000
     };
 
-    let uncfgs = [];
-    if (olt.connection === 'ssh') {
-      uncfgs = await getZteUncfgOnu(connStr);
-    } else {
-      return NextResponse.json({ error: 'Telnet not yet implemented, please use SSH' }, { status: 400 });
-    }
+    let uncfgs = await getZteUncfgOnu(connStr);
 
     return NextResponse.json({ success: true, count: uncfgs.length, data: uncfgs });
 
