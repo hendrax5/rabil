@@ -114,7 +114,7 @@ services:
     environment:
       - VPN_IPSEC_PSK=${VPN_IPSEC_PSK:-aibill-secret}
       - VPN_USER=${VPN_USER:-admin}
-      - VPN_PASSWORD=${VPN_PASSWORD:-admin123}
+      - VPN_PASSWORD=admin123
       - VPN_L2TP_NET=172.26.0.0/24
       - VPN_L2TP_LOCAL=172.26.0.1
       - VPN_L2TP_POOL=172.26.0.2-172.26.0.254
