@@ -136,7 +136,7 @@ export default function PaymentPage() {
           </div>
         </div>
         {company && <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 text-center"><h3 className="text-sm font-semibold text-gray-900 dark:text-white">{company.companyName}</h3>{company.address && <p className="text-[10px] text-gray-500 mt-1">📍 {company.address}</p>}<div className="flex flex-wrap justify-center gap-3 text-[10px] text-gray-500 mt-2">{company.phone && <span>📞 {company.phone}</span>}{company.email && <span>✉️ {company.email}</span>}</div></div>}
-        <div className="text-center space-y-1"><p className="text-[10px] text-gray-500">Secure payment powered by</p><p className="text-xs font-semibold text-teal-600 dark:text-teal-400">AIBILLRADIUS</p></div>
+        <div className="text-center space-y-1"><p className="text-[10px] text-gray-500">Secure payment powered by</p><p className="text-xs font-semibold text-teal-600 dark:text-teal-400">NexaRadiusRADIUS</p></div>
       </div>
     </div>
   );

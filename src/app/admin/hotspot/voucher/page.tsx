@@ -150,7 +150,7 @@ export default function HotspotVoucherPage() {
     const template = templates.find(t => t.id === selectedTemplate); if (!template) return;
     const vouchersToPrint = vouchers.filter(v => selectedVouchers.includes(v.id));
     const voucherData = vouchersToPrint.map(v => ({ code: v.code, secret: v.code, total: v.profile.sellingPrice }));
-    const rendered = renderVoucherTemplate(template.htmlTemplate, voucherData, { currencyCode: 'Rp', companyName: 'AIBILL' });
+    const rendered = renderVoucherTemplate(template.htmlTemplate, voucherData, { currencyCode: 'Rp', companyName: 'NexaRadius' });
     const printHtml = getPrintableHtml(rendered);
     const printWindow = window.open('', '_blank');
     if (printWindow) { printWindow.document.write(printHtml); printWindow.document.close(); printWindow.focus(); setTimeout(() => { printWindow.print(); }, 500); }

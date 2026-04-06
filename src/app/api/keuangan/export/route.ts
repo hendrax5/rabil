@@ -245,7 +245,7 @@ function exportToPDF(transactions: any[], stats: any) {
     transactions,
     stats,
     pdfData: {
-      title: 'Laporan Keuangan - AIBILL RADIUS',
+      title: 'Laporan Keuangan - NexaRadius',
       headers,
       rows,
       summary,

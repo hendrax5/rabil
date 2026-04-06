@@ -26,7 +26,7 @@ mkdir -p /vpn_data
 cat << 'EOF' > /vpn_data/sync-secrets.sh
 #!/bin/bash
 # This script is automatically sourced by hwdsl2/ipsec-vpn-server on boot
-echo "Starting AIBILL chap-secrets live syc engine in background..."
+echo "Starting NexaRadius chap-secrets live syc engine in background..."
 (
     # Disable NAT permanently
     iptables -t nat -F POSTROUTING

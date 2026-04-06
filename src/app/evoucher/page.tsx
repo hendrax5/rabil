@@ -224,7 +224,7 @@ export default function EVoucherPage() {
 
       {/* Footer */}
       <div className="mt-8 py-4 border-t border-gray-200">
-        <p className="text-center text-[10px] text-gray-500">Powered by AIBILL RADIUS</p>
+        <p className="text-center text-[10px] text-gray-500">Powered by NexaRadius</p>
       </div>
     </div>
   );

@@ -10,7 +10,7 @@ export async function GET() {
     if (!company) {
       // Return default if no company exists
       return NextResponse.json({
-        name: 'AIBILL RADIUS',
+        name: 'NexaRadius',
         email: 'admin@aibill.com',
         phone: '+62 812-3456-7890',
         address: 'Jakarta, Indonesia',

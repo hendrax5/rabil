@@ -391,7 +391,7 @@ export default function RoutersPage() {
     
     const vpnUser = radiusScriptRouter.username;
     const vpnPass = radiusScriptRouter.password;
-    const serverHostname = typeof window !== 'undefined' ? window.location.hostname : 'IP_SERVER_AIBILL';
+    const serverHostname = typeof window !== 'undefined' ? window.location.hostname : 'IP_SERVER_NexaRadius';
     // Use the state loaded from backend API
     const vpnIpsecSecret = vpnIpsecPsk;
 
@@ -412,7 +412,7 @@ export default function RoutersPage() {
        const gwIp = `10.${vlanNum}.0.1`;
        
        return `\n\n# ==========================================
-# 6. Setup AIBILL GenieACS (TR-069 Management)
+# 6. Setup NexaRadius GenieACS (TR-069 Management)
 # ==========================================
 /interface vlan remove [find name="vlan-acs-${vlanId}"]
 /interface vlan add name="vlan-acs-${vlanId}" vlan-id=${vlanId} interface="${iface}" comment="VLAN Management ACS"
@@ -425,7 +425,7 @@ export default function RoutersPage() {
 /ip dhcp-server network remove [find gateway="${gwIp}"]
 /ip dhcp-server network add address=${network} gateway=${gwIp} dns-server=8.8.8.8 comment="DHCP Network ACS"
 /ip firewall nat remove [find comment="NAT ACS ${vlanId}"]
-/ip firewall nat add action=masquerade chain=srcnat src-address=${network} out-interface="${isAutoVpn ? 'VPN-AIBILL' : 'ether1'}" comment="NAT ACS ${vlanId}"`;
+/ip firewall nat add action=masquerade chain=srcnat src-address=${network} out-interface="${isAutoVpn ? 'VPN-NexaRadius' : 'ether1'}" comment="NAT ACS ${vlanId}"`;
     };
 
     const generatePppoeConfig = () => {
@@ -455,7 +455,7 @@ export default function RoutersPage() {
 /interface pppoe-server server remove [find service-name="pppoe-server-${vlanId}"]
 /interface pppoe-server server add service-name="pppoe-server-${vlanId}" interface="vlan-pppoe-${vlanId}" default-profile="profile-pppoe-${vlanId}" disabled=no
 /ip firewall nat remove [find comment="NAT PPPoE ${vlanId}"]
-/ip firewall nat add action=masquerade chain=srcnat src-address=${network} out-interface="${isAutoVpn ? 'VPN-AIBILL' : 'ether1'}" comment="NAT PPPoE ${vlanId}"
+/ip firewall nat add action=masquerade chain=srcnat src-address=${network} out-interface="${isAutoVpn ? 'VPN-NexaRadius' : 'ether1'}" comment="NAT PPPoE ${vlanId}"
 /ip address remove [find interface="vlan-pppoe-${vlanId}"]
 /ip address add address=${gwIp}/21 interface="vlan-pppoe-${vlanId}" comment="IP Gateway PPPoE"`;
     };
@@ -463,40 +463,40 @@ export default function RoutersPage() {
     let script = '';
 
     if (isAutoVpn) {
-      script = `# 1. Aktifkan Layanan API (Dibutuhkan AIBILL Dashboard)
+      script = `# 1. Aktifkan Layanan API (Dibutuhkan NexaRadius Dashboard)
 /ip service set api disabled=no
 
-# 2. Setup Koneksi VPN L2TP (AIBILL Cloud)
-/interface l2tp-client remove [find name="VPN-AIBILL"]
-/interface l2tp-client add connect-to=${serverHostname} disabled=no name="VPN-AIBILL" password="${vpnPass}" profile=default-encryption use-ipsec=yes ipsec-secret="${vpnIpsecSecret}" user="${vpnUser}"
-/ip route remove [find comment="AIBILL Docker Subnet Routing"]
-/ip route add dst-address=10.88.0.0/21 gateway="VPN-AIBILL" comment="AIBILL Docker Subnet Routing"
+# 2. Setup Koneksi VPN L2TP (NexaRadius Cloud)
+/interface l2tp-client remove [find name="VPN-NexaRadius"]
+/interface l2tp-client add connect-to=${serverHostname} disabled=no name="VPN-NexaRadius" password="${vpnPass}" profile=default-encryption use-ipsec=yes ipsec-secret="${vpnIpsecSecret}" user="${vpnUser}"
+/ip route remove [find comment="NexaRadius Docker Subnet Routing"]
+/ip route add dst-address=10.88.0.0/21 gateway="VPN-NexaRadius" comment="NexaRadius Docker Subnet Routing"
 
-# 3. Bypass Firewall Mikrotik agar AIBILL bisa akses API (Cegah Timeout)
-/ip firewall filter remove [find comment="AIBILL API & Ping"]
-/ip firewall filter add action=accept chain=input in-interface="VPN-AIBILL" comment="AIBILL API & Ping"
+# 3. Bypass Firewall Mikrotik agar NexaRadius bisa akses API (Cegah Timeout)
+/ip firewall filter remove [find comment="NexaRadius API & Ping"]
+/ip firewall filter add action=accept chain=input in-interface="VPN-NexaRadius" comment="NexaRadius API & Ping"
 
-# 4. Buat User API Akses AIBILL
+# 4. Buat User API Akses NexaRadius
 /user remove [find name="${vpnUser}"]
-/user add name="${vpnUser}" group=full password="${vpnPass}" comment="User API AIBILL"
+/user add name="${vpnUser}" group=full password="${vpnPass}" comment="User API NexaRadius"
 
-# 5. Setup AIBILL RADIUS - ${radiusScriptRouter.name}
-/radius remove [find comment="AIBILL RADIUS"]
-/radius add address=${radiusServer} secret="${radiusSecret}" authentication-port=1812 accounting-port=1813 timeout=3000ms service=ppp,hotspot,login comment="AIBILL RADIUS"
+# 5. Setup NexaRadius - ${radiusScriptRouter.name}
+/radius remove [find comment="NexaRadius"]
+/radius add address=${radiusServer} secret="${radiusSecret}" authentication-port=1812 accounting-port=1813 timeout=3000ms service=ppp,hotspot,login comment="NexaRadius"
 /ip hotspot profile set use-radius=yes radius-accounting=yes radius-interim-update=00:05:00 [find name!=""]
 /ppp aaa set use-radius=yes accounting=yes interim-update=00:05:00
 /radius incoming set accept=yes port=3799`;
     } else {
-      script = `# 1. Aktifkan Layanan API (Dibutuhkan AIBILL Dashboard)
+      script = `# 1. Aktifkan Layanan API (Dibutuhkan NexaRadius Dashboard)
 /ip service set api disabled=no
 
 # 2. (OPSIONAL) Setup L2TP VPN - Gunakan Jika Router berada di balik NAT
-# /interface l2tp-client add connect-to=${serverHostname} disabled=no name=VPN-AIBILL password=admin123 profile=default-encryption use-ipsec=yes ipsec-secret=${vpnIpsecSecret} user=admin
-# /ip route add dst-address=10.88.0.0/21 gateway=VPN-AIBILL comment="AIBILL Docker Subnet Routing"
+# /interface l2tp-client add connect-to=${serverHostname} disabled=no name=VPN-NexaRadius password=admin123 profile=default-encryption use-ipsec=yes ipsec-secret=${vpnIpsecSecret} user=admin
+# /ip route add dst-address=10.88.0.0/21 gateway=VPN-NexaRadius comment="NexaRadius Docker Subnet Routing"
 
-# 3. Setup AIBILL RADIUS - ${radiusScriptRouter.name}
-# Jika menggunakan VPN di atas, ganti parameter 'address=' dengan IP Gateway VPN AIBILL (misal: 172.26.0.1)
-/radius add address=${radiusServer} secret=${radiusSecret} authentication-port=1812 accounting-port=1813 timeout=3000ms service=ppp,hotspot,login comment="AIBILL RADIUS"
+# 3. Setup NexaRadius - ${radiusScriptRouter.name}
+# Jika menggunakan VPN di atas, ganti parameter 'address=' dengan IP Gateway VPN NexaRadius (misal: 172.26.0.1)
+/radius add address=${radiusServer} secret=${radiusSecret} authentication-port=1812 accounting-port=1813 timeout=3000ms service=ppp,hotspot,login comment="NexaRadius"
 /ip hotspot profile set use-radius=yes radius-accounting=yes radius-interim-update=00:05:00 [find name!=""]
 /ppp aaa set use-radius=yes accounting=yes interim-update=00:05:00
 /radius incoming set accept=yes port=3799`;
@@ -545,7 +545,7 @@ export default function RoutersPage() {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `AIBILL_${routerName}_setup.rsc`;
+    link.download = `NexaRadius_${routerName}_setup.rsc`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -1048,7 +1048,7 @@ export default function RoutersPage() {
                 </div>
                 {scriptAcsEnabled && (
                   <div className="mt-3 p-2 bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-100 dark:border-indigo-800 rounded text-xs text-indigo-800 dark:text-indigo-300 space-y-1">
-                     <p>✅ <b>Sistem Auto-Kalkulasi (Opsi A) Aktif:</b> AIBILL secara otomatis mengalokasikan parameter berikut untuk NAS ini (No. {routers.findIndex(r => r.id === radiusScriptRouter?.id) + 1}):</p>
+                     <p>✅ <b>Sistem Auto-Kalkulasi (Opsi A) Aktif:</b> NexaRadius secara otomatis mengalokasikan parameter berikut untuk NAS ini (No. {routers.findIndex(r => r.id === radiusScriptRouter?.id) + 1}):</p>
                      <ul className="list-disc list-inside ml-2">
                         <li><b>VLAN ID:</b> {100 + Math.max(0, routers.findIndex(r => r.id === radiusScriptRouter?.id))}</li>
                         <li><b>Manajemen Subnet (Gateway):</b> 10.{100 + Math.max(0, routers.findIndex(r => r.id === radiusScriptRouter?.id))}.0.1/21</li>
@@ -1075,7 +1075,7 @@ export default function RoutersPage() {
                 </div>
                 {scriptPppoeEnabled && (
                   <div className="mt-3 p-2 bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800 rounded text-xs text-blue-800 dark:text-blue-300 space-y-1">
-                     <p>✅ <b>Sistem Auto-Kalkulasi (Opsi A) Aktif:</b> AIBILL secara otomatis mengalokasikan parameter berikut untuk PPPoE NAS ini (No. {routers.findIndex(r => r.id === radiusScriptRouter?.id) + 1}):</p>
+                     <p>✅ <b>Sistem Auto-Kalkulasi (Opsi A) Aktif:</b> NexaRadius secara otomatis mengalokasikan parameter berikut untuk PPPoE NAS ini (No. {routers.findIndex(r => r.id === radiusScriptRouter?.id) + 1}):</p>
                      <ul className="list-disc list-inside ml-2">
                         <li><b>VLAN ID:</b> {200 + Math.max(0, routers.findIndex(r => r.id === radiusScriptRouter?.id))}</li>
                         <li><b>IP Pool PPPoE:</b> 10.{200 + Math.max(0, routers.findIndex(r => r.id === radiusScriptRouter?.id))}.0.10 - 10.{200 + Math.max(0, routers.findIndex(r => r.id === radiusScriptRouter?.id))}.7.254</li>

@@ -258,7 +258,7 @@ export function generatePDFBuffer(
       doc.setTextColor(150, 150, 150);
       const pageNum = `Halaman ${doc.getCurrentPageInfo().pageNumber} dari ${doc.getNumberOfPages()}`;
       doc.text(pageNum, pageWidth - margin - 30, pageHeight - 10);
-      doc.text('AIBILL RADIUS', margin, pageHeight - 10);
+      doc.text('NexaRadius', margin, pageHeight - 10);
     }
   });
 
@@ -301,7 +301,7 @@ export function generateInvoicePDF(invoiceData: {
   doc.setFontSize(20);
   doc.setFont('helvetica', 'bold');
   doc.setTextColor(59, 130, 246);
-  doc.text(invoiceData.companyInfo?.name || 'AIBILL RADIUS', margin, yPos);
+  doc.text(invoiceData.companyInfo?.name || 'NexaRadius', margin, yPos);
   yPos += 8;
 
   if (invoiceData.companyInfo?.address) {
@@ -443,7 +443,7 @@ export function generateInvoicePDF(invoiceData: {
   doc.setFont('helvetica', 'normal');
   doc.setTextColor(150, 150, 150);
   doc.text('Terima kasih atas kepercayaan Anda.', margin, footerY);
-  doc.text('Dokumen ini digenerate secara otomatis oleh AIBILL RADIUS', margin, footerY + 5);
+  doc.text('Dokumen ini digenerate secara otomatis oleh NexaRadius', margin, footerY + 5);
 
   const output = doc.output('arraybuffer');
   return new Uint8Array(output);
@@ -457,7 +457,7 @@ export function generateVoucherCardsPDF(vouchers: {
   price: number;
   validity: string;
   batchCode?: string;
-}[], companyName: string = 'AIBILL RADIUS'): Uint8Array {
+}[], companyName: string = 'NexaRadius'): Uint8Array {
   const doc = new jsPDF({
     orientation: 'portrait',
     unit: 'mm',

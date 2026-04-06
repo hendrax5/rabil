@@ -115,7 +115,7 @@ export default function AgentLoginPage() {
 
         {/* Footer */}
         <p className="text-center text-[10px] text-gray-500 dark:text-gray-400 mt-4">
-          Powered by AIBILL RADIUS
+          Powered by NexaRadius
         </p>
       </div>
     </div>

@@ -87,7 +87,7 @@ export default function TechnicianLoginPage() {
 
         <div className="text-center mb-8">
           <h1 className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 mb-2">
-            AIBILL TECHNICIAN
+            NexaRadius TECHNICIAN
           </h1>
           <p className="text-sm text-cyan-400/60 font-medium max-w-xs">
             {step === 1 
@@ -190,7 +190,7 @@ export default function TechnicianLoginPage() {
       </div>
       
       <div className="mt-8 text-center text-[10px] text-muted-foreground font-medium uppercase tracking-widest relative z-10">
-        AIBILL FIELD TECHNICIAN SECURE PORTAL
+        NexaRadius FIELD TECHNICIAN SECURE PORTAL
       </div>
     </div>
   );

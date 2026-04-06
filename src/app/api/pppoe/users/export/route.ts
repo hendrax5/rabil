@@ -70,7 +70,7 @@ export async function GET(req: NextRequest) {
 
       return NextResponse.json({
         pdfData: {
-          title: 'Daftar Pelanggan PPPoE - AIBILL RADIUS',
+          title: 'Daftar Pelanggan PPPoE - NexaRadius',
           headers,
           rows,
           summary,

@@ -96,7 +96,7 @@ export async function GET(req: NextRequest) {
 
       return NextResponse.json({
         pdfData: {
-          title: 'Daftar Voucher Hotspot - AIBILL RADIUS',
+          title: 'Daftar Voucher Hotspot - NexaRadius',
           headers,
           rows,
           summary,
@@ -125,7 +125,7 @@ export async function GET(req: NextRequest) {
         return NextResponse.json({ error: 'No waiting vouchers to print' }, { status: 400 });
       }
 
-      const pdfBuffer = generateVoucherCardsPDF(vouchersForPrint, company?.name || 'AIBILL RADIUS');
+      const pdfBuffer = generateVoucherCardsPDF(vouchersForPrint, company?.name || 'NexaRadius');
 
       return new NextResponse(Buffer.from(pdfBuffer), {
         headers: {

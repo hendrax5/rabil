@@ -130,7 +130,7 @@ export async function GET(req: NextRequest) {
 
       return NextResponse.json({
         pdfData: {
-          title: mode === 'active' ? 'Active Sessions - AIBILL RADIUS' : 'Session History - AIBILL RADIUS',
+          title: mode === 'active' ? 'Active Sessions - NexaRadius' : 'Session History - NexaRadius',
           headers,
           rows,
           summary,

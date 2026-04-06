@@ -12,7 +12,7 @@ export default function CustomerLoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [expiresIn, setExpiresIn] = useState(5);
-  const [companyName, setCompanyName] = useState('AIBILL RADIUS');
+  const [companyName, setCompanyName] = useState('NexaRadius');
 
   useEffect(() => {
     fetch('/api/public/company')
@@ -239,7 +239,7 @@ export default function CustomerLoginPage() {
 
         {/* Footer */}
         <p className="text-center text-[10px] text-gray-500 dark:text-gray-400 mt-4">
-          Powered by AIBILL RADIUS
+          Powered by NexaRadius
         </p>
       </div>
     </div>

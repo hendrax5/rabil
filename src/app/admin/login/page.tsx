@@ -13,7 +13,7 @@ function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [idleLogout, setIdleLogout] = useState(false);
-  const [companyName, setCompanyName] = useState('AIBILL RADIUS');
+  const [companyName, setCompanyName] = useState('NexaRadius');
 
   // Check if user was logged out due to idle
   useEffect(() => {
@@ -180,7 +180,7 @@ function LoginForm() {
 
         {/* Footer */}
         <p className="text-center text-[10px] text-gray-500 dark:text-gray-400 mt-4">
-          Powered by AIBILL RADIUS
+          Powered by NexaRadius
         </p>
       </div>
     </div>

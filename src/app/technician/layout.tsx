@@ -5,7 +5,7 @@ import '@/app/globals.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'AIBILL Technician',
+  title: 'NexaRadius Technician',
   description: 'Technician Field Portal',
   manifest: '/manifest.json', // Allows it to be installed as a PWA
   themeColor: '#06b6d4', // cyan-500

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # =========================================================
-# AIBILL RADIUS - Production Deployment Script
+# NexaRadius - Production Deployment Script
 # Digunakan untuk menerapkan pembaruan terbaru dari GitHub
 # =========================================================
 
@@ -9,7 +9,7 @@
 set -e
 
 echo "============================================"
-echo "🚀 Memulai Deployment AIBILL ke Production..."
+echo "🚀 Memulai Deployment NexaRadius ke Production..."
 echo "============================================"
 
 # Fungsi untuk mendeteksi perintah docker compose
@@ -55,7 +55,7 @@ TZ="Asia/Jakarta"
 NEXT_PUBLIC_TIMEZONE="Asia/Jakarta"
 
 # App Configuration
-NEXT_PUBLIC_APP_NAME="AIBILL RADIUS ISP"
+NEXT_PUBLIC_APP_NAME="NexaRadius ISP"
 NEXT_PUBLIC_APP_URL="http://localhost:3000"
 
 # NextAuth Security Token (Randomized)

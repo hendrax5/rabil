@@ -86,7 +86,7 @@ export async function GET(req: NextRequest) {
 
       return NextResponse.json({
         pdfData: {
-          title: 'Daftar Invoice - AIBILL RADIUS',
+          title: 'Daftar Invoice - NexaRadius',
           headers,
           rows,
           summary,
@@ -123,7 +123,7 @@ export async function GET(req: NextRequest) {
         dueDate: invoice.dueDate,
         status: invoice.status,
         companyInfo: {
-          name: company?.name || 'AIBILL RADIUS',
+          name: company?.name || 'NexaRadius',
           address: company?.address || undefined,
           phone: company?.phone || undefined,
           email: company?.email || undefined

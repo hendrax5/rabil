@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
     // 1. Send to General Chat (no topic)
     const generalResult = await sendTelegramMessage(
       { botToken, chatId },
-      `🤖 <b>AIBILL RADIUS - Test Connection</b>\n\n✅ General chat connection successful!\n\n📅 ${now} WIB`
+      `🤖 <b>NexaRadius - Test Connection</b>\n\n✅ General chat connection successful!\n\n📅 ${now} WIB`
     );
     results.push({ location: 'General Chat', success: generalResult.success, error: generalResult.error });
 
@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
     if (backupTopicId) {
       const backupResult = await sendTelegramMessage(
         { botToken, chatId, topicId: backupTopicId },
-        `💾 <b>AIBILL RADIUS - Database Backup Topic Test</b>\n\n✅ Backup topic connection successful!\nThis topic will receive database backup files.\n\n📅 ${now} WIB`
+        `💾 <b>NexaRadius - Database Backup Topic Test</b>\n\n✅ Backup topic connection successful!\nThis topic will receive database backup files.\n\n📅 ${now} WIB`
       );
       results.push({ location: 'Backup Topic', success: backupResult.success, error: backupResult.error });
     }
@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
     if (healthTopicId) {
       const healthResult = await sendTelegramMessage(
         { botToken, chatId, topicId: healthTopicId },
-        `🏥 <b>AIBILL RADIUS - Health Check Topic Test</b>\n\n✅ Health topic connection successful!\nThis topic will receive database health reports.\n\n📅 ${now} WIB`
+        `🏥 <b>NexaRadius - Health Check Topic Test</b>\n\n✅ Health topic connection successful!\nThis topic will receive database health reports.\n\n📅 ${now} WIB`
       );
       results.push({ location: 'Health Topic', success: healthResult.success, error: healthResult.error });
     }

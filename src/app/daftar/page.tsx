@@ -18,7 +18,7 @@ export default function DaftarPage() {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [companyName, setCompanyName] = useState('AIBILL RADIUS');
+  const [companyName, setCompanyName] = useState('NexaRadius');
 
   const [formData, setFormData] = useState({
     name: '',
@@ -249,7 +249,7 @@ export default function DaftarPage() {
         </div>
 
         <p className="mt-4 text-center text-[10px] text-gray-500">
-          Powered by AIBILL RADIUS
+          Powered by NexaRadius
         </p>
       </div>
     </div>

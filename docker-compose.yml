@@ -17,7 +17,7 @@ services:
       - DB_NAME=${DB_NAME:-aibill_radius}
       - NEXTAUTH_SECRET=${NEXTAUTH_SECRET:-changeme_to_long_random_string}
       - NEXTAUTH_URL=${NEXT_PUBLIC_APP_URL:-http://localhost:3000}
-      - NEXT_PUBLIC_APP_NAME=${NEXT_PUBLIC_APP_NAME:-AIBILL RADIUS ISP}
+      - NEXT_PUBLIC_APP_NAME=${NEXT_PUBLIC_APP_NAME:-NexaRadius ISP}
       - NEXT_PUBLIC_APP_URL=${NEXT_PUBLIC_APP_URL:-http://localhost:3000}
       - NEXT_PUBLIC_VPN_IPSEC_PSK=${VPN_IPSEC_PSK:-aibill-secret}
       - NEXT_PUBLIC_TIMEZONE=${TZ:-Asia/Jakarta}

@@ -10,7 +10,7 @@ const SERVICES = [
   { id: 'aibill-genieacs', name: 'GenieACS Server' },
   { id: 'aibill-db', name: 'MySQL Database' },
   { id: 'aibill-vpn', name: 'Wireguard VPN' },
-  { id: 'aibill-app', name: 'AIBILL App (Frontend/API)' },
+  { id: 'aibill-app', name: 'NexaRadius App (Frontend/API)' },
 ];
 
 export default function SystemLogsPage() {

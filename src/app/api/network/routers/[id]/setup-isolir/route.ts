@@ -50,7 +50,7 @@ export async function POST(
       );
     }
 
-    const comment = 'AIBILL RADIUS - Dont Delete';
+    const comment = 'NexaRadius - Dont Delete';
 
     try {
       // 1. Create IP Pool for isolir

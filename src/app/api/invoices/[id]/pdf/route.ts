@@ -44,7 +44,7 @@ export async function GET(
     // Prepare invoice data for PDF
     const invoiceData = {
       company: {
-        name: company?.name || 'AIBILL RADIUS',
+        name: company?.name || 'NexaRadius',
         address: company?.address || '',
         phone: company?.phone || '',
         email: company?.email || ''
