@@ -6,10 +6,10 @@ const prisma = new PrismaClient();
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const oltId = params.id;
+    const { id: oltId } = await params;
     const body = await request.json();
     const { board, port, sn, name, vlan } = body;
     
