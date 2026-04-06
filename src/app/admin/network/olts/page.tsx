@@ -5,7 +5,7 @@ import { showSuccess, showError, showConfirm } from '@/lib/sweetalert';
 import { useTranslation } from '@/hooks/useTranslation';
 import {
   Plus, Pencil, Trash2, Server, MapPin, Map, X, RefreshCcw, Router as RouterIcon,
-  Activity, Box, Network,
+  Activity, Box, Network, Wrench,
 } from 'lucide-react';
 import MapPicker from '@/components/MapPicker';
 
@@ -49,6 +49,13 @@ export default function OLTsPage() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingOlt, setEditingOlt] = useState<OLT | null>(null);
   const [showMapPicker, setShowMapPicker] = useState(false);
+
+  // Auto-Discovery State
+  const [managingOlt, setManagingOlt] = useState<OLT | null>(null);
+  const [unconfiguredOnus, setUnconfiguredOnus] = useState<any[]>([]);
+  const [loadingOnus, setLoadingOnus] = useState(false);
+  const [registeringOnu, setRegisteringOnu] = useState<any | null>(null);
+  const [regData, setRegData] = useState({ name: '', vlan: '' });
   
   const [formData, setFormData] = useState({
     name: '',
@@ -185,6 +192,61 @@ export default function OLTsPage() {
         ? prev.routerIds.filter(id => id !== routerId)
         : [...prev.routerIds, routerId],
     }));
+  };
+
+  const openManageOnus = async (olt: OLT) => {
+    setManagingOlt(olt);
+    setUnconfiguredOnus([]);
+    setLoadingOnus(true);
+    setRegisteringOnu(null);
+    try {
+      const res = await fetch(`/api/network/olts/${olt.id}/uncfg`);
+      const data = await res.json();
+      if (res.ok) {
+        setUnconfiguredOnus(data.data || []);
+      } else {
+        showError(data.error || 'Failed to fetch unconfigured ONUs');
+      }
+    } catch {
+      showError('Network error while fetching ONUs');
+    } finally {
+      setLoadingOnus(false);
+    }
+  };
+
+  const handleRegisterOnu = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!managingOlt || !registeringOnu) return;
+    
+    try {
+      // payload expects: board, port, sn, name, vlan
+      const payload = {
+        board: registeringOnu.board,
+        port: registeringOnu.port,
+        sn: registeringOnu.sn,
+        name: regData.name,
+        vlan: regData.vlan
+      };
+      
+      const res = await fetch(`/api/network/olts/${managingOlt.id}/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      
+      const data = await res.json();
+      if (res.ok) {
+        await showSuccess('ONU Registered Successfully!');
+        setRegisteringOnu(null);
+        setRegData({ name: '', vlan: '' });
+        // Refresh the list
+        openManageOnus(managingOlt);
+      } else {
+        await showError(data.error || 'Failed to register ONU');
+      }
+    } catch {
+      await showError('Error executing registration');
+    }
   };
 
   if (loading) {
@@ -337,6 +399,13 @@ export default function OLTsPage() {
                     </td>
                     <td className="px-3 py-2 text-right">
                       <div className="flex justify-end gap-1">
+                        <button
+                          title="Auto-Discovery & Provisioning"
+                          onClick={() => openManageOnus(olt)}
+                          className="p-1 text-teal-600 hover:bg-teal-50 dark:hover:bg-teal-900/20 rounded"
+                        >
+                          <Network className="h-3 w-3" />
+                        </button>
                         <button
                           onClick={() => handleEdit(olt)}
                           className="p-1 text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 rounded"
@@ -604,6 +673,113 @@ export default function OLTsPage() {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Manage ONUs Dialog */}
+      {managingOlt && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white dark:bg-gray-900 rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+            <div className="px-4 py-3 border-b dark:border-gray-800 flex items-center justify-between">
+              <div>
+                <h2 className="text-sm font-semibold flex items-center gap-2">
+                  <Network className="w-4 h-4 text-teal-600" />
+                  Auto-Discovery ONU
+                </h2>
+                <p className="text-[10px] text-gray-500">
+                  {managingOlt.name} ({managingOlt.ipAddress})
+                </p>
+              </div>
+              <button
+                onClick={() => {
+                  setManagingOlt(null);
+                  setRegisteringOnu(null);
+                }}
+                className="p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+            
+            <div className="flex-1 overflow-y-auto p-4 bg-gray-50 dark:bg-gray-900/50">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-xs font-bold text-gray-700 dark:text-gray-300">Unconfigured ONUs</h3>
+                <button
+                  onClick={() => openManageOnus(managingOlt)}
+                  className="flex items-center gap-1 px-3 py-1.5 bg-teal-600/10 text-teal-600 border border-teal-600/20 rounded-md text-xs hover:bg-teal-600/20"
+                >
+                  <RefreshCcw className={`w-3 h-3 ${loadingOnus ? 'animate-spin' : ''}`} />
+                  Refresh
+                </button>
+              </div>
+              
+              {loadingOnus ? (
+                <div className="flex items-center justify-center h-32">
+                  <RefreshCcw className="w-8 h-8 animate-spin text-teal-600" />
+                </div>
+              ) : unconfiguredOnus.length === 0 ? (
+                <div className="bg-white dark:bg-gray-800 p-8 rounded-lg border dark:border-gray-700 text-center text-gray-500 text-xs">
+                  No unconfigured ONUs found on this OLT.
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  {unconfiguredOnus.map((onu, idx) => (
+                     <div key={idx} className="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg p-3 shadow-sm relative overflow-hidden">
+                       <div className="flex justify-between items-start mb-2">
+                         <div>
+                            <span className="font-mono text-xs font-bold text-amber-600 bg-amber-50 dark:bg-amber-900/20 px-1.5 py-0.5 rounded border border-amber-200 dark:border-amber-900/50">
+                              SN: {onu.sn}
+                            </span>
+                            <div className="text-[10px] text-gray-500 mt-1">
+                               Olt Type: {onu.type || 'Unknown'} | Board: {onu.board} | Port: {onu.port} | LLID: {onu.llid}
+                            </div>
+                         </div>
+                       </div>
+                       
+                       {registeringOnu?.sn === onu.sn ? (
+                         <form onSubmit={handleRegisterOnu} className="mt-3 bg-gray-50 dark:bg-gray-900 p-2 rounded border dark:border-gray-700">
+                           <div className="grid grid-cols-2 gap-2 mb-2">
+                              <div>
+                                <label className="block text-[9px] font-bold mb-0.5">PPPoE Name (Username)</label>
+                                <input
+                                  required
+                                  value={regData.name}
+                                  onChange={(e) => setRegData({...regData, name: e.target.value})}
+                                  placeholder="e.g. JohnDoe"
+                                  className="w-full text-xs px-2 py-1 rounded border border-gray-300 dark:border-gray-600 dark:bg-gray-800 focus:outline-none focus:ring-1 focus:ring-teal-500"
+                                />
+                              </div>
+                              <div>
+                                <label className="block text-[9px] font-bold mb-0.5">VLAN ID</label>
+                                <input
+                                  required
+                                  type="number"
+                                  value={regData.vlan}
+                                  onChange={(e) => setRegData({...regData, vlan: e.target.value})}
+                                  placeholder="e.g. 100"
+                                  className="w-full text-xs px-2 py-1 rounded border border-gray-300 dark:border-gray-600 dark:bg-gray-800 focus:outline-none focus:ring-1 focus:ring-teal-500"
+                                />
+                              </div>
+                           </div>
+                           <div className="flex justify-end gap-1">
+                              <button type="button" onClick={() => setRegisteringOnu(null)} className="px-2 py-1 bg-gray-200 dark:bg-gray-700 text-[10px] rounded hover:bg-gray-300 dark:hover:bg-gray-600">Cancel</button>
+                              <button type="submit" className="px-2 py-1 bg-teal-600 hover:bg-teal-700 text-white font-bold text-[10px] rounded">Register ONU</button>
+                           </div>
+                         </form>
+                       ) : (
+                         <button 
+                           onClick={() => { setRegisteringOnu(onu); setRegData({name:'', vlan:''}); }}
+                           className="w-full mt-2 py-1.5 text-xs font-bold text-teal-700 bg-teal-50 hover:bg-teal-100 dark:bg-teal-900/30 dark:text-teal-400 dark:hover:bg-teal-900/50 rounded flex items-center justify-center gap-1 transition-colors"
+                         >
+                           <Plus className="w-3 h-3" /> Provision this ONU
+                         </button>
+                       )}
+                     </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       )}
