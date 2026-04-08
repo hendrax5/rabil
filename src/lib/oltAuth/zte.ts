@@ -115,19 +115,36 @@ export const getZteUncfgOnu = async (connStr: OltConnStr): Promise<UncfgOnu[]> =
 };
 
 export const registerZteOnu = async (connStr: OltConnStr, params: { board: string, port: string, sn: string, name: string, vlan: string }): Promise<string> => {
+  // First find the lowest available ONU ID by parsing the state table
+  const stateOutput = await executeZteCommands(connStr, [`show gpon onu state gpon-olt_${params.board}/${params.port}`]);
+  const usedIds = new Set<number>();
+  const lines = stateOutput.split('\n');
+  
+  for (const line of lines) {
+    // Matches gpon-onu_1/1/1:1 or similarly formatted ONU strings
+    const match = line.match(new RegExp(`gpon-onu_${params.board}\\/${params.port}:(\\d+)`, 'i'));
+    if (match) {
+      usedIds.add(parseInt(match[1]));
+    }
+  }
+  
+  let freeId = 1;
+  while (usedIds.has(freeId)) {
+    freeId++;
+  }
+
   const cmds = [
     'conf t',
     `interface gpon-olt_${params.board}/${params.port}`,
-    // Tipe generic ZTE-G biasanya universal untuk berbagai modem
-    `onu bind mac ${params.sn} type ZTE-G`,
+    `onu ${freeId} type ZTE-G sn ${params.sn}`,
     'exit',
-    // Assuming dynamic ID 1 for testing, this should parse open ports
-    `interface gpon-onu_${params.board}/${params.port}:1`,
+    `interface gpon-onu_${params.board}/${params.port}:${freeId}`,
     `name ${params.name.replace(/ /g, '_')}`,
-    `tcont 1 profile UP`, // TCON Unlimited, bandwidth limited via Mikrotik
+    `tcont 1 profile UP`,
     `gemport 1 name HSI tcont 1`,
     `vlan port eth_0/1 mode tag vlan ${params.vlan}`,
     'end'
   ];
-  return await executeZteCommands(connStr, cmds);
+  const output = await executeZteCommands(connStr, cmds);
+  return `Registered ONU with ID ${freeId}.\n` + output;
 };

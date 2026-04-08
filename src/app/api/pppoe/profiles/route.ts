@@ -107,14 +107,14 @@ export async function POST(request: NextRequest) {
       // Synchronize profile to all active Mikrotik NAS
       try {
         const routers = await prisma.router.findMany({
-          where: { isActive: true, vendor: 'MikroTik' },
+          where: { isActive: true, type: 'mikrotik' },
         });
 
         const syncTasks = routers.map(async (router) => {
           let conn: RouterOSAPI | null = null;
           try {
             const apiPort = router.port || router.apiPort || 8728;
-            conn = new RouterOSAPI({ host: router.ipAddress, user: router.username, password: router.password, port: apiPort, timeout: 5 });
+            conn = new RouterOSAPI({ host: router.ipAddress, user: router.username, password: router.password, port: apiPort, timeout: 15 });
             await conn.connect();
             conn.on('error', () => { /* ignore */ });
 
@@ -266,14 +266,14 @@ export async function PUT(request: NextRequest) {
         // Synchronize profile to all active Mikrotik NAS
         try {
           const routers = await prisma.router.findMany({
-            where: { isActive: true, vendor: 'MikroTik' },
+            where: { isActive: true, type: 'mikrotik' },
           });
 
           const syncTasks = routers.map(async (router) => {
             let conn: RouterOSAPI | null = null;
             try {
               const apiPort = router.port || router.apiPort || 8728;
-              conn = new RouterOSAPI({ host: router.ipAddress, user: router.username, password: router.password, port: apiPort, timeout: 5 });
+              conn = new RouterOSAPI({ host: router.ipAddress, user: router.username, password: router.password, port: apiPort, timeout: 15 });
               await conn.connect();
               conn.on('error', () => { /* ignore */ });
 
@@ -449,14 +449,14 @@ export async function DELETE(request: NextRequest) {
       
       // Delete from Mikrotik routers
       const routers = await prisma.router.findMany({
-        where: { isActive: true, vendor: 'MikroTik' },
+        where: { isActive: true, type: 'mikrotik' },
       });
 
       const syncTasks = routers.map(async (router) => {
         let conn: RouterOSAPI | null = null;
         try {
           const apiPort = router.port || router.apiPort || 8728;
-          conn = new RouterOSAPI({ host: router.ipAddress, user: router.username, password: router.password, port: apiPort, timeout: 5 });
+          conn = new RouterOSAPI({ host: router.ipAddress, user: router.username, password: router.password, port: apiPort, timeout: 15 });
           await conn.connect();
           conn.on('error', () => { /* ignore */ });
 
