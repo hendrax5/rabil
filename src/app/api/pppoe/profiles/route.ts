@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
 import { applyProfileChangeToActiveSessions, isRadclientAvailable } from '@/lib/radius-coa';
+import { RouterOSAPI } from 'node-routeros';
 
 const prisma = new PrismaClient();
 
@@ -102,6 +103,46 @@ export async function POST(request: NextRequest) {
           lastSyncAt: new Date(),
         },
       });
+
+      // Synchronize profile to all active Mikrotik NAS
+      try {
+        const routers = await prisma.router.findMany({
+          where: { isActive: true, vendor: 'MikroTik' },
+        });
+
+        const syncTasks = routers.map(async (router) => {
+          let conn: RouterOSAPI | null = null;
+          try {
+            const apiPort = router.port || router.apiPort || 8728;
+            conn = new RouterOSAPI({ host: router.ipAddress, user: router.username, password: router.password, port: apiPort, timeout: 5 });
+            await conn.connect();
+            conn.on('error', () => { /* ignore */ });
+
+            const allProfiles = await conn.write('/ppp/profile/print');
+            const exists = allProfiles.find((p: any) => p.name === groupName);
+            if (!exists) {
+              await conn.write('/ppp/profile/add', [
+                `=name=${groupName}`,
+                `=rate-limit=${rateLimit}`,
+                `=comment=Managed by NexaRadius`,
+              ]);
+            } else {
+              await conn.write('/ppp/profile/set', [
+                `=.id=${exists['.id']}`,
+                `=rate-limit=${rateLimit}`,
+                `=comment=Managed by NexaRadius`,
+              ]);
+            }
+          } catch (e: any) {
+             console.warn(`[Profile Sync] Failed to sync to ${router.name}:`, e.message);
+          } finally {
+             if (conn) conn.close();
+          }
+        });
+        await Promise.allSettled(syncTasks);
+      } catch (routerErr) {
+        console.warn('Failed to fetch routers for profile sync:', routerErr);
+      }
 
       return NextResponse.json({
         success: true,
@@ -221,6 +262,60 @@ export async function PUT(request: NextRequest) {
             lastSyncAt: new Date(),
           },
         });
+
+        // Synchronize profile to all active Mikrotik NAS
+        try {
+          const routers = await prisma.router.findMany({
+            where: { isActive: true, vendor: 'MikroTik' },
+          });
+
+          const syncTasks = routers.map(async (router) => {
+            let conn: RouterOSAPI | null = null;
+            try {
+              const apiPort = router.port || router.apiPort || 8728;
+              conn = new RouterOSAPI({ host: router.ipAddress, user: router.username, password: router.password, port: apiPort, timeout: 5 });
+              await conn.connect();
+              conn.on('error', () => { /* ignore */ });
+
+              const allProfiles = await conn.write('/ppp/profile/print');
+              const existsOld = oldGroupName ? allProfiles.find((p: any) => p.name === oldGroupName) : null;
+              const existsNew = allProfiles.find((p: any) => p.name === newGroupName);
+              
+              if (existsNew) {
+                // Update existing new profile directly
+                await conn.write('/ppp/profile/set', [
+                  `=.id=${existsNew['.id']}`,
+                  `=rate-limit=${rateLimit}`,
+                ]);
+                // If there's an old one different from new, maybe remove it? Better to keep safe, just rename if possible.
+                if (existsOld && oldGroupName !== newGroupName) {
+                   await conn.write('/ppp/profile/remove', [`=.id=${existsOld['.id']}`]);
+                }
+              } else if (existsOld && oldGroupName !== newGroupName) {
+                // Rename old profile
+                await conn.write('/ppp/profile/set', [
+                  `=.id=${existsOld['.id']}`,
+                  `=name=${newGroupName}`,
+                  `=rate-limit=${rateLimit}`,
+                ]);
+              } else {
+                // Add new profile
+                await conn.write('/ppp/profile/add', [
+                  `=name=${newGroupName}`,
+                  `=rate-limit=${rateLimit}`,
+                  `=comment=Managed by NexaRadius`,
+                ]);
+              }
+            } catch (e: any) {
+               console.warn(`[Profile Sync] Failed to sync to ${router.name}:`, e.message);
+            } finally {
+               if (conn) conn.close();
+            }
+          });
+          await Promise.allSettled(syncTasks);
+        } catch (routerErr) {
+          console.warn('Failed to fetch routers for profile sync:', routerErr);
+        }
 
         // If speed changed, apply CoA to all active sessions using this profile
         if (downloadSpeed || uploadSpeed) {
@@ -351,6 +446,33 @@ export async function DELETE(request: NextRequest) {
       await prisma.radgroupreply.deleteMany({
         where: { groupname: profile.groupName },
       });
+      
+      // Delete from Mikrotik routers
+      const routers = await prisma.router.findMany({
+        where: { isActive: true, vendor: 'MikroTik' },
+      });
+
+      const syncTasks = routers.map(async (router) => {
+        let conn: RouterOSAPI | null = null;
+        try {
+          const apiPort = router.port || router.apiPort || 8728;
+          conn = new RouterOSAPI({ host: router.ipAddress, user: router.username, password: router.password, port: apiPort, timeout: 5 });
+          await conn.connect();
+          conn.on('error', () => { /* ignore */ });
+
+          const allProfiles = await conn.write('/ppp/profile/print');
+          const exists = allProfiles.find((p: any) => p.name === profile.groupName);
+          if (exists) {
+            await conn.write('/ppp/profile/remove', [`=.id=${exists['.id']}`]);
+          }
+        } catch (e: any) {
+           console.warn(`[Profile Sync] Failed to remove from ${router.name}:`, e.message);
+        } finally {
+           if (conn) conn.close();
+        }
+      });
+      await Promise.allSettled(syncTasks);
+      
     } catch (syncError) {
       console.error('RADIUS cleanup error:', syncError);
     }

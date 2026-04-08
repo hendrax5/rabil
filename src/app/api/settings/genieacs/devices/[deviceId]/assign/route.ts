@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
 import { getGenieACSCredentials } from '../../../route';
+import { getZteUncfgOnu, registerZteOnu } from '@/lib/oltAuth/zte';
 
 const prisma = new PrismaClient();
 
@@ -20,9 +21,20 @@ export async function POST(
       );
     }
 
-    // 1. Fetch PPPoE User
+    // 1. Fetch PPPoE User with OLT details
     const pppoeUser = await prisma.pppoeUser.findUnique({
       where: { id: pppoeUserId },
+      include: {
+        odpAssignment: {
+          include: {
+            odp: {
+              include: {
+                olt: true
+              }
+            }
+          }
+        }
+      }
     });
 
     if (!pppoeUser) {
@@ -59,6 +71,12 @@ export async function POST(
       );
     }
 
+    // Set ACS CWMP URL so the modem stays connected after provisioning
+    const acsUrl = process.env.ACS_CWMP_URL || host.replace(/:\d+$/, ':7547');
+    parameterValues.push(
+      ['InternetGatewayDevice.ManagementServer.URL', acsUrl, 'xsd:string']
+    );
+
     const taskPayload = {
       name: 'setParameterValues',
       parameterValues: parameterValues,
@@ -88,9 +106,58 @@ export async function POST(
       });
     }
 
+    // 6. Try to register OLT automatically if ODP is assigned
+    const odpAssignment = pppoeUser.odpAssignment;
+    let oltRegistered = false;
+    let oltMessage = '';
+
+    if (odpAssignment?.odp?.olt) {
+      const olt = odpAssignment.odp.olt;
+      
+      if (olt.vendor === 'zte' && olt.ipAddress && olt.username && olt.password) {
+        try {
+          const connStr = {
+             host: olt.ipAddress,
+             port: olt.port,
+             username: olt.username,
+             password: olt.password,
+             protocol: olt.connection || 'ssh'
+          };
+          
+          const uncfgs = await getZteUncfgOnu(connStr);
+          
+          // Try to match by SN (from deviceId or macAddress)
+          const deviceSn = params.deviceId.split('-').pop() || '';
+          let targetOnu = uncfgs.find(u => u.sn.toUpperCase() === deviceSn.toUpperCase());
+          
+          if (!targetOnu && macAddress) {
+             const cleanMac = macAddress.replace(/[:.\-]/g, '').toUpperCase();
+             targetOnu = uncfgs.find(u => u.sn.toUpperCase().includes(cleanMac) || cleanMac.includes(u.sn.toUpperCase()));
+          }
+
+          if (targetOnu) {
+            await registerZteOnu(connStr, {
+              board: targetOnu.board,
+              port: targetOnu.port,
+              sn: targetOnu.sn,
+              name: pppoeUser.username,
+              vlan: '100' // Default assumption if not provided
+            });
+            oltRegistered = true;
+            oltMessage = ' ONU automatically registered on OLT.';
+          } else {
+            oltMessage = ' ONU SN not found on OLT (might be already registered).';
+          }
+        } catch (e: any) {
+          console.warn('OLT Auto-registration failed:', e.message);
+          oltMessage = ' OLT registration failed: ' + e.message;
+        }
+      }
+    }
+
     return NextResponse.json({ 
       success: true, 
-      message: 'ONT assigned successfully. Provisioning task sent.',
+      message: 'ONT assigned successfully. Provisioning task sent.' + oltMessage,
       user: pppoeUser.username
     });
 
