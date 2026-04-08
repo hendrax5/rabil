@@ -136,7 +136,7 @@ export async function POST(
           }
 
           if (targetOnu) {
-            await registerZteOnu(connStr, {
+            const rawOut = await registerZteOnu(connStr, {
               board: targetOnu.board,
               port: targetOnu.port,
               sn: targetOnu.sn,
@@ -144,7 +144,8 @@ export async function POST(
               vlan: '100' // Default assumption if not provided
             });
             oltRegistered = true;
-            oltMessage = ' ONU automatically registered on OLT.';
+            console.log('[OLT Auto-Provisioning] Raw Output:', rawOut);
+            oltMessage = ' ONU automatically registered on OLT. OLT Output:\n' + rawOut;
           } else {
             oltMessage = ' ONU SN not found on OLT (might be already registered).';
           }

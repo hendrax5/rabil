@@ -94,7 +94,7 @@ const executeZteCommands = async (connStr: OltConnStr, commands: string[]): Prom
 
 export const getZteUncfgOnu = async (connStr: OltConnStr): Promise<UncfgOnu[]> => {
   try {
-    const output = await executeZteCommands(connStr, ['show gpon onu uncfg']);
+    const output = await executeZteCommands(connStr, ['terminal length 0', 'show gpon onu uncfg']);
     const lines = output.split('\n');
     const uncfgs: UncfgOnu[] = [];
     for (const line of lines) {
@@ -116,7 +116,10 @@ export const getZteUncfgOnu = async (connStr: OltConnStr): Promise<UncfgOnu[]> =
 
 export const registerZteOnu = async (connStr: OltConnStr, params: { board: string, port: string, sn: string, name: string, vlan: string }): Promise<string> => {
   // First find the lowest available ONU ID by parsing the state table
-  const stateOutput = await executeZteCommands(connStr, [`show gpon onu state gpon-olt_${params.board}/${params.port}`]);
+  const stateOutput = await executeZteCommands(connStr, [
+    'terminal length 0', 
+    `show gpon onu state gpon-olt_${params.board}/${params.port}`
+  ]);
   const usedIds = new Set<number>();
   const lines = stateOutput.split('\n');
   
