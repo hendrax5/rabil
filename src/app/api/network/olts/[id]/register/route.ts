@@ -45,6 +45,8 @@ export async function POST(
       return NextResponse.json({ error: 'Only ZTE is supported currently' }, { status: 400 });
     }
 
+    console.log('[OLT Manual Registration] Raw Output from OLT:', result);
+
     return NextResponse.json({ 
       success: true, 
       message: 'ONT registration command executed.',

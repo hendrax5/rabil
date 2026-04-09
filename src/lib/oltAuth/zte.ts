@@ -145,6 +145,9 @@ export const registerZteOnu = async (connStr: OltConnStr, params: { board: strin
     `name ${params.name.replace(/ /g, '_')}`,
     `tcont 1 profile UP`,
     `gemport 1 name HSI tcont 1`,
+    'exit',
+    `pon-onu-mng gpon-onu_${params.board}/${params.port}:${freeId}`,
+    `service HSI gemport 1 vlan ${params.vlan}`,
     `vlan port eth_0/1 mode tag vlan ${params.vlan}`,
     'end'
   ];
