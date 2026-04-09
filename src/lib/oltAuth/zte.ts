@@ -145,7 +145,7 @@ export const registerZteOnu = async (connStr: OltConnStr, params: { board: strin
     'profile tcont NEXA_UP type 4 maximum 1024000',
     'exit',
     `interface gpon-olt_${params.board}/${params.port}`,
-    `onu ${freeId} type ZTE-G sn ${params.sn}`,
+    `onu ${freeId} type 1.ZTE-Home sn ${params.sn}`,
     'exit',
     `interface gpon-onu_${params.board}/${params.port}:${freeId}`,
     `name ${params.name.replace(/ /g, '_')}`,
