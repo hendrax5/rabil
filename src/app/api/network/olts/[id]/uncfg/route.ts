@@ -23,6 +23,20 @@ export async function GET(
       return NextResponse.json({ error: 'Auto-discovery only supported for ZTE currently' }, { status: 400 });
     }
 
+    const { searchParams } = new URL(request.url);
+    const refresh = searchParams.get('refresh') === 'true';
+
+    // If no refresh explicitly requested, return from Database Cache
+    if (!refresh) {
+      return NextResponse.json({ 
+        success: true, 
+        // @ts-ignore Let prisma handle dynamic json typing here 
+        count: Array.isArray(olt.uncfgOnus) ? olt.uncfgOnus.length : 0, 
+        data: olt.uncfgOnus || [], 
+        types: olt.onuTypes || ["1.ZTE-Home", "2.ZTE-Bridge"]
+      });
+    }
+
     if (!olt.username || !olt.password) {
       return NextResponse.json({ error: 'OLT credentials not configured' }, { status: 400 });
     }
@@ -40,6 +54,17 @@ export async function GET(
       getZteUncfgOnu(connStr),
       getZteOnuTypes(connStr)
     ]);
+
+    // Force update the cache before returning using background technique
+    // @ts-ignore
+    await prisma.networkOLT.update({
+      where: { id: oltId },
+      data: {
+        uncfgOnus: uncfgs,
+        onuTypes: onuTypes,
+        lastSync: new Date()
+      }
+    });
 
     return NextResponse.json({ success: true, count: uncfgs.length, data: uncfgs, types: onuTypes });
 

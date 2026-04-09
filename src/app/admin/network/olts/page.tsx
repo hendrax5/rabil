@@ -197,13 +197,13 @@ export default function OLTsPage() {
     }));
   };
 
-  const openManageOnus = async (olt: OLT) => {
+  const openManageOnus = async (olt: OLT, forceRefresh: boolean = false) => {
     setManagingOlt(olt);
     setUnconfiguredOnus([]);
     setLoadingOnus(true);
     setRegisteringOnu(null);
     try {
-      const res = await fetch(`/api/network/olts/${olt.id}/uncfg`);
+      const res = await fetch(`/api/network/olts/${olt.id}/uncfg?refresh=${forceRefresh ? 'true' : 'false'}`);
       const data = await res.json();
       if (res.ok) {
         setUnconfiguredOnus(data.data || []);
@@ -714,7 +714,7 @@ export default function OLTsPage() {
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-xs font-bold text-gray-700 dark:text-gray-300">Unconfigured ONUs</h3>
                 <button
-                  onClick={() => openManageOnus(managingOlt)}
+                  onClick={() => openManageOnus(managingOlt, true)}
                   className="flex items-center gap-1 px-3 py-1.5 bg-teal-600/10 text-teal-600 border border-teal-600/20 rounded-md text-xs hover:bg-teal-600/20"
                 >
                   <RefreshCcw className={`w-3 h-3 ${loadingOnus ? 'animate-spin' : ''}`} />

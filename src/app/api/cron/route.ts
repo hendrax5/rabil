@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getCronHistory, syncVoucherFromRadius, recordAgentSales, generateInvoices, sendInvoiceReminders, autoIsolateExpiredUsers } from '@/lib/cron/voucher-sync'
+import { syncOltData } from '@/lib/cron/olt-sync'
 
 /**
  * GET /api/cron - Get cron history
@@ -93,6 +94,10 @@ export async function POST(request: NextRequest) {
           success: result.success,
           error: result.error
         })
+
+      case 'olt_sync':
+        result = await syncOltData()
+        return NextResponse.json(result)
         
       default:
         return NextResponse.json({

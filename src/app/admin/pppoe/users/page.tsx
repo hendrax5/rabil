@@ -87,8 +87,9 @@ export default function PppoeUsersPage() {
   const [uncfgOnus, setUncfgOnus] = useState<any[]>([]);
   const [loadingUncfg, setLoadingUncfg] = useState(false);
   const [oltAssignData, setOltAssignData] = useState({
-    sn: '', board: '', port: '', vlan: ''
+    sn: '', board: '', port: '', vlan: '', mode: 'pppoe', onuType: ''
   });
+  const [onuTypes, setOnuTypes] = useState<string[]>([]);
 
   useEffect(() => { loadData(); }, []);
 
@@ -256,7 +257,17 @@ export default function PppoeUsersPage() {
     setAssignTab('acs');
     setSelectedOltId('');
     setUncfgOnus([]);
-    setOltAssignData({ sn: '', board: '', port: '', vlan: '' });
+    setOnuTypes([]);
+    setOltAssignData({ sn: '', board: '', port: '', vlan: '', mode: 'pppoe', onuType: '' });
+    
+    // Fetch user password
+    try {
+        const uRes = await fetch(`/api/pppoe/users/${user.id}`);
+        if(uRes.ok) {
+           const uData = await uRes.json();
+           setUserToAssign((prev: any) => ({ ...prev, password: uData.user?.password || '' }));
+        }
+    } catch(e) {}
     
     try {
       const [acsRes, oltRes] = await Promise.all([
@@ -282,16 +293,17 @@ export default function PppoeUsersPage() {
     }
   };
 
-  const handleFetchUncfgOnus = async (oltId: string) => {
+  const handleFetchUncfgOnus = async (oltId: string, forceRefresh: boolean = false) => {
     setSelectedOltId(oltId);
     if (!oltId) return setUncfgOnus([]);
     
     setLoadingUncfg(true);
     try {
-      const res = await fetch(`/api/network/olts/${oltId}/uncfg`);
+      const res = await fetch(`/api/network/olts/${oltId}/uncfg?refresh=${forceRefresh ? 'true' : 'false'}`);
       const data = await res.json();
       if (res.ok) {
         setUncfgOnus(data.data || []);
+        setOnuTypes(data.types || []);
       } else {
         await showError(data.error || 'Gagal memuat modem dari OLT');
       }
@@ -312,7 +324,12 @@ export default function PppoeUsersPage() {
         port: oltAssignData.port,
         sn: oltAssignData.sn,
         name: userToAssign.username,
-        vlan: oltAssignData.vlan
+        vlan: oltAssignData.vlan,
+        mode: oltAssignData.mode,
+        onuType: oltAssignData.onuType || (onuTypes.length > 0 ? onuTypes[0] : '1.ZTE-Home'),
+        profile: userToAssign.profile.name,
+        pppoeUser: userToAssign.username,
+        pppoePass: (userToAssign as any).password || ''
       };
 
       const res = await fetch(`/api/network/olts/${selectedOltId}/register`, {
@@ -322,9 +339,9 @@ export default function PppoeUsersPage() {
       });
 
       if (res.ok) {
-        await showSuccess(`Registrasi OLT Berhasil! ONT sedang reboot. Pindah ke tab GenieACS dalam ~2 menit untuk assign PPPoE.`);
+        await showSuccess(`Registrasi OLT Berhasil! ONT sedang reboot. Pindah ke tab GenieACS dalam ~2 menit untuk assign TR-069.`);
         // Don't close modal, just clear selection and wait so they can assign ACS later
-        setOltAssignData({ sn: '', board: '', port: '', vlan: '' });
+        setOltAssignData({ sn: '', board: '', port: '', vlan: '', mode: 'pppoe', onuType: '' });
         handleFetchUncfgOnus(selectedOltId);
         setAssignTab('acs');
         setLoadingDevices(true);
@@ -1052,7 +1069,7 @@ export default function PppoeUsersPage() {
                       <div className="flex items-center justify-between mb-2">
                         <label className="text-[10px] font-medium text-gray-500">Unconfigured ONUs</label>
                         <button 
-                          onClick={() => handleFetchUncfgOnus(selectedOltId)}
+                          onClick={() => handleFetchUncfgOnus(selectedOltId, true)}
                           className="p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded text-gray-500"
                           title="Refresh"
                         >
@@ -1087,16 +1104,70 @@ export default function PppoeUsersPage() {
                   )}
 
                   {oltAssignData.sn && (
-                    <div>
-                      <label className="block text-[10px] font-medium mb-1">VLAN ID *</label>
-                      <input 
-                        type="number" 
-                        value={oltAssignData.vlan} 
-                        onChange={(e: any) => setOltAssignData({...oltAssignData, vlan: e.target.value})}
-                        placeholder="Contoh: 100"
-                        className="w-full px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800"
-                      />
-                      <p className="text-[10px] text-gray-500 mt-1">Masukkan ID VLAN management/PPPoE yang berlaku di line/NAS ini.</p>
+                    <div className="space-y-3 mt-3 border-t dark:border-gray-800 pt-3">
+                      <div className="flex items-center justify-between bg-white dark:bg-gray-800 p-1.5 rounded border border-gray-200 dark:border-gray-700">
+                        <span className="text-[10px] font-bold text-gray-700 dark:text-gray-300">Mode:</span>
+                        <div className="flex bg-gray-100 dark:bg-gray-900 p-0.5 rounded">
+                          <button
+                            type="button"
+                            onClick={() => setOltAssignData({...oltAssignData, mode: 'pppoe'})}
+                            className={`px-3 py-1 text-[10px] font-medium rounded ${oltAssignData.mode === 'pppoe' ? 'bg-teal-600 text-white' : 'text-gray-500 hover:text-gray-700'}`}
+                          >
+                            PPPoE Router
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setOltAssignData({...oltAssignData, mode: 'bridge'})}
+                            className={`px-3 py-1 text-[10px] font-medium rounded ${oltAssignData.mode === 'bridge' ? 'bg-teal-600 text-white' : 'text-gray-500 hover:text-gray-700'}`}
+                          >
+                            Bridge
+                          </button>
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-3">
+                        <div>
+                          <label className="block text-[10px] font-medium mb-1">ONU Type</label>
+                          <select
+                            value={oltAssignData.onuType || (onuTypes.length > 0 ? onuTypes[0] : '')}
+                            onChange={(e) => setOltAssignData({...oltAssignData, onuType: e.target.value})}
+                            className="w-full text-xs px-2 py-1.5 rounded border dark:border-gray-700 dark:bg-gray-800"
+                          >
+                            {onuTypes.map((t, i) => <option key={i} value={t}>{t}</option>)}
+                            {onuTypes.length === 0 && <option value="1.ZTE-Home">1.ZTE-Home</option>}
+                          </select>
+                        </div>
+                        <div>
+                          <label className="block text-[10px] font-medium mb-1">VLAN ID *</label>
+                          <input 
+                            type="number" 
+                            value={oltAssignData.vlan} 
+                            onChange={(e: any) => setOltAssignData({...oltAssignData, vlan: e.target.value})}
+                            placeholder="Contoh: 100"
+                            className="w-full px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800"
+                          />
+                        </div>
+                      </div>
+
+                      {oltAssignData.mode === 'pppoe' && (
+                        <div className="p-2 bg-blue-50 dark:bg-blue-900/20 rounded border border-blue-100 dark:border-blue-800">
+                          <p className="text-[10px] font-semibold text-blue-800 dark:text-blue-300 mb-2">Automated PPPoE Push:</p>
+                          <div className="grid grid-cols-2 gap-2">
+                            <div>
+                               <p className="text-[9px] text-gray-500">Username:</p>
+                               <p className="text-xs font-mono">{userToAssign.username}</p>
+                            </div>
+                            <div>
+                               <p className="text-[9px] text-gray-500">Password:</p>
+                               <p className="text-xs font-mono">{(userToAssign as any).password ? '*** (Auto-fetched)' : 'Menunggu...'}</p>
+                            </div>
+                            <div>
+                               <p className="text-[9px] text-gray-500">Speed Profile:</p>
+                               <p className="text-xs font-mono">{userToAssign.profile.name}</p>
+                            </div>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>
