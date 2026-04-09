@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
-import { getZteUncfgOnu } from '@/lib/oltAuth/zte';
+import { getZteUncfgOnu, getZteOnuTypes } from '@/lib/oltAuth/zte';
 
 const prisma = new PrismaClient();
 
@@ -36,9 +36,12 @@ export async function GET(
       readyTimeout: 10000
     };
 
-    let uncfgs = await getZteUncfgOnu(connStr);
+    const [uncfgs, onuTypes] = await Promise.all([
+      getZteUncfgOnu(connStr),
+      getZteOnuTypes(connStr)
+    ]);
 
-    return NextResponse.json({ success: true, count: uncfgs.length, data: uncfgs });
+    return NextResponse.json({ success: true, count: uncfgs.length, data: uncfgs, types: onuTypes });
 
   } catch (error: any) {
     console.error('Fetch UNCFG error:', error);

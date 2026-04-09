@@ -53,9 +53,12 @@ export default function OLTsPage() {
   // Auto-Discovery State
   const [managingOlt, setManagingOlt] = useState<OLT | null>(null);
   const [unconfiguredOnus, setUnconfiguredOnus] = useState<any[]>([]);
+  const [onuTypes, setOnuTypes] = useState<string[]>([]);
   const [loadingOnus, setLoadingOnus] = useState(false);
   const [registeringOnu, setRegisteringOnu] = useState<any | null>(null);
-  const [regData, setRegData] = useState({ name: '', vlan: '' });
+  const [regData, setRegData] = useState({ 
+    name: '', vlan: '', mode: 'pppoe', onuType: '', profile: '10M', pppoeUser: '', pppoePass: '' 
+  });
   
   const [formData, setFormData] = useState({
     name: '',
@@ -204,6 +207,7 @@ export default function OLTsPage() {
       const data = await res.json();
       if (res.ok) {
         setUnconfiguredOnus(data.data || []);
+        setOnuTypes(data.types || ['1.ZTE-Home', '2.ZTE-Bridge', '3.HUAWEI', '0.ALL-Dual_Band']);
       } else {
         showError(data.error || 'Failed to fetch unconfigured ONUs');
       }
@@ -219,13 +223,17 @@ export default function OLTsPage() {
     if (!managingOlt || !registeringOnu) return;
     
     try {
-      // payload expects: board, port, sn, name, vlan
       const payload = {
         board: registeringOnu.board,
         port: registeringOnu.port,
         sn: registeringOnu.sn,
         name: regData.name,
-        vlan: regData.vlan
+        vlan: regData.vlan,
+        mode: regData.mode,
+        onuType: regData.onuType || onuTypes[0] || '1.ZTE-Home',
+        profile: regData.profile,
+        pppoeUser: regData.pppoeUser,
+        pppoePass: regData.pppoePass
       };
       
       const res = await fetch(`/api/network/olts/${managingOlt.id}/register`, {
@@ -238,7 +246,7 @@ export default function OLTsPage() {
       if (res.ok) {
         await showSuccess('ONU Registered Successfully!');
         setRegisteringOnu(null);
-        setRegData({ name: '', vlan: '' });
+        setRegData({ name: '', vlan: '', mode: 'pppoe', onuType: '', profile: '10M', pppoeUser: '', pppoePass: '' });
         // Refresh the list
         openManageOnus(managingOlt);
       } else {
@@ -740,36 +748,111 @@ export default function OLTsPage() {
                        {registeringOnu?.sn === onu.sn ? (
                          <form onSubmit={handleRegisterOnu} className="mt-3 bg-gray-50 dark:bg-gray-900 p-2 rounded border dark:border-gray-700">
                            <div className="grid grid-cols-2 gap-2 mb-2">
-                              <div>
-                                <label className="block text-[9px] font-bold mb-0.5">PPPoE Name (Username)</label>
+                              {/* MODE TOGGLE */}
+                              <div className="col-span-2 flex items-center justify-between bg-white dark:bg-gray-800 p-1.5 rounded border border-gray-200 dark:border-gray-700">
+                                <span className="text-[10px] font-bold text-gray-700 dark:text-gray-300">Registration Mode:</span>
+                                <div className="flex bg-gray-100 dark:bg-gray-900 p-0.5 rounded">
+                                  <button
+                                    type="button"
+                                    onClick={() => setRegData({...regData, mode: 'pppoe'})}
+                                    className={`px-3 py-1 text-[10px] font-medium rounded ${regData.mode === 'pppoe' ? 'bg-teal-600 text-white' : 'text-gray-500 hover:text-gray-700'}`}
+                                  >
+                                    PPPoE Router
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => setRegData({...regData, mode: 'bridge'})}
+                                    className={`px-3 py-1 text-[10px] font-medium rounded ${regData.mode === 'bridge' ? 'bg-teal-600 text-white' : 'text-gray-500 hover:text-gray-700'}`}
+                                  >
+                                    Bridge
+                                  </button>
+                                </div>
+                              </div>
+                              
+                              <div className="col-span-1">
+                                <label className="block text-[9px] font-bold mb-0.5">ONU Type</label>
+                                <select
+                                  value={regData.onuType || (onuTypes.length > 0 ? onuTypes[0] : '')}
+                                  onChange={(e) => setRegData({...regData, onuType: e.target.value})}
+                                  className="w-full text-xs px-2 py-1 rounded border border-gray-300 dark:border-gray-600 dark:bg-gray-800 focus:outline-none focus:ring-1 focus:ring-teal-500"
+                                >
+                                  {onuTypes.map((t, i) => <option key={i} value={t}>{t}</option>)}
+                                  {onuTypes.length === 0 && <option value="1.ZTE-Home">1.ZTE-Home</option>}
+                                </select>
+                              </div>
+
+                              <div className="col-span-1">
+                                <label className="block text-[9px] font-bold mb-0.5">Display Name</label>
                                 <input
                                   required
                                   value={regData.name}
                                   onChange={(e) => setRegData({...regData, name: e.target.value})}
-                                  placeholder="e.g. JohnDoe"
+                                  placeholder="e.g. John_Doe"
                                   className="w-full text-xs px-2 py-1 rounded border border-gray-300 dark:border-gray-600 dark:bg-gray-800 focus:outline-none focus:ring-1 focus:ring-teal-500"
                                 />
                               </div>
-                              <div>
+
+                              <div className="col-span-1">
                                 <label className="block text-[9px] font-bold mb-0.5">VLAN ID</label>
                                 <input
                                   required
                                   type="number"
                                   value={regData.vlan}
                                   onChange={(e) => setRegData({...regData, vlan: e.target.value})}
-                                  placeholder="e.g. 100"
+                                  placeholder="e.g. 802"
                                   className="w-full text-xs px-2 py-1 rounded border border-gray-300 dark:border-gray-600 dark:bg-gray-800 focus:outline-none focus:ring-1 focus:ring-teal-500"
                                 />
                               </div>
+
+                              {regData.mode === 'pppoe' && (
+                                <>
+                                  <div className="col-span-1">
+                                    <label className="block text-[9px] font-bold mb-0.5">Profile (Speed)</label>
+                                    <input
+                                      required
+                                      value={regData.profile}
+                                      onChange={(e) => setRegData({...regData, profile: e.target.value})}
+                                      placeholder="10M"
+                                      className="w-full text-xs px-2 py-1 rounded border border-gray-300 dark:border-gray-600 dark:bg-gray-800 focus:outline-none focus:ring-1 focus:ring-teal-500"
+                                    />
+                                  </div>
+                                  <div className="col-span-1">
+                                    <label className="block text-[9px] font-bold mb-0.5">PPPoE Username</label>
+                                    <input
+                                      required
+                                      value={regData.pppoeUser}
+                                      onChange={(e) => setRegData({...regData, pppoeUser: e.target.value})}
+                                      placeholder="user@isp"
+                                      className="w-full text-xs px-2 py-1 rounded border border-gray-300 dark:border-gray-600 dark:bg-gray-800 focus:outline-none focus:ring-1 focus:ring-teal-500"
+                                    />
+                                  </div>
+                                  <div className="col-span-1">
+                                    <label className="block text-[9px] font-bold mb-0.5">PPPoE Password</label>
+                                    <input
+                                      required
+                                      value={regData.pppoePass}
+                                      onChange={(e) => setRegData({...regData, pppoePass: e.target.value})}
+                                      placeholder="password"
+                                      className="w-full text-xs px-2 py-1 rounded border border-gray-300 dark:border-gray-600 dark:bg-gray-800 focus:outline-none focus:ring-1 focus:ring-teal-500"
+                                    />
+                                  </div>
+                                </>
+                              )}
                            </div>
-                           <div className="flex justify-end gap-1">
+                           <div className="flex justify-end gap-1 mt-2">
                               <button type="button" onClick={() => setRegisteringOnu(null)} className="px-2 py-1 bg-gray-200 dark:bg-gray-700 text-[10px] rounded hover:bg-gray-300 dark:hover:bg-gray-600">Cancel</button>
-                              <button type="submit" className="px-2 py-1 bg-teal-600 hover:bg-teal-700 text-white font-bold text-[10px] rounded">Register ONU</button>
+                              <button type="submit" className="px-2 py-1 bg-teal-600 hover:bg-teal-700 text-white font-bold text-[10px] rounded">Push Config to OLT</button>
                            </div>
                          </form>
                        ) : (
                          <button 
-                           onClick={() => { setRegisteringOnu(onu); setRegData({name:'', vlan:''}); }}
+                           onClick={() => { 
+                             setRegisteringOnu(onu); 
+                             setRegData({
+                               name:'', vlan:'', mode: 'pppoe', onuType: onuTypes.length > 0 ? onuTypes[0] : '1.ZTE-Home', 
+                               profile: '10M', pppoeUser: '', pppoePass: ''
+                             }); 
+                           }}
                            className="w-full mt-2 py-1.5 text-xs font-bold text-teal-700 bg-teal-50 hover:bg-teal-100 dark:bg-teal-900/30 dark:text-teal-400 dark:hover:bg-teal-900/50 rounded flex items-center justify-center gap-1 transition-colors"
                          >
                            <Plus className="w-3 h-3" /> Provision this ONU

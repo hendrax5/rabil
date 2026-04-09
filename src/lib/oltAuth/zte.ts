@@ -114,7 +114,38 @@ export const getZteUncfgOnu = async (connStr: OltConnStr): Promise<UncfgOnu[]> =
   }
 };
 
-export const registerZteOnu = async (connStr: OltConnStr, params: { board: string, port: string, sn: string, name: string, vlan: string }): Promise<string> => {
+export const getZteOnuTypes = async (connStr: OltConnStr): Promise<string[]> => {
+  try {
+    const output = await executeZteCommands(connStr, ['terminal length 0', 'show pon onu-type gpon']);
+    const lines = output.split('\n');
+    const types = new Set<string>();
+    for (const line of lines) {
+      // Matches "onu-type-if 1.ZTE-Home eth_0/1" or "  onu-type-if 3.HUAWEI eth_0/1"
+      const match = line.match(/^\s*onu-type-if\s+([^\s]+)/i);
+      if (match) {
+        types.add(match[1]);
+      }
+    }
+    return Array.from(types);
+  } catch (e) {
+    return [];
+  }
+};
+
+export interface RegisterOnuParams {
+  board: string;
+  port: string;
+  sn: string;
+  name: string;
+  vlan: string;
+  mode?: 'bridge' | 'pppoe';
+  onuType?: string;
+  profile?: string;
+  pppoeUser?: string;
+  pppoePass?: string;
+}
+
+export const registerZteOnu = async (connStr: OltConnStr, params: RegisterOnuParams): Promise<string> => {
   // First find the lowest available ONU ID by parsing the state table
   const stateOutput = await executeZteCommands(connStr, [
     'terminal length 0', 
@@ -139,24 +170,54 @@ export const registerZteOnu = async (connStr: OltConnStr, params: { board: strin
     freeId++;
   }
 
-  const cmds = [
-    'conf t',
-    'gpon',
-    'profile tcont NEXA_UP type 4 maximum 1024000',
-    'exit',
-    `interface gpon-olt_${params.board}/${params.port}`,
-    `onu ${freeId} type 1.ZTE-Home sn ${params.sn}`,
-    'exit',
-    `interface gpon-onu_${params.board}/${params.port}:${freeId}`,
-    `name ${params.name.replace(/ /g, '_')}`,
-    `tcont 1 name T1 profile NEXA_UP`,
-    `gemport 1 name HSI tcont 1`,
-    'exit',
-    `pon-onu-mng gpon-onu_${params.board}/${params.port}:${freeId}`,
-    `service HSI gemport 1 vlan ${params.vlan}`,
-    `vlan port eth_0/1 mode tag vlan ${params.vlan}`,
-    'end'
-  ];
+  const onuType = params.onuType || '1.ZTE-Home';
+  const isPppoe = params.mode === 'pppoe';
+  let cmds: string[] = [];
+
+  if (isPppoe) {
+    const profile = params.profile || '10M';
+    cmds = [
+      'conf t',
+      `interface gpon-olt_${params.board}/${params.port}`,
+      `onu ${freeId} type ${onuType} sn ${params.sn}`,
+      'exit',
+      `interface gpon-onu_${params.board}/${params.port}:${freeId}`,
+      `name ${params.name.replace(/ /g, '_')}`,
+      `description internet client`,
+      `tcont 1 name PPPoE profile ${profile}`,
+      `gemport 1 name PPPoE tcont 1`,
+      `service-port 1 vport 1 user-vlan ${params.vlan} vlan ${params.vlan}`,
+      `service-port 1 description PPPoE tcont 1`,
+      `port-identification format DSL-FORUM-PON vport 1`,
+      `pppoe-intermediate-agent enable vport 1`,
+      'exit',
+      `pon-onu-mng gpon-onu_${params.board}/${params.port}:${freeId}`,
+      `service PPPoE gemport 1 vlan ${params.vlan}`,
+      `wan-ip 1 mode pppoe username ${params.pppoeUser || params.name} password ${params.pppoePass || '123456'} vlan-profile PPPoE host 1`,
+      `security-mgmt 212 state enable mode forward protocol web`,
+      'end'
+    ];
+  } else {
+    cmds = [
+      'conf t',
+      'gpon',
+      'profile tcont NEXA_UP type 4 maximum 1024000',
+      'exit',
+      `interface gpon-olt_${params.board}/${params.port}`,
+      `onu ${freeId} type ${onuType} sn ${params.sn}`,
+      'exit',
+      `interface gpon-onu_${params.board}/${params.port}:${freeId}`,
+      `name ${params.name.replace(/ /g, '_')}`,
+      `tcont 1 name T1 profile NEXA_UP`,
+      `gemport 1 name HSI tcont 1`,
+      'exit',
+      `pon-onu-mng gpon-onu_${params.board}/${params.port}:${freeId}`,
+      `service HSI gemport 1 vlan ${params.vlan}`,
+      `vlan port eth_0/1 mode tag vlan ${params.vlan}`,
+      'end'
+    ];
+  }
+
   const output = await executeZteCommands(connStr, cmds);
   return `Registered ONU with ID ${freeId}.\n` + output;
 };
