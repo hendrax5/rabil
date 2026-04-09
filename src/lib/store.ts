@@ -24,7 +24,7 @@ export const useAppStore = create<AppState>()(
       locale: 'id',
       company: {
         name: 'NexaRadius',
-        email: 'admin@aibill.com',
+        email: 'admin@nexa.com',
         phone: '+62 812-3456-7890',
         address: 'Jakarta, Indonesia',
         baseUrl: '',
@@ -37,7 +37,7 @@ export const useAppStore = create<AppState>()(
         })),
     }),
     {
-      name: 'aibill-settings',
+      name: 'nexa-settings',
     }
   )
 );

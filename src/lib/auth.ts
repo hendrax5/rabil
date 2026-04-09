@@ -83,5 +83,5 @@ export const authOptions: NextAuthOptions = {
     maxAge: 24 * 60 * 60, // 1 day (idle timeout akan logout setelah 30 menit tidak aktif)
     updateAge: 60 * 60, // Update session setiap 1 jam
   },
-  secret: process.env.NEXTAUTH_SECRET || 'aibill-radius-secret-change-in-production',
+  secret: process.env.NEXTAUTH_SECRET || 'nexa-radius-secret-change-in-production',
 };

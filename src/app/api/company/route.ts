@@ -11,7 +11,7 @@ export async function GET() {
       // Return default if no company exists
       return NextResponse.json({
         name: 'NexaRadius',
-        email: 'admin@aibill.com',
+        email: 'admin@nexa.com',
         phone: '+62 812-3456-7890',
         address: 'Jakarta, Indonesia',
         baseUrl: 'http://localhost:3000',

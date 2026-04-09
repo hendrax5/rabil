@@ -66,7 +66,7 @@ export default function RoutersPage() {
   const [radiusScriptRouter, setRadiusScriptRouter] = useState<Router | null>(null);
   const [radiusServerIp, setRadiusServerIp] = useState<string | null>(null);
   const [copiedScript, setCopiedScript] = useState(false);
-  const [vpnIpsecPsk, setVpnIpsecPsk] = useState('aibill-secret');
+  const [vpnIpsecPsk, setVpnIpsecPsk] = useState('nexa-secret');
   const [detectingNas, setDetectingNas] = useState<string | null>(null);
   const [showMapPicker, setShowMapPicker] = useState(false);
   
