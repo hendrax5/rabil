@@ -123,11 +123,11 @@ export const registerZteOnu = async (connStr: OltConnStr, params: { board: strin
   const usedIds = new Set<number>();
   const lines = stateOutput.split('\n');
   console.log("=== RAW STATE OUTPUT ===\n", stateOutput, "\n=====================");
-  console.log("Matching with REGEX:", `gpon-onu_${params.board}\\/${params.port}:(\\d+)`);
+  console.log("Matching with REGEX:", `(?:gpon-onu_)?${params.board}\\/${params.port}:(\\d+)`);
   
   for (const line of lines) {
-    // Matches gpon-onu_1/1/1:1 or similarly formatted ONU strings
-    const match = line.match(new RegExp(`gpon-onu_${params.board}\\/${params.port}:(\\d+)`, 'i'));
+    // Matches gpon-onu_1/1/1:1 or simply 1/1/1:1
+    const match = line.match(new RegExp(`(?:gpon-onu_)?${params.board}\\/${params.port}:(\\d+)`, 'i'));
     if (match) {
       usedIds.add(parseInt(match[1]));
     }
