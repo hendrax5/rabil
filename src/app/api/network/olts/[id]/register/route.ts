@@ -11,7 +11,7 @@ export async function POST(
   try {
     const { id: oltId } = await params;
     const body = await request.json();
-    const { board, port, sn, name, vlan, mode, onuType, pppoeUser, pppoePass, profile } = body;
+    const { board, port, sn, name, vlan, mode, onuType, pppoeUser, pppoePass, profile, vlanProfile } = body;
     
     if (!board || !port || !sn || !name || !vlan) {
       return NextResponse.json({ error: 'board, port, sn, name, vlan are required' }, { status: 400 });
@@ -42,7 +42,7 @@ export async function POST(
     if (olt.vendor === 'zte') {
       result = await registerZteOnu(connStr, { 
         board, port, sn, name, vlan: String(vlan),
-        mode, onuType, pppoeUser, pppoePass, profile 
+        mode, onuType, pppoeUser, pppoePass, profile, vlanProfile
       });
     } else {
       return NextResponse.json({ error: 'Only ZTE is supported currently' }, { status: 400 });

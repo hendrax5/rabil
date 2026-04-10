@@ -722,11 +722,13 @@ model networkOLT {
   connection String              @default("ssh") // "ssh" or "telnet"
   
   // Fields for Auto-Discovery Sync
-  uncfgOnus  Json?               @default("[]")
-  onuTypes   Json?               @default("[]")
-  lastSync   DateTime?
+  uncfgOnus     Json?               @default("[]")
+  onuTypes      Json?               @default("[]")
+  tcontProfiles Json?               @default("[]")
+  vlanProfiles  Json?               @default("[]")
+  lastSync      DateTime?
 
-  createdAt  DateTime            @default(now())
+  createdAt     DateTime            @default(now())
   updatedAt  DateTime            @updatedAt
   odcs       networkODC[]
   odps       networkODP[]

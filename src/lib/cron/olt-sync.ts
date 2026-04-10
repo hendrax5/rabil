@@ -38,11 +38,22 @@ export async function syncOltData() {
         
         let onuTypes: string[] = []
         let uncfgOnus: any[] = []
+        let tcontProfiles: string[] = []
+        let vlanProfiles: string[] = []
 
         if (olt.vendor === 'zte') {
           // Fetch Unconfigured ONUs and Types directly from OLT
+          const { getZteProfilesList } = await import('../oltAuth/zte')
           uncfgOnus = await getZteUncfgOnu(connStr)
           onuTypes = await getZteOnuTypes(connStr)
+          
+          try {
+            const profiles = await getZteProfilesList(connStr)
+            tcontProfiles = profiles.tcontProfiles
+            vlanProfiles = profiles.vlanProfiles
+          } catch (e: any) {
+            console.error(`[OLT SYNC] Getting profiles failed for ${olt.name}:`, e.message || e)
+          }
         } else {
           errors.push(`OLT ${olt.name} failed: Vendor ${olt.vendor} not supported yet`)
           failed++
@@ -56,11 +67,13 @@ export async function syncOltData() {
           data: {
             uncfgOnus: uncfgOnus,
             onuTypes: onuTypes,
+            tcontProfiles: tcontProfiles,
+            vlanProfiles: vlanProfiles,
             lastSync: new Date()
           }
         })
 
-        console.log(`[OLT SYNC] Successfully synced ${olt.name}. Unconfigured ONUs: ${uncfgOnus.length}, Types: ${onuTypes.length}`)
+        console.log(`[OLT SYNC] Successfully synced ${olt.name}. Unconfigured ONUs: ${uncfgOnus.length}, Types: ${onuTypes.length}, TCONTs: ${tcontProfiles.length}, VLAN Profiles: ${vlanProfiles.length}`)
         synced++
 
       } catch (e: any) {

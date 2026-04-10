@@ -18,6 +18,8 @@ interface OLT {
   status: string;
   followRoad: boolean;
   createdAt: string;
+  tcontProfiles?: string[];
+  vlanProfiles?: string[];
   routers: Array<{
     id: string;
     priority: number;
@@ -57,7 +59,7 @@ export default function OLTsPage() {
   const [loadingOnus, setLoadingOnus] = useState(false);
   const [registeringOnu, setRegisteringOnu] = useState<any | null>(null);
   const [regData, setRegData] = useState({ 
-    name: '', vlan: '', mode: 'pppoe', onuType: '', profile: '10M', pppoeUser: '', pppoePass: '' 
+    name: '', vlan: '', mode: 'pppoe', onuType: '', profile: '10M', vlanProfile: '', pppoeUser: '', pppoePass: '' 
   });
   
   const [formData, setFormData] = useState({
@@ -232,6 +234,7 @@ export default function OLTsPage() {
         mode: regData.mode,
         onuType: regData.onuType || onuTypes[0] || '1.ZTE-Home',
         profile: regData.profile,
+        vlanProfile: regData.vlanProfile,
         pppoeUser: regData.pppoeUser,
         pppoePass: regData.pppoePass
       };
@@ -246,7 +249,7 @@ export default function OLTsPage() {
       if (res.ok) {
         await showSuccess('ONU Registered Successfully!');
         setRegisteringOnu(null);
-        setRegData({ name: '', vlan: '', mode: 'pppoe', onuType: '', profile: '10M', pppoeUser: '', pppoePass: '' });
+        setRegData({ name: '', vlan: '', mode: 'pppoe', onuType: '', profile: '10M', vlanProfile: '', pppoeUser: '', pppoePass: '' });
         // Refresh the list
         openManageOnus(managingOlt);
       } else {
@@ -793,13 +796,13 @@ export default function OLTsPage() {
                               </div>
 
                               <div className="col-span-1">
-                                <label className="block text-[9px] font-bold mb-0.5">VLAN ID</label>
+                                <label className="block text-[9px] font-bold mb-0.5">VLAN ID (Network)</label>
                                 <input
                                   required
                                   type="number"
                                   value={regData.vlan}
                                   onChange={(e) => setRegData({...regData, vlan: e.target.value})}
-                                  placeholder="e.g. 802"
+                                  placeholder="e.g. 415"
                                   className="w-full text-xs px-2 py-1 rounded border border-gray-300 dark:border-gray-600 dark:bg-gray-800 focus:outline-none focus:ring-1 focus:ring-teal-500"
                                 />
                               </div>
@@ -807,14 +810,46 @@ export default function OLTsPage() {
                               {regData.mode === 'pppoe' && (
                                 <>
                                   <div className="col-span-1">
-                                    <label className="block text-[9px] font-bold mb-0.5">Profile (Speed)</label>
-                                    <input
-                                      required
-                                      value={regData.profile}
-                                      onChange={(e) => setRegData({...regData, profile: e.target.value})}
-                                      placeholder="10M"
-                                      className="w-full text-xs px-2 py-1 rounded border border-gray-300 dark:border-gray-600 dark:bg-gray-800 focus:outline-none focus:ring-1 focus:ring-teal-500"
-                                    />
+                                    <label className="block text-[9px] font-bold mb-0.5">T-CONT Profile</label>
+                                    {managingOlt?.tcontProfiles && Array.isArray(managingOlt.tcontProfiles) && managingOlt.tcontProfiles.length > 0 ? (
+                                      <select
+                                        required
+                                        value={regData.profile}
+                                        onChange={(e) => setRegData({...regData, profile: e.target.value})}
+                                        className="w-full text-xs px-2 py-1 rounded border border-gray-300 dark:border-gray-600 dark:bg-gray-800 focus:outline-none focus:ring-1 focus:ring-teal-500"
+                                      >
+                                        <option value="">-- Select Profile --</option>
+                                        {managingOlt.tcontProfiles.map((p: string, i: number) => <option key={i} value={p}>{p}</option>)}
+                                      </select>
+                                    ) : (
+                                      <input
+                                        required
+                                        value={regData.profile}
+                                        onChange={(e) => setRegData({...regData, profile: e.target.value})}
+                                        placeholder="e.g. 100Mbps or UP"
+                                        className="w-full text-xs px-2 py-1 rounded border border-gray-300 dark:border-gray-600 dark:bg-gray-800 focus:outline-none focus:ring-1 focus:ring-teal-500"
+                                      />
+                                    )}
+                                  </div>
+                                  <div className="col-span-1">
+                                    <label className="block text-[9px] font-bold mb-0.5">VLAN Profile</label>
+                                    {managingOlt?.vlanProfiles && Array.isArray(managingOlt.vlanProfiles) && managingOlt.vlanProfiles.length > 0 ? (
+                                      <select
+                                        value={regData.vlanProfile || ''}
+                                        onChange={(e) => setRegData({...regData, vlanProfile: e.target.value})}
+                                        className="w-full text-xs px-2 py-1 rounded border border-gray-300 dark:border-gray-600 dark:bg-gray-800 focus:outline-none focus:ring-1 focus:ring-teal-500"
+                                      >
+                                        <option value="">-- No VLAN Profile --</option>
+                                        {managingOlt.vlanProfiles.map((p: string, i: number) => <option key={i} value={p}>{p}</option>)}
+                                      </select>
+                                    ) : (
+                                      <input
+                                        value={regData.vlanProfile || ''}
+                                        onChange={(e) => setRegData({...regData, vlanProfile: e.target.value})}
+                                        placeholder="Optional. e.g. VLAN-415"
+                                        className="w-full text-xs px-2 py-1 rounded border border-gray-300 dark:border-gray-600 dark:bg-gray-800 focus:outline-none focus:ring-1 focus:ring-teal-500"
+                                      />
+                                    )}
                                   </div>
                                   <div className="col-span-1">
                                     <label className="block text-[9px] font-bold mb-0.5">PPPoE Username</label>
@@ -850,7 +885,7 @@ export default function OLTsPage() {
                              setRegisteringOnu(onu); 
                              setRegData({
                                name:'', vlan:'', mode: 'pppoe', onuType: onuTypes.length > 0 ? onuTypes[0] : '1.ZTE-Home', 
-                               profile: '10M', pppoeUser: '', pppoePass: ''
+                               profile: '10M', vlanProfile: '', pppoeUser: '', pppoePass: ''
                              }); 
                            }}
                            className="w-full mt-2 py-1.5 text-xs font-bold text-teal-700 bg-teal-50 hover:bg-teal-100 dark:bg-teal-900/30 dark:text-teal-400 dark:hover:bg-teal-900/50 rounded flex items-center justify-center gap-1 transition-colors"

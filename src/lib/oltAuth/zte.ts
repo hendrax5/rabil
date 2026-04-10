@@ -138,6 +138,32 @@ export const getZteOnuTypes = async (connStr: OltConnStr): Promise<string[]> => 
   }
 };
 
+export const getZteProfilesList = async (connStr: OltConnStr): Promise<{ tcontProfiles: string[], vlanProfiles: string[] }> => {
+  try {
+    const output = await executeZteCommands(connStr, [
+      'terminal length 0', 
+      'show running-config | include "profile tcont"',
+      'show running-config | include "vlan-profile"'
+    ]);
+    const lines = output.split('\n');
+    const tcont = new Set<string>();
+    const vlan = new Set<string>();
+    
+    for (const line of lines) {
+      const tcontMatch = line.match(/^\s*profile\s+tcont\s+([a-zA-Z0-9.\-_]+)/i);
+      if (tcontMatch) tcont.add(tcontMatch[1]);
+      
+      const vlanMatch = line.match(/^\s*vlan-profile\s+([a-zA-Z0-9.\-_]+)/i);
+      if (vlanMatch) vlan.add(vlanMatch[1]);
+    }
+    
+    return { tcontProfiles: Array.from(tcont), vlanProfiles: Array.from(vlan) };
+  } catch (e) {
+    console.error('Failed to get profiles list:', e);
+    return { tcontProfiles: [], vlanProfiles: [] };
+  }
+};
+
 export interface RegisterOnuParams {
   board: string;
   port: string;
@@ -147,6 +173,7 @@ export interface RegisterOnuParams {
   mode?: 'bridge' | 'pppoe';
   onuType?: string;
   profile?: string;
+  vlanProfile?: string;
   pppoeUser?: string;
   pppoePass?: string;
 }
@@ -201,7 +228,7 @@ export const registerZteOnu = async (connStr: OltConnStr, params: RegisterOnuPar
       'exit',
       `pon-onu-mng gpon-onu_${params.board}/${params.port}:${freeId}`,
       `service ${serviceName} gemport 1 vlan ${params.vlan}`,
-      `wan-ip 1 mode pppoe username ${params.pppoeUser || params.name} password ${params.pppoePass || '123456'} vlan-profile ${serviceName} host 1`,
+      `wan-ip 1 mode pppoe username ${params.pppoeUser || params.name} password ${params.pppoePass || '123456'}${params.vlanProfile ? ` vlan-profile ${params.vlanProfile}` : ''} host 1`,
       `security-mgmt 212 state enable mode forward protocol web`,
       'end'
     ];

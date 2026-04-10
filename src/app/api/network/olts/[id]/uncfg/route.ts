@@ -33,7 +33,9 @@ export async function GET(
         // @ts-ignore Let prisma handle dynamic json typing here 
         count: Array.isArray(olt.uncfgOnus) ? olt.uncfgOnus.length : 0, 
         data: olt.uncfgOnus || [], 
-        types: olt.onuTypes || ["1.ZTE-Home", "2.ZTE-Bridge"]
+        types: olt.onuTypes || ["1.ZTE-Home", "2.ZTE-Bridge"],
+        tcontProfiles: olt.tcontProfiles || [],
+        vlanProfiles: olt.vlanProfiles || []
       });
     }
 
@@ -50,9 +52,12 @@ export async function GET(
       readyTimeout: 10000
     };
 
-    const [uncfgs, onuTypes] = await Promise.all([
-      getZteUncfgOnu(connStr),
-      getZteOnuTypes(connStr)
+    const { getZteProfilesList } = await import('@/lib/oltAuth/zte');
+
+    const [uncfgs, onuTypes, profiles] = await Promise.all([
+      getZteUncfgOnu(connStr).catch(e => { console.error('Uncfg err', e); return []; }),
+      getZteOnuTypes(connStr).catch(e => { console.error('OnuTypes err', e); return []; }),
+      getZteProfilesList(connStr)
     ]);
 
     // Force update the cache before returning using background technique
@@ -62,11 +67,20 @@ export async function GET(
       data: {
         uncfgOnus: uncfgs,
         onuTypes: onuTypes,
+        tcontProfiles: profiles.tcontProfiles,
+        vlanProfiles: profiles.vlanProfiles,
         lastSync: new Date()
       }
     });
 
-    return NextResponse.json({ success: true, count: uncfgs.length, data: uncfgs, types: onuTypes });
+    return NextResponse.json({ 
+      success: true, 
+      count: uncfgs.length, 
+      data: uncfgs, 
+      types: onuTypes,
+      tcontProfiles: profiles.tcontProfiles,
+      vlanProfiles: profiles.vlanProfiles
+    });
 
   } catch (error: any) {
     console.error('Fetch UNCFG error:', error);
