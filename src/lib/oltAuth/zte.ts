@@ -182,19 +182,10 @@ export const registerZteOnu = async (connStr: OltConnStr, params: RegisterOnuPar
 
   if (isPppoe) {
     const profile = params.profile || 'UP';
-    const serviceName = 'PPPoE';
-    const vlanProfileName = `VLAN-${params.vlan}`;
+    const serviceName = 'Internet';
     
     cmds = [
       'conf t',
-      // Auto-create TCONT and VLAN profiles (safe to fail if already exists)
-      'gpon',
-      `profile tcont ${profile} type 4 maximum 1024000`,
-      'exit',
-      'pon',
-      `vlan-profile ${vlanProfileName} vlan ${params.vlan}`,
-      'exit',
-      // Begin ONU registration
       `interface gpon-olt_${params.board}/${params.port}`,
       `onu ${freeId} type ${onuType} sn ${params.sn}`,
       'exit',
@@ -210,7 +201,7 @@ export const registerZteOnu = async (connStr: OltConnStr, params: RegisterOnuPar
       'exit',
       `pon-onu-mng gpon-onu_${params.board}/${params.port}:${freeId}`,
       `service ${serviceName} gemport 1 vlan ${params.vlan}`,
-      `wan-ip 1 mode pppoe username ${params.pppoeUser || params.name} password ${params.pppoePass || '123456'} vlan-profile ${vlanProfileName} host 1`,
+      `wan-ip 1 mode pppoe username ${params.pppoeUser || params.name} password ${params.pppoePass || '123456'} vlan-profile ${serviceName} host 1`,
       `security-mgmt 212 state enable mode forward protocol web`,
       'end'
     ];
