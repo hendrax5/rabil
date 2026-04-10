@@ -520,6 +520,23 @@ model whatsapp_history {
   sentAt       DateTime @default(now())
 }
 
+model whatsapp_queue {
+  id           String   @id @default(cuid())
+  targetNumber String
+  message      String   @db.Text
+  status       String   @default("PENDING") // PENDING, PROCESSING, SENT, FAILED
+  providerType String?  @default("BAILEYS_LOCAL")
+  attempts     Int      @default(0)
+  scheduledAt  DateTime @default(now())
+  processedAt  DateTime?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([status])
+  @@index([scheduledAt])
+  @@map("whatsapp_queue")
+}
+
 model whatsapp_providers {
   id           String   @id
   name         String
@@ -703,6 +720,12 @@ model networkOLT {
   password   String?
   port       Int                 @default(22)
   connection String              @default("ssh") // "ssh" or "telnet"
+  
+  // Fields for Auto-Discovery Sync
+  uncfgOnus  Json?               @default("[]")
+  onuTypes   Json?               @default("[]")
+  lastSync   DateTime?
+
   createdAt  DateTime            @default(now())
   updatedAt  DateTime            @updatedAt
   odcs       networkODC[]
@@ -1010,6 +1033,7 @@ model inventoryItem {
   category        inventoryCategory?  @relation(fields: [categoryId], references: [id], onDelete: SetNull)
   supplier        inventorySupplier?  @relation(fields: [supplierId], references: [id], onDelete: SetNull)
   movements       inventoryMovement[]
+  assignments     inventoryAssignment[]
 
   @@index([categoryId])
   @@index([supplierId])
@@ -1123,6 +1147,11 @@ model ticket {
   category        ticketCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
   messages        ticketMessage[]
 
+  coordinates     String?
+  resolutionPhotos String?        @db.Text
+  inventoryAssignments inventoryAssignment[]
+  technicianKPIs       technicianKPI[]
+
   @@index([ticketNumber])
   @@index([customerId])
   @@index([categoryId])
@@ -1161,4 +1190,36 @@ model ticketCategory {
   tickets     ticket[]
 
   @@map("ticket_categories")
+}
+
+model inventoryAssignment {
+  id          String   @id @default(cuid())
+  inventoryId String
+  inventory   inventoryItem @relation(fields: [inventoryId], references: [id])
+  technicianId String
+  quantity    Int      @default(1)
+  status      String   @default("ASSIGNED") // ASSIGNED, CONSUMED, RETURNED
+  ticketId    String?
+  ticket      ticket?  @relation(fields: [ticketId], references: [id])
+  assignedAt  DateTime @default(now())
+  consumedAt  DateTime?
+
+  @@index([inventoryId])
+  @@index([technicianId])
+  @@index([ticketId])
+  @@map("inventory_assignments")
+}
+
+model technicianKPI {
+  id           String   @id @default(cuid())
+  technicianId String
+  ticketId     String
+  ticket       ticket   @relation(fields: [ticketId], references: [id])
+  timeToResolve Int?    // in minutes
+  score        Int      @default(0) // points awarded
+  createdAt    DateTime @default(now())
+  
+  @@index([technicianId])
+  @@index([ticketId])
+  @@map("technician_kpis")
 }
