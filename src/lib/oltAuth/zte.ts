@@ -174,29 +174,28 @@ export const registerZteOnu = async (connStr: OltConnStr, params: RegisterOnuPar
   const isPppoe = params.mode === 'pppoe';
   let cmds: string[] = [];
 
-  if (isPppoe) {
-    const profile = params.profile || '10M';
-    cmds = [
-      'conf t',
-      `interface gpon-olt_${params.board}/${params.port}`,
-      `onu ${freeId} type ${onuType} sn ${params.sn}`,
-      'exit',
-      `interface gpon-onu_${params.board}/${params.port}:${freeId}`,
-      `name ${params.name.replace(/ /g, '_')}`,
-      `description internet client`,
-      `tcont 1 name PPPoE profile ${profile}`,
-      `gemport 1 name PPPoE tcont 1`,
-      `service-port 1 vport 1 user-vlan ${params.vlan} vlan ${params.vlan}`,
-      `service-port 1 description PPPoE tcont 1`,
-      `port-identification format DSL-FORUM-PON vport 1`,
-      `pppoe-intermediate-agent enable vport 1`,
-      'exit',
-      `pon-onu-mng gpon-onu_${params.board}/${params.port}:${freeId}`,
-      `service PPPoE gemport 1 vlan ${params.vlan}`,
-      `wan-ip 1 mode pppoe username ${params.pppoeUser || params.name} password ${params.pppoePass || '123456'} vlan-profile PPPoE host 1`,
-      `security-mgmt 212 state enable mode forward protocol web`,
-      'end'
-    ];
+    if (isPppoe) {
+      cmds = [
+        'conf t',
+        `interface gpon-olt_${params.board}/${params.port}`,
+        `onu ${freeId} type ${onuType} sn ${params.sn}`,
+        'exit',
+        `interface gpon-onu_${params.board}/${params.port}:${freeId}`,
+        `name ${params.name.replace(/ /g, '_')}`,
+        `description internet client`,
+        `tcont 1 name PPPoE profile UP`,
+        `gemport 1 name PPPoE tcont 1`,
+        `service-port 1 vport 1 user-vlan ${params.vlan} vlan ${params.vlan}`,
+        `service-port 1 description PPPoE tcont 1`,
+        `port-identification format DSL-FORUM-PON vport 1`,
+        `pppoe-intermediate-agent enable vport 1`,
+        'exit',
+        `pon-onu-mng gpon-onu_${params.board}/${params.port}:${freeId}`,
+        `service PPPoE gemport 1 vlan ${params.vlan}`,
+        `wan-ip 1 mode pppoe username ${params.pppoeUser || params.name} password ${params.pppoePass || '123456'} host 1`,
+        `security-mgmt 212 state enable mode forward protocol web`,
+        'end'
+      ];
   } else {
     cmds = [
       'conf t',

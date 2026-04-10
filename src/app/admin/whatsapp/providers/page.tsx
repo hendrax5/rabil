@@ -89,6 +89,20 @@ export default function WhatsAppProvidersPage() {
           } catch (error) {
             console.error(`Error fetching status for ${provider.name}:`, error);
           }
+        } else if (provider.type === 'BAILEYS_LOCAL') {
+          try {
+            // Point to our internal docker compose engine
+            const res = await fetch(`/api/whatsapp/providers/baileys/status`);
+            if (res.ok) {
+              const data = await res.json();
+              newStatuses[provider.id] = {
+                status: data.status,
+                connected: data.status === 'open'
+              };
+            }
+          } catch (error) {
+            console.error(`Error fetching Baileys status:`, error);
+          }
         }
       })
     );
@@ -99,7 +113,7 @@ export default function WhatsAppProvidersPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!formData.name || !formData.type || !formData.apiUrl) {
+    if (!formData.name || !formData.type || (formData.type !== 'BAILEYS_LOCAL' && !formData.apiUrl)) {
       Swal.fire('Error!', 'Name, Type, and Base URL are required', 'error');
       return;
     }
@@ -225,6 +239,7 @@ export default function WhatsAppProvidersPage() {
       case 'fonnte': return 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400';
       case 'wablas': return 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400';
       case 'gowa': return 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-400';
+      case 'BAILEYS_LOCAL': return 'bg-teal-100 text-teal-700 dark:bg-teal-900/30 dark:text-teal-400 border border-teal-200';
       default: return 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400';
     }
   };
@@ -285,6 +300,14 @@ export default function WhatsAppProvidersPage() {
             setQrImage(data.qrcode);
           } else {
             Swal.fire('Info', `Device status: ${data.message || data.status}`, 'info');
+          }
+        } else if (provider.type === 'BAILEYS_LOCAL') {
+          const data = await response.json();
+          if (data.qrImage) {
+            setQrImage(data.qrImage);
+          } else {
+            Swal.fire('Info', `Status: ${data.status} (No QR Available)`, 'info');
+            setShowQrModal(false);
           }
         } else {
           const blob = await response.blob();
@@ -414,7 +437,7 @@ export default function WhatsAppProvidersPage() {
               {/* Actions */}
               <div className="flex flex-col gap-1.5 pt-1">
                 <div className="flex gap-1.5">
-                  {(provider.type === 'waha' || provider.type === 'mpwa' || provider.type === 'gowa') && (
+                  {(provider.type === 'waha' || provider.type === 'mpwa' || provider.type === 'gowa' || provider.type === 'BAILEYS_LOCAL') && (
                     <button
                       onClick={() => showQrCode(provider)}
                       className="flex-1 h-7 bg-blue-600 hover:bg-blue-700 text-white text-[10px] font-medium rounded flex items-center justify-center gap-1 transition-colors"
@@ -524,7 +547,14 @@ export default function WhatsAppProvidersPage() {
                     <label className="block text-[10px] font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1">{t('whatsapp.providerType')}</label>
                     <select
                       value={formData.type}
-                      onChange={(e) => setFormData({...formData, type: e.target.value})}
+                      onChange={(e) => {
+                        const newType = e.target.value;
+                        setFormData({
+                          ...formData, 
+                          type: newType,
+                          apiUrl: newType === 'BAILEYS_LOCAL' ? 'http://wa-engine:3006' : formData.apiUrl
+                        })
+                      }}
                       className="w-full h-8 px-2.5 text-xs bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md focus:ring-1 focus:ring-teal-500 focus:border-teal-500 text-gray-900 dark:text-white"
                     >
                       <option value="mpwa">MPWA</option>
@@ -532,6 +562,7 @@ export default function WhatsAppProvidersPage() {
                       <option value="gowa">GOWA</option>
                       <option value="fonnte">Fonnte</option>
                       <option value="wablas">Wablas</option>
+                      <option value="BAILEYS_LOCAL">Baileys (Local Scan Engine)</option>
                     </select>
                   </div>
                 </div>
@@ -541,11 +572,12 @@ export default function WhatsAppProvidersPage() {
                     <label className="block text-[10px] font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1">{t('whatsapp.baseUrl')}</label>
                     <input
                       type="text"
-                      value={formData.apiUrl}
+                      value={formData.type === 'BAILEYS_LOCAL' ? 'http://wa-engine:3006' : formData.apiUrl}
                       onChange={(e) => setFormData({...formData, apiUrl: e.target.value})}
                       className="w-full h-8 px-2.5 text-xs bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md focus:ring-1 focus:ring-teal-500 focus:border-teal-500 text-gray-900 dark:text-white"
                       placeholder="http://10.100.0.245:2451"
-                      required
+                      required={formData.type !== 'BAILEYS_LOCAL'}
+                      disabled={formData.type === 'BAILEYS_LOCAL'}
                     />
                   </div>
                   <div>
@@ -559,6 +591,7 @@ export default function WhatsAppProvidersPage() {
                       className="w-full h-8 px-2.5 text-xs bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md focus:ring-1 focus:ring-teal-500 focus:border-teal-500 text-gray-900 dark:text-white"
                       placeholder={formData.type === 'gowa' ? 'username:password' : 'API Key or Token'}
                       required={formData.type === 'mpwa' || formData.type === 'gowa'}
+                      disabled={formData.type === 'BAILEYS_LOCAL'}
                     />
                     {formData.type === 'gowa' && (
                       <p className="text-[9px] text-gray-500 dark:text-gray-400 mt-0.5">Format: username:password</p>

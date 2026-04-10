@@ -149,6 +149,25 @@ services:
     depends_on:
       - mongo-acs
 
+  wa-engine:
+    build:
+      context: .
+      dockerfile: ./src/microservices/whatsapp-engine/Dockerfile
+    container_name: aibill-wa-engine
+    restart: unless-stopped
+    ports:
+      - "3006:3006" # Web QR API
+    environment:
+      - DATABASE_URL=mysql://${DB_USER:-root}:${DB_PASSWORD:-root123}@db:3306/${DB_NAME:-aibill_radius}?connection_limit=250&pool_timeout=40
+      - CHUNK_SIZE=25
+      - MIN_DELAY_MS=30000
+      - MAX_DELAY_MS=60000
+    volumes:
+      - wa_sessions:/app/sessions
+    depends_on:
+      db:
+        condition: service_healthy
+
   caddy:
     image: caddy:2-alpine
     container_name: aibill-caddy
@@ -174,6 +193,7 @@ volumes:
   mongo_acs_data:
   caddy_data:
   caddy_config:
+  wa_sessions:
 
 networks:
   default:

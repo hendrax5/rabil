@@ -137,6 +137,29 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
           }
           
 
+        case 'BAILEYS_LOCAL':
+          const baileysUrl = `http://wa-engine:3006/api/status`;
+          const baileysRes = await axios.get(baileysUrl);
+          const baileysData = baileysRes.data;
+
+          if (baileysData.status === 'open') {
+             return NextResponse.json(
+              { 
+                error: '✅ Device sudah tersambung! Session status: Connected',
+                alreadyConnected: true,
+                message: 'Connected to Baileys Engine'
+              },
+              { status: 422 }
+            );
+          } else if (baileysData.qrImage) {
+             return NextResponse.json(baileysData);
+          } else {
+             return NextResponse.json(
+              { error: `Status is ${baileysData.status}, but no QR is currently available.` },
+              { status: 400 }
+            );
+          }
+
         default:
           return NextResponse.json(
             { error: `QR code not supported for ${provider.type}` },

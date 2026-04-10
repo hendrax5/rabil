@@ -25,9 +25,16 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { name, type, apiKey, apiUrl, senderNumber, description, isActive, priority } = body;
 
-    if (!name || !type || !apiKey || !apiUrl) {
+    if (!name || !type || !apiUrl) {
       return NextResponse.json(
         { error: 'Missing required fields' },
+        { status: 400 }
+      );
+    }
+    
+    if (type !== 'BAILEYS_LOCAL' && !apiKey) {
+      return NextResponse.json(
+        { error: 'API Key is required for this provider type' },
         { status: 400 }
       );
     }
