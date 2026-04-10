@@ -232,7 +232,7 @@ export const registerZteOnu = async (connStr: OltConnStr, params: RegisterOnuPar
       `interface gpon-onu_${params.board}/${params.port}:${freeId}`,
       `name ${safeName}`,
       `description internet client`,
-      `tcont 1 name ${serviceName} profile ${safeProfile}`,
+      `tcont 1 profile ${safeProfile}`,
       `gemport 1 name ${serviceName} tcont 1`,
       `service-port 1 vport 1 user-vlan ${params.vlan} vlan ${params.vlan}`,
       `service-port 1 description ${serviceName} tcont 1`,
@@ -241,7 +241,7 @@ export const registerZteOnu = async (connStr: OltConnStr, params: RegisterOnuPar
       'exit',
       `pon-onu-mng gpon-onu_${params.board}/${params.port}:${freeId}`,
       `service ${serviceName} gemport 1 vlan ${params.vlan}`,
-      `wan-ip 1 mode pppoe username ${safePppoeUser} password ${safePppoePass}${safeVlanProfile ? ` vlan-profile ${safeVlanProfile}` : ''} host 1`,
+      `wan-ip 1 mode pppoe username ${safePppoeUser} password ${safePppoePass}${safeVlanProfile ? ` vlan-profile ${safeVlanProfile}` : ` vlan ${params.vlan}`} host 1`,
       `security-mgmt 212 state enable mode forward protocol web`,
       'end'
     ];
