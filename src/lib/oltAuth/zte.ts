@@ -119,9 +119,15 @@ export const getZteOnuTypes = async (connStr: OltConnStr): Promise<string[]> => 
     const output = await executeZteCommands(connStr, ['terminal length 0', 'show pon onu-type gpon']);
     const lines = output.split('\n');
     const types = new Set<string>();
+    
+    // Example tabular output:
+    // ONU type        Category   Type Name           Brand        Description
+    // --------------------------------------------------------------------------------
+    // ZTEG-F609       GPON       ZTEG-F609           ZTE          ZTEG-F609
+    // 1.ZTE-Home      GPON       1.ZTE-Home                       
     for (const line of lines) {
-      // Matches "onu-type-if 1.ZTE-Home eth_0/1" or "  onu-type-if 3.HUAWEI eth_0/1"
-      const match = line.match(/^\s*onu-type-if\s+([^\s]+)/i);
+      // Matches the first column if it's followed by GPON
+      const match = line.match(/^([a-zA-Z0-9.\-_]+)\s+GPON/i);
       if (match) {
         types.add(match[1]);
       }
