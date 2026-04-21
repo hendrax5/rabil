@@ -6,8 +6,8 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
   --color-success: var(--success);
   --color-success-foreground: var(--success-foreground);
   --color-warning: var(--warning);
@@ -137,44 +137,44 @@
 
 /* Force dark class to have same values */
 .dark {
-  --background: #0f172a; /* slate-900 */
-  --foreground: #f8fafc; /* slate-50 */
-  --card: #1e293b; /* slate-800 */
-  --card-foreground: #f8fafc;
-  --popover: #1e293b;
-  --popover-foreground: #f8fafc;
-  --primary: #3b82f6; /* blue-500 */
+  --background: #0B132B; /* Dark navy main background */
+  --foreground: #E0E6F1; /* Text Primary */
+  --card: #1C2541; /* Secondary background */
+  --card-foreground: #E0E6F1;
+  --popover: #1C2541;
+  --popover-foreground: #E0E6F1;
+  --primary: #3A86FF; /* Accent Primary */
   --primary-foreground: #ffffff;
-  --secondary: #334155; /* slate-700 */
-  --secondary-foreground: #f8fafc;
-  --muted: #334155;
-  --muted-foreground: #94a3b8; /* slate-400 */
-  --accent: #334155;
-  --accent-foreground: #f8fafc;
-  --destructive: #ef4444;
+  --secondary: #243B55; /* Tertiary Background / Hover */
+  --secondary-foreground: #E0E6F1;
+  --muted: #243B55;
+  --muted-foreground: #AAB2C8; /* Text Secondary */
+  --accent: #8338EC; /* Accent Secondary */
+  --accent-foreground: #ffffff;
+  --destructive: #EF476F; /* Danger */
   --destructive-foreground: #ffffff;
-  --success: #10b981;
+  --success: #06D6A0; /* Success */
   --success-foreground: #ffffff;
-  --warning: #f59e0b;
-  --warning-foreground: #ffffff;
-  --info: #0ea5e9;
+  --warning: #FFD166; /* Warning */
+  --warning-foreground: #09090b;
+  --info: #3A86FF;
   --info-foreground: #ffffff;
-  --border: rgba(255, 255, 255, 0.1);
-  --input: #1e293b;
-  --ring: #3b82f6;
-  --chart-1: #3b82f6;
-  --chart-2: #8b5cf6;
-  --chart-3: #10b981;
-  --chart-4: #f59e0b;
-  --chart-5: #0ea5e9;
-  --sidebar: #0f172a;
-  --sidebar-foreground: #f8fafc;
-  --sidebar-primary: #3b82f6;
+  --border: #2E3A59; /* Line divider */
+  --input: #1C2541; /* Input background */
+  --ring: #3A86FF;
+  --chart-1: #3A86FF;
+  --chart-2: #8338EC;
+  --chart-3: #06D6A0;
+  --chart-4: #FFD166;
+  --chart-5: #EF476F;
+  --sidebar: #0B132B;
+  --sidebar-foreground: #AAB2C8;
+  --sidebar-primary: #3A86FF;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #1e293b;
-  --sidebar-accent-foreground: #f8fafc;
-  --sidebar-border: rgba(255, 255, 255, 0.05);
-  --sidebar-ring: #3b82f6;
+  --sidebar-accent: #1C2541;
+  --sidebar-accent-foreground: #E0E6F1;
+  --sidebar-border: #2E3A59;
+  --sidebar-ring: #3A86FF;
   color-scheme: dark;
 }
 
@@ -2010,4 +2010,61 @@ div[style*="z-index: 9999"].fixed.inset-0 {
 }
 .dark .modal-title-override {
   color: #ffffff !important;
+}
+
+/* =======================================================
+   DARK BILLING DASHBOARD OVERRIDES
+   Overrides for hardcoded cyberpunk/slate classes in dark mode
+   ======================================================= */
+   
+.dark .bg-\[\#1a0f35\],
+.dark .bg-\[\#1e1b2e\],
+.dark .bg-\[\#0f0a1e\],
+.dark .bg-\[\#1a1525\],
+.dark .bg-\[\#1e1e1e\],
+.dark .bg-\[\#0B141A\],
+.dark .bg-\[\#0d0a1a\],
+.dark [class*="bg-[#0f0a1e]"],
+.dark [class*="bg-[#1a1525]"],
+.dark [class*="bg-[#1e1e1e]"],
+.dark [class*="bg-[#0B141A]"],
+.dark [class*="bg-[#0d0a1a]"],
+.dark .bg-slate-900,
+.dark [class*="bg-slate-900"],
+.dark .bg-zinc-950,
+.dark [class*="bg-zinc-950"],
+.dark .bg-zinc-900,
+.dark [class*="bg-zinc-900"] {
+  background-color: var(--background) !important;
+}
+
+.dark .bg-\[\#1a1135\],
+.dark [class*="bg-[#1a1135]"],
+.dark [class*="bg-[#0a0520]"],
+.dark .bg-slate-800,
+.dark [class*="bg-slate-800"],
+.dark .bg-zinc-800,
+.dark [class*="bg-zinc-800"] {
+  background-color: var(--card) !important;
+  border-color: var(--border) !important;
+}
+
+.dark [class*="border-white/"],
+.dark .border-white {
+  border-color: var(--border) !important;
+}
+
+.dark [class*="text-[#00f7ff]"],
+.dark .text-cyan-400 {
+  color: var(--primary) !important;
+}
+
+.dark [class*="bg-cyan-500"],
+.dark [class*="bg-[#00f7ff]"] {
+  background-color: var(--primary) !important;
+}
+
+.dark [class*="border-cyan-400"],
+.dark [class*="border-[#00f7ff]"] {
+  border-color: var(--primary) !important;
 }
