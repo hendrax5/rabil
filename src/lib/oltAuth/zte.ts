@@ -174,13 +174,20 @@ export const initializeZteOlt = async (connStr: OltConnStr, vlans: number[]): Pr
     'exit'
   ];
   
+  // Create vlan-profiles under pon mode
+  cmds.push('pon');
+  for (const vlan of uniqueVlans) {
+    if (vlan > 0 && vlan <= 4094) {
+      cmds.push(`vlan-profile vlan${vlan} vlan ${vlan}`);
+    }
+  }
+  cmds.push('exit');
+
   // Register VLANs globally
   for (const vlan of uniqueVlans) {
     if (vlan > 0 && vlan <= 4094) {
       cmds.push(`vlan ${vlan}`);
       cmds.push('exit');
-      // Create vlan-profile to be used by wan-ip
-      cmds.push(`vlan-profile vlan${vlan} vlan ${vlan}`);
     }
   }
 
