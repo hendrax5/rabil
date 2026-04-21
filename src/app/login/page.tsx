@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Shield, Smartphone, Lock, ArrowRight, Loader2, ChevronLeft } from 'lucide-react';
+import { CyberFadeUp } from '@/components/gsap/CyberStagger';
 
 export default function CustomerLoginPage() {
   const router = useRouter();
@@ -109,7 +110,7 @@ export default function CustomerLoginPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-teal-50 via-white to-cyan-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 flex items-center justify-center p-4">
-      <div className="w-full max-w-sm">
+      <CyberFadeUp className="w-full max-w-sm" duration={0.8} yOffset={40}>
         {/* Logo & Title */}
         <div className="text-center mb-5">
           <div className="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-br from-teal-600 to-cyan-600 rounded-xl shadow-lg shadow-teal-500/30 mb-3">
@@ -241,7 +242,7 @@ export default function CustomerLoginPage() {
         <p className="text-center text-[10px] text-gray-500 dark:text-gray-400 mt-4">
           Powered by NexaRadius
         </p>
-      </div>
+      </CyberFadeUp>
     </div>
   );
 }

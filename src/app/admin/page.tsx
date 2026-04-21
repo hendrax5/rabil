@@ -28,6 +28,7 @@ import { formatWIB, getTimezoneInfo } from '@/lib/timezone';
 import { useTranslation } from '@/hooks/useTranslation';
 import dynamic from 'next/dynamic';
 import { ChartCard } from '@/components/charts';
+import { CyberStagger } from '@/components/gsap/CyberStagger';
 
 const RevenueLineChart = dynamic(() => import('@/components/charts').then(mod => mod.RevenueLineChart), { ssr: false, loading: () => <div className="h-[220px] flex items-center justify-center text-gray-400"><Loader2 className="h-5 w-5 animate-spin" /></div> });
 const CategoryBarChart = dynamic(() => import('@/components/charts').then(mod => mod.CategoryBarChart), { ssr: false, loading: () => <div className="h-[220px] flex items-center justify-center text-gray-400"><Loader2 className="h-5 w-5 animate-spin" /></div> });
@@ -338,7 +339,7 @@ export default function AdminDashboard() {
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+      <CyberStagger className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         {loading ? (
           <div className="col-span-full flex items-center justify-center py-8">
             <Loader2 className="h-5 w-5 animate-spin text-gray-400" />
@@ -372,10 +373,10 @@ export default function AdminDashboard() {
             </div>
           ))
         )}
-      </div>
+      </CyberStagger>
 
       {/* Charts Row 1: Revenue */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
+      <CyberStagger className="grid grid-cols-1 lg:grid-cols-3 gap-3" staggerDelay={0.15}>
         <div className="lg:col-span-2">
           <ChartCard 
             title={t('dashboard.monthlyRevenue')} 
@@ -400,10 +401,10 @@ export default function AdminDashboard() {
             height={220}
           />
         </ChartCard>
-      </div>
+      </CyberStagger>
 
       {/* Charts Row 2: Users & Hotspot */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+      <CyberStagger className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3" staggerDelay={0.1}>
         <ChartCard 
           title={t('dashboard.userByStatus')} 
           subtitle={t('dashboard.pppoeUsers')}
@@ -451,10 +452,10 @@ export default function AdminDashboard() {
             height={180}
           />
         </ChartCard>
-      </div>
+      </CyberStagger>
 
       {/* Charts Row 3: Sessions & Financial */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+      <CyberStagger className="grid grid-cols-1 lg:grid-cols-2 gap-3" staggerDelay={0.15}>
         <ChartCard 
           title={t('dashboard.activeSessions')} 
           subtitle={t('dashboard.last24Hours')}
@@ -478,10 +479,10 @@ export default function AdminDashboard() {
             height={200}
           />
         </ChartCard>
-      </div>
+      </CyberStagger>
 
       {/* Charts Row 4: Financial Overview */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
+      <CyberStagger className="grid grid-cols-1 lg:grid-cols-3 gap-3" staggerDelay={0.15}>
         <div className="lg:col-span-2">
           <ChartCard 
             title={t('dashboard.incomeVsExpense')} 
@@ -506,10 +507,10 @@ export default function AdminDashboard() {
             height={200}
           />
         </ChartCard>
-      </div>
+      </CyberStagger>
 
       {/* Original Sections: Activities & Network */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+      <CyberStagger className="grid grid-cols-1 lg:grid-cols-2 gap-3" staggerDelay={0.2}>
         {/* Recent Activities */}
         <div className="bg-white/80 dark:bg-zinc-950/70 backdrop-blur-xl rounded-[20px] border border-gray-200/50 dark:border-gray-800/50 p-5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.1)]">
           <h2 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">{t('dashboard.recentActivities')}</h2>
@@ -601,10 +602,10 @@ export default function AdminDashboard() {
             </div>
           </div>
         </div>
-      </div>
+      </CyberStagger>
 
       {/* System Status */}
-      <div className="bg-white/80 dark:bg-zinc-950/70 backdrop-blur-xl rounded-[20px] border border-gray-200/50 dark:border-gray-800/50 p-5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.1)]">
+      <CyberStagger className="bg-white/80 dark:bg-zinc-950/70 backdrop-blur-xl rounded-[20px] border border-gray-200/50 dark:border-gray-800/50 p-5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.1)]">
         <h2 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">{t('dashboard.systemStatus')}</h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
           {/* RADIUS Server */}
@@ -713,7 +714,7 @@ export default function AdminDashboard() {
             </div>
           </div>
         </div>
-      </div>
+      </CyberStagger>
     </div>
   );
 }

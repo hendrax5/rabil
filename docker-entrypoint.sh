@@ -59,5 +59,5 @@ if [ -n "$WG_IP" ]; then
 fi
 
 # Start Next.js App
-echo "Starting Next.js App..."
-exec npm run start
+echo "Starting Next.js App as nextjs user..."
+exec su-exec nextjs npm run start
