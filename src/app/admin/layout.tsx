@@ -184,6 +184,14 @@ const menuItems: MenuItem[] = [
   },
 ];
 
+const groupedItems: Record<string, string[]> = {
+  Overview: ['nav.dashboard', 'Tickets'],
+  Services: ['nav.pppoe', 'nav.hotspot'],
+  Network: ['nav.network', 'nav.genieacs', 'Inventory', 'nav.technicians'],
+  Finance: ['nav.invoices', 'nav.payment', 'nav.keuangan'],
+  System: ['nav.whatsapp', 'nav.management', 'nav.sessions', 'nav.settingsMenu']
+};
+
 function NavItem({ item, pendingCount, collapsed, t, onNavigate }: { item: MenuItem; pendingCount: number; collapsed?: boolean; t: (key: string, params?: Record<string, string | number>) => string; onNavigate?: () => void }) {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
@@ -191,26 +199,29 @@ function NavItem({ item, pendingCount, collapsed, t, onNavigate }: { item: MenuI
 
   if (item.children) {
     return (
-      <div>
+      <div className="mb-0.5">
         <button
           onClick={() => setIsOpen(!isOpen)}
           className={cn(
-            'w-full flex items-center gap-2.5 px-2.5 py-2.5 text-xs font-bold rounded-xl transition-all duration-300 group',
+            'w-full flex items-center gap-3 px-3 py-2 text-sm rounded-lg transition-all duration-200 group relative outline-none',
             isActive
-              ? 'text-cyan-400 bg-cyan-500/10 border border-cyan-400/30 shadow-[0_0_15px_rgba(0,255,255,0.15),inset_0_1px_0_rgba(255,255,255,0.05)]'
-              : 'text-muted-foreground hover:text-foreground hover:bg-primary/10 border border-transparent hover:border-primary/20',
+              ? 'text-zinc-900 dark:text-zinc-100 font-medium bg-zinc-50 dark:bg-zinc-800/50'
+              : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-50 dark:hover:bg-zinc-800/50'
           )}
         >
+          {isActive && (
+            <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-5 bg-zinc-900 dark:bg-zinc-100 rounded-r-full" />
+          )}
           <span className={cn(
-            'flex-shrink-0 p-1.5 rounded-lg transition-all duration-300',
-            isActive ? 'text-cyan-400 bg-cyan-500/10 drop-shadow-[0_0_8px_rgba(0,255,255,0.8)]' : 'text-muted-foreground group-hover:text-cyan-400'
+            'flex-shrink-0 transition-colors duration-200',
+            isActive ? 'text-zinc-900 dark:text-zinc-100' : 'text-zinc-500 group-hover:text-zinc-900 dark:group-hover:text-zinc-100'
           )}>
             {item.icon}
           </span>
           {!collapsed && (
             <>
-              <span className="flex-1 text-left truncate tracking-wide">{t(item.titleKey)}</span>
-              <ChevronDown className={cn('w-3.5 h-3.5 transition-transform duration-300', isOpen && 'rotate-180')} />
+              <span className="flex-1 text-left truncate tracking-tight">{t(item.titleKey)}</span>
+              <ChevronDown className={cn('w-4 h-4 text-zinc-400 transition-transform duration-200', isOpen && 'rotate-180')} />
             </>
           )}
         </button>
@@ -219,22 +230,22 @@ function NavItem({ item, pendingCount, collapsed, t, onNavigate }: { item: MenuI
             'overflow-hidden transition-all duration-300 ease-in-out',
             isOpen ? 'max-h-96 opacity-100 mt-1' : 'max-h-0 opacity-0'
           )}>
-            <div className="ml-4 pl-3 border-l-2 border-cyan-500/20 space-y-1">
+            <div className="ml-9 border-l border-zinc-200 dark:border-zinc-800 space-y-0.5 pl-3 py-1">
               {item.children.map((child) => (
                 <Link
                   key={child.href}
                   href={child.href}
                   onClick={onNavigate}
                   className={cn(
-                    'flex items-center justify-between px-3 py-2 text-xs rounded-lg transition-all duration-200 group/item',
+                    'flex items-center justify-between px-3 py-1.5 text-xs rounded-md transition-colors duration-200',
                     pathname === child.href
-                      ? 'text-cyan-400 bg-cyan-500/10 border border-cyan-400/20 shadow-[0_0_10px_rgba(0,255,255,0.1)]'
-                      : 'text-muted-foreground hover:text-foreground hover:bg-primary/10'
+                      ? 'text-zinc-900 dark:text-zinc-100 font-medium bg-zinc-100 dark:bg-zinc-800'
+                      : 'text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 hover:bg-zinc-50 dark:hover:bg-zinc-800/50'
                   )}
                 >
-                  <span className="tracking-wide">{t(child.titleKey)}</span>
+                  <span className="tracking-tight">{t(child.titleKey)}</span>
                   {child.badge === 'pending' && pendingCount > 0 && (
-                    <span className="bg-red-500 text-white text-[9px] px-1.5 py-0.5 rounded-md font-bold min-w-[18px] text-center shadow-[0_0_8px_rgba(255,0,0,0.5)] animate-pulse">
+                    <span className="bg-red-500 text-white text-[10px] px-1.5 py-0.5 rounded-full font-medium min-w-[20px] text-center">
                       {pendingCount}
                     </span>
                   )}
@@ -252,20 +263,23 @@ function NavItem({ item, pendingCount, collapsed, t, onNavigate }: { item: MenuI
       href={item.href!}
       onClick={onNavigate}
       className={cn(
-        'flex items-center gap-2.5 px-2.5 py-2.5 text-xs font-bold rounded-xl transition-all duration-300 group',
+        'flex items-center gap-3 px-3 py-2 text-sm rounded-lg transition-all duration-200 group relative mb-0.5 outline-none',
         pathname === item.href
-          ? 'text-cyan-400 bg-cyan-500/10 border border-cyan-400/30 shadow-[0_0_15px_rgba(0,255,255,0.15),inset_0_1px_0_rgba(255,255,255,0.05)]'
-          : 'text-muted-foreground hover:text-foreground hover:bg-primary/10 border border-transparent hover:border-primary/20',
+          ? 'text-zinc-900 dark:text-zinc-100 font-medium bg-zinc-50 dark:bg-zinc-800/50'
+          : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-50 dark:hover:bg-zinc-800/50'
       )}
     >
+      {pathname === item.href && (
+        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-5 bg-zinc-900 dark:bg-zinc-100 rounded-r-full" />
+      )}
       <span className={cn(
-        'flex-shrink-0 p-1.5 rounded-lg transition-all duration-300',
-        pathname === item.href ? 'text-cyan-400 bg-cyan-500/10 drop-shadow-[0_0_8px_rgba(0,255,255,0.8)]' : 'text-muted-foreground group-hover:text-cyan-400'
+        'flex-shrink-0 transition-colors duration-200',
+        pathname === item.href ? 'text-zinc-900 dark:text-zinc-100' : 'text-zinc-500 group-hover:text-zinc-900 dark:group-hover:text-zinc-100'
       )}>
         {item.icon}
       </span>
       {!collapsed && (
-        <span className="truncate tracking-wide">{t(item.titleKey)}</span>
+        <span className="truncate tracking-tight">{t(item.titleKey)}</span>
       )}
     </Link>
   );
@@ -434,15 +448,7 @@ function AdminLayoutContent({
   }
 
   return (
-    <div className="min-h-screen bg-background relative overflow-hidden">
-      {/* Cyberpunk Background Effects */}
-      <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-cyan-500/5 rounded-full blur-[100px] animate-pulse" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-pink-500/5 rounded-full blur-[100px] animate-pulse delay-1000" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60%] h-[60%] bg-purple-500/3 rounded-full blur-[120px]" />
-        <div className="absolute inset-0 bg-[repeating-linear-gradient(0deg,transparent,transparent_2px,rgba(0,255,255,0.01)_2px,rgba(0,255,255,0.01)_4px)]" />
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(0,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(0,255,255,0.02)_1px,transparent_1px)] bg-[size:50px_50px]" />
-      </div>
+    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 relative overflow-hidden text-zinc-900 dark:text-zinc-100">
 
       {/* Mobile overlay */}
       {sidebarOpen && (
@@ -452,108 +458,116 @@ function AdminLayoutContent({
         />
       )}
 
-      {/* Sidebar - Cyberpunk */}
+      {/* Sidebar - Minimalist Premium */}
       <aside className={cn(
-        'fixed top-0 left-0 z-50 h-[100dvh] w-[280px] sm:w-64 transition-transform duration-300 ease-out',
-        'bg-background/95 backdrop-blur-xl',
-        'border-r border-cyan-500/20',
-        'shadow-[5px_0_30px_rgba(0,255,255,0.1),inset_-1px_0_0_rgba(255,255,255,0.05)]',
+        'fixed top-0 left-0 z-50 h-[100dvh] w-[280px] sm:w-[260px] transition-transform duration-300 ease-out',
+        'bg-white dark:bg-zinc-900',
+        'border-r border-zinc-200 dark:border-zinc-800',
         'lg:translate-x-0',
         sidebarOpen ? 'translate-x-0' : '-translate-x-full'
       )}>
-        {/* Top neon line */}
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-400 to-transparent" />
-
         <div className="flex flex-col h-full">
           {/* Logo */}
-          <div className="flex-shrink-0 flex items-center justify-between px-3 sm:px-4 py-2.5 sm:py-3 border-b border-cyan-500/20 bg-gradient-to-r from-cyan-500/5 via-transparent to-pink-500/5">
-            <div className="flex items-center gap-2 sm:gap-3">
-              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-gradient-to-br from-cyan-500 to-cyan-400 flex items-center justify-center border border-cyan-400/50 shadow-[0_0_20px_rgba(0,255,255,0.4),inset_0_1px_0_rgba(255,255,255,0.2)] animate-pulse">
-                <span className="text-black font-black text-xs sm:text-sm">{company.name.charAt(0)}</span>
+          <div className="flex-shrink-0 flex items-center justify-between px-6 py-5 border-b border-zinc-100 dark:border-zinc-800/50">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-lg bg-zinc-900 dark:bg-white flex items-center justify-center">
+                <span className="text-white dark:text-zinc-900 font-bold text-sm">{company.name.charAt(0)}</span>
               </div>
               <div className="min-w-0 flex-1">
-                <h1 className="text-[11px] sm:text-xs font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-cyan-300 to-pink-400 drop-shadow-[0_0_10px_rgba(0,255,255,0.5)] truncate max-w-[130px] sm:max-w-[110px]">
+                <h1 className="text-sm font-semibold text-zinc-900 dark:text-white truncate">
                   {company.name}
                 </h1>
-                <p className="text-[9px] sm:text-[10px] text-cyan-400/60 tracking-[0.15em] sm:tracking-[0.2em] uppercase font-medium">Billing System</p>
+                <p className="text-[10px] text-zinc-500 dark:text-zinc-400 font-medium tracking-wide">
+                  BILLING SYSTEM
+                </p>
               </div>
             </div>
             <button
               onClick={() => setSidebarOpen(false)}
-              className="lg:hidden p-2 sm:p-1.5 hover:bg-primary/20 rounded-lg sm:rounded-md text-muted-foreground hover:text-primary transition-colors border border-transparent hover:border-primary/30 active:scale-95"
+              className="lg:hidden p-1 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-md text-zinc-400 transition-colors"
             >
-              <X className="w-5 h-5 sm:w-4 sm:h-4" />
+              <X className="w-4 h-4" />
             </button>
           </div>
 
           {/* Navigation */}
-          <nav className="flex-1 overflow-y-auto p-2 space-y-0.5">
-            {menuItems
-              .filter((item) => {
-                if (!item.requiredPermission) return true;
-                return userPermissions.includes(item.requiredPermission);
-              })
-              .map((item) => {
-                const filteredItem = {
-                  ...item,
-                  children: item.children?.filter((child) => {
-                    if (!child.requiredPermission) return true;
-                    return userPermissions.includes(child.requiredPermission);
-                  }),
-                };
-                
-                if (filteredItem.children && filteredItem.children.length === 0) {
-                  return null;
-                }
-                
-                return (
-                  <NavItem 
-                    key={item.titleKey} 
-                    item={filteredItem} 
-                    pendingCount={pendingRegistrations} 
-                    t={t}
-                    onNavigate={() => setSidebarOpen(false)}
-                  />
-                );
-              })}
+          <nav className="flex-1 overflow-y-auto px-4 py-4 space-y-6">
+            {Object.entries(groupedItems).map(([groupName, itemKeys]) => {
+              const groupItems = menuItems.filter(item => itemKeys.includes(item.titleKey) && (!item.requiredPermission || userPermissions.includes(item.requiredPermission)));
+              
+              if (groupItems.length === 0) return null;
+
+              return (
+                <div key={groupName}>
+                  <h4 className="text-[10px] font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-widest mb-2 px-1">
+                    {groupName}
+                  </h4>
+                  <div className="space-y-0.5">
+                    {groupItems.map((item) => {
+                      const filteredItem = {
+                        ...item,
+                        children: item.children?.filter((child) => {
+                          if (!child.requiredPermission) return true;
+                          return userPermissions.includes(child.requiredPermission);
+                        }),
+                      };
+                      
+                      if (filteredItem.children && filteredItem.children.length === 0) return null;
+                      
+                      return (
+                        <NavItem 
+                          key={item.titleKey} 
+                          item={filteredItem} 
+                          pendingCount={pendingRegistrations} 
+                          t={t}
+                          onNavigate={() => setSidebarOpen(false)}
+                        />
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            })}
           </nav>
 
           {/* User */}
-          <div className="p-2 border-t border-gray-100 dark:border-gray-800">
+          <div className="p-4 border-t border-zinc-100 dark:border-zinc-800/50 bg-zinc-50/50 dark:bg-zinc-900/50">
             <div className="relative">
               <button
                 onClick={() => setShowUserMenu(!showUserMenu)}
-                className="w-full flex items-center gap-2 p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                className="w-full flex items-center gap-3 p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors outline-none"
               >
-                <div className="w-7 h-7 bg-gradient-to-br from-teal-500 to-cyan-600 rounded-md flex items-center justify-center text-white text-xs font-semibold">
+                <div className="w-8 h-8 bg-zinc-900 dark:bg-white rounded-full flex items-center justify-center text-white dark:text-zinc-900 text-xs font-bold">
                   {session?.user?.name?.charAt(0).toUpperCase() || 'A'}
                 </div>
                 <div className="flex-1 min-w-0 text-left">
-                  <p className="text-xs font-medium text-gray-900 dark:text-white truncate">
+                  <p className="text-sm font-medium text-zinc-900 dark:text-white truncate">
                     {session?.user?.name || 'Admin'}
                   </p>
-                  <p className="text-[10px] text-gray-500 dark:text-gray-400 truncate">
+                  <p className="text-[10px] text-zinc-500 dark:text-zinc-400 truncate capitalize tracking-wide">
                     {(session?.user as any)?.role || 'admin'}
                   </p>
                 </div>
-                <ChevronDown className={cn('w-3.5 h-3.5 text-gray-400 transition-transform', showUserMenu && 'rotate-180')} />
+                <ChevronDown className={cn('w-4 h-4 text-zinc-400 transition-transform duration-200', showUserMenu && 'rotate-180')} />
               </button>
               
               {showUserMenu && (
-                <div className="absolute bottom-full left-0 right-0 mb-1 bg-white dark:bg-gray-800 rounded-md shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden fade-in">
-                  <div className="p-2 border-b border-gray-100 dark:border-gray-700">
-                    <p className="text-[10px] text-gray-500 dark:text-gray-400">{t('auth.signedInAs')}</p>
-                    <p className="text-xs font-medium text-gray-900 dark:text-white truncate">
+                <div className="absolute bottom-full left-0 right-0 mb-2 bg-white dark:bg-zinc-900 rounded-xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] dark:shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)] border border-zinc-200 dark:border-zinc-800 overflow-hidden fade-in z-50">
+                  <div className="p-3 border-b border-zinc-100 dark:border-zinc-800">
+                    <p className="text-[10px] text-zinc-500 dark:text-zinc-400 font-medium uppercase tracking-wide">{t('auth.signedInAs')}</p>
+                    <p className="text-sm font-medium text-zinc-900 dark:text-white truncate mt-0.5">
                       {(session?.user as any)?.username}
                     </p>
                   </div>
-                  <button
-                    onClick={handleLogout}
-                    className="w-full flex items-center gap-2 px-3 py-2 text-xs text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20"
-                  >
-                    <LogOut className="w-3.5 h-3.5" />
-                    {t('auth.signOut')}
-                  </button>
+                  <div className="p-1">
+                    <button
+                      onClick={handleLogout}
+                      className="w-full flex items-center gap-2 px-3 py-2.5 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-lg transition-colors"
+                    >
+                      <LogOut className="w-4 h-4" />
+                      {t('auth.signOut')}
+                    </button>
+                  </div>
                 </div>
               )}
             </div>
@@ -562,25 +576,25 @@ function AdminLayoutContent({
       </aside>
 
       {/* Main */}
-      <div className="lg:pl-64 min-h-screen flex flex-col transition-all duration-300">
+      <div className="lg:pl-[260px] min-h-screen flex flex-col transition-all duration-300">
         {/* Header */}
-        <header className="sticky top-0 z-30 bg-white/70 dark:bg-zinc-950/70 backdrop-blur-xl border-b border-gray-200/50 dark:border-gray-800/50 shadow-sm">
-          <div className="flex items-center gap-2 px-3 py-2">
+        <header className="sticky top-0 z-30 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-md border-b border-zinc-200/50 dark:border-zinc-800/50">
+          <div className="flex items-center gap-3 px-4 h-14">
             <button
               onClick={() => setSidebarOpen(true)}
-              className="lg:hidden p-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md"
+              className="lg:hidden p-2 -ml-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-colors"
             >
-              <Menu className="w-4 h-4" />
+              <Menu className="w-5 h-5 text-zinc-600 dark:text-zinc-400" />
             </button>
             
             {/* Search */}
-            <div className="hidden sm:flex flex-1 max-w-xs">
-              <div className="relative w-full">
-                <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" />
+            <div className="hidden sm:flex flex-1 max-w-sm">
+              <div className="relative w-full group">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400 group-focus-within:text-zinc-900 dark:group-focus-within:text-zinc-100 transition-colors" />
                 <input
                   type="text"
                   placeholder={t('common.search')}
-                  className="w-full pl-8 pr-3 py-1.5 bg-gray-100 dark:bg-gray-800 border-0 rounded-md text-xs focus:outline-none focus:ring-2 focus:ring-primary/30"
+                  className="w-full pl-9 pr-4 py-2 bg-zinc-100/50 hover:bg-zinc-100 focus:bg-white dark:bg-zinc-900/50 dark:hover:bg-zinc-900 dark:focus:bg-zinc-900 border border-transparent focus:border-zinc-300 dark:focus:border-zinc-700 rounded-xl text-sm transition-all outline-none"
                 />
               </div>
             </div>
@@ -588,13 +602,13 @@ function AdminLayoutContent({
             <div className="flex-1" />
             
             {/* Actions */}
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-2">
               <button
                 onClick={toggleDarkMode}
-                className="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors"
+                className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-colors text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100"
                 title={t('common.toggleTheme')}
               >
-                {darkMode ? <Sun className="w-4 h-4 text-gray-500" /> : <Moon className="w-4 h-4 text-gray-500" />}
+                {darkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
               </button>
               
               <NotificationDropdown />
@@ -605,7 +619,7 @@ function AdminLayoutContent({
         </header>
 
         {/* Content */}
-        <main className="flex-1 p-3 sm:p-4 fade-in">{children}</main>
+        <main className="flex-1 p-4 sm:p-6 fade-in">{children}</main>
       </div>
 
       {/* Idle Timeout Warning Modal */}

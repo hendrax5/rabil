@@ -58,6 +58,24 @@ if [ -n "$WG_IP" ]; then
     ip route add 10.8.0.0/24 via "$WG_IP" 2>/dev/null || true
 fi
 
+# Add nextjs to docker group if /var/run/docker.sock exists
+echo "Configuring docker socket permissions..."
+if [ -S /var/run/docker.sock ]; then
+  DOCKER_GID=$(stat -c '%g' /var/run/docker.sock 2>/dev/null || echo "")
+  if [ -n "$DOCKER_GID" ]; then
+    # Check if group exists, if not create it
+    if ! getent group "$DOCKER_GID" >/dev/null; then
+      addgroup -g "$DOCKER_GID" dockerhost
+    fi
+    # Add user to the group
+    GROUP_NAME=$(getent group "$DOCKER_GID" | cut -d: -f1)
+    if [ -n "$GROUP_NAME" ]; then
+      addgroup nextjs "$GROUP_NAME" 2>/dev/null || true
+      echo "Added nextjs user to group $GROUP_NAME (GID: $DOCKER_GID)"
+    fi
+  fi
+fi
+
 # Start Next.js App
 echo "Starting Next.js App as nextjs user..."
 exec su-exec nextjs npm run start
