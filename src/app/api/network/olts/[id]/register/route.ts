@@ -97,7 +97,7 @@ export async function POST(
         oltBoard: String(board),
         oltPort: String(port),
         onuSn: sn,
-        vlanAcs: vlanAcsProfile || null
+        vlanAcs: generatedAcsVlan
       }
     });
 

@@ -315,7 +315,7 @@ export default function PppoeUsersPage() {
   };
 
   const handleAssignOlt = async () => {
-    if (!userToAssign || !selectedOltId || !oltAssignData.sn || !oltAssignData.vlan) return;
+    if (!userToAssign || !selectedOltId || !oltAssignData.sn) return;
     
     setAssigning(true);
     try {
@@ -323,13 +323,10 @@ export default function PppoeUsersPage() {
         board: oltAssignData.board,
         port: oltAssignData.port,
         sn: oltAssignData.sn,
-        name: userToAssign.username,
-        vlan: oltAssignData.vlan,
+        pppoeUserId: userToAssign.id,
         mode: oltAssignData.mode,
         onuType: oltAssignData.onuType || (onuTypes.length > 0 ? onuTypes[0] : '1.ZTE-Home'),
         profile: userToAssign.profile.name,
-        pppoeUser: userToAssign.username,
-        pppoePass: (userToAssign as any).password || ''
       };
 
       const res = await fetch(`/api/network/olts/${selectedOltId}/register`, {
@@ -1125,7 +1122,7 @@ export default function PppoeUsersPage() {
                         </div>
                       </div>
 
-                      <div className="grid grid-cols-2 gap-3">
+                      <div className="grid grid-cols-1 gap-3">
                         <div>
                           <label className="block text-[10px] font-medium mb-1">ONU Type</label>
                           <select
@@ -1136,16 +1133,6 @@ export default function PppoeUsersPage() {
                             {onuTypes.map((t, i) => <option key={i} value={t}>{t}</option>)}
                             {onuTypes.length === 0 && <option value="1.ZTE-Home">1.ZTE-Home</option>}
                           </select>
-                        </div>
-                        <div>
-                          <label className="block text-[10px] font-medium mb-1">VLAN ID *</label>
-                          <input 
-                            type="number" 
-                            value={oltAssignData.vlan} 
-                            onChange={(e: any) => setOltAssignData({...oltAssignData, vlan: e.target.value})}
-                            placeholder="Contoh: 100"
-                            className="w-full px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800"
-                          />
                         </div>
                       </div>
 
@@ -1202,7 +1189,7 @@ export default function PppoeUsersPage() {
               ) : (
                 <button 
                   onClick={handleAssignOlt}
-                  disabled={!oltAssignData.sn || !oltAssignData.vlan || assigning}
+                  disabled={!oltAssignData.sn || assigning}
                   className="px-4 py-1.5 text-xs bg-teal-600 hover:bg-teal-700 text-white rounded disabled:opacity-50 flex items-center gap-1.5"
                 >
                   {assigning ? (
