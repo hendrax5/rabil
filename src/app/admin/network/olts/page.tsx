@@ -205,6 +205,28 @@ export default function OLTsPage() {
     }));
   };
 
+  const handleInitOlt = async (olt: OLT) => {
+    const confirmed = await showConfirm(
+      'Initialize OLT (UNLIMITED)',
+      `This will create an UNLIMITED TCONT Profile and register all required global VLANs on "${olt.name}". Are you sure you want to proceed?`
+    );
+    if (!confirmed) return;
+
+    try {
+      const res = await fetch(`/api/network/olts/${olt.id}/init`, {
+        method: 'POST'
+      });
+      const data = await res.json();
+      if (res.ok) {
+        await showSuccess('OLT Initialized Successfully!\n\n' + (data.output || ''));
+      } else {
+        await showError(data.error || 'Failed to initialize OLT');
+      }
+    } catch (error) {
+      await showError('Network error while initializing OLT');
+    }
+  };
+
   const openManageOnus = async (olt: OLT, forceRefresh: boolean = false) => {
     setManagingOlt(olt);
     setUnconfiguredOnus([]);
@@ -415,6 +437,13 @@ export default function OLTsPage() {
                     </td>
                     <td className="px-3 py-2 text-right">
                       <div className="flex justify-end gap-1">
+                        <button
+                          title="Init Setup (Global VLAN & UNLIMITED Profile)"
+                          onClick={() => handleInitOlt(olt)}
+                          className="p-1 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded"
+                        >
+                          <Wrench className="h-3 w-3" />
+                        </button>
                         <button
                           title="Auto-Discovery & Provisioning"
                           onClick={() => openManageOnus(olt)}

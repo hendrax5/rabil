@@ -164,6 +164,27 @@ export const getZteProfilesList = async (connStr: OltConnStr): Promise<{ tcontPr
   }
 };
 
+export const initializeZteOlt = async (connStr: OltConnStr, vlans: number[]): Promise<string> => {
+  const uniqueVlans = Array.from(new Set(vlans));
+  const cmds: string[] = [
+    'conf t',
+    // Create unlimited TCONT Profile (1 Gbps)
+    'profile tcont UNLIMITED type 4 maximum 1024000'
+  ];
+  
+  // Register VLANs globally
+  for (const vlan of uniqueVlans) {
+    if (vlan > 0 && vlan <= 4094) {
+      cmds.push(`vlan ${vlan}`);
+    }
+  }
+
+  cmds.push('end');
+
+  const output = await executeZteCommands(connStr, cmds);
+  return `OLT Initialization complete.\n` + output;
+};
+
 const sanitizeInput = (input?: string): string => {
   if (!input) return '';
   // Remove all instances of newlines, carriage returns, &, |, ; to prevent command/cli injection
@@ -215,7 +236,7 @@ export const registerZteOnu = async (connStr: OltConnStr, params: RegisterOnuPar
   
   // Sanitize all inputs interacting directly with the CLI
   const safeName = sanitizeInput(params.name).replace(/ /g, '_');
-  const safeProfile = sanitizeInput(params.profile) || 'UP';
+  const safeProfile = 'UNLIMITED'; // Force unlimited as limiter is on MikroTik
   const safeVlanProfile = sanitizeInput(params.vlanProfile);
   const safePppoeUser = sanitizeInput(params.pppoeUser) || safeName;
   const safePppoePass = sanitizeInput(params.pppoePass) || '123456';
@@ -253,15 +274,12 @@ export const registerZteOnu = async (connStr: OltConnStr, params: RegisterOnuPar
   } else {
     cmds = [
       'conf t',
-      'gpon',
-      'profile tcont NEXA_UP type 4 maximum 1024000',
-      'exit',
       `interface gpon-olt_${params.board}/${params.port}`,
       `onu ${freeId} type ${onuType} sn ${params.sn}`,
       'exit',
       `interface gpon-onu_${params.board}/${params.port}:${freeId}`,
       `name ${safeName}`,
-      `tcont 1 name T1 profile NEXA_UP`,
+      `tcont 1 name T1 profile UNLIMITED`,
       `gemport 1 name HSI tcont 1`,
       'exit',
       `pon-onu-mng gpon-onu_${params.board}/${params.port}:${freeId}`,
