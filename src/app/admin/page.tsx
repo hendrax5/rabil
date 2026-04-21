@@ -228,7 +228,7 @@ export default function AdminDashboard() {
     }
   };
 
-  const getStats = (): StatCard[] => {
+  const getStats = (): (StatCard & { gradient: string; shadow: string })[] => {
     const placeholder = { value: '-', change: null };
     const data = dashboardData?.stats || {
       totalUsers: placeholder,
@@ -254,29 +254,37 @@ export default function AdminDashboard() {
           title: t('dashboard.totalUsers'),
           value: typeof data.totalUsers.value === 'number' ? data.totalUsers.value.toLocaleString() : '-',
           change: data.totalUsers.change,
-          icon: <Users className="w-4 h-4" />,
-          color: 'text-teal-600 bg-teal-50 dark:bg-teal-900/20',
+          icon: <Users className="w-5 h-5" />,
+          color: 'text-white',
+          gradient: 'from-blue-600 to-cyan-500',
+          shadow: 'shadow-blue-500/20',
         },
         {
           title: t('dashboard.activeSessions'),
           value: typeof data.activeSessions.value === 'number' ? data.activeSessions.value.toLocaleString() : '-',
           change: data.activeSessions.change,
-          icon: <Activity className="w-4 h-4" />,
-          color: 'text-emerald-600 bg-emerald-50 dark:bg-emerald-900/20',
+          icon: <Activity className="w-5 h-5" />,
+          color: 'text-white',
+          gradient: 'from-emerald-500 to-teal-400',
+          shadow: 'shadow-emerald-500/20',
         },
         {
           title: 'Komisi Dibayar',
           value: formatCurrency(dashboardData.commission.earned),
           change: null,
-          icon: <DollarSign className="w-4 h-4" />,
-          color: 'text-violet-600 bg-violet-50 dark:bg-violet-900/20',
+          icon: <DollarSign className="w-5 h-5" />,
+          color: 'text-white',
+          gradient: 'from-violet-600 to-purple-500',
+          shadow: 'shadow-violet-500/20',
         },
         {
           title: 'Potensi Komisi',
           value: formatCurrency(dashboardData.commission.potential),
           change: null,
-          icon: <TrendingUp className="w-4 h-4" />,
-          color: 'text-emerald-600 bg-emerald-50 dark:bg-emerald-900/20',
+          icon: <TrendingUp className="w-5 h-5" />,
+          color: 'text-white',
+          gradient: 'from-amber-500 to-orange-400',
+          shadow: 'shadow-amber-500/20',
         },
       ];
     }
@@ -286,29 +294,37 @@ export default function AdminDashboard() {
         title: t('dashboard.totalUsers'),
         value: typeof data.totalUsers.value === 'number' ? data.totalUsers.value.toLocaleString() : '-',
         change: data.totalUsers.change,
-        icon: <Users className="w-4 h-4" />,
-        color: 'text-teal-600 bg-teal-50 dark:bg-teal-900/20',
+        icon: <Users className="w-5 h-5" />,
+        color: 'text-white',
+        gradient: 'from-blue-600 to-cyan-500',
+        shadow: 'shadow-blue-500/20',
       },
       {
         title: t('dashboard.activeSessions'),
         value: typeof data.activeSessions.value === 'number' ? data.activeSessions.value.toLocaleString() : '-',
         change: data.activeSessions.change,
-        icon: <Activity className="w-4 h-4" />,
-        color: 'text-emerald-600 bg-emerald-50 dark:bg-emerald-900/20',
+        icon: <Activity className="w-5 h-5" />,
+        color: 'text-white',
+        gradient: 'from-emerald-500 to-teal-400',
+        shadow: 'shadow-emerald-500/20',
       },
       {
         title: t('dashboard.pendingInvoices'),
         value: typeof data.pendingInvoices.value === 'number' ? data.pendingInvoices.value.toLocaleString() : '-',
         change: data.pendingInvoices.change,
-        icon: <Receipt className="w-4 h-4" />,
-        color: 'text-amber-600 bg-amber-50 dark:bg-amber-900/20',
+        icon: <Receipt className="w-5 h-5" />,
+        color: 'text-white',
+        gradient: 'from-amber-500 to-orange-400',
+        shadow: 'shadow-amber-500/20',
       },
       {
         title: t('dashboard.revenue'),
         value: data.revenue.value || '-',
         change: data.revenue.change,
-        icon: <DollarSign className="w-4 h-4" />,
-        color: 'text-violet-600 bg-violet-50 dark:bg-violet-900/20',
+        icon: <DollarSign className="w-5 h-5" />,
+        color: 'text-white',
+        gradient: 'from-rose-500 to-pink-500',
+        shadow: 'shadow-rose-500/20',
       },
     ];
   };
@@ -322,52 +338,67 @@ export default function AdminDashboard() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-lg font-semibold text-gray-900 dark:text-white">{t('dashboard.title')}</h1>
-          <p className="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1.5">
-            <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
+          <h1 className="text-xl font-bold text-gray-900 dark:text-white">{t('dashboard.title')}</h1>
+          <p className="text-sm text-gray-500 dark:text-slate-400 flex items-center gap-1.5 mt-0.5">
+            <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
             {tzInfo.name} • {currentTime}
           </p>
         </div>
         <button
           onClick={handleRefreshAnalytics}
           disabled={analyticsLoading}
-          className="flex items-center gap-1.5 px-3 py-1.5 text-xs bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-md hover:bg-gray-50 dark:hover:bg-gray-800 disabled:opacity-50"
+          className="flex items-center gap-1.5 px-4 py-2 text-sm font-medium bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 disabled:opacity-50 transition-colors dark:text-slate-200 shadow-sm"
         >
-          <RefreshCw className={`w-3.5 h-3.5 ${analyticsLoading ? 'animate-spin' : ''}`} />
+          <RefreshCw className={`w-4 h-4 ${analyticsLoading ? 'animate-spin' : ''}`} />
           {t('common.refresh')}
         </button>
       </div>
 
-      {/* Stats Grid */}
-      <CyberStagger className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+      {/* Stats Grid - RadbooX Style */}
+      <CyberStagger className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
         {loading ? (
-          <div className="col-span-full flex items-center justify-center py-8">
-            <Loader2 className="h-5 w-5 animate-spin text-gray-400" />
+          <div className="col-span-full flex items-center justify-center py-12">
+            <Loader2 className="h-6 w-6 animate-spin text-slate-400" />
           </div>
         ) : (
           getStats().map((stat) => (
             <div
               key={stat.title}
-              className="bg-white/80 dark:bg-zinc-950/70 backdrop-blur-xl rounded-[20px] border border-gray-200/50 dark:border-gray-800/50 p-4 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.1)] hover:-translate-y-1 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300"
+              className={`relative overflow-hidden rounded-2xl p-5 shadow-lg ${stat.shadow} bg-gradient-to-br ${stat.gradient} hover:-translate-y-1 transition-transform duration-300`}
             >
-              <div className="flex items-start justify-between">
-                <div className="flex-1 min-w-0">
-                  <p className="text-[10px] font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide truncate">
+              {/* RadbooX Style Decorative Circles */}
+              <div className="absolute -right-6 -top-6 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
+              <div className="absolute -right-8 -bottom-8 w-24 h-24 bg-black/10 rounded-full mix-blend-overlay"></div>
+              <div className="absolute right-4 top-4 w-16 h-16 border-4 border-white/10 rounded-full"></div>
+              
+              <div className="relative z-10 flex flex-col h-full justify-between">
+                <div className="flex items-start justify-between mb-4">
+                  <div className={`p-2.5 rounded-xl bg-white/20 backdrop-blur-md ${stat.color}`}>
+                    {stat.icon}
+                  </div>
+                  <button className="p-1.5 rounded-lg hover:bg-white/20 text-white/70 hover:text-white transition-colors">
+                    <span className="sr-only">More</span>
+                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" /></svg>
+                  </button>
+                </div>
+                
+                <div>
+                  <p className="text-sm font-medium text-white/80 mb-1">
                     {stat.title}
                   </p>
-                  <p className="text-lg font-bold text-gray-900 dark:text-white mt-0.5">
-                    {stat.value}
-                  </p>
+                  <div className="flex items-end gap-2">
+                    <h3 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
+                      {stat.value}
+                    </h3>
+                  </div>
                   {stat.change && (
-                    <p className={`text-[10px] font-medium mt-0.5 ${
-                      stat.change.startsWith('+') ? 'text-green-600' : 'text-red-600'
-                    }`}>
-                      {stat.change}
+                    <p className="text-xs font-medium text-white/70 mt-2 flex items-center gap-1">
+                      <span className="bg-white/20 px-1.5 py-0.5 rounded text-white">
+                        {stat.change}
+                      </span>
+                      <span>vs last month</span>
                     </p>
                   )}
-                </div>
-                <div className={`p-2 rounded-md ${stat.color}`}>
-                  {stat.icon}
                 </div>
               </div>
             </div>

@@ -180,6 +180,7 @@ export interface RegisterOnuParams {
   onuType?: string;
   profile?: string;
   vlanProfile?: string;
+  vlanAcs?: string;
   pppoeUser?: string;
   pppoePass?: string;
 }
@@ -242,6 +243,10 @@ export const registerZteOnu = async (connStr: OltConnStr, params: RegisterOnuPar
       `pon-onu-mng gpon-onu_${params.board}/${params.port}:${freeId}`,
       `service ${serviceName} gemport 1 vlan ${params.vlan}`,
       `wan-ip 1 mode pppoe username ${safePppoeUser} password ${safePppoePass}${safeVlanProfile ? ` vlan-profile ${safeVlanProfile}` : ` vlan ${params.vlan}`} host 1`,
+      ...(params.vlanAcs ? [
+        `service TR069 gemport 1 vlan ${params.vlanAcs}`,
+        `wan-ip 2 mode dhcp vlan ${params.vlanAcs} host 2`
+      ] : []),
       `security-mgmt 212 state enable mode forward protocol web`,
       'end'
     ];

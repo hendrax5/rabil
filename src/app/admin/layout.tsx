@@ -413,6 +413,8 @@ function AdminLayoutContent({
     const newDark = !darkMode;
     setDarkMode(newDark);
     document.documentElement.classList.toggle('dark', newDark);
+    document.documentElement.dataset.theme = newDark ? 'dark' : 'light';
+    localStorage.setItem('theme', newDark ? 'dark' : 'light');
   };
 
   // Show login page without layout

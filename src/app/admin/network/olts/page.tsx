@@ -58,8 +58,9 @@ export default function OLTsPage() {
   const [onuTypes, setOnuTypes] = useState<string[]>([]);
   const [loadingOnus, setLoadingOnus] = useState(false);
   const [registeringOnu, setRegisteringOnu] = useState<any | null>(null);
+  const [pppoeUsers, setPppoeUsers] = useState<any[]>([]);
   const [regData, setRegData] = useState({ 
-    name: '', vlan: '', mode: 'pppoe', onuType: '', profile: '10M', vlanProfile: '', pppoeUser: '', pppoePass: '' 
+    vlan: '', mode: 'pppoe', onuType: '', profile: '10M', vlanProfile: '', pppoeUserId: '', vlanAcsProfile: '' 
   });
   
   const [formData, setFormData] = useState({
@@ -83,13 +84,18 @@ export default function OLTsPage() {
 
   const loadData = async () => {
     try {
-      const [oltsRes, routersRes] = await Promise.all([
+      const [oltsRes, routersRes, usersRes] = await Promise.all([
         fetch('/api/network/olts'),
         fetch('/api/network/routers'),
+        fetch('/api/pppoe/users'),
       ]);
-      const [oltsData, routersData] = await Promise.all([oltsRes.json(), routersRes.json()]);
+      const [oltsData, routersData, usersData] = await Promise.all([oltsRes.json(), routersRes.json(), usersRes.json()]);
       setOlts(oltsData.olts || []);
       setRouters(routersData.routers || []);
+      
+      // Filter out users that are already bound to an ONU
+      const unboundUsers = (usersData.users || []).filter((u: any) => !u.onuSn);
+      setPppoeUsers(unboundUsers);
     } catch (error) {
       console.error('Load error:', error);
     } finally {
@@ -229,14 +235,11 @@ export default function OLTsPage() {
         board: registeringOnu.board,
         port: registeringOnu.port,
         sn: registeringOnu.sn,
-        name: regData.name,
-        vlan: regData.vlan,
+        pppoeUserId: regData.pppoeUserId,
         mode: regData.mode,
         onuType: regData.onuType || onuTypes[0] || '1.ZTE-Home',
         profile: regData.profile,
-        vlanProfile: regData.vlanProfile,
-        pppoeUser: regData.pppoeUser,
-        pppoePass: regData.pppoePass
+        vlanProfile: regData.vlanProfile
       };
       
       const res = await fetch(`/api/network/olts/${managingOlt.id}/register`, {
@@ -249,9 +252,11 @@ export default function OLTsPage() {
       if (res.ok) {
         await showSuccess('ONU Registered Successfully!');
         setRegisteringOnu(null);
-        setRegData({ name: '', vlan: '', mode: 'pppoe', onuType: '', profile: '10M', vlanProfile: '', pppoeUser: '', pppoePass: '' });
+        setRegData({ vlan: '', mode: 'pppoe', onuType: '', profile: '10M', vlanProfile: '', pppoeUserId: '', vlanAcsProfile: '' });
         // Refresh the list
         openManageOnus(managingOlt);
+        // Refresh PPPoE Users to remove the newly bound one
+        loadData();
       } else {
         await showError(data.error || 'Failed to register ONU');
       }
@@ -785,26 +790,18 @@ export default function OLTsPage() {
                               </div>
 
                               <div className="col-span-1">
-                                <label className="block text-[9px] font-bold mb-0.5">Display Name</label>
-                                <input
+                                <label className="block text-[9px] font-bold mb-0.5">Assign PPPoE User</label>
+                                <select
                                   required
-                                  value={regData.name}
-                                  onChange={(e) => setRegData({...regData, name: e.target.value})}
-                                  placeholder="e.g. John_Doe"
+                                  value={regData.pppoeUserId}
+                                  onChange={(e) => setRegData({...regData, pppoeUserId: e.target.value})}
                                   className="w-full text-xs px-2 py-1 rounded border border-gray-300 dark:border-gray-600 dark:bg-gray-800 focus:outline-none focus:ring-1 focus:ring-teal-500"
-                                />
-                              </div>
-
-                              <div className="col-span-1">
-                                <label className="block text-[9px] font-bold mb-0.5">VLAN ID (Network)</label>
-                                <input
-                                  required
-                                  type="number"
-                                  value={regData.vlan}
-                                  onChange={(e) => setRegData({...regData, vlan: e.target.value})}
-                                  placeholder="e.g. 415"
-                                  className="w-full text-xs px-2 py-1 rounded border border-gray-300 dark:border-gray-600 dark:bg-gray-800 focus:outline-none focus:ring-1 focus:ring-teal-500"
-                                />
+                                >
+                                  <option value="">-- Select Unbound User --</option>
+                                  {pppoeUsers.map((u: any) => (
+                                    <option key={u.id} value={u.id}>{u.username} ({u.name})</option>
+                                  ))}
+                                </select>
                               </div>
 
                               {regData.mode === 'pppoe' && (
@@ -851,32 +848,12 @@ export default function OLTsPage() {
                                       />
                                     )}
                                   </div>
-                                  <div className="col-span-1">
-                                    <label className="block text-[9px] font-bold mb-0.5">PPPoE Username</label>
-                                    <input
-                                      required
-                                      value={regData.pppoeUser}
-                                      onChange={(e) => setRegData({...regData, pppoeUser: e.target.value})}
-                                      placeholder="user@isp"
-                                      className="w-full text-xs px-2 py-1 rounded border border-gray-300 dark:border-gray-600 dark:bg-gray-800 focus:outline-none focus:ring-1 focus:ring-teal-500"
-                                    />
-                                  </div>
-                                  <div className="col-span-1">
-                                    <label className="block text-[9px] font-bold mb-0.5">PPPoE Password</label>
-                                    <input
-                                      required
-                                      value={regData.pppoePass}
-                                      onChange={(e) => setRegData({...regData, pppoePass: e.target.value})}
-                                      placeholder="password"
-                                      className="w-full text-xs px-2 py-1 rounded border border-gray-300 dark:border-gray-600 dark:bg-gray-800 focus:outline-none focus:ring-1 focus:ring-teal-500"
-                                    />
-                                  </div>
                                 </>
                               )}
                            </div>
                            <div className="flex justify-end gap-1 mt-2">
                               <button type="button" onClick={() => setRegisteringOnu(null)} className="px-2 py-1 bg-gray-200 dark:bg-gray-700 text-[10px] rounded hover:bg-gray-300 dark:hover:bg-gray-600">Cancel</button>
-                              <button type="submit" className="px-2 py-1 bg-teal-600 hover:bg-teal-700 text-white font-bold text-[10px] rounded">Push Config to OLT</button>
+                              <button type="submit" className="px-2 py-1 bg-teal-600 hover:bg-teal-700 text-white font-bold text-[10px] rounded">Bind & Provision</button>
                            </div>
                          </form>
                        ) : (
@@ -884,7 +861,7 @@ export default function OLTsPage() {
                            onClick={() => { 
                              setRegisteringOnu(onu); 
                              setRegData({
-                               name:'', vlan:'', mode: 'pppoe', onuType: onuTypes.length > 0 ? onuTypes[0] : '1.ZTE-Home', 
+                               name:'', mode: 'pppoe', onuType: onuTypes.length > 0 ? onuTypes[0] : '1.ZTE-Home', 
                                profile: '10M', vlanProfile: '', pppoeUser: '', pppoePass: ''
                              }); 
                            }}

@@ -72,36 +72,35 @@
    =========================================== */
 
 :root {
-  /* Default to Dark Neon Theme - No Light Mode */
   --radius: 0.75rem;
   
-  /* Modern Background - Slate */
-  --background: #0f172a;
-  --foreground: #ffffff;
+  /* Modern Background - Light Zinc */
+  --background: #ffffff;
+  --foreground: #09090b; /* zinc-950 */
   
-  /* Card Colors - Brighter */
-  --card: rgba(30, 41, 59, 0.9);
-  --card-foreground: #ffffff;
-  --popover: #1e293b;
-  --popover-foreground: #ffffff;
+  /* Card Colors */
+  --card: #ffffff;
+  --card-foreground: #09090b;
+  --popover: #ffffff;
+  --popover-foreground: #09090b;
   
   /* Primary - Modern Cyan */
   --primary: #06b6d4;
   --primary-foreground: #ffffff;
   
   /* Secondary */
-  --secondary: #334155;
-  --secondary-foreground: #ffffff;
+  --secondary: #f4f4f5; /* zinc-100 */
+  --secondary-foreground: #09090b;
   
-  /* Muted - Brighter */
-  --muted: #334155;
-  --muted-foreground: #cbd5e1;
+  /* Muted */
+  --muted: #f4f4f5;
+  --muted-foreground: #71717a; /* zinc-500 */
   
-  /* Accent - Professional Blue */
-  --accent: #3b82f6;
-  --accent-foreground: #ffffff;
+  /* Accent */
+  --accent: #f4f4f5;
+  --accent-foreground: #09090b;
   
-  /* Status Colors - Modern Style */
+  /* Status Colors */
   --destructive: #ef4444;
   --destructive-foreground: #ffffff;
   --success: #10b981;
@@ -111,71 +110,71 @@
   --info: #06b6d4;
   --info-foreground: #ffffff;
   
-  /* Borders & Inputs - Modern */
-  --border: rgba(6, 182, 212, 0.3);
-  --input: #1e293b;
+  /* Borders & Inputs */
+  --border: #e4e4e7; /* zinc-200 */
+  --input: #e4e4e7;
   --ring: #06b6d4;
   
-  /* Charts - Modern Palette */
+  /* Charts */
   --chart-1: #06b6d4;
   --chart-2: #3b82f6;
   --chart-3: #8b5cf6;
   --chart-4: #10b981;
   --chart-5: #f59e0b;
   
-  /* Sidebar - Modern Slate */
-  --sidebar: #0f172a;
-  --sidebar-foreground: #ffffff;
+  /* Sidebar */
+  --sidebar: #ffffff;
+  --sidebar-foreground: #09090b;
   --sidebar-primary: #06b6d4;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #1e293b;
-  --sidebar-accent-foreground: #ffffff;
-  --sidebar-border: rgba(6, 182, 212, 0.3);
+  --sidebar-accent: #f4f4f5;
+  --sidebar-accent-foreground: #09090b;
+  --sidebar-border: #e4e4e7;
   --sidebar-ring: #06b6d4;
   
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 /* Force dark class to have same values */
 .dark {
-  --background: #0f172a;
-  --foreground: #ffffff;
-  --card: rgba(30, 41, 59, 0.9);
-  --card-foreground: #ffffff;
+  --background: #0f172a; /* slate-900 */
+  --foreground: #f8fafc; /* slate-50 */
+  --card: #1e293b; /* slate-800 */
+  --card-foreground: #f8fafc;
   --popover: #1e293b;
-  --popover-foreground: #ffffff;
-  --primary: #06b6d4;
+  --popover-foreground: #f8fafc;
+  --primary: #3b82f6; /* blue-500 */
   --primary-foreground: #ffffff;
-  --secondary: #334155;
-  --secondary-foreground: #ffffff;
+  --secondary: #334155; /* slate-700 */
+  --secondary-foreground: #f8fafc;
   --muted: #334155;
-  --muted-foreground: #cbd5e1;
-  --accent: #3b82f6;
-  --accent-foreground: #ffffff;
+  --muted-foreground: #94a3b8; /* slate-400 */
+  --accent: #334155;
+  --accent-foreground: #f8fafc;
   --destructive: #ef4444;
   --destructive-foreground: #ffffff;
   --success: #10b981;
   --success-foreground: #ffffff;
   --warning: #f59e0b;
   --warning-foreground: #ffffff;
-  --info: #06b6d4;
+  --info: #0ea5e9;
   --info-foreground: #ffffff;
-  --border: rgba(6, 182, 212, 0.3);
+  --border: rgba(255, 255, 255, 0.1);
   --input: #1e293b;
-  --ring: #06b6d4;
-  --chart-1: #06b6d4;
-  --chart-2: #3b82f6;
-  --chart-3: #8b5cf6;
-  --chart-4: #10b981;
-  --chart-5: #f59e0b;
+  --ring: #3b82f6;
+  --chart-1: #3b82f6;
+  --chart-2: #8b5cf6;
+  --chart-3: #10b981;
+  --chart-4: #f59e0b;
+  --chart-5: #0ea5e9;
   --sidebar: #0f172a;
-  --sidebar-foreground: #ffffff;
-  --sidebar-primary: #06b6d4;
+  --sidebar-foreground: #f8fafc;
+  --sidebar-primary: #3b82f6;
   --sidebar-primary-foreground: #ffffff;
   --sidebar-accent: #1e293b;
-  --sidebar-accent-foreground: #ffffff;
-  --sidebar-border: rgba(6, 182, 212, 0.3);
-  --sidebar-ring: #06b6d4;
+  --sidebar-accent-foreground: #f8fafc;
+  --sidebar-border: rgba(255, 255, 255, 0.05);
+  --sidebar-ring: #3b82f6;
   color-scheme: dark;
 }
 

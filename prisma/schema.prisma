@@ -303,10 +303,19 @@ model pppoeUser {
   phone          String
   syncedToRadius Boolean        @default(false)
   routerId       String?
+  
+  // OLT Provisioning Data
+  oltId          String?
+  oltBoard       String?
+  oltPort        String?
+  onuSn          String?
+  vlanAcs        String?
+
   invoices       invoice[]
   tickets        ticket[]
   profile        pppoeProfile   @relation(fields: [profileId], references: [id])
   router         router?        @relation(fields: [routerId], references: [id])
+  olt            networkOLT?    @relation(fields: [oltId], references: [id])
   salesId        String?
   sales          adminUser?     @relation("SalesUser", fields: [salesId], references: [id])
   sessions       sessions[]
@@ -315,6 +324,7 @@ model pppoeUser {
 
   @@index([profileId], map: "pppoe_users_profileId_fkey")
   @@index([routerId], map: "pppoe_users_routerId_fkey")
+  @@index([oltId], map: "pppoe_users_oltId_fkey")
   @@index([salesId])
   @@index([status])
   @@index([username])
@@ -733,6 +743,7 @@ model networkOLT {
   odcs       networkODC[]
   odps       networkODP[]
   routers    networkOLTRouter[]  // Many-to-many with routers
+  pppoeUsers pppoeUser[]         // PPPoE users directly bound to this OLT
 
   @@map("network_olts")
 }
