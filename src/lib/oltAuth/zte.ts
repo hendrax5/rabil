@@ -168,14 +168,17 @@ export const initializeZteOlt = async (connStr: OltConnStr, vlans: number[]): Pr
   const uniqueVlans = Array.from(new Set(vlans));
   const cmds: string[] = [
     'conf t',
-    // Create unlimited TCONT Profile (1 Gbps)
-    'profile tcont UNLIMITED type 4 maximum 1024000'
+    // Create unlimited TCONT Profile (1 Gbps) inside gpon mode
+    'gpon',
+    'profile tcont UNLIMITED type 4 maximum 1024000',
+    'exit'
   ];
   
   // Register VLANs globally
   for (const vlan of uniqueVlans) {
     if (vlan > 0 && vlan <= 4094) {
       cmds.push(`vlan ${vlan}`);
+      cmds.push('exit');
     }
   }
 
