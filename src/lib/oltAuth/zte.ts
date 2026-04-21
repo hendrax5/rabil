@@ -179,6 +179,8 @@ export const initializeZteOlt = async (connStr: OltConnStr, vlans: number[]): Pr
     if (vlan > 0 && vlan <= 4094) {
       cmds.push(`vlan ${vlan}`);
       cmds.push('exit');
+      // Create vlan-profile to be used by wan-ip
+      cmds.push(`vlan-profile vlan${vlan} vlan ${vlan}`);
     }
   }
 
@@ -266,10 +268,10 @@ export const registerZteOnu = async (connStr: OltConnStr, params: RegisterOnuPar
       'exit',
       `pon-onu-mng gpon-onu_${params.board}/${params.port}:${freeId}`,
       `service ${serviceName} gemport 1 vlan ${params.vlan}`,
-      `wan-ip 1 mode pppoe username ${safePppoeUser} password ${safePppoePass}${safeVlanProfile ? ` vlan-profile ${safeVlanProfile}` : ` vlan ${params.vlan}`} host 1`,
+      `wan-ip 1 mode pppoe username ${safePppoeUser} password ${safePppoePass} vlan-profile ${safeVlanProfile || `vlan${params.vlan}`} host 1`,
       ...(params.vlanAcs ? [
         `service TR069 gemport 1 vlan ${params.vlanAcs}`,
-        `wan-ip 2 mode dhcp vlan ${params.vlanAcs} host 2`
+        `wan-ip 2 mode dhcp vlan-profile vlan${params.vlanAcs} host 2`
       ] : []),
       `security-mgmt 212 state enable mode forward protocol web`,
       'end'
