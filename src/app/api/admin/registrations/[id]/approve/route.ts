@@ -131,14 +131,11 @@ export async function POST(
 
     // Add isolated attribute to RADIUS (limit speed or access)
     // This can be customized based on your RADIUS setup
-    await prisma.radreply.create({
-      data: {
-        username,
-        attribute: 'Reply-Message',
-        op: ':=',
-        value: 'Account pending payment. Please pay installation invoice.',
-      },
-    });
+    await prisma.$executeRaw`DELETE FROM radreply WHERE username = ${username} AND attribute = 'Reply-Message'`;
+    await prisma.$executeRaw`
+      INSERT INTO radreply (username, attribute, op, value)
+      VALUES (${username}, 'Reply-Message', ':=', 'Account pending payment. Please pay installation invoice.')
+    `;
 
     // Update registration
     await prisma.registrationRequest.update({

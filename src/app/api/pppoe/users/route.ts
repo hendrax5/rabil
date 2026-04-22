@@ -151,9 +151,19 @@ export async function POST(request: NextRequest) {
         });
       }
 
-      // 1. Create radcheck entry for password (Cleartext-Password)
-      await prisma.radcheck.create({
-        data: {
+      // 1. Upsert radcheck entry for password (Cleartext-Password)
+      await prisma.radcheck.upsert({
+        where: {
+          username_attribute: {
+            username,
+            attribute: 'Cleartext-Password'
+          }
+        },
+        update: {
+          value: password,
+          op: ':=',
+        },
+        create: {
           username,
           attribute: 'Cleartext-Password',
           op: ':=',
@@ -163,8 +173,18 @@ export async function POST(request: NextRequest) {
 
       // 2. If router is assigned, add NAS-IP-Address to restrict to specific router
       if (router) {
-        await prisma.radcheck.create({
-          data: {
+        await prisma.radcheck.upsert({
+          where: {
+            username_attribute: {
+              username,
+              attribute: 'NAS-IP-Address'
+            }
+          },
+          update: {
+            value: router.nasname,
+            op: '==',
+          },
+          create: {
             username,
             attribute: 'NAS-IP-Address',
             op: '==',
@@ -174,24 +194,19 @@ export async function POST(request: NextRequest) {
       }
 
       // 3. Create radusergroup entry to assign user to profile group
-      await prisma.radusergroup.create({
-        data: {
-          username,
-          groupname: profile.groupName,
-          priority: 0,
-        },
-      });
+      await prisma.$executeRaw`DELETE FROM radusergroup WHERE username = ${username}`;
+      await prisma.$executeRaw`
+        INSERT INTO radusergroup (username, groupname, priority)
+        VALUES (${username}, ${profile.groupName}, 1)
+      `;
 
       // 4. Optional: Add static IP to radreply if specified
       if (ipAddress) {
-        await prisma.radreply.create({
-          data: {
-            username,
-            attribute: 'Framed-IP-Address',
-            op: ':=',
-            value: ipAddress,
-          },
-        });
+        await prisma.$executeRaw`DELETE FROM radreply WHERE username = ${username} AND attribute = 'Framed-IP-Address'`;
+        await prisma.$executeRaw`
+          INSERT INTO radreply (username, attribute, op, value)
+          VALUES (${username}, 'Framed-IP-Address', ':=', ${ipAddress})
+        `;
       }
 
       // Mark as synced
@@ -362,14 +377,24 @@ export async function PUT(request: NextRequest) {
             username: newUsername,
             attribute: 'Cleartext-Password',
             op: ':=',
-            value: password || currentUser.password,
+            value: newPassword,
           },
         });
 
-        // Add NAS-IP-Address if router is assigned
+        // 2. If router is assigned, add NAS-IP-Address to restrict to specific router
         if (router) {
-          await prisma.radcheck.create({
-            data: {
+          await prisma.radcheck.upsert({
+            where: {
+              username_attribute: {
+                username: newUsername,
+                attribute: 'NAS-IP-Address'
+              }
+            },
+            update: {
+              value: router.nasname,
+              op: '==',
+            },
+            create: {
               username: newUsername,
               attribute: 'NAS-IP-Address',
               op: '==',
@@ -378,25 +403,21 @@ export async function PUT(request: NextRequest) {
           });
         }
 
-        await prisma.radusergroup.create({
-          data: {
-            username: newUsername,
-            groupname: newProfile.groupName,
-            priority: 0,
-          },
-        });
+        // 3. Create radusergroup entry to assign user to profile group
+        await prisma.$executeRaw`DELETE FROM radusergroup WHERE username = ${newUsername}`;
+        await prisma.$executeRaw`
+          INSERT INTO radusergroup (username, groupname, priority)
+          VALUES (${newUsername}, ${finalProfile.groupName}, 1)
+        `;
 
-        // Add static IP to radreply if specified
+        // 4. Optional: Add static IP to radreply if specified
         const finalIpAddress = ipAddress !== undefined ? ipAddress : currentUser.ipAddress;
         if (finalIpAddress) {
-          await prisma.radreply.create({
-            data: {
-              username: newUsername,
-              attribute: 'Framed-IP-Address',
-              op: ':=',
-              value: finalIpAddress,
-            },
-          });
+          await prisma.$executeRaw`DELETE FROM radreply WHERE username = ${newUsername} AND attribute = 'Framed-IP-Address'`;
+          await prisma.$executeRaw`
+            INSERT INTO radreply (username, attribute, op, value)
+            VALUES (${newUsername}, 'Framed-IP-Address', ':=', ${finalIpAddress})
+          `;
         }
 
         // Mark as synced
