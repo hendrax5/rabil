@@ -4,26 +4,7 @@ import { getGenieACSCredentials } from '@/app/api/settings/genieacs/route';
 
 const prisma = new PrismaClient();
 
-// In a real scenario, this would be fetched from a policy/rules table
-// For this MVP, we map OLT ports to specific VLANs and profiles
-const resolvePolicy = (oltId: string, board: string, slot: string, port: string, sn: string): Partial<RegisterOnuParams> | null => {
-  // Default mapping rules:
-  // We can assign a default VLAN or extract from a logic
-  return {
-    mode: 'bridge', // default mode
-    vlan: '100',    // default internet vlan
-    profile: 'UNLIMITED',
-    name: `ONU_${sn.substring(sn.length - 4)}`, // Default naming convention
-    onuType: '1.ZTE-Home', // default
-    
-    // TR069 ACS Configuration (Optional)
-    // Uncomment and customize below if you want to push ACS to all ONUs
-    // vlanAcs: '200', 
-    // acsUrl: 'http://acs.yourdomain.com:7547',
-    // acsUser: 'acsadmin',
-    // acsPass: 'acspassword'
-  };
-};
+// Removed resolvePolicy - parameters are now provided via UI binding
 
 export async function runZtpOrchestrator() {
   console.log('[ZTP ORCHESTRATOR] Starting discovery loop...');
@@ -75,14 +56,14 @@ export async function runZtpOrchestrator() {
               board: onu.board,
               slot: '1', // fallback
               port: onu.port,
-              status: 'PENDING'
+              status: 'DISCOVERED'
             }
           });
         }
         
-        // 2. Process PENDING ONUs
+        // 2. Process READY ONUs (ONUs that have been bound by the admin)
         const pendingOnus = await prisma.discovered_onu.findMany({
-          where: { oltId: olt.id, status: 'PENDING' },
+          where: { oltId: olt.id, status: 'READY' },
           take: 5 // Limit batch size to prevent OLT overload
         });
 
@@ -95,24 +76,21 @@ export async function runZtpOrchestrator() {
           });
 
           try {
-            const policy = resolvePolicy(olt.id, target.board, target.slot, target.port, target.sn);
-            if (!policy) {
-              throw new Error('No matching provisioning policy found');
-            }
-
             const params: RegisterOnuParams = {
               board: target.board,
-              port: target.port, // could be "1/1"
+              port: target.port, 
               sn: target.sn,
-              name: policy.name || `AUTO_${target.sn.substring(0,6)}`,
-              vlan: policy.vlan || '10',
-              mode: policy.mode || 'bridge',
-              onuType: policy.onuType || '1.ZTE-Home',
-              profile: policy.profile || 'UNLIMITED',
-              vlanAcs: policy.vlanAcs,
-              acsUrl: policy.acsUrl || acsCreds?.host,
-              acsUser: policy.acsUser || acsCreds?.username,
-              acsPass: policy.acsPass || acsCreds?.password
+              name: `ONU_${target.sn.substring(target.sn.length - 4)}`, // Basic default, could be updated if we had a name field
+              vlan: target.vlan || '10',
+              mode: (target.mode as any) || 'bridge',
+              onuType: '1.ZTE-Home',
+              profile: target.profile || 'UNLIMITED',
+              vlanAcs: undefined, // Usually null or mapped if we had it
+              acsUrl: acsCreds?.host,
+              acsUser: acsCreds?.username,
+              acsPass: acsCreds?.password,
+              pppoeUser: target.pppoeUser || undefined,
+              pppoePass: target.pppoePass || undefined
             };
 
             const result = await registerZteOnu(connStr, params);

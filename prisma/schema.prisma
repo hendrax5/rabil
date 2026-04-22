@@ -1251,7 +1251,15 @@ model discovered_onu {
   board       String
   slot        String
   port        String
-  status      String   @default("PENDING") // PENDING, PROVISIONING, SUCCESS, FAILED
+  
+  // Binding fields
+  vlan        String?
+  mode        String?  // 'bridge' or 'pppoe'
+  pppoeUser   String?
+  pppoePass   String?
+  profile     String?  // OLT profile name
+  
+  status      String   @default("DISCOVERED") // DISCOVERED, READY, PROVISIONING, SUCCESS, FAILED
   discoveredAt DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
