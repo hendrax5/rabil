@@ -332,6 +332,9 @@ export interface RegisterOnuParams {
   profile?: string;
   vlanProfile?: string;
   vlanAcs?: string;
+  acsUrl?: string;
+  acsUser?: string;
+  acsPass?: string;
   pppoeUser?: string;
   pppoePass?: string;
 }
@@ -396,7 +399,12 @@ export const registerZteOnu = async (connStr: OltConnStr, params: RegisterOnuPar
       `wan-ip 1 mode pppoe username ${safePppoeUser} password ${safePppoePass} vlan-profile ${safeVlanProfile || `vlan${params.vlan}`} host 1`,
       ...(params.vlanAcs ? [
         `service TR069 gemport 1 vlan ${params.vlanAcs}`,
-        `wan-ip 2 mode dhcp vlan-profile vlan${params.vlanAcs} host 2`
+        `wan-ip 2 mode dhcp vlan-profile vlan${params.vlanAcs} host 2`,
+        ...(params.acsUrl ? [
+          `tr069-mgmt 1 server-url ${sanitizeInput(params.acsUrl)}`,
+          ...(params.acsUser && params.acsPass ? [`tr069-mgmt 1 pppoe-user ${sanitizeInput(params.acsUser)} password ${sanitizeInput(params.acsPass)}`] : []),
+          `tr069-mgmt 1 tr069-enable enable`
+        ] : [])
       ] : []),
       `security-mgmt 212 state enable mode forward protocol web`,
       'end'
@@ -415,6 +423,15 @@ export const registerZteOnu = async (connStr: OltConnStr, params: RegisterOnuPar
       `pon-onu-mng gpon-onu_${params.board}/${params.port}:${freeId}`,
       `service HSI gemport 1 vlan ${params.vlan}`,
       `vlan port eth_0/1 mode tag vlan ${params.vlan}`,
+      ...(params.vlanAcs ? [
+        `service TR069 gemport 1 vlan ${params.vlanAcs}`,
+        `wan-ip 2 mode dhcp vlan-profile vlan${params.vlanAcs} host 2`,
+        ...(params.acsUrl ? [
+          `tr069-mgmt 1 server-url ${sanitizeInput(params.acsUrl)}`,
+          ...(params.acsUser && params.acsPass ? [`tr069-mgmt 1 pppoe-user ${sanitizeInput(params.acsUser)} password ${sanitizeInput(params.acsPass)}`] : []),
+          `tr069-mgmt 1 tr069-enable enable`
+        ] : [])
+      ] : []),
       'end'
     ];
   }

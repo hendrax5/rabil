@@ -123,6 +123,7 @@ const menuItems: MenuItem[] = [
       { titleKey: 'nav.odp', href: '/admin/network/odps', requiredPermission: 'network.view' },
       { titleKey: 'nav.odpCustomer', href: '/admin/network/customers', requiredPermission: 'network.view' },
       { titleKey: 'nav.vpn', href: '/admin/network/vpn', requiredPermission: 'network.view' },
+      { titleKey: 'Provisioning Logs', href: '/admin/network/provision-logs', requiredPermission: 'network.view' },
     ],
   },
   {

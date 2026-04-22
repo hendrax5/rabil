@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { getZteUncfgOnu, registerZteOnu, RegisterOnuParams } from '../oltAuth/zte';
+import { getGenieACSCredentials } from '@/app/api/settings/genieacs/route';
 
 const prisma = new PrismaClient();
 
@@ -13,13 +14,23 @@ const resolvePolicy = (oltId: string, board: string, slot: string, port: string,
     vlan: '100',    // default internet vlan
     profile: 'UNLIMITED',
     name: `ONU_${sn.substring(sn.length - 4)}`, // Default naming convention
-    onuType: '1.ZTE-Home' // default
+    onuType: '1.ZTE-Home', // default
+    
+    // TR069 ACS Configuration (Optional)
+    // Uncomment and customize below if you want to push ACS to all ONUs
+    // vlanAcs: '200', 
+    // acsUrl: 'http://acs.yourdomain.com:7547',
+    // acsUser: 'acsadmin',
+    // acsPass: 'acspassword'
   };
 };
 
 export async function runZtpOrchestrator() {
   console.log('[ZTP ORCHESTRATOR] Starting discovery loop...');
   let processedCount = 0;
+  
+  // Fetch global ACS credentials once per loop
+  const acsCreds = await getGenieACSCredentials();
   
   try {
     const activeOlts = await prisma.networkOLT.findMany({
@@ -97,7 +108,11 @@ export async function runZtpOrchestrator() {
               vlan: policy.vlan || '10',
               mode: policy.mode || 'bridge',
               onuType: policy.onuType || '1.ZTE-Home',
-              profile: policy.profile || 'UNLIMITED'
+              profile: policy.profile || 'UNLIMITED',
+              vlanAcs: policy.vlanAcs,
+              acsUrl: policy.acsUrl || acsCreds?.host,
+              acsUser: policy.acsUser || acsCreds?.username,
+              acsPass: policy.acsPass || acsCreds?.password
             };
 
             const result = await registerZteOnu(connStr, params);
