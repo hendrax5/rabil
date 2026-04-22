@@ -745,6 +745,11 @@ model networkOLT {
   routers    networkOLTRouter[]  // Many-to-many with routers
   pppoeUsers pppoeUser[]         // PPPoE users directly bound to this OLT
 
+  // ZTP Relations
+  discoveredOnus discovered_onu[]
+  provisionLogs  provision_log[]
+  networkOnus    network_onu[]
+
   @@map("network_olts")
 }
 
@@ -1235,4 +1240,58 @@ model technicianKPI {
   @@index([technicianId])
   @@index([ticketId])
   @@map("technician_kpis")
+}
+
+// ZTP Auto Provisioning Models
+
+model discovered_onu {
+  id          String   @id @default(cuid())
+  oltId       String
+  sn          String
+  board       String
+  slot        String
+  port        String
+  status      String   @default("PENDING") // PENDING, PROVISIONING, SUCCESS, FAILED
+  discoveredAt DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  olt networkOLT @relation(fields: [oltId], references: [id])
+
+  @@unique([oltId, sn])
+  @@map("discovered_onus")
+}
+
+model provision_log {
+  id          String   @id @default(cuid())
+  oltId       String
+  sn          String
+  action      String   // e.g., "REGISTER", "DELETE"
+  status      String   // "SUCCESS", "FAILED"
+  message     String?  @db.Text
+  createdAt   DateTime @default(now())
+
+  olt networkOLT @relation(fields: [oltId], references: [id])
+  
+  @@map("provision_logs")
+}
+
+model network_onu {
+  id          String   @id @default(cuid())
+  oltId       String
+  sn          String
+  onuId       String
+  board       String
+  slot        String
+  port        String
+  state       String   // "working", "offline", "los"
+  profile     String?
+  rxPower     String?
+  txPower     String?
+  lastSync    DateTime @default(now())
+  
+  olt networkOLT @relation(fields: [oltId], references: [id])
+
+  @@unique([oltId, onuId])
+  @@unique([oltId, sn])
+  @@map("network_onus")
 }

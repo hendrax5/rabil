@@ -99,6 +99,14 @@ export async function POST(request: NextRequest) {
         result = await syncOltData()
         return NextResponse.json(result)
         
+      case 'ztp_sync':
+        const { runZtpOrchestrator } = await import('@/lib/ztp/orchestrator')
+        result = await runZtpOrchestrator()
+        return NextResponse.json({
+          success: true,
+          processed: result
+        })
+        
       default:
         return NextResponse.json({
           success: false,

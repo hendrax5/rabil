@@ -7,6 +7,8 @@ export async function register() {
   if (process.env.NEXT_RUNTIME === 'nodejs') {
     console.log('[INSTRUMENTATION] Initializing cron jobs...')
     const { initCronJobs } = await import('./lib/cron/voucher-sync')
+    const { initZtpCron } = await import('./lib/cron/ztp-cron')
     initCronJobs()
+    initZtpCron()
   }
 }

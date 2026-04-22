@@ -8,10 +8,11 @@ export async function POST(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  let reqBody: any = {};
   try {
     const { id: oltId } = await params;
-    const body = await request.json();
-    const { board, port, sn, pppoeUserId, mode, onuType, profile, vlanProfile } = body;
+    reqBody = await request.json();
+    const { board, port, sn, pppoeUserId, mode, onuType, profile, vlanProfile } = reqBody;
     
     if (!board || !port || !sn || !pppoeUserId) {
       return NextResponse.json({ error: 'board, port, sn, pppoeUserId are required' }, { status: 400 });
@@ -89,6 +90,17 @@ export async function POST(
 
     console.log('[OLT Provisioning] Successfully registered ONU. Output:', result);
 
+    // Save success log to provision_log table
+    await prisma.provision_log.create({
+      data: {
+        oltId,
+        sn,
+        action: 'REGISTER',
+        status: 'SUCCESS',
+        message: 'ONU successfully registered to OLT'
+      }
+    });
+
     // Save the binding to database
     await prisma.pppoeUser.update({
       where: { id: pppoeUser.id },
@@ -109,6 +121,22 @@ export async function POST(
 
   } catch (error: any) {
     console.error('Register ONU error:', error);
+    
+    try {
+      const { id: oltId } = await params;
+      await prisma.provision_log.create({
+        data: {
+          oltId: oltId,
+          sn: reqBody.sn || 'UNKNOWN_SN',
+          action: 'REGISTER',
+          status: 'FAILED',
+          message: error.message || 'Failed to register ONU to OLT'
+        }
+      });
+    } catch (logErr) {
+      console.error('Failed to write error log to DB:', logErr);
+    }
+
     return NextResponse.json(
       { error: error.message || 'Failed to register ONU to OLT' },
       { status: 500 }
