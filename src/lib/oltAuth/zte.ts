@@ -16,79 +16,173 @@ interface OltConnStr {
   protocol?: string; // 'ssh' or 'telnet'
 }
 
-const execInteractiveSsh = (client: Client, commands: string[]): Promise<string> => {
-  return new Promise((resolve, reject) => {
-    client.shell((err, stream) => {
-      if (err) return reject(err);
-      
-      let output = '';
-      let cmdIndex = 0;
-      
-      stream.on('data', (data: Buffer) => {
-        const text = data.toString();
-        output += text;
-        
-        // When we see the prompt string send the next command
-        if (text.endsWith('# ') || text.endsWith('> ') || text.endsWith('#')) {
-          if (cmdIndex < commands.length) {
-            stream.write(commands[cmdIndex] + '\n');
-            cmdIndex++;
-          } else {
-            stream.write('exit\n'); // close shell
-          }
-        }
+export interface OltCommandOptions {
+  cmd: string;
+  ignoreError?: boolean;
+  retries?: number;
+}
+
+export interface ZteCommandResult {
+  output: string;
+  success: boolean;
+  errorMsg?: string;
+}
+
+const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
+
+export class ZteEngine {
+  private connStr: OltConnStr;
+  private client: any;
+  private isTelnet: boolean;
+  private sshStream: any = null;
+  private maxRetries: number = 3;
+
+  constructor(connStr: OltConnStr) {
+    this.connStr = connStr;
+    this.isTelnet = connStr.protocol === 'telnet';
+  }
+
+  async connect(): Promise<void> {
+    if (this.isTelnet) {
+      this.client = new Telnet();
+      const params = {
+        host: this.connStr.host,
+        port: this.connStr.port || 23,
+        shellPrompt: /.*[>#]\s?$/,
+        loginPrompt: /Username:/i,
+        passwordPrompt: /Password:/i,
+        username: this.connStr.username,
+        password: this.connStr.password,
+        timeout: 10000
+      };
+      await this.client.connect(params);
+    } else {
+      return new Promise((resolve, reject) => {
+        this.client = new Client();
+        this.client.on('ready', () => {
+          this.client.shell((err: any, stream: any) => {
+            if (err) return reject(err);
+            this.sshStream = stream;
+            // Wait for initial prompt before resolving
+            let initialOutput = '';
+            const onData = (data: Buffer) => {
+              initialOutput += data.toString();
+              if (initialOutput.match(/.*[>#]\s?$/)) {
+                this.sshStream.removeListener('data', onData);
+                resolve();
+              }
+            };
+            this.sshStream.on('data', onData);
+            this.sshStream.on('close', () => { /* connection closed */ });
+          });
+        }).on('error', (err: any) => {
+          reject(err);
+        }).connect({
+          host: this.connStr.host,
+          port: this.connStr.port || 22,
+          username: this.connStr.username,
+          password: this.connStr.password,
+          readyTimeout: 10000
+        });
       });
-      
-      stream.on('close', () => resolve(output));
-    });
-  });
-};
+    }
+  }
+
+  async disconnect(): Promise<void> {
+    if (this.isTelnet && this.client) {
+      await this.client.end();
+    } else if (this.client) {
+      if (this.sshStream) {
+        this.sshStream.write('exit\n');
+      }
+      this.client.end();
+    }
+  }
+
+  private async execSingle(cmd: string): Promise<string> {
+    if (this.isTelnet) {
+      return await this.client.send(cmd);
+    } else {
+      return new Promise((resolve, reject) => {
+        let output = '';
+        
+        // Timeout for single command execution to avoid hanging forever
+        const timeoutId = setTimeout(() => {
+          this.sshStream.removeListener('data', onData);
+          reject(new Error(`Command timeout: ${cmd}`));
+        }, 15000);
+
+        const onData = (data: Buffer) => {
+          output += data.toString();
+          if (output.match(/.*[>#]\s?$/)) {
+            clearTimeout(timeoutId);
+            this.sshStream.removeListener('data', onData);
+            resolve(output);
+          }
+        };
+        this.sshStream.on('data', onData);
+        this.sshStream.write(cmd + '\n');
+      });
+    }
+  }
+
+  async exec(command: string | OltCommandOptions): Promise<ZteCommandResult> {
+    const opts: OltCommandOptions = typeof command === 'string' ? { cmd: command } : command;
+    const maxAttempt = opts.retries !== undefined ? opts.retries : this.maxRetries;
+    const ignoreError = opts.ignoreError || false;
+
+    for (let attempt = 1; attempt <= maxAttempt; attempt++) {
+      try {
+        console.log(`[ZteEngine] [${this.connStr.host}] Executing: ${opts.cmd} (Attempt ${attempt}/${maxAttempt})`);
+        const output = await this.execSingle(opts.cmd);
+
+        // Parse for %Error or %Code
+        const isError = output.includes('%Error') || output.includes('%Code');
+        if (isError) {
+          console.error(`[ZteEngine] [${this.connStr.host}] CLI Error on: ${opts.cmd}\n${output}`);
+          // CLI syntax error should usually not be retried because it's a structural error
+          if (ignoreError) {
+            return { output, success: false, errorMsg: 'CLI syntax error ignored.' };
+          }
+          throw new Error(`CLI Error executing '${opts.cmd}':\n${output}`);
+        }
+
+        return { output, success: true };
+      } catch (err: any) {
+        console.warn(`[ZteEngine] [${this.connStr.host}] Warning on: ${opts.cmd} - ${err.message}`);
+        if (attempt === maxAttempt) {
+          console.error(`[ZteEngine] [${this.connStr.host}] Failed after ${maxAttempt} attempts: ${opts.cmd}`);
+          if (ignoreError) {
+            return { output: err.message, success: false, errorMsg: err.message };
+          }
+          throw new Error(`Command failed after ${maxAttempt} attempts: ${opts.cmd} (${err.message})`);
+        }
+        // Exponential backoff: 2s, 4s, etc.
+        await delay(attempt * 2000); 
+      }
+    }
+    return { output: '', success: false };
+  }
+
+  async execBatch(commands: (string | OltCommandOptions)[], strict = true): Promise<string[]> {
+    const results: string[] = [];
+    for (const cmd of commands) {
+      // In strict mode, if exec throws, it will abort the batch
+      const res = await this.exec(typeof cmd === 'string' ? { cmd, ignoreError: !strict } : cmd);
+      results.push(res.output);
+    }
+    return results;
+  }
+}
 
 const executeZteCommands = async (connStr: OltConnStr, commands: string[]): Promise<string> => {
-  if (connStr.protocol === 'telnet') {
-    const connection = new Telnet();
-    const params = {
-      host: connStr.host,
-      port: connStr.port,
-      shellPrompt: /.*[>#]\s?$/,
-      loginPrompt: /Username:/i,
-      passwordPrompt: /Password:/i,
-      username: connStr.username,
-      password: connStr.password,
-      timeout: 10000
-    };
-
-    await connection.connect(params);
-    let output = '';
-    for (const cmd of commands) {
-      const res = await connection.send(cmd);
-      output += res + '\n';
-    }
-    connection.end();
-    return output;
-  } else {
-    // SSH
-    return new Promise((resolve, reject) => {
-      const conn = new Client();
-      conn.on('ready', async () => {
-        try {
-          const output = await execInteractiveSsh(conn, commands);
-          conn.end();
-          resolve(output);
-        } catch (e) {
-          conn.end();
-          reject(e);
-        }
-      }).on('error', (err) => {
-        reject(err);
-      }).connect({
-        host: connStr.host,
-        port: connStr.port,
-        username: connStr.username,
-        password: connStr.password,
-        readyTimeout: 10000
-      });
-    });
+  const engine = new ZteEngine(connStr);
+  try {
+    await engine.connect();
+    const results = await engine.execBatch(commands, true); // Strict mode
+    return results.join('\n');
+  } finally {
+    await engine.disconnect();
   }
 };
 
