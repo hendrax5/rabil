@@ -164,38 +164,61 @@ export const getZteProfilesList = async (connStr: OltConnStr): Promise<{ tcontPr
   }
 };
 
-export const initializeZteOlt = async (connStr: OltConnStr, vlans: number[]): Promise<string> => {
-  const uniqueVlans = Array.from(new Set(vlans));
-  const cmds: string[] = [
-    'conf t',
-    // Create unlimited TCONT Profile (1 Gbps) inside gpon mode
-    'gpon',
-    'profile tcont UNLIMITED type 4 maximum 1024000',
-    'exit'
-  ];
+export const initializeZteOlt = async (
+  connStr: OltConnStr,
+  vlans: number[],
+  options?: {
+    tcontName?: string;
+    maxBandwidth?: number;
+  }
+): Promise<string> => {
+  const tcontName = options?.tcontName || "UNLIMITED";
+  const maxBw = options?.maxBandwidth || 1024000;
 
-  // Register VLANs globally
+  const uniqueVlans = [...new Set(vlans)].filter(v => v > 0 && v <= 4094);
+
+  const cmds: string[] = [];
+
+  // ===== ENTER CONFIG =====
+  cmds.push('conf t');
+
+  // ===== GPON TCONT PROFILE =====
+  cmds.push('gpon');
+  cmds.push(`profile tcont ${tcontName} type 4 maximum ${maxBw}`);
+  cmds.push('exit');
+
+  // ===== VLAN GLOBAL SETUP =====
   for (const vlan of uniqueVlans) {
-    if (vlan > 0 && vlan <= 4094) {
-      cmds.push(`vlan ${vlan}`);
-      cmds.push(`name VLAN${vlan}`);
-      cmds.push('exit');
-    }
+    cmds.push(`vlan ${vlan}`);
+    cmds.push(`name VLAN${vlan}`);
+    cmds.push('exit');
   }
 
-  // Create ONU VLAN profiles under gpon mode
+  // ===== ONU VLAN PROFILE =====
   cmds.push('gpon');
   for (const vlan of uniqueVlans) {
-    if (vlan > 0 && vlan <= 4094) {
-      cmds.push(`onu profile vlan vlan${vlan} tag-mode tag cvlan ${vlan}`);
-    }
+    cmds.push(`onu profile vlan vlan${vlan} tag-mode tag cvlan ${vlan}`);
   }
   cmds.push('exit');
 
   cmds.push('end');
 
-  const output = await executeZteCommands(connStr, cmds);
-  return `OLT Initialization complete.\n` + output;
+  try {
+    const output = await executeZteCommands(connStr, cmds);
+
+    return [
+      "=== OLT INIT SUCCESS ===",
+      `TCONT: ${tcontName}`,
+      `VLAN COUNT: ${uniqueVlans.length}`,
+      output
+    ].join("\n");
+
+  } catch (err: any) {
+    return [
+      "=== OLT INIT FAILED ===",
+      err.message || err
+    ].join("\n");
+  }
 };
 
 const sanitizeInput = (input?: string): string => {
