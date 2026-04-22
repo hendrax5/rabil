@@ -178,9 +178,19 @@ export const initializeZteOlt = async (connStr: OltConnStr, vlans: number[]): Pr
   for (const vlan of uniqueVlans) {
     if (vlan > 0 && vlan <= 4094) {
       cmds.push(`vlan ${vlan}`);
+      cmds.push(`name VLAN${vlan}`);
       cmds.push('exit');
     }
   }
+
+  // Create ONU VLAN profiles under gpon mode
+  cmds.push('gpon');
+  for (const vlan of uniqueVlans) {
+    if (vlan > 0 && vlan <= 4094) {
+      cmds.push(`onu profile vlan vlan${vlan} tag-mode tag cvlan ${vlan}`);
+    }
+  }
+  cmds.push('exit');
 
   cmds.push('end');
 
@@ -266,11 +276,9 @@ export const registerZteOnu = async (connStr: OltConnStr, params: RegisterOnuPar
       'exit',
       `pon-onu-mng gpon-onu_${params.board}/${params.port}:${freeId}`,
       `service ${serviceName} gemport 1 vlan ${params.vlan}`,
-      `vlan-profile vlan${params.vlan} vlan ${params.vlan}`,
       `wan-ip 1 mode pppoe username ${safePppoeUser} password ${safePppoePass} vlan-profile ${safeVlanProfile || `vlan${params.vlan}`} host 1`,
       ...(params.vlanAcs ? [
         `service TR069 gemport 1 vlan ${params.vlanAcs}`,
-        `vlan-profile vlan${params.vlanAcs} vlan ${params.vlanAcs}`,
         `wan-ip 2 mode dhcp vlan-profile vlan${params.vlanAcs} host 2`
       ] : []),
       `security-mgmt 212 state enable mode forward protocol web`,
