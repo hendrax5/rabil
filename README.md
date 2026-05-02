@@ -19,8 +19,6 @@
 
 ## 🚀 Quick Start
 
-### Docker (Recommended)
-
 ```bash
 git clone https://github.com/hendrax5/rabil.git
 cd rabil
@@ -28,10 +26,10 @@ sudo ./deploy.sh
 ```
 
 The deploy script will:
-1. Detect your OS and install dependencies automatically
+1. Detect your OS and install Docker & Docker Compose automatically
 2. Prompt for domain name & SSL email (optional — skip for local/IP access)
 3. Generate a secure `.env` with random credentials
-4. Build and start all services via Docker Compose
+4. Build and start all 9 services via `docker compose up -d --build`
 5. Configure VPN routing on the host
 
 **Access the admin panel** at `https://YOUR_DOMAIN/admin/login` or `http://YOUR_IP/admin/login`.
@@ -45,24 +43,12 @@ The deploy script will:
 > [!CAUTION]
 > Change the default password immediately after first login.
 
-### Manual / Development Setup
+### Update Existing Installation
 
 ```bash
-# 1. Clone & install
-git clone https://github.com/hendrax5/rabil.git
 cd rabil
-npm install
-
-# 2. Configure environment
-cp .env.example .env
-# Edit .env with your DATABASE_URL, NEXTAUTH_SECRET, etc.
-
-# 3. Setup database
-npx prisma db push
-npm run db:seed
-
-# 4. Run dev server
-npm run dev
+git pull origin master
+sudo ./deploy.sh
 ```
 
 ---
@@ -415,43 +401,60 @@ ufw allow 51820/udp # WireGuard
 
 ## 🔧 Operations
 
-### Application Management
+All services run inside Docker. Use these commands from the project directory.
+
+### Application
 
 ```bash
-# Docker
-docker logs aibill-app --tail 50
-docker compose restart app
-docker compose down && docker compose up -d --build
+# View logs
+docker logs aibill-app --tail 100 -f
 
-# PM2 (bare-metal)
-pm2 status
-pm2 logs aibill-radius
-pm2 restart aibill-radius
+# Restart app only
+docker compose restart app
+
+# Full rebuild & restart
+docker compose down
+docker compose up -d --build
+
+# Check all container status
+docker compose ps
 ```
 
 ### FreeRADIUS
 
 ```bash
-systemctl status freeradius
-freeradius -XC                # Test config
-freeradius -X                 # Debug mode
+# View RADIUS logs
+docker logs aibill-freeradius --tail 50 -f
+
+# Test configuration inside container
+docker exec aibill-freeradius freeradius -XC
+
+# Debug mode (stop container first, then run foreground)
+docker compose stop freeradius
+docker compose run --rm freeradius freeradius -X
 
 # Test authentication
-radtest 'user@realm' 'password' 127.0.0.1 0 testing123    # PPPoE
-radtest 'VOUCHERCODE' 'password' 127.0.0.1 0 testing123   # Hotspot
+docker exec aibill-freeradius radtest 'user@realm' 'password' 127.0.0.1 0 testing123
+docker exec aibill-freeradius radtest 'VOUCHERCODE' 'password' 127.0.0.1 0 testing123
 ```
 
 ### Database
 
 ```bash
-# Prisma operations
-npx prisma db push        # Apply schema changes
-npx prisma studio         # Visual DB browser
-npm run db:seed           # Seed initial data
+# Apply schema changes
+docker exec aibill-app npx prisma db push
 
-# Backup / Restore
-mysqldump -u root -p aibill_radius > backup.sql
-mysql -u root -p aibill_radius < backup.sql
+# Seed initial data
+docker exec aibill-app npm run db:seed
+
+# Backup
+docker exec aibill-db mysqldump -u root -p"$DB_PASSWORD" aibill_radius > backup.sql
+
+# Restore
+docker exec -i aibill-db mysql -u root -p"$DB_PASSWORD" aibill_radius < backup.sql
+
+# Interactive MySQL shell
+docker exec -it aibill-db mysql -u root -p"$DB_PASSWORD" aibill_radius
 ```
 
 ---
@@ -463,8 +466,8 @@ mysql -u root -p aibill_radius < backup.sql
 3. **Enable HTTPS** — set domain in deploy script for auto Let's Encrypt
 4. **Configure firewall** — only open required ports
 5. **Schedule backups** — enable Telegram backup in Settings
-6. **Monitor logs** — `docker logs` or PM2 logs
-7. **Update regularly** — `git pull && sudo ./deploy.sh`
+6. **Monitor logs** — `docker logs aibill-app --tail 100 -f`
+7. **Update regularly** — `git pull origin master && sudo ./deploy.sh`
 
 ---
 
@@ -516,9 +519,8 @@ Each role has a default permission template (53 permissions across 12 categories
 
 ### Prerequisites
 
-- Node.js 20+
-- MySQL 8.0
-- FreeRADIUS 3.0 (for RADIUS features)
+- Docker & Docker Compose
+- Git
 
 ### Key Conventions
 
