@@ -1,342 +1,405 @@
-# AIBILL RADIUS - Billing System for ISP/RTRW.NET
+<p align="center">
+  <h1 align="center">NexaRadius</h1>
+  <p align="center">
+    <strong>All-in-One ISP Billing & Network Management Platform</strong>
+  </p>
+  <p align="center">
+    Modern full-stack billing system for ISP / RTRW.NET with FreeRADIUS, FTTH network mapping, Zero-Touch Provisioning, and integrated payment gateway.
+  </p>
+  <p align="center">
+    <a href="#-quick-start">Quick Start</a> •
+    <a href="#-features">Features</a> •
+    <a href="#-architecture">Architecture</a> •
+    <a href="#-api-reference">API</a> •
+    <a href="#-deployment">Deployment</a>
+  </p>
+</p>
 
-Modern, full-stack billing system for ISP/RTRW.NET with FreeRADIUS integration supporting both **PPPoE** and **Hotspot** authentication.
+---
 
-> **Latest Update**: December 6, 2025 - Session Timeout Auto-Logout, Network Map Router GPS, OLT Uplink Configuration
+## 🚀 Quick Start
 
-## 🎯 Key Features
+### Docker (Recommended)
 
-### Core Features
-- ✅ **FreeRADIUS Integration** - Full RADIUS support for PPPoE and Hotspot
-- ✅ **RADIUS CoA Support** - Real-time speed changes & disconnect without reconnection
-- ✅ **Multi-Router/NAS Support** - Manage multiple MikroTik routers
-- ✅ **PPPoE Management** - Customer accounts with profile-based bandwidth
-- ✅ **Sync PPPoE MikroTik** - Import PPPoE secrets dari MikroTik ke database
-- ✅ **Hotspot Voucher System** - Advanced voucher with router assignment
-- ✅ **Agent/Reseller System** - Balance-based voucher generation
-- ✅ **Payment Gateway** - Midtrans, Xendit, Duitku integration
-- ✅ **WhatsApp Integration** - Automated notifications & reminders
-- ✅ **Role-Based Permissions** - 53 permissions, 6 role templates
-- ✅ **Financial Reporting** - Income/expense tracking with categories
-- ✅ **WIB Timezone** - Proper Western Indonesia Time handling
+```bash
+git clone https://github.com/hendrax5/rabil.git
+cd rabil
+sudo ./deploy.sh
+```
 
-### FTTH Network Features
-- 📡 **OLT Management** - Kelola Optical Line Terminal dengan router uplink
-- 📦 **ODC Management** - Kelola Optical Distribution Cabinet
-- 📍 **ODP Management** - Kelola Optical Distribution Point
-- 👥 **Customer Assignment** - Assign pelanggan ke port ODP
-- 🗺️ **Network Map** - Visualisasi interaktif jaringan FTTH
-- 📏 **Distance Calculation** - Hitung jarak pelanggan ke ODP terdekat
+The deploy script will:
+1. Detect your OS and install dependencies automatically
+2. Prompt for domain name & SSL email (optional — skip for local/IP access)
+3. Generate a secure `.env` with random credentials
+4. Build and start all services via Docker Compose
+5. Configure VPN routing on the host
 
-### Router/NAS Features (NEW!)
-- 🛰️ **GPS Coordinates** - Set lokasi router dengan Map Picker
-- 🔗 **OLT Uplink Config** - Konfigurasi uplink dari router ke OLT
-- 📊 **Interface Detection** - Auto-detect interface MikroTik
-- 🌐 **Auto IP Detection** - Detect public IP otomatis
+**Access the admin panel** at `https://YOUR_DOMAIN/admin/login` or `http://YOUR_IP/admin/login`.
 
-### Security Features (NEW!)
-- ⏱️ **Session Timeout** - Auto logout setelah 30 menit tidak aktif
-- ⚠️ **Idle Warning** - Popup warning 1 menit sebelum logout
-- 🔄 **Stay Logged In** - Opsi perpanjang sesi dari popup warning
-- 🔐 **Session Max Age** - Maksimal session 1 hari
+### Default Credentials
 
-### Technical Features
-- 🎨 **Premium UI** - Mobile-first responsive design with dark mode
-- ⚡ **Modern Stack** - Next.js 16, TypeScript, Tailwind CSS, Prisma
-- 🔐 **Secure** - Built-in authentication with role-based permissions
-- 📱 **SPA Experience** - Fast, smooth navigation without page reloads
-- 🌍 **Multi-language** - Indonesian & English support
+| Portal | URL | Username | Password |
+|--------|-----|----------|----------|
+| Admin | `/admin/login` | `superadmin` | `admin123` |
 
-## 🚀 Tech Stack
+> [!CAUTION]
+> Change the default password immediately after first login.
 
-| Component | Technology |
-|-----------|------------|
-| Framework | Next.js 16 (App Router, Turbopack) |
-| Language | TypeScript |
-| Styling | Tailwind CSS |
-| Database | MySQL 8.0 with Prisma ORM |
-| RADIUS | FreeRADIUS 3.0 with MySQL backend |
-| Icons | Lucide React |
-| Date | date-fns with timezone support |
-| Maps | Leaflet / OpenStreetMap |
+### Manual / Development Setup
+
+```bash
+# 1. Clone & install
+git clone https://github.com/hendrax5/rabil.git
+cd rabil
+npm install
+
+# 2. Configure environment
+cp .env.example .env
+# Edit .env with your DATABASE_URL, NEXTAUTH_SECRET, etc.
+
+# 3. Setup database
+npx prisma db push
+npm run db:seed
+
+# 4. Run dev server
+npm run dev
+```
+
+---
+
+## ✨ Features
+
+### Core Billing
+
+| Feature | Description |
+|---------|-------------|
+| **PPPoE Management** | Customer accounts with profile-based bandwidth, RADIUS sync, CoA live speed changes |
+| **Hotspot Voucher System** | 8 code types, multi-router assignment, batch generation, print templates |
+| **Agent / Reseller** | Balance-based voucher generation, commission tracking, deposit via payment gateway |
+| **Invoicing** | Auto-generate monthly invoices, payment tracking, overdue reminders |
+| **Payment Gateway** | Midtrans, Xendit, Duitku integration with webhook processing |
+| **Financial Reporting** | Income/expense tracking with categories, transaction history |
+
+### FTTH Network Management
+
+| Feature | Description |
+|---------|-------------|
+| **OLT Management** | CRUD with SSH/Telnet connectivity, auto-discovery of unconfigured ONUs |
+| **ODC / ODP Management** | Hierarchical fiber topology with port tracking |
+| **Network Map** | Interactive Leaflet map with OLT → ODC → ODP → Customer visualization |
+| **Customer Assignment** | Assign subscribers to ODP ports with distance calculation |
+| **Zero-Touch Provisioning** | Automated ONU discovery → bind → register pipeline for ZTE OLTs |
+
+### Operations & Support
+
+| Feature | Description |
+|---------|-------------|
+| **Ticketing System** | Customer support tickets with categories, priority, assignment |
+| **Technician Portal** | Dedicated mobile UI with OTP login, work orders, KPI tracking |
+| **Inventory Management** | SKU-based stock tracking, movements (IN/OUT/ADJUSTMENT), supplier management |
+| **Work Orders** | Create, assign, schedule, and track field work |
+
+### Infrastructure & Integrations
+
+| Feature | Description |
+|---------|-------------|
+| **FreeRADIUS** | Full RADIUS server with MySQL backend for PPPoE & Hotspot auth |
+| **RADIUS CoA** | Real-time speed changes & disconnect without user reconnection |
+| **GenieACS TR-069** | CPE management — WiFi config, firmware, device monitoring |
+| **WhatsApp Notifications** | Multi-provider (Fonnte, WAHA, GOWA, MPWA, Wablas, Baileys local engine) |
+| **Telegram Backup** | Scheduled database backups sent to Telegram |
+| **VPN Access** | Built-in WireGuard + L2TP/IPSec for secure router management |
+| **Multi-language** | Indonesian & English with `next-intl` |
+
+### Security
+
+| Feature | Description |
+|---------|-------------|
+| **Role-Based Access** | 8 roles (Super Admin, Finance, CS, Technician, Marketing, Sales, Sales Manager, Viewer) |
+| **53 Granular Permissions** | Per-user permission overrides on top of role templates |
+| **Session Timeout** | 30-min idle auto-logout with 60s warning popup |
+| **HTTPS** | Automatic SSL via Caddy reverse proxy + Let's Encrypt |
+
+---
+
+## 🏗️ Architecture
+
+### System Overview
+
+```mermaid
+graph TB
+    subgraph Internet
+        CUSTOMER[Customer Browser]
+        MIKROTIK[MikroTik Routers]
+        ONT[ONT/CPE Devices]
+    end
+
+    subgraph Docker["Docker Compose Stack"]
+        CADDY[Caddy Reverse Proxy<br/>:80 :443]
+        APP[Next.js App<br/>:3000]
+        DB[(MySQL 8.0<br/>:3306)]
+        FR[FreeRADIUS 3.0<br/>:1812/1813 UDP]
+        GENIE[GenieACS<br/>:7547 TR-069]
+        MONGO[(MongoDB 4.4)]
+        WA[WA Engine<br/>:3006]
+        WG[WireGuard<br/>:51820 UDP]
+        L2TP[L2TP/IPSec<br/>:500/4500 UDP]
+    end
+
+    CUSTOMER -->|HTTPS| CADDY
+    CADDY -->|proxy| APP
+    APP -->|Prisma ORM| DB
+    FR -->|SQL auth| DB
+    FR -->|REST post-auth| APP
+    MIKROTIK -->|RADIUS| FR
+    MIKROTIK <-->|RouterOS API| APP
+    APP -->|CoA :3799| MIKROTIK
+    ONT -->|TR-069 :7547| GENIE
+    GENIE --> MONGO
+    APP -->|NBI API :7557| GENIE
+    WA -->|Prisma| DB
+    APP -->|Queue| WA
+
+    style CADDY fill:#22c55e,color:#fff
+    style APP fill:#3b82f6,color:#fff
+    style DB fill:#f59e0b,color:#fff
+    style FR fill:#ef4444,color:#fff
+    style GENIE fill:#8b5cf6,color:#fff
+```
+
+### RADIUS Authentication Flow
+
+```mermaid
+sequenceDiagram
+    participant MK as MikroTik
+    participant FR as FreeRADIUS
+    participant DB as MySQL
+    participant API as Next.js API
+
+    Note over MK,API: PPPoE Authentication (username@realm)
+    MK->>FR: Access-Request (user@realm)
+    FR->>DB: SQL lookup (radcheck + radusergroup)
+    DB-->>FR: Credentials + Group
+    FR->>DB: SQL lookup (radgroupreply)
+    DB-->>FR: Mikrotik-Rate-Limit, Session-Timeout
+    FR-->>MK: Access-Accept
+
+    Note over MK,API: Hotspot Voucher (no @ in username)
+    MK->>FR: Access-Request (VOUCHERCODE)
+    FR->>DB: SQL lookup
+    DB-->>FR: Credentials + Group
+    FR->>API: REST post-auth (voucher tracking)
+    API->>DB: Set firstLoginAt, expiresAt, sync income
+    API-->>FR: 200 OK
+    FR-->>MK: Access-Accept
+```
+
+### Zero-Touch Provisioning (ZTP) Pipeline
+
+```mermaid
+stateDiagram-v2
+    [*] --> DISCOVERED: Cron discovers uncfg ONU
+    DISCOVERED --> READY: Admin binds via UI<br/>(sets VLAN, mode, PPPoE)
+    READY --> PROVISIONING: ZTP Orchestrator picks up
+    PROVISIONING --> SUCCESS: ONU registered on OLT
+    PROVISIONING --> FAILED: CLI error / timeout
+    FAILED --> READY: Admin retries
+    SUCCESS --> [*]
+```
+
+### Data Model (Key Entities)
+
+```mermaid
+erDiagram
+    router ||--o{ pppoeUser : "has subscribers"
+    router ||--o{ hotspotVoucher : "serves"
+    router ||--o{ agent : "assigned"
+    pppoeProfile ||--o{ pppoeUser : "defines speed"
+    hotspotProfile ||--o{ hotspotVoucher : "defines plan"
+    agent ||--o{ hotspotVoucher : "generates"
+    agent ||--o{ agentSale : "tracks sales"
+    pppoeUser ||--o{ invoice : "billed"
+    invoice ||--o{ payment : "paid via"
+    paymentGateway ||--o{ payment : "processes"
+    networkOLT ||--o{ networkODC : "feeds"
+    networkODC ||--o{ networkODP : "distributes"
+    networkODP ||--o{ odpCustomerAssignment : "connects"
+    pppoeUser ||--o{ odpCustomerAssignment : "assigned port"
+    networkOLT ||--o{ discovered_onu : "discovers"
+    ticket ||--o{ ticketMessage : "has messages"
+    inventoryItem ||--o{ inventoryMovement : "stock changes"
+```
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer | Technology |
+|-------|------------|
+| **Framework** | Next.js 16 (App Router, Turbopack, React 19) |
+| **Language** | TypeScript |
+| **Styling** | Tailwind CSS v4, GSAP animations |
+| **Database** | MySQL 8.0 via Prisma ORM (1306-line schema, 50+ models) |
+| **Auth** | NextAuth.js with role-based sessions |
+| **RADIUS** | FreeRADIUS 3.0 with SQL + REST modules |
+| **Maps** | Leaflet / OpenStreetMap with OSRM routing |
+| **Payments** | Midtrans, Xendit, Duitku SDKs |
+| **CPE Management** | GenieACS 1.2.9 (TR-069) |
+| **WhatsApp** | Multi-provider + local Baileys engine |
+| **Charts** | Recharts |
+| **PDF** | jsPDF + AutoTable |
+| **VPN** | WireGuard (wg-easy) + L2TP/IPSec |
+| **Reverse Proxy** | Caddy 2 (auto HTTPS) |
+| **CI/CD** | GitHub Actions (lint → build → Docker check) |
+
+---
 
 ## 📁 Project Structure
 
 ```
-AIBILL-RADIUS/
+rabil/
 ├── src/
 │   ├── app/
-│   │   ├── admin/          # Admin panel pages
-│   │   ├── agent/          # Agent portal
-│   │   ├── api/            # API routes
-│   │   ├── customer/       # Customer portal
-│   │   └── page.tsx        # Landing/redirect
-│   ├── components/         # React components
-│   ├── hooks/              # Custom hooks
-│   └── lib/                # Utilities & services
+│   │   ├── admin/              # Admin panel (17 modules)
+│   │   │   ├── genieacs/       # TR-069 CPE management
+│   │   │   ├── hotspot/        # Voucher management
+│   │   │   ├── inventory/      # Stock management
+│   │   │   ├── invoices/       # Billing
+│   │   │   ├── keuangan/       # Financial reporting
+│   │   │   ├── management/     # Admin user management
+│   │   │   ├── network/        # OLT/ODC/ODP/Map/Routers
+│   │   │   ├── notifications/  # In-app notifications
+│   │   │   ├── pppoe/          # PPPoE users & profiles
+│   │   │   ├── sessions/       # Active session monitoring
+│   │   │   ├── settings/       # System settings, cron, backup
+│   │   │   ├── technicians/    # Technician management
+│   │   │   ├── tickets/        # Support ticketing
+│   │   │   └── whatsapp/       # WA provider config
+│   │   ├── agent/              # Agent/reseller portal
+│   │   ├── api/                # 31 API route groups
+│   │   │   ├── network/        # OLT/ODC/ODP/ZTP/Router APIs
+│   │   │   ├── radius/         # RADIUS post-auth & CoA
+│   │   │   ├── pppoe/          # PPPoE CRUD & sync
+│   │   │   ├── hotspot/        # Voucher generation
+│   │   │   ├── invoices/       # Invoice lifecycle
+│   │   │   ├── payment/        # Gateway webhooks
+│   │   │   └── ...
+│   │   ├── customer/           # Customer self-service portal
+│   │   ├── daftar/             # Public registration form
+│   │   ├── evoucher/           # E-voucher purchase portal
+│   │   ├── technician/         # Technician mobile portal
+│   │   └── pay/                # Payment pages
+│   ├── components/             # Reusable React components
+│   │   ├── ui/                 # shadcn/ui primitives
+│   │   ├── network/            # Network map components
+│   │   ├── charts/             # Chart components
+│   │   └── cyberpunk/          # Themed UI components
+│   ├── hooks/                  # Custom React hooks
+│   ├── lib/                    # Business logic & utilities
+│   │   ├── oltAuth/            # OLT drivers (ZTE SSH/Telnet)
+│   │   ├── ztp/                # ZTP orchestrator
+│   │   ├── services/           # CoA service
+│   │   ├── cron/               # Scheduled jobs
+│   │   └── payment/            # Payment gateway adapters
+│   ├── locales/                # i18n (id.json, en.json)
+│   └── microservices/
+│       └── whatsapp-engine/    # Standalone Baileys WA service
 ├── prisma/
-│   ├── schema.prisma       # Database schema
-│   ├── seed.ts             # Main seed file
-│   └── seeds/              # Individual seed scripts
-├── freeradius-config/      # FreeRADIUS configuration backup
-│   ├── sites-enabled-default
-│   ├── mods-enabled-sql
-│   ├── mods-enabled-rest
-│   └── clients.conf
-├── backup/                 # Database backups
-└── docs/                   # Documentation
+│   ├── schema.prisma           # 50+ models, 1300+ lines
+│   └── seeds/                  # Database seed scripts
+├── freeradius-config/          # FreeRADIUS config backups
+├── .github/workflows/ci.yml   # CI pipeline
+├── docker-compose.yml          # 8-service stack
+├── deploy.sh                   # One-click production deploy
+├── Dockerfile                  # Multi-stage Node.js build
+└── Dockerfile.freeradius       # FreeRADIUS container
 ```
 
-## 🛠️ Installation
+---
 
-### Quick Start (New VPS)
+## 📡 API Reference
 
-**Option 1: VPS dengan Root Access**
+### RADIUS CoA (Change of Authorization)
+
+Real-time session control without disconnecting users.
+
 ```bash
-# 1. Upload project to VPS
-scp -r AIBILL-RADIUS-main root@YOUR_VPS_IP:/root/
+# Check CoA status
+GET /api/radius/coa
 
-# 2. SSH to VPS and run installer
-ssh root@YOUR_VPS_IP
-cd /root/AIBILL-RADIUS-main
-chmod +x vps-install.sh
-./vps-install.sh
+# Disconnect user
+POST /api/radius/coa
+{ "action": "disconnect", "username": "user@realm" }
+
+# Update speed live
+POST /api/radius/coa
+{ "action": "update", "username": "user@realm",
+  "attributes": { "downloadSpeed": 20, "uploadSpeed": 10 } }
+
+# Sync profile to all active sessions
+POST /api/radius/coa
+{ "action": "sync-profile", "profileId": "profile-uuid" }
 ```
 
-**Option 2: VPS Lokal / Tanpa Root Access (Proxmox, LXC, etc)**
+> **MikroTik requirement**: `/radius incoming set accept=yes port=3799`
+
+### Key API Groups
+
+| Group | Endpoints | Purpose |
+|-------|-----------|---------|
+| `/api/pppoe` | users, profiles, sync-mikrotik | PPPoE subscriber management |
+| `/api/hotspot` | vouchers, profiles, generate | Hotspot voucher lifecycle |
+| `/api/invoices` | CRUD, send, remind | Invoice management |
+| `/api/network` | olts, odcs, odps, routers, ztp | FTTH network & provisioning |
+| `/api/radius` | post-auth, coa | RADIUS integration |
+| `/api/sessions` | list, disconnect | Active session control |
+| `/api/genieacs` | devices, tasks, wifi | TR-069 CPE management |
+| `/api/payment` | midtrans, xendit, duitku webhooks | Payment processing |
+| `/api/whatsapp` | send, templates, providers | Notification engine |
+| `/api/cron` | trigger | Scheduled job runner |
+
+---
+
+## 🐳 Deployment
+
+### Docker Compose Services
+
+| Service | Container | Ports | Purpose |
+|---------|-----------|-------|---------|
+| `app` | aibill-app | 3000 (internal) | Next.js application |
+| `db` | aibill-db | 3306 | MySQL 8.0 database |
+| `freeradius` | aibill-freeradius | 1812/1813 UDP | RADIUS server |
+| `genieacs` | aibill-genieacs | 3005, 7547, 7557 | TR-069 ACS |
+| `mongo-acs` | aibill-mongo-acs | — | GenieACS database |
+| `wa-engine` | aibill-wa-engine | 3006 | WhatsApp engine |
+| `wg-easy` | aibill-vpn | 51820 UDP, 51821 | WireGuard VPN |
+| `l2tp-vpn` | aibill-l2tp | 500, 4500, 1701 UDP | L2TP/IPSec VPN |
+| `caddy` | aibill-caddy | 80, 443 | Reverse proxy + SSL |
+
+### Environment Variables
+
 ```bash
-# 1. Upload project to VPS
-scp -P PORT -r AIBILL-RADIUS-main user@YOUR_VPS_IP:~/
+# Database
+DATABASE_URL="mysql://user:pass@localhost:3306/dbname"
 
-# 2. SSH to VPS and run local installer
-ssh -p PORT user@YOUR_VPS_IP
-cd ~/AIBILL-RADIUS-main
-chmod +x vps-install-local.sh
-./vps-install-local.sh
+# Timezone (critical for WIB)
+TZ="Asia/Jakarta"
+NEXT_PUBLIC_TIMEZONE="Asia/Jakarta"
+
+# Application
+NEXT_PUBLIC_APP_NAME="Your ISP Name"
+NEXT_PUBLIC_APP_URL="https://your-domain.com"
+
+# Auth
+NEXTAUTH_SECRET=<openssl rand -base64 32>
+NEXTAUTH_URL="https://your-domain.com"
+
+# Optional: Force RADIUS server IP
+# RADIUS_SERVER_IP="YOUR_VPS_PUBLIC_IP"
 ```
-
-The installer will:
-- Install Node.js 20, MySQL 8.0, FreeRADIUS 3.0, Nginx, PM2
-- Configure database and create tables
-- Setup FreeRADIUS with MySQL backend
-- Configure session timeout (30 min idle, 1 day max)
-- Build and start the application
-
-### Manual Installation
-
-See [docs/INSTALLATION-GUIDE.md](docs/INSTALLATION-GUIDE.md) for detailed manual setup.
-
-### GenieACS TR-069 Integration
-
-See [docs/GENIEACS-GUIDE.md](docs/GENIEACS-GUIDE.md) for complete setup and usage guide.
-
-### Default Credentials
-
-After installation:
-- **Admin Login**: http://YOUR_VPS_IP/admin/login
-- **Username**: `superadmin`
-- **Password**: `admin123`
-
-⚠️ **Change password immediately after first login!**
-
-## 🔌 FreeRADIUS Configuration
-
-### Key Configuration Files
-
-Located in `/etc/freeradius/3.0/`:
-
-| File | Purpose |
-|------|---------|
-| `mods-enabled/sql` | MySQL connection for user auth |
-| `mods-enabled/rest` | REST API for voucher management |
-| `sites-enabled/default` | Main authentication logic |
-| `clients.conf` | NAS/router clients |
-
-### Important Settings
-
-**1. Disable filter_username** (line ~293 in default):
-```
-#filter_username   # DISABLED - allows username@realm format for PPPoE
-```
-
-**2. Conditional REST for Vouchers** (in post-auth section):
-```
-# Only call REST API for vouchers (username without @)
-if (!("%{User-Name}" =~ /@/)) {
-    rest.post-auth
-}
-```
-
-**3. SQL Client Loading** (in mods-enabled/sql):
-```
-read_clients = yes
-client_table = "nas"
-```
-
-### Backup FreeRADIUS Config
-
-Backup files included in `freeradius-config/` directory:
-- `sites-enabled-default` - Main site configuration
-- `mods-enabled-sql` - SQL module config
-- `mods-enabled-rest` - REST module config
-- `clients.conf` - Client/NAS configuration
-- `freeradius-config-backup.tar.gz` - Complete backup archive
-
-To restore on new VPS:
-```bash
-# Extract backup
-cd /tmp
-tar -xzf /path/to/freeradius-config-backup.tar.gz
-
-# Copy files
-cp freeradius-backup/sites-enabled/* /etc/freeradius/3.0/sites-enabled/
-cp freeradius-backup/mods-enabled/* /etc/freeradius/3.0/mods-enabled/
-cp freeradius-backup/clients.conf /etc/freeradius/3.0/
-
-# Update SQL credentials in mods-enabled/sql
-# Update REST URL in mods-enabled/rest
-
-# Test and restart
-freeradius -XC
-systemctl restart freeradius
-```
-
-## 🌐 RADIUS Authentication Flow
-
-### PPPoE Users
-```
-MikroTik → FreeRADIUS → MySQL (radcheck/radusergroup/radgroupreply)
-                     ↓
-              Access-Accept with:
-              - Mikrotik-Group (profile name)
-              - Mikrotik-Rate-Limit (bandwidth)
-```
-
-### Hotspot Vouchers
-```
-MikroTik → FreeRADIUS → MySQL (radcheck/radusergroup/radgroupreply)
-                     ↓
-                REST API (/api/radius/post-auth)
-                     ↓
-              - Set firstLoginAt & expiresAt
-              - Sync to Keuangan (income)
-              - Track agent commission
-```
-
-### Database Tables (RADIUS)
-
-| Table | Purpose |
-|-------|---------|
-| `radcheck` | User credentials (Cleartext-Password, NAS-IP-Address) |
-| `radreply` | User-specific reply attributes |
-| `radusergroup` | User → Group mapping |
-| `radgroupcheck` | Group check attributes |
-| `radgroupreply` | Group reply (Mikrotik-Rate-Limit, Session-Timeout) |
-| `radacct` | Accounting/session data |
-| `radpostauth` | Authentication logs |
-| `nas` | NAS/Router clients |
-
-## 📋 Features Overview
-
-### Admin Panel Modules
-
-1. **Dashboard** - Overview with stats and real-time data
-2. **PPPoE Management** - Users and profiles with RADIUS sync
-3. **Hotspot Management**
-   - Multi-router/NAS support
-   - Agent-based distribution
-   - 8 code type combinations
-   - Print templates
-   - WhatsApp delivery
-4. **Agent Management** - Balance, commission, sales tracking
-5. **Invoices** - Billing with auto-reminder
-6. **Payment Gateway** - Midtrans, Xendit, Duitku
-7. **Keuangan** - Financial reporting
-8. **Sessions** - Active connections monitoring
-9. **WhatsApp** - Automated notifications
-10. **Network** - Router/NAS, OLT, ODC, ODP
-11. **GenieACS** - TR-069 CPE management ([Complete Guide](docs/GENIEACS-GUIDE.md))
-    - Device list with real-time status
-    - WiFi configuration (SSID, password, security)
-    - Task monitoring with auto-refresh
-    - Connection request trigger
-    - Device details (uptime, RX power, clients)
-12. **Settings** - Company, cron, backup
-
-### Hotspot Voucher Code Types
-
-| Type | Example | Characters |
-|------|---------|------------|
-| alpha-upper | ABCDEFGH | A-Z (no I,O) |
-| alpha-lower | abcdefgh | a-z (no i,o) |
-| alpha-mixed | AbCdEfGh | Mixed case |
-| alpha-camel | aBcDeFgH | CamelCase |
-| numeric | 12345678 | 1-9 only |
-| alphanumeric-lower | abc12345 | a-z + 1-9 |
-| alphanumeric-upper | ABC12345 | A-Z + 1-9 |
-| alphanumeric-mixed | aBc12345 | Mixed + 1-9 |
-
-### Admin Roles
-
-| Role | Description |
-|------|-------------|
-| SUPER_ADMIN | Full access to all features |
-| FINANCE | Invoices, payments, reports |
-| CUSTOMER_SERVICE | User management, support |
-| TECHNICIAN | Network, router, sessions |
-| MARKETING | Reports, customer data |
-| VIEWER | Read-only access |
-
-## 🔧 Useful Commands
-
-### Application Management
-```bash
-pm2 status                    # Check status
-pm2 logs aibill-radius        # View logs
-pm2 restart aibill-radius     # Restart app
-pm2 stop aibill-radius        # Stop app
-```
-
-### FreeRADIUS Management
-```bash
-systemctl status freeradius   # Check status
-systemctl restart freeradius  # Restart
-freeradius -X                 # Debug mode (stop service first)
-freeradius -XC                # Test configuration
-```
-
-### RADIUS Testing
-```bash
-# Test PPPoE user
-radtest 'user@realm' 'password' 127.0.0.1 0 testing123
-
-# Test Hotspot voucher
-radtest 'vouchercode' 'password' 127.0.0.1 0 testing123
-```
-
-### Database Management
-```bash
-# Connect to database
-mysql -u aibill_user -paibillradius123 aibill_radius
-
-# Backup database
-mysqldump -u aibill_user -paibillradius123 aibill_radius > backup.sql
-
-# Restore database
-mysql -u aibill_user -paibillradius123 aibill_radius < backup.sql
-```
-
-## 🔐 Security
-
-### Best Practices
-1. Change default admin password immediately
-2. Change MySQL passwords
-3. Setup SSL certificate (Let's Encrypt)
-4. Configure firewall (ufw)
-5. Regular database backups
-6. Monitor application logs
 
 ### Firewall Rules
+
 ```bash
 ufw allow 22/tcp    # SSH
 ufw allow 80/tcp    # HTTP
@@ -344,198 +407,139 @@ ufw allow 443/tcp   # HTTPS
 ufw allow 1812/udp  # RADIUS Auth
 ufw allow 1813/udp  # RADIUS Accounting
 ufw allow 3799/udp  # RADIUS CoA
+ufw allow 7547/tcp  # TR-069 CPE
+ufw allow 51820/udp # WireGuard
 ```
 
-## 📡 RADIUS CoA (Change of Authorization)
+---
 
-CoA allows real-time changes to active PPPoE sessions without disconnecting users.
+## 🔧 Operations
 
-### Features
-- **Speed Change** - Update bandwidth instantly via CoA
-- **Session Disconnect** - Terminate sessions remotely
-- **Profile Sync** - Auto-apply profile changes to all active sessions
-- **Direct to NAS** - CoA sent directly to MikroTik, not via FreeRADIUS
+### Application Management
 
-### MikroTik Requirements
-```
-/radius incoming set accept=yes port=3799
-```
-
-### API Endpoints
-
-**Check CoA Status:**
 ```bash
-GET /api/radius/coa
+# Docker
+docker logs aibill-app --tail 50
+docker compose restart app
+docker compose down && docker compose up -d --build
+
+# PM2 (bare-metal)
+pm2 status
+pm2 logs aibill-radius
+pm2 restart aibill-radius
 ```
 
-**Disconnect User:**
+### FreeRADIUS
+
 ```bash
-POST /api/radius/coa
-{
-  "action": "disconnect",
-  "username": "user@realm"
-}
+systemctl status freeradius
+freeradius -XC                # Test config
+freeradius -X                 # Debug mode
+
+# Test authentication
+radtest 'user@realm' 'password' 127.0.0.1 0 testing123    # PPPoE
+radtest 'VOUCHERCODE' 'password' 127.0.0.1 0 testing123   # Hotspot
 ```
 
-**Update Speed:**
+### Database
+
 ```bash
-POST /api/radius/coa
-{
-  "action": "update",
-  "username": "user@realm",
-  "attributes": {
-    "downloadSpeed": 20,
-    "uploadSpeed": 10
-  }
-}
+# Prisma operations
+npx prisma db push        # Apply schema changes
+npx prisma studio         # Visual DB browser
+npm run db:seed           # Seed initial data
+
+# Backup / Restore
+mysqldump -u root -p aibill_radius > backup.sql
+mysql -u root -p aibill_radius < backup.sql
 ```
 
-**Sync Profile to All Sessions:**
-```bash
-POST /api/radius/coa
-{
-  "action": "sync-profile",
-  "profileId": "profile-uuid"
-}
-```
+---
 
-**Test CoA Connection:**
-```bash
-POST /api/radius/coa
-{
-  "action": "test",
-  "host": "103.191.165.156"
-}
-```
+## 🔐 Security Best Practices
 
-### Auto-Sync on Profile Edit
-When you edit a PPPoE profile's speed, the system automatically:
-1. Updates radgroupreply in database
-2. Finds all active sessions using that profile
-3. Sends CoA to each MikroTik NAS
-4. Speed changes instantly without disconnect
+1. **Change default passwords** — admin, MySQL, VPN
+2. **Generate strong secrets** — `openssl rand -base64 32` for NEXTAUTH_SECRET
+3. **Enable HTTPS** — set domain in deploy script for auto Let's Encrypt
+4. **Configure firewall** — only open required ports
+5. **Schedule backups** — enable Telegram backup in Settings
+6. **Monitor logs** — `docker logs` or PM2 logs
+7. **Update regularly** — `git pull && sudo ./deploy.sh`
 
-### Troubleshooting CoA
-```bash
-# Test radclient
-radtest testuser password 127.0.0.1 0 testing123
+---
 
-# Check if radclient installed
-which radclient
+## 👥 Admin Roles
 
-# Install if missing
-apt install freeradius-utils
+| Role | Access Level |
+|------|-------------|
+| **SUPER_ADMIN** | Full access to all features |
+| **FINANCE** | Invoices, payments, financial reports |
+| **CUSTOMER_SERVICE** | User management, tickets, support |
+| **TECHNICIAN** | Network, routers, sessions, work orders |
+| **MARKETING** | Reports, customer data, analytics |
+| **SALES** | Customer onboarding, registrations |
+| **SALES_MANAGER** | Sales oversight + team management |
+| **VIEWER** | Read-only access to all modules |
 
-# Debug CoA
-echo "User-Name=testuser" | radclient -x 103.191.165.156:3799 coa secret123
-```
+Each role has a default permission template (53 permissions across 12 categories). Admins can override individual permissions per user.
 
-### WhatsApp Providers Configuration
+---
 
-| Provider | Base URL | API Key Format |
-|----------|----------|----------------|
-| **Fonnte** | `https://api.fonnte.com/send` | Token from Fonnte dashboard |
-| **WAHA** | `http://IP:PORT` (e.g., `http://10.0.0.1:3000`) | WAHA API Key |
-| **GOWA** | `http://IP:PORT` (e.g., `http://10.0.0.1:2451`) | `username:password` |
-| **MPWA** | `http://IP:PORT` | MPWA API Key |
-| **Wablas** | `https://pati.wablas.com` | Wablas Token |
+## 📊 WhatsApp Providers
 
-## 📊 Database Backup
+| Provider | Type | Base URL |
+|----------|------|----------|
+| **Fonnte** | Cloud API | `https://api.fonnte.com/send` |
+| **WAHA** | Self-hosted | `http://IP:PORT` |
+| **GOWA** | Self-hosted | `http://IP:PORT` |
+| **MPWA** | Self-hosted | `http://IP:PORT` |
+| **Wablas** | Cloud API | `https://pati.wablas.com` |
+| **Baileys Local** | Built-in microservice | `http://wa-engine:3006` |
 
-Latest backup: `backup/aibill_radius_backup_20251204.sql`
-
-To restore:
-```bash
-mysql -u aibill_user -paibillradius123 aibill_radius < backup/aibill_radius_backup_20251204.sql
-```
-
-## 📝 Changelog
-
-### December 6, 2025 (v2.3) - Session & Network Improvements
-- ✅ **Session Timeout** - Auto logout setelah 30 menit tidak aktif
-- ✅ **Idle Warning Popup** - Warning 1 menit sebelum logout dengan countdown
-- ✅ **Stay Logged In** - Tombol perpanjang sesi dari warning popup
-- ✅ **Fix Logout Redirect** - Gunakan `redirect: false` + manual redirect untuk hindari NEXTAUTH_URL issue
-- ✅ **Router GPS** - Tambah koordinat GPS untuk router/NAS dengan Map Picker
-- ✅ **Auto GPS** - Deteksi lokasi otomatis dari browser (HTTPS required)
-- ✅ **OLT Uplink Config** - Konfigurasi uplink dari router ke OLT dengan interface dropdown
-- ✅ **MikroTik Interfaces API** - Endpoint baru untuk fetch interface dari router
-- ✅ **Network Map Enhancement** - Tampilkan uplink info di popup router
-- ✅ **Fix Layout Loading** - Perbaiki sidebar tidak muncul saat pertama login
-- ✅ **Installer Baru** - `vps-install-local.sh` untuk VPS tanpa root access
-
-### December 5, 2025 (v2.2) - FTTH Network Management
-- ✅ **Network Map** - Visualisasi interaktif jaringan FTTH di peta
-- ✅ **OLT Management** - CRUD OLT dengan assignment router
-- ✅ **ODC Management** - CRUD ODC terhubung ke OLT  
-- ✅ **ODP Management** - CRUD ODP dengan parent ODC/ODP
-- ✅ **Customer Assignment** - Assign pelanggan ke port ODP
-- ✅ **Sync PPPoE MikroTik** - Import PPPoE secrets dari MikroTik
-- ✅ **WhatsApp Maintenance Template** - Template gangguan/maintenance
-- ✅ **FreeRADIUS BOM Fix** - Auto remove UTF-16 BOM dari config files
-
-### December 4, 2025 (v2.2) - System Improvements
-- ✅ **Admin Management** - Fixed permission checkboxes not showing
-- ✅ **Settings/Cron** - Complete page rewrite with teal theme
-- ✅ **Settings/Database** - Complete page rewrite with Telegram backup
-- ✅ **Agent Dashboard** - Fixed API paths, Router column added to voucher table
-- ✅ **Payment Gateway** - Added validation for deposit (show error if not configured)
-- ✅ **WhatsApp Providers** - Multi-provider support (Fonnte, WAHA, GOWA, MPWA, Wablas)
-- ✅ **FreeRADIUS Config** - Updated backup configs from production
-- ✅ **Install Wizard** - Added FreeRADIUS config restore option
-- ✅ **vps-install.sh** - Updated with FreeRADIUS config restore
-
-### December 4, 2025 (v2.1) - GenieACS WiFi Management
-- ✅ **GenieACS TR-069 Integration** - Complete CPE management via Web UI
-- ✅ **WiFi Configuration** - Edit SSID, password, security mode (WPA/WPA2/Open)
-- ✅ **Real-time Updates** - Changes applied instantly without waiting periodic inform
-- ✅ **Task Monitoring** - Track all TR-069 tasks with auto-refresh
-- ✅ **Multi-WLAN Support** - Manage WiFi 2.4GHz, 5GHz, and Guest networks
-- ✅ **Force Sync** - Manual connection request trigger
-- ✅ **Device Details** - View ONT info, uptime, RX power, WiFi clients
-- ✅ Fixed GenieACS menu structure (separate from Settings)
-
-### December 3, 2025 (v2.0)
-- ✅ **RADIUS CoA Support** - Real-time speed changes & disconnect
-- ✅ CoA sent directly to MikroTik NAS (not FreeRADIUS)
-- ✅ Auto-sync profile changes to active sessions
-- ✅ `/api/radius/coa` endpoint for CoA operations
-- ✅ Router secret from database for CoA authentication
-- ✅ Fixed FreeRADIUS PPPoE authentication
-- ✅ Disabled `filter_username` policy for realm-style usernames
-- ✅ Added conditional REST for voucher-only post-auth
-- ✅ Fixed post-auth API to allow unmanaged vouchers
-- ✅ Added NAS-IP-Address sync for PPPoE users
-- ✅ Updated FreeRADIUS config backup
-
-### December 2, 2025
-- ✅ Agent voucher system with balance management
-- ✅ Router/NAS assignment for vouchers
-- ✅ Fixed generate-voucher routerId handling
-- ✅ Multi-router support improvements
-
-### Previous Updates
-- Agent deposit system with payment gateway
-- GenieACS integration for TR-069
-- Real-time bandwidth monitoring
-- Session disconnect via MikroTik API
+---
 
 ## 📚 Documentation
 
-| File | Description |
-|------|-------------|
-| [docs/INSTALLATION-GUIDE.md](docs/INSTALLATION-GUIDE.md) | Complete VPS installation |
-| [docs/GENIEACS-GUIDE.md](docs/GENIEACS-GUIDE.md) | GenieACS TR-069 setup & WiFi management |
-| [docs/AGENT_DEPOSIT_SYSTEM.md](docs/AGENT_DEPOSIT_SYSTEM.md) | Agent balance & deposit |
-| [docs/RADIUS-CONNECTIVITY.md](docs/RADIUS-CONNECTIVITY.md) | RADIUS architecture |
+| Document | Description |
+|----------|-------------|
+| [CHANGELOG.md](CHANGELOG.md) | Version history with detailed changes |
+| [docs/INSTALLATION-GUIDE.md](docs/INSTALLATION-GUIDE.md) | Manual VPS installation |
+| [docs/GENIEACS-GUIDE.md](docs/GENIEACS-GUIDE.md) | TR-069 setup & WiFi management |
+| [docs/AGENT_DEPOSIT_SYSTEM.md](docs/AGENT_DEPOSIT_SYSTEM.md) | Agent balance & deposit workflow |
+| [docs/RADIUS-CONNECTIVITY.md](docs/RADIUS-CONNECTIVITY.md) | RADIUS architecture deep-dive |
 | [docs/FREERADIUS-SETUP.md](docs/FREERADIUS-SETUP.md) | FreeRADIUS configuration guide |
+| [docs/01-plan/](docs/01-plan/) | Feature planning documents |
+
+---
+
+## 🧑‍💻 Development
+
+### Prerequisites
+
+- Node.js 20+
+- MySQL 8.0
+- FreeRADIUS 3.0 (for RADIUS features)
+
+### Key Conventions
+
+- **Timezone**: Always use `formatWIB()` and `toWIB()` for user-facing dates
+- **API Auth**: Use `apiAuth()` wrapper in API routes for session validation
+- **Permissions**: Check with `hasPermission(session, 'module.action')`
+- **OLT Commands**: Use `ZteEngine` class for all OLT CLI interactions
+- **Database**: Prisma schema is the single source of truth — use `npx prisma db push`
+
+### CI/CD Pipeline
+
+```
+Push to main/master → Lint → Build Next.js → Docker Build Check
+```
+
+---
 
 ## 📝 License
 
-MIT License - Free for commercial and personal use
+MIT License — Free for commercial and personal use.
 
-## 👨‍💻 Development
+---
 
-Built with ❤️ for Indonesian ISPs
-
-**Important**: Always use `formatWIB()` and `toWIB()` functions when displaying dates to users.
+<p align="center">Built with ❤️ for Indonesian ISPs</p>
