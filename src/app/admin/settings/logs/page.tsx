@@ -85,20 +85,20 @@ export default function SystemLogsPage() {
   };
 
   return (
-    <div className="flex flex-col h-[calc(100vh-6rem)] max-h-[800px] space-y-4">
+    <div className="flex flex-col h-[calc(100vh-6rem)] max-h-[800px] space-y-5">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+          <h1 className="page-title flex items-center gap-2">
             <Terminal className="w-5 h-5 text-indigo-500" />
             System Logs Monitor
           </h1>
-          <p className="text-xs text-gray-500 dark:text-gray-400">View real-time docker container logs for system services</p>
+          <p className="page-subtitle">View real-time docker container logs for system services</p>
         </div>
       </div>
 
-      <div className="flex flex-col md:flex-row gap-3 bg-white dark:bg-gray-900 p-3 rounded-lg border border-gray-200 dark:border-gray-800">
+      <div className="flex flex-col md:flex-row gap-4 bg-white dark:bg-gray-900 p-3 rounded-lg card-soft">
         <div className="flex-1">
-          <label className="block text-[10px] font-medium text-gray-500 mb-1 uppercase tracking-wider">Service Container</label>
+          <label className="block text-xs font-medium text-gray-500 mb-1 uppercase tracking-wider">Service Container</label>
           <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-thin">
             {SERVICES.map((s) => (
               <button
@@ -139,7 +139,7 @@ export default function SystemLogsPage() {
             <select 
               value={linesSize} 
               onChange={(e) => setLinesSize(e.target.value)}
-              className="text-[10px] bg-gray-800 text-gray-300 border-gray-700 rounded px-2 py-1 outline-none focus:ring-1 focus:ring-indigo-500"
+              className="text-xs bg-gray-800 text-gray-300 border-gray-700 rounded px-2 py-1 outline-none focus:ring-1 focus:ring-indigo-500"
             >
               <option value="50">Last 50 lines</option>
               <option value="200">Last 200 lines</option>
@@ -149,7 +149,7 @@ export default function SystemLogsPage() {
 
             <button 
               onClick={() => setAutoRefresh(!autoRefresh)}
-              className={`flex items-center gap-1.5 px-2.5 py-1 rounded text-[10px] font-medium transition-colors ${
+              className={`flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-medium transition-colors ${
                 autoRefresh ? 'bg-green-500/20 text-green-400 border border-green-500/30' : 'bg-gray-800 text-gray-300 border border-gray-700 hover:bg-gray-700'
               }`}
             >
@@ -200,7 +200,7 @@ export default function SystemLogsPage() {
                 setAutoScroll(true);
                 bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
               }}
-              className="text-[10px] text-indigo-400 hover:text-indigo-300 flex items-center gap-1"
+              className="text-xs text-indigo-400 hover:text-indigo-300 flex items-center gap-1"
             >
               Auto-scroll disabled. Click to resume tracking tail ↓
             </button>

@@ -269,7 +269,7 @@ export default function StockMovementsPage() {
                       <p className="text-sm font-medium text-foreground truncate">{movement.item.name}</p>
                       <p className="text-xs font-mono text-muted-foreground">{movement.item.sku}</p>
                     </div>
-                    <span className={`px-1.5 py-0.5 text-[10px] font-medium rounded-full ml-2 shrink-0 ${
+                    <span className={`px-1.5 py-0.5 text-xs font-medium rounded-full ml-2 shrink-0 ${
                       movement.movementType === 'IN' ? 'bg-success/20 text-success' :
                       movement.movementType === 'OUT' ? 'bg-destructive/20 text-destructive' :
                       'bg-primary/20 text-primary'
@@ -288,8 +288,8 @@ export default function StockMovementsPage() {
                     <div><span className="text-muted-foreground">Ref:</span> <span className="text-foreground">{movement.referenceNo || '-'}</span></div>
                     <div><span className="text-muted-foreground">User:</span> <span className="text-foreground">{movement.userName || '-'}</span></div>
                   </div>
-                  <div className="text-[10px] text-muted-foreground">{new Date(movement.createdAt).toLocaleString('id-ID')}</div>
-                  {movement.notes && <div className="text-[10px] text-muted-foreground mt-1">{movement.notes}</div>}
+                  <div className="text-xs text-muted-foreground">{new Date(movement.createdAt).toLocaleString('id-ID')}</div>
+                  {movement.notes && <div className="text-xs text-muted-foreground mt-1">{movement.notes}</div>}
                 </div>
               ))
             )}
@@ -409,7 +409,7 @@ export default function StockMovementsPage() {
               <ModalTitle>{t('inventory.recordStockMovement')}</ModalTitle>
             </ModalHeader>
             <form onSubmit={handleSubmit}>
-              <ModalBody className="space-y-4">
+              <ModalBody className="space-y-5">
                 <div>
                   <ModalLabel required>{t('inventory.itemLabel')}</ModalLabel>
                   <ModalSelect value={formData.itemId} onChange={(e) => setFormData({ ...formData, itemId: e.target.value })} required>
@@ -428,7 +428,7 @@ export default function StockMovementsPage() {
                 <div>
                   <ModalLabel required>{t('inventory.quantityLabel')}</ModalLabel>
                   <ModalInput type="number" value={formData.quantity} onChange={(e) => setFormData({ ...formData, quantity: parseInt(e.target.value) || 0 })} required min={1} />
-                  {formData.movementType === 'ADJUSTMENT' && <p className="text-[10px] text-muted-foreground mt-1">Enter the new total stock quantity</p>}
+                  {formData.movementType === 'ADJUSTMENT' && <p className="text-xs text-muted-foreground mt-1">Enter the new total stock quantity</p>}
                 </div>
                 <div>
                   <ModalLabel>{t('inventory.referenceNo')}</ModalLabel>

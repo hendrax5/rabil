@@ -303,12 +303,12 @@ export default function AdminWorkOrdersPage() {
                     <div>
                       <h3 className="font-bold text-foreground text-sm flex items-center gap-2">
                         {wo.issueType.replace('_', ' ')}
-                        <span className="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-background/50 border border-border">
+                        <span className="text-xs uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-background/50 border border-border">
                           {wo.priority}
                         </span>
                       </h3>
                     </div>
-                    <span className={`px-2 py-0.5 text-[10px] font-bold rounded-full border ${getStatusColor(wo.status)} shadow-sm`}>
+                    <span className={`px-2 py-0.5 text-xs font-bold rounded-full border ${getStatusColor(wo.status)} shadow-sm`}>
                       {wo.status}
                     </span>
                   </div>
@@ -318,7 +318,7 @@ export default function AdminWorkOrdersPage() {
                       <User className="w-3.5 h-3.5 mt-0.5 text-cyan-400/70" />
                       <div>
                         <p className="text-foreground font-medium">{wo.customerName}</p>
-                        <p className="text-[10px]">{wo.customerPhone}</p>
+                        <p className="text-xs">{wo.customerPhone}</p>
                       </div>
                     </div>
                     
@@ -340,7 +340,7 @@ export default function AdminWorkOrdersPage() {
                         {wo.technician ? wo.technician.name : <span className="text-muted-foreground italic">Unassigned</span>}
                       </span>
                     </div>
-                    <div className="flex items-center gap-1 text-muted-foreground text-[10px]">
+                    <div className="flex items-center gap-1 text-muted-foreground text-xs">
                       <Calendar className="w-3 h-3" />
                       {new Date(wo.createdAt).toLocaleDateString()}
                     </div>
@@ -366,11 +366,11 @@ export default function AdminWorkOrdersPage() {
             <ModalTitle>{editingWorkOrder ? 'Edit Work Order' : 'New Work Order'}</ModalTitle>
           </ModalHeader>
           <form onSubmit={handleSubmit}>
-            <ModalBody className="space-y-4">
+            <ModalBody className="space-y-5">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Customer Info */}
-                <div className="space-y-4 border border-border rounded-xl p-3 bg-card/30 relative">
-                  <div className="absolute -top-2.5 left-3 bg-background px-2 text-[10px] font-bold text-cyan-400 uppercase tracking-wider">Customer Details</div>
+                <div className="space-y-5 border border-border rounded-xl p-3 bg-card/30 relative">
+                  <div className="absolute -top-2.5 left-3 bg-background px-2 text-xs font-bold text-cyan-400 uppercase tracking-wider">Customer Details</div>
                   
                   <div>
                     <ModalLabel required>Customer Name</ModalLabel>
@@ -392,8 +392,8 @@ export default function AdminWorkOrdersPage() {
                 </div>
 
                 {/* Job Info */}
-                <div className="space-y-4 border border-border rounded-xl p-3 bg-card/30 relative">
-                  <div className="absolute -top-2.5 left-3 bg-background px-2 text-[10px] font-bold text-pink-400 uppercase tracking-wider">Job Details</div>
+                <div className="space-y-5 border border-border rounded-xl p-3 bg-card/30 relative">
+                  <div className="absolute -top-2.5 left-3 bg-background px-2 text-xs font-bold text-pink-400 uppercase tracking-wider">Job Details</div>
                   
                   <div className="grid grid-cols-2 gap-2">
                     <div>
@@ -440,7 +440,7 @@ export default function AdminWorkOrdersPage() {
 
               {/* Assignment & Status */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border border-border rounded-xl p-3 bg-card/30 relative mt-4">
-                <div className="absolute -top-2.5 left-3 bg-background px-2 text-[10px] font-bold text-emerald-400 uppercase tracking-wider">Assignment</div>
+                <div className="absolute -top-2.5 left-3 bg-background px-2 text-xs font-bold text-emerald-400 uppercase tracking-wider">Assignment</div>
                 
                 <div>
                   <ModalLabel>Assign to Technician</ModalLabel>

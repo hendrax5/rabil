@@ -78,33 +78,35 @@ function LoginForm() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-teal-50 via-white to-cyan-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 flex items-center justify-center p-4">
-      <div className="w-full max-w-sm">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-zinc-950 dark:via-zinc-900 dark:to-zinc-950 flex items-center justify-center p-4">
+      <div className="w-full max-w-md">
         {/* Logo & Title */}
-        <div className="text-center mb-6">
-          <div className="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-br from-teal-600 to-cyan-600 rounded-xl shadow-lg shadow-teal-500/30 mb-3">
-            <Shield className="w-6 h-6 text-white" />
+        <div className="text-center mb-8">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-primary rounded-2xl shadow-lg shadow-primary/20 mb-4">
+            <Shield className="w-8 h-8 text-white" />
           </div>
-          <h1 className="text-xl font-bold text-gray-900 dark:text-white">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">
             {companyName}
           </h1>
-          <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-            Admin Login
+          <p className="text-sm text-gray-500 dark:text-zinc-400 mt-1">
+            Sign in to admin dashboard
           </p>
         </div>
 
         {/* Login Form */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-5">
+        <div className="card-soft p-8">
           {/* Idle Logout Notice */}
           {idleLogout && (
-            <div className="mb-4 p-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg">
-              <div className="flex items-center gap-2">
-                <Clock className="w-4 h-4 text-amber-600 dark:text-amber-400 flex-shrink-0" />
+            <div className="mb-5 p-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl">
+              <div className="flex items-start gap-4">
+                <div className="icon-container bg-amber-100 dark:bg-amber-900/30 !w-10 !h-10">
+                  <Clock className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+                </div>
                 <div>
-                  <p className="text-xs font-medium text-amber-700 dark:text-amber-300">
+                  <p className="text-sm font-medium text-amber-700 dark:text-amber-300">
                     Sesi berakhir
                   </p>
-                  <p className="text-[10px] text-amber-600 dark:text-amber-400">
+                  <p className="text-xs text-amber-600 dark:text-amber-400 mt-0.5">
                     Anda telah logout otomatis karena tidak ada aktivitas selama 30 menit.
                   </p>
                 </div>
@@ -113,15 +115,16 @@ function LoginForm() {
           )}
 
           {error && (
-            <div className="mb-4 p-2.5 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
-              <p className="text-xs text-red-600 dark:text-red-400">{error}</p>
+            <div className="mb-5 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl flex items-center gap-4">
+              <AlertTriangle className="w-4 h-4 text-red-600 dark:text-red-400 flex-shrink-0" />
+              <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label className="flex items-center gap-1.5 text-[11px] font-medium text-gray-700 dark:text-gray-300 mb-1.5">
-                <User className="w-3 h-3" />
+              <label className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-zinc-300 mb-2">
+                <User className="w-4 h-4" />
                 Username
               </label>
               <input
@@ -129,15 +132,15 @@ function LoginForm() {
                 required
                 value={formData.username}
                 onChange={(e) => setFormData({ ...formData, username: e.target.value })}
-                className="w-full px-3 py-2 text-sm border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:ring-2 focus:ring-zinc-900 dark:focus:ring-zinc-100 focus:border-transparent transition-all outline-none"
+                className="input-premium w-full"
                 placeholder="Enter your username"
                 disabled={loading}
               />
             </div>
 
             <div>
-              <label className="flex items-center gap-1.5 text-[11px] font-medium text-gray-700 dark:text-gray-300 mb-1.5">
-                <Lock className="w-3 h-3" />
+              <label className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-zinc-300 mb-2">
+                <Lock className="w-4 h-4" />
                 Password
               </label>
               <div className="relative">
@@ -146,14 +149,14 @@ function LoginForm() {
                   required
                   value={formData.password}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                  className="w-full px-3 py-2 text-sm border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:ring-2 focus:ring-zinc-900 dark:focus:ring-zinc-100 focus:border-transparent transition-all outline-none pr-9"
+                  className="input-premium w-full pr-11"
                   placeholder="Enter your password"
                   disabled={loading}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition p-1"
                   disabled={loading}
                 >
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -164,7 +167,7 @@ function LoginForm() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full px-3 py-2 bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 disabled:from-gray-400 disabled:to-gray-400 text-white text-sm font-medium rounded-lg transition flex items-center justify-center gap-2"
+              className="w-full px-4 py-3 bg-primary hover:bg-primary/90 disabled:bg-gray-300 dark:disabled:bg-zinc-700 text-white text-sm font-semibold rounded-xl transition-all duration-200 flex items-center justify-center gap-2 shadow-sm hover:shadow-md"
             >
               {loading ? (
                 <>
@@ -179,7 +182,7 @@ function LoginForm() {
         </div>
 
         {/* Footer */}
-        <p className="text-center text-[10px] text-gray-500 dark:text-gray-400 mt-4">
+        <p className="text-center text-xs text-gray-400 dark:text-zinc-500 mt-6">
           Powered by NexaRadius
         </p>
       </div>

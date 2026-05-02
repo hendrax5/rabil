@@ -125,7 +125,7 @@ export default function NotificationSettingsPage() {
       <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950">
         <div className="flex flex-col items-center gap-2">
           <div className="w-6 h-6 border-2 border-teal-500 border-t-transparent rounded-full animate-spin" />
-          <span className="text-xs text-gray-500 dark:text-gray-400">Loading...</span>
+          <span className="page-subtitle">Loading...</span>
         </div>
       </div>
     );
@@ -137,11 +137,11 @@ export default function NotificationSettingsPage() {
         {/* Header */}
         <div>
           <h1 className="text-base font-semibold text-gray-900 dark:text-white">{t('whatsapp.notificationsTitle')}</h1>
-          <p className="text-[10px] text-gray-500 dark:text-gray-400">{t('whatsapp.notificationsSubtitle')}</p>
+          <p className="text-xs text-gray-500 dark:text-zinc-400 dark:text-gray-400">{t('whatsapp.notificationsSubtitle')}</p>
         </div>
 
         {/* Invoice Reminder Card */}
-        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800">
+        <div className="card-soft">
           <div className="px-3 py-2.5 border-b border-gray-200 dark:border-gray-800">
             <div className="flex items-center gap-2">
               <svg className="w-4 h-4 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -149,7 +149,7 @@ export default function NotificationSettingsPage() {
               </svg>
               <div>
                 <h3 className="text-sm font-semibold text-gray-900 dark:text-white">{t('whatsapp.invoiceReminder')}</h3>
-                <p className="text-[10px] text-gray-500 dark:text-gray-400">{t('whatsapp.invoiceReminderDesc')}</p>
+                <p className="text-xs text-gray-500 dark:text-zinc-400 dark:text-gray-400">{t('whatsapp.invoiceReminderDesc')}</p>
               </div>
             </div>
           </div>
@@ -158,7 +158,7 @@ export default function NotificationSettingsPage() {
             <div className="flex items-center justify-between p-2.5 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
               <div>
                 <p className="text-xs font-medium text-gray-900 dark:text-white">{t('whatsapp.enableAutoReminder')}</p>
-                <p className="text-[10px] text-gray-500 dark:text-gray-400">{t('whatsapp.enableAutoReminderDesc')}</p>
+                <p className="text-xs text-gray-500 dark:text-zinc-400 dark:text-gray-400">{t('whatsapp.enableAutoReminderDesc')}</p>
               </div>
               <button
                 onClick={() => setEnabled(!enabled)}
@@ -170,7 +170,7 @@ export default function NotificationSettingsPage() {
 
             {/* Reminder Time */}
             <div>
-              <label className="flex items-center gap-1.5 text-[10px] font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1">
+              <label className="flex items-center gap-1.5 text-xs font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1">
                 <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
@@ -182,26 +182,26 @@ export default function NotificationSettingsPage() {
                 onChange={(e) => setReminderTime(e.target.value)}
                 className="w-40 h-8 px-2.5 text-xs bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md focus:ring-1 focus:ring-teal-500 focus:border-teal-500 text-gray-900 dark:text-white"
               />
-              <p className="text-[10px] text-gray-500 dark:text-gray-400 mt-0.5">{t('whatsapp.sendTimeNote')}</p>
+              <p className="text-xs text-gray-500 dark:text-zinc-400 dark:text-gray-400 mt-0.5">{t('whatsapp.sendTimeNote')}</p>
             </div>
 
             {/* Reminder Days */}
             <div>
-              <label className="block text-[10px] font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1.5">
+              <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1.5">
                 {t('whatsapp.reminderSchedule')}
               </label>
-              <p className="text-[10px] text-gray-500 dark:text-gray-400 mb-2">
+              <p className="text-xs text-gray-500 dark:text-zinc-400 dark:text-gray-400 mb-2">
                 {t('whatsapp.reminderScheduleDesc')}
               </p>
 
               <div className="flex flex-wrap gap-1.5 mb-2">
                 {reminderDays.length === 0 ? (
-                  <span className="text-[10px] text-gray-400 italic">{t('whatsapp.noSchedule')}</span>
+                  <span className="text-xs text-gray-400 italic">{t('whatsapp.noSchedule')}</span>
                 ) : (
                   reminderDays.map((day) => (
                     <span
                       key={day}
-                      className="inline-flex items-center gap-1 px-2 py-1 text-[10px] font-medium bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded"
+                      className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded"
                     >
                       {formatDayLabel(day)}
                       <button
@@ -244,7 +244,7 @@ export default function NotificationSettingsPage() {
         </div>
 
         {/* OTP Settings Card */}
-        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800">
+        <div className="card-soft">
           <div className="px-3 py-2.5 border-b border-gray-200 dark:border-gray-800">
             <div className="flex items-center gap-2">
               <svg className="w-4 h-4 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -252,7 +252,7 @@ export default function NotificationSettingsPage() {
               </svg>
               <div>
                 <h3 className="text-sm font-semibold text-gray-900 dark:text-white">{t('whatsapp.otpLogin')}</h3>
-                <p className="text-[10px] text-gray-500 dark:text-gray-400">{t('whatsapp.otpLoginDesc')}</p>
+                <p className="text-xs text-gray-500 dark:text-zinc-400 dark:text-gray-400">{t('whatsapp.otpLoginDesc')}</p>
               </div>
             </div>
           </div>
@@ -261,7 +261,7 @@ export default function NotificationSettingsPage() {
             <div className="flex items-center justify-between p-2.5 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
               <div>
                 <p className="text-xs font-medium text-gray-900 dark:text-white">{t('whatsapp.enableOtp')}</p>
-                <p className="text-[10px] text-gray-500 dark:text-gray-400">{t('whatsapp.enableOtpDesc')}</p>
+                <p className="text-xs text-gray-500 dark:text-zinc-400 dark:text-gray-400">{t('whatsapp.enableOtpDesc')}</p>
               </div>
               <button
                 onClick={() => setOtpEnabled(!otpEnabled)}
@@ -273,7 +273,7 @@ export default function NotificationSettingsPage() {
 
             {/* OTP Expiry */}
             <div>
-              <label className="flex items-center gap-1.5 text-[10px] font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1">
+              <label className="flex items-center gap-1.5 text-xs font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1">
                 <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
@@ -287,7 +287,7 @@ export default function NotificationSettingsPage() {
                 onChange={(e) => setOtpExpiry(parseInt(e.target.value))}
                 className="w-24 h-8 px-2.5 text-xs bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md focus:ring-1 focus:ring-teal-500 focus:border-teal-500 text-gray-900 dark:text-white"
               />
-              <p className="text-[10px] text-gray-500 dark:text-gray-400 mt-0.5">
+              <p className="text-xs text-gray-500 dark:text-zinc-400 dark:text-gray-400 mt-0.5">
                 {t('whatsapp.otpExpiryNote')} {otpExpiry} {t('whatsapp.minutes')}
               </p>
             </div>
@@ -295,7 +295,7 @@ export default function NotificationSettingsPage() {
             {/* OTP Warning */}
             {!otpEnabled && (
               <div className="p-2 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-md">
-                <p className="text-[10px] text-yellow-800 dark:text-yellow-200">
+                <p className="text-xs text-yellow-800 dark:text-yellow-200">
                   ⚠️ {t('whatsapp.otpDisabledWarning')}
                 </p>
               </div>

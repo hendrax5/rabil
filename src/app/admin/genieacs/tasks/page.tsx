@@ -114,7 +114,7 @@ export default function GenieACSTasksPage() {
     // Check for fault first
     if (task.fault) {
       return (
-        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-medium bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 rounded">
+        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 text-xs font-medium bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 rounded">
           <XCircle className="w-3 h-3" />
           Fault
         </span>
@@ -128,7 +128,7 @@ export default function GenieACSTasksPage() {
     
     if (status === 'done') {
       return (
-        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-medium bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 rounded">
+        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 text-xs font-medium bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 rounded">
           <CheckCircle className="w-3 h-3" />
           Done
         </span>
@@ -137,7 +137,7 @@ export default function GenieACSTasksPage() {
     
     // Default to pending - task is waiting for device connection
     return (
-      <span className="inline-flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-medium bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400 rounded">
+      <span className="inline-flex items-center gap-1 px-1.5 py-0.5 text-xs font-medium bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400 rounded">
         <Clock className="w-3 h-3" />
         Pending
       </span>
@@ -198,32 +198,32 @@ export default function GenieACSTasksPage() {
     <div className="space-y-3">
       {/* Header */}
       <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl p-4">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-4">
           <div className="p-2 bg-teal-50 dark:bg-teal-500/10 rounded-lg">
             <ListTodo className="w-5 h-5 text-teal-600 dark:text-teal-400" />
           </div>
           <div>
-            <h1 className="text-lg font-semibold text-gray-900 dark:text-zinc-100">GenieACS Tasks</h1>
+            <h1 className="page-title text-gray-900 dark:text-zinc-100">GenieACS Tasks</h1>
             <p className="text-xs text-gray-500 dark:text-zinc-400 mt-0.5">Monitor dan kelola task TR-069</p>
           </div>
         </div>
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-3 gap-4">
         <button
           onClick={() => setStatusFilter(statusFilter === 'pending' ? 'all' : 'pending')}
           className={`bg-white dark:bg-zinc-900 rounded-xl border p-3 transition-all ${
             statusFilter === 'pending' ? 'border-yellow-500 ring-1 ring-yellow-500' : 'border-gray-200 dark:border-zinc-800'
           }`}
         >
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4">
             <div className="p-2 rounded-lg bg-yellow-50 dark:bg-yellow-500/10">
               <Clock className="w-4 h-4 text-yellow-600 dark:text-yellow-500" />
             </div>
             <div className="text-left">
               <p className="text-xs text-gray-500 dark:text-zinc-400 font-medium">Pending</p>
-              <p className="text-lg font-semibold text-yellow-600 dark:text-yellow-500 leading-tight">{pendingCount}</p>
+              <p className="page-title text-yellow-600 dark:text-yellow-500 leading-tight">{pendingCount}</p>
             </div>
           </div>
         </button>
@@ -233,13 +233,13 @@ export default function GenieACSTasksPage() {
             statusFilter === 'fault' ? 'border-red-500 ring-1 ring-red-500' : 'border-gray-200 dark:border-zinc-800'
           }`}
         >
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4">
             <div className="p-2 rounded-lg bg-red-50 dark:bg-red-500/10">
               <XCircle className="w-4 h-4 text-red-600 dark:text-red-500" />
             </div>
             <div className="text-left">
               <p className="text-xs text-gray-500 dark:text-zinc-400 font-medium">Fault</p>
-              <p className="text-lg font-semibold text-red-600 dark:text-red-500 leading-tight">{faultCount}</p>
+              <p className="page-title text-red-600 dark:text-red-500 leading-tight">{faultCount}</p>
             </div>
           </div>
         </button>
@@ -249,13 +249,13 @@ export default function GenieACSTasksPage() {
             statusFilter === 'done' ? 'border-green-500 ring-1 ring-green-500' : 'border-gray-200 dark:border-zinc-800'
           }`}
         >
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4">
             <div className="p-2 rounded-lg bg-green-50 dark:bg-green-500/10">
               <CheckCircle className="w-4 h-4 text-green-600 dark:text-green-500" />
             </div>
             <div className="text-left">
               <p className="text-xs text-gray-500 dark:text-zinc-400 font-medium">Done</p>
-              <p className="text-lg font-semibold text-green-600 dark:text-green-500 leading-tight">{doneCount}</p>
+              <p className="page-title text-green-600 dark:text-green-500 leading-tight">{doneCount}</p>
             </div>
           </div>
         </button>
@@ -364,7 +364,7 @@ export default function GenieACSTasksPage() {
                     <td className="py-3 px-4 text-center">
                       {getStatusBadge(task)}
                       {task.fault && (
-                        <p className="text-[10px] text-red-500 mt-1 max-w-[150px] truncate" title={task.fault.message}>
+                        <p className="text-xs text-red-500 mt-1 max-w-[150px] truncate" title={task.fault.message}>
                           {task.fault.message}
                         </p>
                       )}
@@ -400,7 +400,7 @@ export default function GenieACSTasksPage() {
       {/* Warning for pending tasks */}
       {pendingCount > 0 && (
         <div className="bg-white dark:bg-zinc-900 border border-yellow-200 dark:border-yellow-900/30 rounded-xl p-4 shadow-sm dark:shadow-none">
-          <div className="flex items-start gap-3">
+          <div className="flex items-start gap-4">
             <div className="p-2 rounded-lg bg-yellow-50 dark:bg-yellow-500/10 mt-0.5">
               <Clock className="w-4 h-4 text-yellow-600 dark:text-yellow-500" />
             </div>
@@ -420,7 +420,7 @@ export default function GenieACSTasksPage() {
 
       {/* Info */}
       <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl p-4 shadow-sm dark:shadow-none">
-        <div className="flex items-start gap-3">
+        <div className="flex items-start gap-4">
           <div className="p-2 rounded-lg bg-blue-50 dark:bg-blue-500/10 mt-0.5">
             <AlertCircle className="w-4 h-4 text-blue-600 dark:text-blue-400" />
           </div>

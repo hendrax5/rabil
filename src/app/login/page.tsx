@@ -125,7 +125,7 @@ export default function CustomerLoginPage() {
         </div>
 
         {/* Login Form */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-5">
+        <div className="bg-white dark:bg-gray-800 card-soft p-5">
           {error && (
             <div className="mb-4 p-2.5 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
               <p className="text-xs text-red-600 dark:text-red-400">{error}</p>
@@ -135,7 +135,7 @@ export default function CustomerLoginPage() {
           {step === 'phone' ? (
             <form onSubmit={handleSendOTP} className="space-y-4">
               <div>
-                <label className="flex items-center gap-1.5 text-[11px] font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+                <label className="flex items-center gap-1.5 text-xs font-medium text-gray-700 dark:text-gray-300 mb-1.5">
                   <Smartphone className="w-3 h-3" />
                   Nomor WhatsApp Terdaftar
                 </label>
@@ -148,7 +148,7 @@ export default function CustomerLoginPage() {
                   placeholder="08123456789"
                   disabled={loading}
                 />
-                <p className="text-[10px] text-gray-500 mt-1">
+                <p className="text-xs text-gray-500 mt-1">
                   Masukkan nomor HP yang terdaftar di sistem
                 </p>
               </div>
@@ -174,7 +174,7 @@ export default function CustomerLoginPage() {
           ) : (
             <form onSubmit={handleVerifyOTP} className="space-y-4">
               <div>
-                <label className="flex items-center gap-1.5 text-[11px] font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+                <label className="flex items-center gap-1.5 text-xs font-medium text-gray-700 dark:text-gray-300 mb-1.5">
                   <Lock className="w-3 h-3" />
                   Kode OTP
                 </label>
@@ -189,7 +189,7 @@ export default function CustomerLoginPage() {
                   disabled={loading}
                   autoFocus
                 />
-                <p className="text-[10px] text-gray-500 mt-1.5 text-center">
+                <p className="text-xs text-gray-500 mt-1.5 text-center">
                   Kode OTP dikirim ke <strong>{phone}</strong>
                   <br />
                   Berlaku {expiresIn} menit
@@ -239,7 +239,7 @@ export default function CustomerLoginPage() {
         </div>
 
         {/* Footer */}
-        <p className="text-center text-[10px] text-gray-500 dark:text-gray-400 mt-4">
+        <p className="text-center text-xs text-gray-500 dark:text-gray-400 mt-4">
           Powered by NexaRadius
         </p>
       </CyberFadeUp>

@@ -159,15 +159,15 @@ export default function HotspotProfilePage() {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+          <h1 className="page-title flex items-center gap-2">
             <Ticket className="w-5 h-5 text-primary" />
             {t('hotspot.profiles')}
           </h1>
-          <p className="text-xs text-gray-500 dark:text-gray-400">{t('hotspot.profilesSubtitle')}</p>
+          <p className="page-subtitle">{t('hotspot.profilesSubtitle')}</p>
         </div>
         <div className="flex gap-2">
           <button
@@ -188,28 +188,28 @@ export default function HotspotProfilePage() {
 
       {/* Stats */}
       <div className="grid grid-cols-3 gap-2">
-        <div className="bg-white dark:bg-gray-900 p-2.5 rounded-lg border border-gray-200 dark:border-gray-800">
+        <div className="bg-white dark:bg-gray-900 p-2.5 rounded-lg card-soft">
           <div className="flex items-center justify-between">
             <div>
-              <div className="text-[10px] font-medium text-gray-500 uppercase">{t('common.total')}</div>
+              <div className="text-xs font-medium text-gray-500 uppercase">{t('common.total')}</div>
               <div className="text-lg font-bold text-gray-900 dark:text-white">{profiles.length}</div>
             </div>
             <Ticket className="w-4 h-4 text-blue-600" />
           </div>
         </div>
-        <div className="bg-white dark:bg-gray-900 p-2.5 rounded-lg border border-gray-200 dark:border-gray-800">
+        <div className="bg-white dark:bg-gray-900 p-2.5 rounded-lg card-soft">
           <div className="flex items-center justify-between">
             <div>
-              <div className="text-[10px] font-medium text-gray-500 uppercase">{t('common.active')}</div>
+              <div className="text-xs font-medium text-gray-500 uppercase">{t('common.active')}</div>
               <div className="text-lg font-bold text-green-600">{profiles.filter(p => p.isActive).length}</div>
             </div>
             <Ticket className="w-4 h-4 text-green-600" />
           </div>
         </div>
-        <div className="bg-white dark:bg-gray-900 p-2.5 rounded-lg border border-gray-200 dark:border-gray-800">
+        <div className="bg-white dark:bg-gray-900 p-2.5 rounded-lg card-soft">
           <div className="flex items-center justify-between">
             <div>
-              <div className="text-[10px] font-medium text-gray-500 uppercase">{t('hotspot.avgPrice')}</div>
+              <div className="text-xs font-medium text-gray-500 uppercase">{t('hotspot.avgPrice')}</div>
               <div className="text-sm font-bold text-purple-600">
                 {profiles.length > 0 ? formatCurrency(profiles.reduce((sum, p) => sum + p.sellingPrice, 0) / profiles.length) : 'Rp 0'}
               </div>
@@ -220,18 +220,18 @@ export default function HotspotProfilePage() {
       </div>
 
       {/* Table */}
-      <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 overflow-hidden">
+      <div className="card-soft overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="bg-gray-50 dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-700">
               <tr>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase">{t('hotspot.profile')}</th>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase">{t('hotspot.speed')}</th>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase">{t('hotspot.validity')}</th>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase hidden sm:table-cell">{t('hotspot.costPrice')}</th>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase">{t('hotspot.sellingPrice')}</th>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase">{t('common.status')}</th>
-                <th className="px-3 py-2 text-right text-[10px] font-medium text-gray-500 uppercase">{t('common.actions')}</th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">{t('hotspot.profile')}</th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">{t('hotspot.speed')}</th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">{t('hotspot.validity')}</th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase hidden sm:table-cell">{t('hotspot.costPrice')}</th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">{t('hotspot.sellingPrice')}</th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">{t('common.status')}</th>
+                <th className="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase">{t('common.actions')}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
@@ -250,12 +250,12 @@ export default function HotspotProfilePage() {
                         <span className="ml-1 text-[9px] text-gray-400">({profile.groupProfile})</span>
                       )}
                     </td>
-                    <td className="px-3 py-2 font-mono text-[10px] text-gray-600">{profile.speed}</td>
-                    <td className="px-3 py-2 text-[10px] text-gray-600">{formatValidity(profile.validityValue, profile.validityUnit)}</td>
-                    <td className="px-3 py-2 text-[10px] text-gray-500 hidden sm:table-cell">{formatCurrency(profile.costPrice)}</td>
+                    <td className="px-3 py-2 font-mono text-xs text-gray-600">{profile.speed}</td>
+                    <td className="px-3 py-2 text-xs text-gray-600">{formatValidity(profile.validityValue, profile.validityUnit)}</td>
+                    <td className="px-3 py-2 text-xs text-gray-500 dark:text-zinc-400 hidden sm:table-cell">{formatCurrency(profile.costPrice)}</td>
                     <td className="px-3 py-2 text-xs font-medium text-green-600">{formatCurrency(profile.sellingPrice)}</td>
                     <td className="px-3 py-2">
-                      <span className={`px-1.5 py-0.5 rounded text-[10px] font-medium ${
+                      <span className={`px-1.5 py-0.5 rounded text-xs font-medium ${
                         profile.isActive 
                           ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
                           : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'
@@ -292,16 +292,16 @@ export default function HotspotProfilePage() {
       {/* Add/Edit Dialog */}
       {isDialogOpen && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-          <div className="bg-white dark:bg-gray-900 rounded-lg shadow-xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
+          <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
             <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-800">
               <h2 className="text-sm font-semibold text-gray-900 dark:text-white">
                 {editingProfile ? t('hotspot.editProfile') : t('hotspot.addProfile')}
               </h2>
-              <p className="text-[10px] text-gray-500">{editingProfile ? t('common.update') : t('common.create')}</p>
+              <p className="text-xs text-gray-500 dark:text-zinc-400">{editingProfile ? t('common.update') : t('common.create')}</p>
             </div>
             <form onSubmit={handleSubmit} className="p-4 space-y-3">
               <div>
-                <label className="block text-[10px] font-medium text-gray-700 dark:text-gray-300 mb-1">{t('common.name')} *</label>
+                <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">{t('common.name')} *</label>
                 <input
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -310,9 +310,9 @@ export default function HotspotProfilePage() {
                   className="w-full px-2.5 py-1.5 border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 rounded-md text-xs"
                 />
               </div>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-[10px] font-medium text-gray-700 dark:text-gray-300 mb-1">{t('hotspot.costPrice')} *</label>
+                  <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">{t('hotspot.costPrice')} *</label>
                   <input
                     type="number"
                     min="0"
@@ -324,7 +324,7 @@ export default function HotspotProfilePage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] font-medium text-gray-700 dark:text-gray-300 mb-1">{t('hotspot.resellerFee')}</label>
+                  <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">{t('hotspot.resellerFee')}</label>
                   <input
                     type="number"
                     min="0"
@@ -336,12 +336,12 @@ export default function HotspotProfilePage() {
                 </div>
               </div>
               <div className="bg-gradient-to-r from-teal-50 to-cyan-50 dark:from-teal-900/20 dark:to-cyan-900/20 p-2 rounded-lg">
-                <div className="text-[10px] text-gray-600 dark:text-gray-400">{t('hotspot.sellingPrice')}</div>
+                <div className="text-xs text-gray-600 dark:text-gray-400">{t('hotspot.sellingPrice')}</div>
                 <div className="text-base font-bold text-green-600">{formatCurrency(sellingPrice)}</div>
               </div>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-[10px] font-medium text-gray-700 dark:text-gray-300 mb-1">{t('hotspot.speed')} *</label>
+                  <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">{t('hotspot.speed')} *</label>
                   <input
                     value={formData.speed}
                     onChange={(e) => setFormData({ ...formData, speed: e.target.value })}
@@ -351,7 +351,7 @@ export default function HotspotProfilePage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] font-medium text-gray-700 dark:text-gray-300 mb-1">{t('hotspot.groupProfile')}</label>
+                  <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">{t('hotspot.groupProfile')}</label>
                   <input
                     value={formData.groupProfile}
                     onChange={(e) => setFormData({ ...formData, groupProfile: e.target.value })}
@@ -360,9 +360,9 @@ export default function HotspotProfilePage() {
                   />
                 </div>
               </div>
-              <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-[10px] font-medium text-gray-700 dark:text-gray-300 mb-1">{t('hotspot.sharedUsers')} *</label>
+                  <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">{t('hotspot.sharedUsers')} *</label>
                   <input
                     type="number"
                     min="1"
@@ -373,7 +373,7 @@ export default function HotspotProfilePage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] font-medium text-gray-700 dark:text-gray-300 mb-1">{t('hotspot.validity')} *</label>
+                  <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">{t('hotspot.validity')} *</label>
                   <input
                     type="number"
                     min="1"
@@ -384,7 +384,7 @@ export default function HotspotProfilePage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] font-medium text-gray-700 dark:text-gray-300 mb-1">{t('common.type')}</label>
+                  <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">{t('common.type')}</label>
                   <select
                     value={formData.validityUnit}
                     onChange={(e) => setFormData({ ...formData, validityUnit: e.target.value })}
@@ -398,7 +398,7 @@ export default function HotspotProfilePage() {
                 </div>
               </div>
               <div className="border-t border-gray-200 dark:border-gray-800 pt-3 space-y-2">
-                <div className="text-[10px] font-medium text-gray-700 dark:text-gray-300">{t('hotspot.accessSettings')}</div>
+                <div className="text-xs font-medium text-gray-700 dark:text-gray-300">{t('hotspot.accessSettings')}</div>
                 <label className="flex items-center gap-2 cursor-pointer">
                   <input
                     type="checkbox"
@@ -442,7 +442,7 @@ export default function HotspotProfilePage() {
       {/* Delete Confirmation */}
       {deleteProfileId && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-          <div className="bg-white dark:bg-gray-900 rounded-lg shadow-xl max-w-sm w-full p-4">
+          <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl max-w-sm w-full p-4">
             <h2 className="text-sm font-semibold text-gray-900 dark:text-white">{t('hotspot.deleteProfile')}</h2>
             <p className="text-xs text-gray-600 dark:text-gray-400 mt-1 mb-4">
               {t('hotspot.confirmDeleteProfile')}
@@ -456,7 +456,7 @@ export default function HotspotProfilePage() {
               </button>
               <button
                 onClick={handleDelete}
-                className="px-3 py-1.5 text-xs bg-red-600 text-white rounded-md hover:bg-red-700"
+                className="btn-premium bg-red-600 text-white hover:bg-red-700-md hover:bg-red-700"
               >
                 {t('common.delete')}
               </button>

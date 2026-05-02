@@ -202,7 +202,7 @@ export default function DeviceDetailPage({ params }: { params: Promise<{ deviceI
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <span className={`px-2 py-0.5 text-[10px] font-medium rounded ${device.status === 'Online' ? 'bg-green-500' : 'bg-red-500'}`}>
+            <span className={`px-2 py-0.5 text-xs font-medium rounded ${device.status === 'Online' ? 'bg-green-500' : 'bg-red-500'}`}>
               {device.status}
             </span>
             <button onClick={handleRefresh} disabled={refreshing} className="p-1.5 hover:bg-white/10 rounded">
@@ -231,7 +231,7 @@ export default function DeviceDetailPage({ params }: { params: Promise<{ deviceI
       </div>
 
       {/* Tabs */}
-      <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 overflow-hidden">
+      <div className="bg-white dark:bg-gray-900 rounded-lg card-soft overflow-hidden">
         <div className="flex overflow-x-auto border-b border-gray-200 dark:border-gray-800">
           {tabs.map(tab => (
             <button
@@ -313,7 +313,7 @@ export default function DeviceDetailPage({ params }: { params: Promise<{ deviceI
                   <p className="text-[11px] text-gray-500 mb-1">Tags</p>
                   <div className="flex flex-wrap gap-1">
                     {device.tags.map((tag, idx) => (
-                      <span key={idx} className="px-2 py-0.5 text-[10px] bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 rounded">
+                      <span key={idx} className="px-2 py-0.5 text-xs bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 rounded">
                         {tag}
                       </span>
                     ))}
@@ -327,7 +327,7 @@ export default function DeviceDetailPage({ params }: { params: Promise<{ deviceI
             <div className="text-center py-8 text-gray-500">
               <Globe className="w-8 h-8 mx-auto mb-2 opacity-50" />
               <p className="text-xs">WAN Configuration</p>
-              <p className="text-[10px] mt-1">Coming soon...</p>
+              <p className="text-xs mt-1">Coming soon...</p>
             </div>
           )}
 
@@ -335,7 +335,7 @@ export default function DeviceDetailPage({ params }: { params: Promise<{ deviceI
             <div className="text-center py-8 text-gray-500">
               <Network className="w-8 h-8 mx-auto mb-2 opacity-50" />
               <p className="text-xs">LAN Configuration</p>
-              <p className="text-[10px] mt-1">Coming soon...</p>
+              <p className="text-xs mt-1">Coming soon...</p>
             </div>
           )}
 
@@ -343,7 +343,7 @@ export default function DeviceDetailPage({ params }: { params: Promise<{ deviceI
             <div className="text-center py-8 text-gray-500">
               <Wifi className="w-8 h-8 mx-auto mb-2 opacity-50" />
               <p className="text-xs">WLAN Configuration</p>
-              <p className="text-[10px] mt-1">Coming soon...</p>
+              <p className="text-xs mt-1">Coming soon...</p>
             </div>
           )}
 
@@ -351,7 +351,7 @@ export default function DeviceDetailPage({ params }: { params: Promise<{ deviceI
             <div className="text-center py-8 text-gray-500">
               <User className="w-8 h-8 mx-auto mb-2 opacity-50" />
               <p className="text-xs">User Management</p>
-              <p className="text-[10px] mt-1">Coming soon...</p>
+              <p className="text-xs mt-1">Coming soon...</p>
             </div>
           )}
 
@@ -359,7 +359,7 @@ export default function DeviceDetailPage({ params }: { params: Promise<{ deviceI
             <div className="text-center py-8 text-gray-500">
               <Settings className="w-8 h-8 mx-auto mb-2 opacity-50" />
               <p className="text-xs">TR-069 Settings</p>
-              <p className="text-[10px] mt-1">Coming soon...</p>
+              <p className="text-xs mt-1">Coming soon...</p>
             </div>
           )}
         </div>

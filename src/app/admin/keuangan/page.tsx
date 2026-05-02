@@ -399,12 +399,12 @@ export default function KeuanganPage() {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-lg font-semibold text-gray-900 dark:text-white">{t('keuangan.title')}</h1>
-          <p className="text-xs text-gray-500 dark:text-gray-400">{t('keuangan.transactions')}</p>
+          <h1 className="page-title">{t('keuangan.title')}</h1>
+          <p className="page-subtitle">{t('keuangan.transactions')}</p>
         </div>
         <div className="flex gap-2">
           <Button onClick={handleAddCategory} variant="outline" size="sm" className="h-8 text-xs">
@@ -419,19 +419,19 @@ export default function KeuanganPage() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-3 border-l-4 border-l-green-500">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="card-soft p-5 border-l-4 border-l-green-500">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-[10px] font-medium text-gray-500 uppercase">{t('keuangan.income')}</p>
+              <p className="text-xs font-medium text-gray-500 uppercase">{t('keuangan.income')}</p>
               <p className="text-base font-bold text-green-600">{formatCurrency(stats.totalIncome)}</p>
-              <p className="text-[10px] text-gray-500">{stats.incomeCount} trans</p>
+              <p className="text-xs text-gray-500 dark:text-zinc-400">{stats.incomeCount} trans</p>
             </div>
             <div className="w-8 h-8 bg-green-50 dark:bg-green-900/20 rounded-md flex items-center justify-center">
               <TrendingUp className="w-4 h-4 text-green-600" />
             </div>
           </div>
-          <div className="mt-2 pt-2 border-t border-gray-100 dark:border-gray-800 space-y-0.5 text-[10px]">
+          <div className="mt-2 pt-2 border-t border-gray-100 dark:border-gray-800 space-y-0.5 text-xs">
             <div className="flex justify-between">
               <span className="text-gray-500">PPPoE:</span>
               <span className="font-medium">{formatCurrency(stats.pppoeIncome || 0)}</span>
@@ -447,12 +447,12 @@ export default function KeuanganPage() {
           </div>
         </div>
 
-        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-3 border-l-4 border-l-red-500">
+        <div className="card-soft p-5 border-l-4 border-l-red-500">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-[10px] font-medium text-gray-500 uppercase">{t('keuangan.expense')}</p>
+              <p className="text-xs font-medium text-gray-500 uppercase">{t('keuangan.expense')}</p>
               <p className="text-base font-bold text-red-600">{formatCurrency(stats.totalExpense)}</p>
-              <p className="text-[10px] text-gray-500">{stats.expenseCount} trans</p>
+              <p className="text-xs text-gray-500 dark:text-zinc-400">{stats.expenseCount} trans</p>
             </div>
             <div className="w-8 h-8 bg-red-50 dark:bg-red-900/20 rounded-md flex items-center justify-center">
               <TrendingDown className="w-4 h-4 text-red-600" />
@@ -460,12 +460,12 @@ export default function KeuanganPage() {
           </div>
         </div>
 
-        <div className={`bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-3 border-l-4 ${stats.balance >= 0 ? "border-l-teal-500" : "border-l-orange-500"}`}>
+        <div className={`card-soft p-5 border-l-4 ${stats.balance >= 0 ? "border-l-teal-500" : "border-l-orange-500"}`}>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-[10px] font-medium text-gray-500 uppercase">{t('keuangan.balance')}</p>
+              <p className="text-xs font-medium text-gray-500 uppercase">{t('keuangan.balance')}</p>
               <p className={`text-base font-bold ${stats.balance >= 0 ? "text-teal-600" : "text-orange-600"}`}>{formatCurrency(stats.balance)}</p>
-              <p className="text-[10px] text-gray-500">{t('keuangan.income')} - {t('keuangan.expense')}</p>
+              <p className="text-xs text-gray-500 dark:text-zinc-400">{t('keuangan.income')} - {t('keuangan.expense')}</p>
             </div>
             <div className={`w-8 h-8 ${stats.balance >= 0 ? "bg-teal-50 dark:bg-teal-900/20" : "bg-orange-50 dark:bg-orange-900/20"} rounded-md flex items-center justify-center`}>
               <Wallet className={`w-4 h-4 ${stats.balance >= 0 ? "text-teal-600" : "text-orange-600"}`} />
@@ -475,13 +475,13 @@ export default function KeuanganPage() {
       </div>
 
       {/* Filters */}
-      <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-3">
+      <div className="card-soft p-5">
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-1.5 text-xs font-medium text-gray-700 dark:text-gray-300">
             <Filter className="w-3.5 h-3.5" />
             {t('common.filter')}
           </div>
-          <button onClick={resetFilters} className="text-[10px] text-gray-500 hover:text-gray-700">
+          <button onClick={resetFilters} className="text-xs text-gray-500 dark:text-zinc-400 hover:text-gray-700">
             {t('common.reset')}
           </button>
         </div>
@@ -491,7 +491,7 @@ export default function KeuanganPage() {
             <button
               key={tp}
               onClick={() => setQuickDate(tp as any)}
-              className="px-2 py-1 text-[10px] bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded"
+              className="px-2 py-1 text-xs bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded"
             >
               {tp === "thisMonth" ? t('time.thisMonth') : tp === "lastMonth" ? t('time.lastMonth') : t('time.thisYear')}
             </button>
@@ -544,14 +544,14 @@ export default function KeuanganPage() {
       </div>
 
       {/* Transactions */}
-      <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800">
+      <div className="card-soft">
         <div className="p-3 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between">
           <span className="text-xs font-medium text-gray-700 dark:text-gray-300">{t('keuangan.transactions')}</span>
           <div className="flex gap-1">
             <button
               onClick={() => handleExport("excel")}
               disabled={!startDate || !endDate}
-              className="px-2 py-1 text-[10px] bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded disabled:opacity-50 flex items-center gap-1"
+              className="px-2 py-1 text-xs bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded disabled:opacity-50 flex items-center gap-1"
             >
               <Download className="w-3 h-3" />
               Excel
@@ -559,7 +559,7 @@ export default function KeuanganPage() {
             <button
               onClick={() => handleExport("pdf")}
               disabled={!startDate || !endDate}
-              className="px-2 py-1 text-[10px] bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded disabled:opacity-50 flex items-center gap-1"
+              className="px-2 py-1 text-xs bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded disabled:opacity-50 flex items-center gap-1"
             >
               <Download className="w-3 h-3" />
               PDF
@@ -570,13 +570,13 @@ export default function KeuanganPage() {
         <div className="overflow-x-auto">
           <Table>
             <TableHeader>
-              <TableRow className="text-[10px]">
-                <TableHead className="text-[10px] py-2">{t('keuangan.date')}</TableHead>
-                <TableHead className="text-[10px] py-2">{t('keuangan.description')}</TableHead>
-                <TableHead className="text-[10px] py-2 hidden sm:table-cell">{t('keuangan.category')}</TableHead>
-                <TableHead className="text-[10px] py-2">{t('common.type')}</TableHead>
-                <TableHead className="text-[10px] py-2 text-right">{t('keuangan.amount')}</TableHead>
-                <TableHead className="text-[10px] py-2 text-right"></TableHead>
+              <TableRow className="text-xs">
+                <TableHead className="text-xs py-2">{t('keuangan.date')}</TableHead>
+                <TableHead className="text-xs py-2">{t('keuangan.description')}</TableHead>
+                <TableHead className="text-xs py-2 hidden sm:table-cell">{t('keuangan.category')}</TableHead>
+                <TableHead className="text-xs py-2">{t('common.type')}</TableHead>
+                <TableHead className="text-xs py-2 text-right">{t('keuangan.amount')}</TableHead>
+                <TableHead className="text-xs py-2 text-right"></TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -589,7 +589,7 @@ export default function KeuanganPage() {
               ) : (
                 transactions.map((t) => (
                   <TableRow key={t.id} className="text-xs">
-                    <TableCell className="py-2 text-[10px]">
+                    <TableCell className="py-2 text-xs">
                       <div className="flex items-center gap-1 text-gray-600 dark:text-gray-400">
                         <Calendar className="w-3 h-3" />
                         {formatDate(t.date)}
@@ -597,7 +597,7 @@ export default function KeuanganPage() {
                     </TableCell>
                     <TableCell className="py-2">
                       <div className="font-medium text-xs truncate max-w-[150px]">{t.description}</div>
-                      {t.notes && <div className="text-[10px] text-gray-500 truncate">{t.notes}</div>}
+                      {t.notes && <div className="text-xs text-gray-500 dark:text-zinc-400 truncate">{t.notes}</div>}
                     </TableCell>
                     <TableCell className="py-2 hidden sm:table-cell">
                       <Badge variant="outline" className="text-[9px] px-1.5 py-0">{t.category.name}</Badge>
@@ -632,12 +632,12 @@ export default function KeuanganPage() {
         {loadingMore && (
           <div className="flex justify-center items-center py-3">
             <Loader2 className="w-4 h-4 animate-spin text-primary" />
-            <span className="ml-2 text-[10px] text-gray-500">{t('common.loading')}</span>
+            <span className="ml-2 text-xs text-gray-500 dark:text-zinc-400">{t('common.loading')}</span>
           </div>
         )}
 
         {!loading && !loadingMore && !hasMore && transactions.length > 0 && (
-          <div className="text-center py-3 text-[10px] text-gray-500">
+          <div className="text-center py-3 text-xs text-gray-500 dark:text-zinc-400">
             {t('table.showing')} {transactions.length} {t('table.of')} {total}
           </div>
         )}
@@ -653,7 +653,7 @@ export default function KeuanganPage() {
             </DialogDescription>
           </DialogHeader>
           <form onSubmit={handleSaveTransaction} className="space-y-3">
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-4">
               <div>
                 <Label className="text-xs">{t('common.type')} *</Label>
                 <Select value={transactionForm.type} onValueChange={(v: "INCOME" | "EXPENSE") => setTransactionForm({ ...transactionForm, type: v })}>
@@ -676,7 +676,7 @@ export default function KeuanganPage() {
                 </Select>
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-4">
               <div>
                 <Label className="text-xs">{t('keuangan.amount')} *</Label>
                 <Input

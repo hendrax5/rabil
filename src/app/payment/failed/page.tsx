@@ -53,11 +53,11 @@ function PaymentFailedContent() {
                 <AlertTriangle className="w-6 h-6 text-orange-600 dark:text-orange-400" />
               </div>
             </div>
-            {invoiceNumber && <div className="text-center"><p className="text-[10px] text-gray-500 mb-0.5">Invoice</p><p className="text-sm font-bold text-gray-900 dark:text-white">#{invoiceNumber}</p></div>}
-            {reason && <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-2.5"><p className="text-[10px] font-medium text-red-800 dark:text-red-300 text-center">{decodeURIComponent(reason)}</p></div>}
+            {invoiceNumber && <div className="text-center"><p className="text-xs text-gray-500 mb-0.5">Invoice</p><p className="text-sm font-bold text-gray-900 dark:text-white">#{invoiceNumber}</p></div>}
+            {reason && <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-2.5"><p className="text-xs font-medium text-red-800 dark:text-red-300 text-center">{decodeURIComponent(reason)}</p></div>}
             <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-3">
-              <p className="text-[10px] font-semibold text-gray-700 dark:text-gray-300 mb-1.5">Kemungkinan Penyebab:</p>
-              <ul className="text-[10px] text-gray-600 dark:text-gray-400 space-y-1 list-disc list-inside">
+              <p className="text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1.5">Kemungkinan Penyebab:</p>
+              <ul className="text-xs text-gray-600 dark:text-gray-400 space-y-1 list-disc list-inside">
                 <li>Saldo atau limit kartu tidak mencukupi</li>
                 <li>Pembayaran dibatalkan oleh pengguna</li>
                 <li>Transaksi ditolak oleh bank</li>
@@ -66,8 +66,8 @@ function PaymentFailedContent() {
               </ul>
             </div>
             <div className="text-center">
-              <p className="text-[10px] text-gray-500 dark:text-gray-400">Tidak ada biaya yang dikenakan.</p>
-              <p className="text-[10px] text-gray-500 dark:text-gray-400">Silakan coba lagi atau hubungi kami.</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">Tidak ada biaya yang dikenakan.</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">Silakan coba lagi atau hubungi kami.</p>
             </div>
           </div>
         </div>
@@ -78,7 +78,7 @@ function PaymentFailedContent() {
         </div>
 
         <div className="text-center">
-          <p className="text-[10px] text-gray-500 dark:text-gray-400 mb-1">Butuh bantuan?</p>
+          <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Butuh bantuan?</p>
           <a href={`https://wa.me/${companyPhone}`} target="_blank" rel="noopener noreferrer" className="text-xs text-green-600 hover:text-green-700 dark:text-green-400 font-medium">Hubungi CS via WhatsApp</a>
         </div>
       </div>

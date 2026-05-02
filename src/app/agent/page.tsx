@@ -67,10 +67,10 @@ export default function AgentLoginPage() {
         </div>
 
         {/* Login Form */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-5">
+        <div className="bg-white dark:bg-gray-800 card-soft p-5">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="flex items-center gap-1.5 text-[11px] font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+              <label className="flex items-center gap-1.5 text-xs font-medium text-gray-700 dark:text-gray-300 mb-1.5">
                 <Phone className="w-3 h-3" />
                 Nomor HP
               </label>
@@ -114,7 +114,7 @@ export default function AgentLoginPage() {
         </div>
 
         {/* Footer */}
-        <p className="text-center text-[10px] text-gray-500 dark:text-gray-400 mt-4">
+        <p className="text-center text-xs text-gray-500 dark:text-gray-400 mt-4">
           Powered by NexaRadius
         </p>
       </div>

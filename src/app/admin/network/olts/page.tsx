@@ -296,15 +296,15 @@ export default function OLTsPage() {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+          <h1 className="page-title flex items-center gap-2">
             <Server className="h-5 w-5 text-teal-600" />
             OLT Management
           </h1>
-          <p className="text-xs text-gray-500 dark:text-gray-400">
+          <p className="page-subtitle">
             Manage Optical Line Terminals (OLT) for FTTH network
           </p>
         </div>
@@ -318,20 +318,20 @@ export default function OLTsPage() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-3 gap-3">
-        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-3">
+      <div className="grid grid-cols-3 gap-4">
+        <div className="card-soft p-5">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-[10px] text-gray-500 uppercase">Total OLTs</p>
+              <p className="text-xs text-gray-500 dark:text-zinc-400 uppercase">Total OLTs</p>
               <p className="text-base font-bold text-teal-600">{olts.length}</p>
             </div>
             <Server className="h-5 w-5 text-teal-600" />
           </div>
         </div>
-        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-3">
+        <div className="card-soft p-5">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-[10px] text-gray-500 uppercase">Active</p>
+              <p className="text-xs text-gray-500 dark:text-zinc-400 uppercase">Active</p>
               <p className="text-base font-bold text-green-600">
                 {olts.filter(o => o.status === 'active').length}
               </p>
@@ -339,10 +339,10 @@ export default function OLTsPage() {
             <Activity className="h-5 w-5 text-green-600" />
           </div>
         </div>
-        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-3">
+        <div className="card-soft p-5">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-[10px] text-gray-500 uppercase">Total ODPs</p>
+              <p className="text-xs text-gray-500 dark:text-zinc-400 uppercase">Total ODPs</p>
               <p className="text-base font-bold text-blue-600">
                 {olts.reduce((sum, o) => sum + (o._count?.odps || 0), 0)}
               </p>
@@ -353,7 +353,7 @@ export default function OLTsPage() {
       </div>
 
       {/* Table */}
-      <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 overflow-hidden">
+      <div className="card-soft overflow-hidden">
         <div className="px-3 py-2 border-b dark:border-gray-800">
           <span className="text-xs font-medium">OLT List</span>
         </div>
@@ -361,13 +361,13 @@ export default function OLTsPage() {
           <table className="w-full">
             <thead className="bg-gray-50 dark:bg-gray-800/50">
               <tr>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase">Name</th>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase">IP Address</th>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase hidden md:table-cell">Location</th>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase hidden sm:table-cell">Routers</th>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase">ODPs</th>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase">Status</th>
-                <th className="px-3 py-2 text-right text-[10px] font-medium text-gray-500 uppercase"></th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">IP Address</th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase hidden md:table-cell">Location</th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase hidden sm:table-cell">Routers</th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">ODPs</th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                <th className="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase"></th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
@@ -415,18 +415,18 @@ export default function OLTsPage() {
                           </span>
                         ))}
                         {olt.routers.length === 0 && (
-                          <span className="text-[10px] text-gray-400">No router</span>
+                          <span className="text-xs text-gray-400">No router</span>
                         )}
                       </div>
                     </td>
                     <td className="px-3 py-2">
-                      <span className="px-1.5 py-0.5 text-[10px] bg-purple-100 text-purple-700 dark:bg-purple-900/30 rounded">
+                      <span className="px-1.5 py-0.5 text-xs bg-purple-100 text-purple-700 dark:bg-purple-900/30 rounded">
                         {olt._count?.odps || 0} ODPs
                       </span>
                     </td>
                     <td className="px-3 py-2">
                       <span
-                        className={`px-1.5 py-0.5 text-[10px] rounded font-medium ${
+                        className={`px-1.5 py-0.5 text-xs rounded font-medium ${
                           olt.status === 'active'
                             ? 'bg-green-100 text-green-700 dark:bg-green-900/30'
                             : 'bg-red-100 text-red-700 dark:bg-red-900/30'
@@ -475,12 +475,12 @@ export default function OLTsPage() {
 
       {/* Add/Edit Dialog */}
       {isDialogOpen && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white dark:bg-gray-900 rounded-lg shadow-xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+          <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
             <div className="px-4 py-3 border-b dark:border-gray-800 flex items-center justify-between">
               <div>
                 <h2 className="text-sm font-semibold">{editingOlt ? 'Edit OLT' : 'Add OLT'}</h2>
-                <p className="text-[10px] text-gray-500">Configure Optical Line Terminal</p>
+                <p className="text-xs text-gray-500 dark:text-zinc-400">Configure Optical Line Terminal</p>
               </div>
               <button
                 onClick={() => { setIsDialogOpen(false); setEditingOlt(null); resetForm(); }}
@@ -490,39 +490,39 @@ export default function OLTsPage() {
               </button>
             </div>
             <form onSubmit={handleSubmit} className="p-4 space-y-3">
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-[10px] font-medium mb-1">Name *</label>
+                  <label className="block text-xs font-medium mb-1.5">Name *</label>
                   <input
                     type="text"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     required
                     placeholder="OLT-01"
-                    className="w-full px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800"
+                    className="w-full input-premium"
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] font-medium mb-1">IP Address *</label>
+                  <label className="block text-xs font-medium mb-1.5">IP Address *</label>
                   <input
                     type="text"
                     value={formData.ipAddress}
                     onChange={(e) => setFormData({ ...formData, ipAddress: e.target.value })}
                     required
                     placeholder="192.168.1.1"
-                    className="w-full px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800"
+                    className="w-full input-premium"
                   />
                 </div>
               </div>
 
               <div>
                 <div className="flex items-center justify-between mb-1">
-                  <label className="text-[10px] font-medium">GPS Location *</label>
+                  <label className="text-xs font-medium">GPS Location *</label>
                   <div className="flex gap-1">
                     <button
                       type="button"
                       onClick={() => setShowMapPicker(true)}
-                      className="inline-flex items-center px-2 py-0.5 text-[10px] bg-teal-600 text-white rounded"
+                      className="inline-flex items-center px-2 py-0.5 text-xs bg-teal-600 text-white rounded"
                     >
                       <Map className="h-2.5 w-2.5 mr-1" />
                       Open Map
@@ -558,7 +558,7 @@ export default function OLTsPage() {
                           { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
                         );
                       }}
-                      className="inline-flex items-center px-2 py-0.5 text-[10px] bg-green-600 text-white rounded"
+                      className="inline-flex items-center px-2 py-0.5 text-xs bg-green-600 text-white rounded"
                     >
                       <MapPin className="h-2.5 w-2.5 mr-1" />
                       Auto GPS
@@ -573,7 +573,7 @@ export default function OLTsPage() {
                     onChange={(e) => setFormData({ ...formData, latitude: e.target.value })}
                     required
                     placeholder="Latitude"
-                    className="w-full px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800"
+                    className="w-full input-premium"
                   />
                   <input
                     type="number"
@@ -582,18 +582,18 @@ export default function OLTsPage() {
                     onChange={(e) => setFormData({ ...formData, longitude: e.target.value })}
                     required
                     placeholder="Longitude"
-                    className="w-full px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800"
+                    className="w-full input-premium"
                   />
                 </div>
               </div>
 
-              <div className="grid grid-cols-3 gap-3 pt-2">
+              <div className="grid grid-cols-3 gap-4 pt-2">
                 <div>
-                  <label className="block text-[10px] font-medium mb-1">Vendor/Tipe</label>
+                  <label className="block text-xs font-medium mb-1.5">Vendor/Tipe</label>
                   <select
                     value={formData.vendor}
                     onChange={(e) => setFormData({ ...formData, vendor: e.target.value })}
-                    className="w-full px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800"
+                    className="w-full input-premium"
                   >
                     <option value="zte">ZTE</option>
                     <option value="huawei">Huawei</option>
@@ -601,56 +601,56 @@ export default function OLTsPage() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-[10px] font-medium mb-1">Method</label>
+                  <label className="block text-xs font-medium mb-1.5">Method</label>
                   <select
                     value={formData.connection}
                     onChange={(e) => setFormData({ ...formData, connection: e.target.value })}
-                    className="w-full px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800"
+                    className="w-full input-premium"
                   >
                     <option value="ssh">SSH</option>
                     <option value="telnet">Telnet</option>
                   </select>
                 </div>
                 <div>
-                  <label className="block text-[10px] font-medium mb-1">Port</label>
+                  <label className="block text-xs font-medium mb-1.5">Port</label>
                   <input
                     type="number"
                     value={formData.port}
                     onChange={(e) => setFormData({ ...formData, port: e.target.value })}
                     placeholder={formData.connection === 'ssh' ? '22' : '23'}
-                    className="w-full px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800"
+                    className="w-full input-premium"
                   />
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-3 mb-2">
+              <div className="grid grid-cols-2 gap-4 mb-2">
                 <div>
-                  <label className="block text-[10px] font-medium mb-1">Username (Management)</label>
+                  <label className="block text-xs font-medium mb-1.5">Username (Management)</label>
                   <input
                     type="text"
                     value={formData.username}
                     onChange={(e) => setFormData({ ...formData, username: e.target.value })}
                     placeholder="admin"
-                    className="w-full px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800"
+                    className="w-full input-premium"
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] font-medium mb-1">Password (Management)</label>
+                  <label className="block text-xs font-medium mb-1.5">Password (Management)</label>
                   <input
                     type="password"
                     value={formData.password}
                     onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                     placeholder="***"
-                    className="w-full px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800"
+                    className="w-full input-premium"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-[10px] font-medium mb-1">Status</label>
+                <label className="block text-xs font-medium mb-1.5">Status</label>
                 <select
                   value={formData.status}
                   onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-                  className="w-full px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800"
+                  className="w-full input-premium"
                 >
                   <option value="active">Active</option>
                   <option value="inactive">Inactive</option>
@@ -659,12 +659,12 @@ export default function OLTsPage() {
               </div>
 
               <div>
-                <label className="block text-[10px] font-medium mb-1">
+                <label className="block text-xs font-medium mb-1.5">
                   Connected Routers (Uplinks)
                 </label>
                 <div className="border dark:border-gray-700 rounded p-2 max-h-32 overflow-y-auto space-y-1">
                   {routers.length === 0 ? (
-                    <p className="text-[10px] text-gray-400">No routers available</p>
+                    <p className="text-xs text-gray-400">No routers available</p>
                   ) : (
                     routers.map((router) => (
                       <label
@@ -679,7 +679,7 @@ export default function OLTsPage() {
                         />
                         <RouterIcon className="h-3 w-3 text-gray-500" />
                         <span className="text-xs">{router.name}</span>
-                        <span className="text-[10px] text-gray-400">({router.ipAddress})</span>
+                        <span className="text-xs text-gray-400">({router.ipAddress})</span>
                       </label>
                     ))
                   )}
@@ -706,7 +706,7 @@ export default function OLTsPage() {
                 <button
                   type="button"
                   onClick={() => { setIsDialogOpen(false); setEditingOlt(null); resetForm(); }}
-                  className="px-3 py-1.5 text-xs border dark:border-gray-700 rounded hover:bg-gray-100 dark:hover:bg-gray-800"
+                  className="btn-premium border border-gray-200 dark:border-zinc-700 text-gray-600 hover:bg-gray-50"
                 >
                   Cancel
                 </button>
@@ -724,15 +724,15 @@ export default function OLTsPage() {
 
       {/* Manage ONUs Dialog */}
       {managingOlt && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white dark:bg-gray-900 rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+          <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col">
             <div className="px-4 py-3 border-b dark:border-gray-800 flex items-center justify-between">
               <div>
                 <h2 className="text-sm font-semibold flex items-center gap-2">
                   <Network className="w-4 h-4 text-teal-600" />
                   Auto-Discovery ONU
                 </h2>
-                <p className="text-[10px] text-gray-500">
+                <p className="text-xs text-gray-500 dark:text-zinc-400">
                   {managingOlt.name} ({managingOlt.ipAddress})
                 </p>
               </div>
@@ -768,7 +768,7 @@ export default function OLTsPage() {
                   No unconfigured ONUs found on this OLT.
                 </div>
               ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {unconfiguredOnus.map((onu, idx) => (
                      <div key={idx} className="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg p-3 shadow-sm relative overflow-hidden">
                        <div className="flex justify-between items-start mb-2">
@@ -776,7 +776,7 @@ export default function OLTsPage() {
                             <span className="font-mono text-xs font-bold text-amber-600 bg-amber-50 dark:bg-amber-900/20 px-1.5 py-0.5 rounded border border-amber-200 dark:border-amber-900/50">
                               SN: {onu.sn}
                             </span>
-                            <div className="text-[10px] text-gray-500 mt-1">
+                            <div className="text-xs text-gray-500 dark:text-zinc-400 mt-1">
                                Olt Type: {onu.type || 'Unknown'} | Board: {onu.board} | Port: {onu.port} | LLID: {onu.llid}
                             </div>
                          </div>
@@ -787,19 +787,19 @@ export default function OLTsPage() {
                            <div className="grid grid-cols-2 gap-2 mb-2">
                               {/* MODE TOGGLE */}
                               <div className="col-span-2 flex items-center justify-between bg-white dark:bg-gray-800 p-1.5 rounded border border-gray-200 dark:border-gray-700">
-                                <span className="text-[10px] font-bold text-gray-700 dark:text-gray-300">Registration Mode:</span>
+                                <span className="text-xs font-bold text-gray-700 dark:text-gray-300">Registration Mode:</span>
                                 <div className="flex bg-gray-100 dark:bg-gray-900 p-0.5 rounded">
                                   <button
                                     type="button"
                                     onClick={() => setRegData({...regData, mode: 'pppoe'})}
-                                    className={`px-3 py-1 text-[10px] font-medium rounded ${regData.mode === 'pppoe' ? 'bg-teal-600 text-white' : 'text-gray-500 hover:text-gray-700'}`}
+                                    className={`px-3 py-1 text-xs font-medium rounded ${regData.mode === 'pppoe' ? 'bg-teal-600 text-white' : 'text-gray-500 hover:text-gray-700'}`}
                                   >
                                     PPPoE Router
                                   </button>
                                   <button
                                     type="button"
                                     onClick={() => setRegData({...regData, mode: 'bridge'})}
-                                    className={`px-3 py-1 text-[10px] font-medium rounded ${regData.mode === 'bridge' ? 'bg-teal-600 text-white' : 'text-gray-500 hover:text-gray-700'}`}
+                                    className={`px-3 py-1 text-xs font-medium rounded ${regData.mode === 'bridge' ? 'bg-teal-600 text-white' : 'text-gray-500 hover:text-gray-700'}`}
                                   >
                                     Bridge
                                   </button>
@@ -881,8 +881,8 @@ export default function OLTsPage() {
                               )}
                            </div>
                            <div className="flex justify-end gap-1 mt-2">
-                              <button type="button" onClick={() => setRegisteringOnu(null)} className="px-2 py-1 bg-gray-200 dark:bg-gray-700 text-[10px] rounded hover:bg-gray-300 dark:hover:bg-gray-600">Cancel</button>
-                              <button type="submit" className="px-2 py-1 bg-teal-600 hover:bg-teal-700 text-white font-bold text-[10px] rounded">Bind & Provision</button>
+                              <button type="button" onClick={() => setRegisteringOnu(null)} className="px-2 py-1 bg-gray-200 dark:bg-gray-700 text-xs rounded hover:bg-gray-300 dark:hover:bg-gray-600">Cancel</button>
+                              <button type="submit" className="px-2 py-1 bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs rounded">Bind & Provision</button>
                            </div>
                          </form>
                        ) : (

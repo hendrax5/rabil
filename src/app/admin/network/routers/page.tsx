@@ -580,15 +580,15 @@ export default function RoutersPage() {
   const onlineCount = Object.values(statusMap).filter((s) => s.online).length;
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+          <h1 className="page-title flex items-center gap-2">
             <Server className="w-5 h-5 text-primary" />
             {t('nav.routers')}
           </h1>
-          <p className="text-xs text-gray-500 dark:text-gray-400">{t('network.title')}</p>
+          <p className="page-subtitle">{t('network.title')}</p>
         </div>
         <div className="flex gap-2">
           <button onClick={loadRoutersAndStatus} className="flex items-center gap-1.5 px-3 py-1.5 text-xs bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-md hover:bg-gray-50">
@@ -603,28 +603,28 @@ export default function RoutersPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-3 gap-2">
-        <div className="bg-white dark:bg-gray-900 p-2.5 rounded-lg border border-gray-200 dark:border-gray-800">
+        <div className="bg-white dark:bg-gray-900 p-2.5 rounded-lg card-soft">
           <div className="flex items-center justify-between">
             <div>
-              <div className="text-[10px] font-medium text-gray-500 uppercase">{t('common.total')}</div>
+              <div className="text-xs font-medium text-gray-500 uppercase">{t('common.total')}</div>
               <div className="text-lg font-bold text-gray-900 dark:text-white">{routers.length}</div>
             </div>
             <Server className="w-4 h-4 text-blue-600" />
           </div>
         </div>
-        <div className="bg-white dark:bg-gray-900 p-2.5 rounded-lg border border-gray-200 dark:border-gray-800">
+        <div className="bg-white dark:bg-gray-900 p-2.5 rounded-lg card-soft">
           <div className="flex items-center justify-between">
             <div>
-              <div className="text-[10px] font-medium text-green-600 uppercase">{t('network.online')}</div>
+              <div className="text-xs font-medium text-green-600 uppercase">{t('network.online')}</div>
               <div className="text-lg font-bold text-green-600">{onlineCount}</div>
             </div>
             <CheckCircle2 className="w-4 h-4 text-green-600" />
           </div>
         </div>
-        <div className="bg-white dark:bg-gray-900 p-2.5 rounded-lg border border-gray-200 dark:border-gray-800">
+        <div className="bg-white dark:bg-gray-900 p-2.5 rounded-lg card-soft">
           <div className="flex items-center justify-between">
             <div>
-              <div className="text-[10px] font-medium text-red-600 uppercase">{t('network.offline')}</div>
+              <div className="text-xs font-medium text-red-600 uppercase">{t('network.offline')}</div>
               <div className="text-lg font-bold text-red-600">{routers.length - onlineCount}</div>
             </div>
             <XCircle className="w-4 h-4 text-red-600" />
@@ -633,17 +633,17 @@ export default function RoutersPage() {
       </div>
 
       {/* Table */}
-      <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 overflow-hidden">
+      <div className="card-soft overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="bg-gray-50 dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-700">
               <tr>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase">{t('nav.router')}</th>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase">{t('network.ipAddress')}</th>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase hidden sm:table-cell">{t('auth.username')}/{t('auth.password')}</th>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase">{t('common.status')}</th>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase hidden md:table-cell">{t('system.uptime')}</th>
-                <th className="px-3 py-2 text-right text-[10px] font-medium text-gray-500 uppercase">{t('common.actions')}</th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">{t('nav.router')}</th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">{t('network.ipAddress')}</th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase hidden sm:table-cell">{t('auth.username')}/{t('auth.password')}</th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">{t('common.status')}</th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase hidden md:table-cell">{t('system.uptime')}</th>
+                <th className="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase">{t('common.actions')}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
@@ -656,17 +656,17 @@ export default function RoutersPage() {
                     <tr key={router.id} className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
                       <td className="px-3 py-2">
                         <div className="font-medium text-xs text-gray-900 dark:text-white">{router.name}</div>
-                        {status?.identity && <div className="text-[10px] text-gray-500">{status.identity}</div>}
+                        {status?.identity && <div className="text-xs text-gray-500 dark:text-zinc-400">{status.identity}</div>}
                       </td>
                       <td className="px-3 py-2">
-                        <div className="font-mono text-[10px] text-gray-900 dark:text-white">API: {router.ipAddress}</div>
+                        <div className="font-mono text-xs text-gray-900 dark:text-white">API: {router.ipAddress}</div>
                         <div className="font-mono text-[9px] text-gray-500">NAS: {router.nasname || router.ipAddress}</div>
                         <div className="text-[9px] text-gray-400">Port: {router.port}</div>
                       </td>
                       <td className="px-3 py-2 hidden sm:table-cell">
-                        <div className="text-[10px] text-gray-500">User: {router.username}</div>
+                        <div className="text-xs text-gray-500 dark:text-zinc-400">User: {router.username}</div>
                         <div className="flex items-center gap-1">
-                          <span className="text-[10px] font-mono text-gray-500">
+                          <span className="text-xs font-mono text-gray-500">
                             {showPassword[router.id] ? router.password : '••••••••'}
                           </span>
                           <button onClick={() => setShowPassword((prev) => ({ ...prev, [router.id]: !prev[router.id] }))} className="p-0.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded">
@@ -677,15 +677,15 @@ export default function RoutersPage() {
                       <td className="px-3 py-2">
                         {status ? (
                           status.online ? (
-                            <span className="px-1.5 py-0.5 rounded text-[10px] font-medium bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">🟢 {t('network.online')}</span>
+                            <span className="px-1.5 py-0.5 rounded text-xs font-medium bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">🟢 {t('network.online')}</span>
                           ) : (
-                            <span className="px-1.5 py-0.5 rounded text-[10px] font-medium bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400">🔴 {t('network.offline')}</span>
+                            <span className="px-1.5 py-0.5 rounded text-xs font-medium bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400">🔴 {t('network.offline')}</span>
                           )
                         ) : (
-                          <span className="px-1.5 py-0.5 rounded text-[10px] font-medium bg-gray-100 text-gray-600">⚪ {t('network.checking')}</span>
+                          <span className="px-1.5 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-600">⚪ {t('network.checking')}</span>
                         )}
                       </td>
-                      <td className="px-3 py-2 text-[10px] text-gray-600 hidden md:table-cell">{status?.uptime || '-'}</td>
+                      <td className="px-3 py-2 text-xs text-gray-600 hidden md:table-cell">{status?.uptime || '-'}</td>
                       <td className="px-3 py-2 text-right">
                         <div className="flex justify-end gap-0.5 flex-wrap">
                           <button onClick={() => handleOpenUplinkModal(router)} className="p-1 text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 rounded" title="OLT Uplinks">
@@ -720,10 +720,10 @@ export default function RoutersPage() {
       {/* Add/Edit Dialog */}
       {isDialogOpen && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-          <div className="bg-white dark:bg-gray-900 rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+          <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
             <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-800">
               <h2 className="text-sm font-semibold text-gray-900 dark:text-white">{editingRouter ? t('common.edit') + ' ' + t('nav.router') : t('network.addRouter')}</h2>
-              <p className="text-[10px] text-gray-500">{t('network.configureMikrotik')}</p>
+              <p className="text-xs text-gray-500 dark:text-zinc-400">{t('network.configureMikrotik')}</p>
             </div>
             <form onSubmit={handleSubmit} className="p-4 space-y-3">
               {!editingRouter && (
@@ -751,19 +751,19 @@ export default function RoutersPage() {
               )}
 
               <div>
-                <label className="block text-[10px] font-medium text-gray-700 dark:text-gray-300 mb-1">{t('common.name')} *</label>
+                <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">{t('common.name')} *</label>
                 <input type="text" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} required className="w-full px-2.5 py-1.5 border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 rounded-md text-xs" placeholder={t('network.mainRouter')} />
               </div>
               
               {!formData.autoVpn && (
                 <>
                   <div>
-                    <label className="block text-[10px] font-medium text-gray-700 dark:text-gray-300 mb-1">API IP *</label>
+                    <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">API IP *</label>
                     <input type="text" value={formData.ipAddress} onChange={(e) => setFormData({ ...formData, ipAddress: e.target.value })} required={!formData.autoVpn} className="w-full px-2.5 py-1.5 border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 rounded-md text-xs" placeholder="10.8.0.2" />
                     <p className="text-[9px] text-gray-400 mt-0.5">{t('network.apiIpDescription')}</p>
                   </div>
                   <div>
-                    <label className="block text-[10px] font-medium text-gray-700 dark:text-gray-300 mb-1">NAS IP</label>
+                    <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">NAS IP</label>
                     <input type="text" value={formData.nasIpAddress} onChange={(e) => setFormData({ ...formData, nasIpAddress: e.target.value })} className="w-full px-2.5 py-1.5 border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 rounded-md text-xs" placeholder={t('network.nasIpPlaceholder')} />
                   </div>
                 </>
@@ -772,23 +772,23 @@ export default function RoutersPage() {
               <div className="grid grid-cols-2 gap-2">
                 {!formData.autoVpn && (
                   <div>
-                    <label className="block text-[10px] font-medium text-gray-700 dark:text-gray-300 mb-1">{t('network.apiPort')}</label>
+                    <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">{t('network.apiPort')}</label>
                     <input type="number" value={formData.port} onChange={(e) => setFormData({ ...formData, port: parseInt(e.target.value) })} className="w-full px-2.5 py-1.5 border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 rounded-md text-xs" />
                   </div>
                 )}
                 <div>
-                  <label className="block text-[10px] font-medium text-gray-700 dark:text-gray-300 mb-1">RADIUS Secret *</label>
+                  <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">RADIUS Secret *</label>
                   <input type="text" value={formData.secret} onChange={(e) => setFormData({ ...formData, secret: e.target.value })} required className="w-full px-2.5 py-1.5 border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 rounded-md text-xs" />
                 </div>
               </div>
               <div>
-                <label className="block text-[10px] font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
                   {t('auth.username')} {formData.autoVpn && <span className="text-indigo-600 font-bold">(Auto-VPN User)</span>} *
                 </label>
                 <input type="text" value={formData.username} onChange={(e) => setFormData({ ...formData, username: e.target.value })} required className="w-full px-2.5 py-1.5 border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 rounded-md text-xs" placeholder="admin" />
               </div>
               <div>
-                <label className="block text-[10px] font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
                   {t('auth.password')} {formData.autoVpn && <span className="text-indigo-600 font-bold">(Auto-VPN Pass)</span>} *
                 </label>
                 <input type="password" value={formData.password} onChange={(e) => setFormData({ ...formData, password: e.target.value })} required className="w-full px-2.5 py-1.5 border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 rounded-md text-xs" />
@@ -796,7 +796,7 @@ export default function RoutersPage() {
               
               {/* GPS Coordinates */}
               <div className="border-t border-gray-200 dark:border-gray-700 pt-3 mt-2">
-                <label className="flex items-center gap-1.5 text-[10px] font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="flex items-center gap-1.5 text-xs font-medium text-gray-700 dark:text-gray-300 mb-2">
                   <MapPin className="w-3 h-3" />
                   GPS Koordinat (untuk Network Map)
                 </label>
@@ -874,31 +874,31 @@ export default function RoutersPage() {
       {/* Uplink to OLT Modal */}
       {showUplinkModal && uplinkRouter && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-          <div className="bg-white dark:bg-gray-900 rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+          <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
             <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-800">
               <h2 className="text-sm font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                 <Radio className="w-4 h-4" />
                 OLT Uplink - {uplinkRouter.name}
               </h2>
-              <p className="text-[10px] text-gray-500">Konfigurasi koneksi router ke OLT untuk Network Map</p>
+              <p className="text-xs text-gray-500 dark:text-zinc-400">Konfigurasi koneksi router ke OLT untuk Network Map</p>
             </div>
             <div className="p-4 space-y-3">
               {/* Current Uplinks */}
               <div className="space-y-2">
-                <label className="text-[10px] font-medium text-gray-700 dark:text-gray-300">Uplink Aktif:</label>
+                <label className="text-xs font-medium text-gray-700 dark:text-gray-300">Uplink Aktif:</label>
                 {loadingUplinks ? (
                   <div className="flex items-center justify-center py-4">
                     <Loader2 className="w-4 h-4 animate-spin text-gray-400" />
                   </div>
                 ) : routerUplinks.length === 0 ? (
-                  <p className="text-[10px] text-gray-400 italic py-2">Belum ada uplink terkonfigurasi</p>
+                  <p className="text-xs text-gray-400 italic py-2">Belum ada uplink terkonfigurasi</p>
                 ) : (
                   <div className="space-y-1.5">
                     {routerUplinks.map((uplink) => (
                       <div key={uplink.id} className="flex items-center justify-between bg-gray-50 dark:bg-gray-800 p-2 rounded-lg">
                         <div>
                           <p className="text-xs font-medium text-gray-800 dark:text-white">{uplink.oltName}</p>
-                          <p className="text-[10px] text-gray-500">
+                          <p className="text-xs text-gray-500 dark:text-zinc-400">
                             Port: {uplink.uplinkPort || 'Auto'} • Priority: {uplink.priority}
                           </p>
                         </div>
@@ -913,12 +913,12 @@ export default function RoutersPage() {
               
               {/* Add New Uplink */}
               <div className="border-t border-gray-200 dark:border-gray-700 pt-3">
-                <label className="text-[10px] font-medium text-gray-700 dark:text-gray-300 mb-2 block">Tambah Uplink:</label>
+                <label className="text-xs font-medium text-gray-700 dark:text-gray-300 mb-2 block">Tambah Uplink:</label>
                 <div className="space-y-2">
                   {olts.length === 0 ? (
-                    <p className="text-[10px] text-amber-600">⚠️ Belum ada OLT terdaftar. Tambahkan OLT terlebih dahulu di menu Network → OLT.</p>
+                    <p className="text-xs text-amber-600">⚠️ Belum ada OLT terdaftar. Tambahkan OLT terlebih dahulu di menu Network → OLT.</p>
                   ) : olts.filter(olt => !routerUplinks.some(u => u.oltId === olt.id)).length === 0 ? (
-                    <p className="text-[10px] text-green-600">✓ Semua OLT ({olts.length}) sudah terhubung ke router ini.</p>
+                    <p className="text-xs text-green-600">✓ Semua OLT ({olts.length}) sudah terhubung ke router ini.</p>
                   ) : (
                     <>
                       <select 
@@ -988,11 +988,11 @@ export default function RoutersPage() {
       {/* RADIUS Script Modal */}
       {showRadiusScriptModal && radiusScriptRouter && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-          <div className="bg-white dark:bg-gray-900 rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between">
               <div>
                 <h2 className="text-sm font-semibold text-gray-900 dark:text-white">{t('network.radiusSetupScript')}</h2>
-                <p className="text-[10px] text-gray-500">{radiusScriptRouter.name}</p>
+                <p className="text-xs text-gray-500 dark:text-zinc-400">{radiusScriptRouter.name}</p>
               </div>
               <div className="flex gap-2">
                 <button onClick={downloadRadiusScript} className="flex items-center gap-1.5 px-2.5 py-1 text-xs bg-indigo-600 text-white rounded-md hover:bg-indigo-700">
@@ -1006,27 +1006,27 @@ export default function RoutersPage() {
             <div className="p-4 space-y-3">
               {/* Router & RADIUS Info */}
               <div className="bg-gray-50 dark:bg-gray-800 p-3 rounded-lg">
-                <div className="grid grid-cols-2 gap-3 text-xs">
+                <div className="grid grid-cols-2 gap-4 text-xs">
                   <div>
-                    <p className="text-[10px] text-gray-500 dark:text-gray-400">{t('nav.router')}</p>
+                    <p className="text-xs text-gray-500 dark:text-zinc-400 dark:text-gray-400">{t('nav.router')}</p>
                     <p className="font-medium text-gray-900 dark:text-white">{radiusScriptRouter.name}</p>
                   </div>
                   <div>
-                    <p className="text-[10px] text-gray-500 dark:text-gray-400">RADIUS Server IP</p>
+                    <p className="text-xs text-gray-500 dark:text-zinc-400 dark:text-gray-400">RADIUS Server IP</p>
                     <p className="font-medium font-mono text-gray-900 dark:text-white">{radiusServerIp || t('network.notConfigured')}</p>
                   </div>
                   <div>
-                    <p className="text-[10px] text-gray-500 dark:text-gray-400">RADIUS Secret</p>
+                    <p className="text-xs text-gray-500 dark:text-zinc-400 dark:text-gray-400">RADIUS Secret</p>
                     <p className="font-medium font-mono text-gray-900 dark:text-white">{radiusScriptRouter.secret || 'secret123'}</p>
                   </div>
                   <div>
-                    <p className="text-[10px] text-gray-500 dark:text-gray-400">RADIUS {t('common.status')}</p>
+                    <p className="text-xs text-gray-500 dark:text-zinc-400 dark:text-gray-400">RADIUS {t('common.status')}</p>
                     {radiusServerIp && radiusScriptRouter.secret ? (
-                      <span className="inline-flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-medium rounded bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">
+                      <span className="inline-flex items-center gap-1 px-1.5 py-0.5 text-xs font-medium rounded bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">
                         <CheckCircle2 className="w-3 h-3" /> {t('network.ready')}
                       </span>
                     ) : (
-                      <span className="inline-flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-medium rounded bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400">
+                      <span className="inline-flex items-center gap-1 px-1.5 py-0.5 text-xs font-medium rounded bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400">
                         <XCircle className="w-3 h-3" /> {t('network.incomplete')}
                       </span>
                     )}
@@ -1039,7 +1039,7 @@ export default function RoutersPage() {
                 <div className="flex items-center justify-between">
                    <h3 className="text-xs font-semibold text-gray-900 dark:text-white flex items-center gap-1.5">
                      <Radio className="w-3.5 h-3.5 text-indigo-500" />
-                     Sertakan Konfigurasi TR-069 GenieACS <span className="text-amber-500 text-[10px] ml-1 font-normal">(Opsional)</span>
+                     Sertakan Konfigurasi TR-069 GenieACS <span className="text-amber-500 text-xs ml-1 font-normal">(Opsional)</span>
                    </h3>
                    <label className="flex items-center cursor-pointer">
                       <input type="checkbox" checked={scriptAcsEnabled} onChange={e => setScriptAcsEnabled(e.target.checked)} className="sr-only peer" />
@@ -1053,7 +1053,7 @@ export default function RoutersPage() {
                         <li><b>VLAN ID:</b> {100 + Math.max(0, routers.findIndex(r => r.id === radiusScriptRouter?.id))}</li>
                         <li><b>Manajemen Subnet (Gateway):</b> 10.{100 + Math.max(0, routers.findIndex(r => r.id === radiusScriptRouter?.id))}.0.1/21</li>
                      </ul>
-                     <div className="mt-2 text-[10px] text-gray-500 dark:text-gray-400">
+                     <div className="mt-2 text-xs text-gray-500 dark:text-zinc-400 dark:text-gray-400">
                        <label className="block mb-1">Pilih Port arah OLT <span className="text-red-500">*</span></label>
                        <input type="text" value={scriptAcsIface} onChange={e => setScriptAcsIface(e.target.value)} placeholder="Misal: ether2, sfp1" className="w-48 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded px-2 py-1 focus:outline-none focus:border-indigo-500" />
                      </div>
@@ -1066,7 +1066,7 @@ export default function RoutersPage() {
                 <div className="flex items-center justify-between">
                    <h3 className="text-xs font-semibold text-gray-900 dark:text-white flex items-center gap-1.5">
                      <Radio className="w-3.5 h-3.5 text-blue-500" />
-                     Sertakan Konfigurasi VLAN PPPoE <span className="text-amber-500 text-[10px] ml-1 font-normal">(Opsional)</span>
+                     Sertakan Konfigurasi VLAN PPPoE <span className="text-amber-500 text-xs ml-1 font-normal">(Opsional)</span>
                    </h3>
                    <label className="flex items-center cursor-pointer">
                       <input type="checkbox" checked={scriptPppoeEnabled} onChange={e => setScriptPppoeEnabled(e.target.checked)} className="sr-only peer" />
@@ -1080,7 +1080,7 @@ export default function RoutersPage() {
                         <li><b>VLAN ID:</b> {200 + Math.max(0, routers.findIndex(r => r.id === radiusScriptRouter?.id))}</li>
                         <li><b>IP Pool PPPoE:</b> 10.{200 + Math.max(0, routers.findIndex(r => r.id === radiusScriptRouter?.id))}.0.10 - 10.{200 + Math.max(0, routers.findIndex(r => r.id === radiusScriptRouter?.id))}.7.254</li>
                      </ul>
-                     <div className="mt-2 text-[10px] text-gray-500 dark:text-gray-400">
+                     <div className="mt-2 text-xs text-gray-500 dark:text-zinc-400 dark:text-gray-400">
                        <label className="block mb-1">Pilih Port arah OLT <span className="text-red-500">*</span></label>
                        <input type="text" value={scriptPppoeIface} onChange={e => setScriptPppoeIface(e.target.value)} placeholder="Misal: ether2, sfp1" className="w-48 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded px-2 py-1 focus:outline-none focus:border-blue-500" />
                      </div>
@@ -1089,10 +1089,10 @@ export default function RoutersPage() {
               </div>
               
               {/* Script */}
-              <pre className="bg-gray-900 text-gray-100 p-3 rounded-lg text-[10px] overflow-x-auto font-mono">{generateRadiusScript()}</pre>
+              <pre className="bg-gray-900 text-gray-100 p-3 rounded-lg text-xs overflow-x-auto font-mono">{generateRadiusScript()}</pre>
               
               <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 p-2.5 rounded-lg">
-                <p className="text-[10px] text-blue-700 dark:text-blue-400">
+                <p className="text-xs text-blue-700 dark:text-blue-400">
                   📝 {t('network.radiusScriptNote')}
                 </p>
               </div>
@@ -1107,12 +1107,12 @@ export default function RoutersPage() {
       {/* Delete Confirmation */}
       {deleteRouterId && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-          <div className="bg-white dark:bg-gray-900 rounded-lg shadow-xl max-w-sm w-full p-4">
+          <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl max-w-sm w-full p-4">
             <h2 className="text-sm font-semibold text-gray-900 dark:text-white">{t('common.delete')} {t('nav.router')}</h2>
             <p className="text-xs text-gray-600 dark:text-gray-400 mt-1 mb-4">{t('notifications.confirmDelete')}</p>
             <div className="flex justify-end gap-2">
               <button onClick={() => setDeleteRouterId(null)} className="px-3 py-1.5 text-xs border border-gray-200 dark:border-gray-700 rounded-md hover:bg-gray-50">{t('common.cancel')}</button>
-              <button onClick={handleDelete} className="px-3 py-1.5 text-xs bg-red-600 text-white rounded-md hover:bg-red-700">{t('common.delete')}</button>
+              <button onClick={handleDelete} className="btn-premium bg-red-600 text-white hover:bg-red-700-md hover:bg-red-700">{t('common.delete')}</button>
             </div>
           </div>
         </div>

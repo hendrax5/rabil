@@ -211,7 +211,7 @@ export default function PaymentGatewayPage() {
           <input
             value={`${typeof window !== 'undefined' ? window.location.origin : ''}/api/payment/webhook`}
             readOnly
-            className="flex-1 px-2 py-1 text-[10px] font-mono bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded"
+            className="flex-1 px-2 py-1 text-xs font-mono bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded"
           />
           <button
             onClick={copyWebhookUrl}
@@ -220,11 +220,11 @@ export default function PaymentGatewayPage() {
             {copied === 'webhook' ? <Check className="w-3 h-3 text-green-600" /> : <Copy className="w-3 h-3" />}
           </button>
         </div>
-        <p className="text-[10px] text-blue-600 mt-1">✅ {t('paymentGateway.webhookNote')}</p>
+        <p className="text-xs text-blue-600 mt-1">✅ {t('paymentGateway.webhookNote')}</p>
       </div>
 
       {/* Tabs */}
-      <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 overflow-hidden">
+      <div className="card-soft overflow-hidden">
         <div className="flex border-b border-gray-200 dark:border-gray-800 overflow-x-auto">
           {[
             { id: 'logs', label: t('paymentGateway.webhookLogs'), icon: List },
@@ -296,13 +296,13 @@ export default function PaymentGatewayPage() {
                 <table className="w-full text-xs">
                   <thead>
                     <tr className="border-b border-gray-200 dark:border-gray-700">
-                      <th className="text-left py-1.5 px-2 text-[10px] font-semibold text-gray-500 uppercase">{t('common.time')}</th>
-                      <th className="text-left py-1.5 px-2 text-[10px] font-semibold text-gray-500 uppercase">Gateway</th>
-                      <th className="text-left py-1.5 px-2 text-[10px] font-semibold text-gray-500 uppercase">Order ID</th>
-                      <th className="text-left py-1.5 px-2 text-[10px] font-semibold text-gray-500 uppercase">{t('common.status')}</th>
-                      <th className="text-left py-1.5 px-2 text-[10px] font-semibold text-gray-500 uppercase hidden md:table-cell">{t('common.amount')}</th>
-                      <th className="text-center py-1.5 px-2 text-[10px] font-semibold text-gray-500 uppercase">{t('paymentGateway.result')}</th>
-                      <th className="text-right py-1.5 px-2 text-[10px] font-semibold text-gray-500 uppercase">{t('common.action')}</th>
+                      <th className="text-left py-1.5 px-2 text-xs font-semibold text-gray-500 uppercase">{t('common.time')}</th>
+                      <th className="text-left py-1.5 px-2 text-xs font-semibold text-gray-500 uppercase">Gateway</th>
+                      <th className="text-left py-1.5 px-2 text-xs font-semibold text-gray-500 uppercase">Order ID</th>
+                      <th className="text-left py-1.5 px-2 text-xs font-semibold text-gray-500 uppercase">{t('common.status')}</th>
+                      <th className="text-left py-1.5 px-2 text-xs font-semibold text-gray-500 uppercase hidden md:table-cell">{t('common.amount')}</th>
+                      <th className="text-center py-1.5 px-2 text-xs font-semibold text-gray-500 uppercase">{t('paymentGateway.result')}</th>
+                      <th className="text-right py-1.5 px-2 text-xs font-semibold text-gray-500 uppercase">{t('common.action')}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -313,13 +313,13 @@ export default function PaymentGatewayPage() {
                     ) : (
                       webhookLogs.map((log) => (
                         <tr key={log.id} className="border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800/50">
-                          <td className="py-1.5 px-2 text-[10px] text-gray-500">{formatWIB(new Date(log.createdAt), 'dd/MM HH:mm')}</td>
+                          <td className="py-1.5 px-2 text-xs text-gray-500 dark:text-zinc-400">{formatWIB(new Date(log.createdAt), 'dd/MM HH:mm')}</td>
                           <td className="py-1.5 px-2">
-                            <span className="px-1.5 py-0.5 text-[10px] font-medium bg-gray-100 dark:bg-gray-800 rounded">{log.gateway}</span>
+                            <span className="px-1.5 py-0.5 text-xs font-medium bg-gray-100 dark:bg-gray-800 rounded">{log.gateway}</span>
                           </td>
-                          <td className="py-1.5 px-2 font-mono text-[10px]">{log.orderId}</td>
+                          <td className="py-1.5 px-2 font-mono text-xs">{log.orderId}</td>
                           <td className="py-1.5 px-2">
-                            <span className={`px-1.5 py-0.5 text-[10px] font-medium rounded ${
+                            <span className={`px-1.5 py-0.5 text-xs font-medium rounded ${
                               log.status === 'settlement' ? 'bg-green-100 text-green-700' :
                               log.status === 'pending' ? 'bg-yellow-100 text-yellow-700' : 'bg-red-100 text-red-700'
                             }`}>{log.status}</span>
@@ -329,7 +329,7 @@ export default function PaymentGatewayPage() {
                             {log.success ? <CheckCircle2 className="w-3 h-3 text-green-600 mx-auto" /> : <AlertCircle className="w-3 h-3 text-red-600 mx-auto" />}
                           </td>
                           <td className="py-1.5 px-2 text-right">
-                            <button onClick={() => setSelectedLog(log)} className="text-[10px] text-teal-600 hover:underline">Detail</button>
+                            <button onClick={() => setSelectedLog(log)} className="text-xs text-teal-600 hover:underline">Detail</button>
                           </td>
                         </tr>
                       ))
@@ -341,7 +341,7 @@ export default function PaymentGatewayPage() {
               {/* Pagination */}
               {logsTotalPages > 1 && (
                 <div className="flex items-center justify-between pt-2">
-                  <p className="text-[10px] text-gray-500">Page {logsPage} of {logsTotalPages}</p>
+                  <p className="text-xs text-gray-500 dark:text-zinc-400">Page {logsPage} of {logsTotalPages}</p>
                   <div className="flex gap-1">
                     <button onClick={() => setLogsPage(p => Math.max(1, p - 1))} disabled={logsPage === 1} className="p-1 border rounded disabled:opacity-50">
                       <ChevronLeft className="w-3 h-3" />
@@ -361,7 +361,7 @@ export default function PaymentGatewayPage() {
               <div className="flex items-center justify-between p-2 bg-gray-50 dark:bg-gray-800 rounded-lg">
                 <div>
                   <p className="text-xs font-medium">{t('paymentGateway.enableMidtrans')}</p>
-                  <p className="text-[10px] text-gray-500">Snap payment gateway</p>
+                  <p className="text-xs text-gray-500 dark:text-zinc-400">Snap payment gateway</p>
                 </div>
                 <label className="relative inline-flex items-center cursor-pointer">
                   <input type="checkbox" checked={midtransForm.isActive} onChange={(e) => setMidtransForm({ ...midtransForm, isActive: e.target.checked })} className="sr-only peer" />
@@ -406,7 +406,7 @@ export default function PaymentGatewayPage() {
               <div className="flex items-center justify-between p-2 bg-gray-50 dark:bg-gray-800 rounded-lg">
                 <div>
                   <p className="text-xs font-medium">{t('paymentGateway.enableXendit')}</p>
-                  <p className="text-[10px] text-gray-500">Payment gateway Indonesia</p>
+                  <p className="text-xs text-gray-500 dark:text-zinc-400">Payment gateway Indonesia</p>
                 </div>
                 <label className="relative inline-flex items-center cursor-pointer">
                   <input type="checkbox" checked={xenditForm.isActive} onChange={(e) => setXenditForm({ ...xenditForm, isActive: e.target.checked })} className="sr-only peer" />
@@ -451,7 +451,7 @@ export default function PaymentGatewayPage() {
               <div className="flex items-center justify-between p-2 bg-gray-50 dark:bg-gray-800 rounded-lg">
                 <div>
                   <p className="text-xs font-medium">{t('paymentGateway.enableDuitku')}</p>
-                  <p className="text-[10px] text-gray-500">Payment gateway Indonesia</p>
+                  <p className="text-xs text-gray-500 dark:text-zinc-400">Payment gateway Indonesia</p>
                 </div>
                 <label className="relative inline-flex items-center cursor-pointer">
                   <input type="checkbox" checked={duitkuForm.isActive} onChange={(e) => setDuitkuForm({ ...duitkuForm, isActive: e.target.checked })} className="sr-only peer" />
@@ -490,7 +490,7 @@ export default function PaymentGatewayPage() {
       {/* Log Detail Modal */}
       {selectedLog && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onClick={() => setSelectedLog(null)}>
-          <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 max-w-2xl w-full max-h-[85vh] overflow-hidden" onClick={(e) => e.stopPropagation()}>
+          <div className="card-soft max-w-2xl w-full max-h-[85vh] overflow-hidden" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between p-3 border-b border-gray-200 dark:border-gray-800">
               <h3 className="text-sm font-semibold">{t('paymentGateway.logDetail')}</h3>
               <button onClick={() => setSelectedLog(null)} className="p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded">
@@ -498,26 +498,26 @@ export default function PaymentGatewayPage() {
               </button>
             </div>
             <div className="p-3 space-y-3 overflow-y-auto max-h-[70vh]">
-              <div className="grid grid-cols-2 gap-3 text-xs">
-                <div><span className="text-[10px] text-gray-500 block">Timestamp</span><span className="font-medium">{formatWIB(new Date(selectedLog.createdAt), 'dd MMM yyyy HH:mm:ss')}</span></div>
-                <div><span className="text-[10px] text-gray-500 block">Gateway</span><span className="font-medium capitalize">{selectedLog.gateway}</span></div>
-                <div><span className="text-[10px] text-gray-500 block">Order ID</span><span className="font-mono text-[10px]">{selectedLog.orderId}</span></div>
-                <div><span className="text-[10px] text-gray-500 block">Transaction ID</span><span className="font-mono text-[10px]">{selectedLog.transactionId || '-'}</span></div>
-                <div><span className="text-[10px] text-gray-500 block">Status</span><span className="font-medium">{selectedLog.status}</span></div>
-                <div><span className="text-[10px] text-gray-500 block">Amount</span><span className="font-medium">{formatAmount(selectedLog.amount)}</span></div>
-                <div><span className="text-[10px] text-gray-500 block">Success</span><span className="font-medium">{selectedLog.success ? '✅ Yes' : '❌ No'}</span></div>
-                {selectedLog.errorMessage && <div className="col-span-2"><span className="text-[10px] text-red-500 block">Error</span><span className="text-red-600 text-[10px]">{selectedLog.errorMessage}</span></div>}
+              <div className="grid grid-cols-2 gap-4 text-xs">
+                <div><span className="text-xs text-gray-500 dark:text-zinc-400 block">Timestamp</span><span className="font-medium">{formatWIB(new Date(selectedLog.createdAt), 'dd MMM yyyy HH:mm:ss')}</span></div>
+                <div><span className="text-xs text-gray-500 dark:text-zinc-400 block">Gateway</span><span className="font-medium capitalize">{selectedLog.gateway}</span></div>
+                <div><span className="text-xs text-gray-500 dark:text-zinc-400 block">Order ID</span><span className="font-mono text-xs">{selectedLog.orderId}</span></div>
+                <div><span className="text-xs text-gray-500 dark:text-zinc-400 block">Transaction ID</span><span className="font-mono text-xs">{selectedLog.transactionId || '-'}</span></div>
+                <div><span className="text-xs text-gray-500 dark:text-zinc-400 block">Status</span><span className="font-medium">{selectedLog.status}</span></div>
+                <div><span className="text-xs text-gray-500 dark:text-zinc-400 block">Amount</span><span className="font-medium">{formatAmount(selectedLog.amount)}</span></div>
+                <div><span className="text-xs text-gray-500 dark:text-zinc-400 block">Success</span><span className="font-medium">{selectedLog.success ? '✅ Yes' : '❌ No'}</span></div>
+                {selectedLog.errorMessage && <div className="col-span-2"><span className="text-xs text-red-500 block">Error</span><span className="text-red-600 text-xs">{selectedLog.errorMessage}</span></div>}
               </div>
               {selectedLog.payload && (
                 <div>
-                  <span className="text-[10px] text-gray-500 block mb-1">Payload</span>
-                  <pre className="bg-gray-900 text-gray-100 p-2 rounded text-[10px] overflow-x-auto">{JSON.stringify(JSON.parse(selectedLog.payload), null, 2)}</pre>
+                  <span className="text-xs text-gray-500 dark:text-zinc-400 block mb-1">Payload</span>
+                  <pre className="bg-gray-900 text-gray-100 p-2 rounded text-xs overflow-x-auto">{JSON.stringify(JSON.parse(selectedLog.payload), null, 2)}</pre>
                 </div>
               )}
               {selectedLog.response && (
                 <div>
-                  <span className="text-[10px] text-gray-500 block mb-1">Response</span>
-                  <pre className="bg-gray-900 text-gray-100 p-2 rounded text-[10px] overflow-x-auto">{JSON.stringify(JSON.parse(selectedLog.response), null, 2)}</pre>
+                  <span className="text-xs text-gray-500 dark:text-zinc-400 block mb-1">Response</span>
+                  <pre className="bg-gray-900 text-gray-100 p-2 rounded text-xs overflow-x-auto">{JSON.stringify(JSON.parse(selectedLog.response), null, 2)}</pre>
                 </div>
               )}
             </div>

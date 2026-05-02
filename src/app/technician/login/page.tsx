@@ -189,7 +189,7 @@ export default function TechnicianLoginPage() {
         </div>
       </div>
       
-      <div className="mt-8 text-center text-[10px] text-muted-foreground font-medium uppercase tracking-widest relative z-10">
+      <div className="mt-8 text-center text-xs text-muted-foreground font-medium uppercase tracking-widest relative z-10">
         NexaRadius FIELD TECHNICIAN SECURE PORTAL
       </div>
     </div>

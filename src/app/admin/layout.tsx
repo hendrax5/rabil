@@ -246,7 +246,7 @@ function NavItem({ item, pendingCount, collapsed, t, onNavigate }: { item: MenuI
                 >
                   <span className="tracking-tight">{t(child.titleKey)}</span>
                   {child.badge === 'pending' && pendingCount > 0 && (
-                    <span className="bg-red-500 text-white text-[10px] px-1.5 py-0.5 rounded-full font-medium min-w-[20px] text-center">
+                    <span className="bg-red-500 text-white text-xs px-1.5 py-0.5 rounded-full font-medium min-w-[20px] text-center">
                       {pendingCount}
                     </span>
                   )}
@@ -480,7 +480,7 @@ function AdminLayoutContent({
                 <h1 className="text-sm font-semibold text-zinc-900 dark:text-white truncate">
                   {company.name}
                 </h1>
-                <p className="text-[10px] text-zinc-500 dark:text-zinc-400 font-medium tracking-wide">
+                <p className="text-xs text-zinc-500 dark:text-zinc-400 font-medium tracking-wide">
                   BILLING SYSTEM
                 </p>
               </div>
@@ -502,7 +502,7 @@ function AdminLayoutContent({
 
               return (
                 <div key={groupName}>
-                  <h4 className="text-[10px] font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-widest mb-2 px-1">
+                  <h4 className="text-xs font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-widest mb-2 px-1">
                     {groupName}
                   </h4>
                   <div className="space-y-0.5">
@@ -547,7 +547,7 @@ function AdminLayoutContent({
                   <p className="text-sm font-medium text-zinc-900 dark:text-white truncate">
                     {session?.user?.name || 'Admin'}
                   </p>
-                  <p className="text-[10px] text-zinc-500 dark:text-zinc-400 truncate capitalize tracking-wide">
+                  <p className="text-xs text-zinc-500 dark:text-zinc-400 truncate capitalize tracking-wide">
                     {(session?.user as any)?.role || 'admin'}
                   </p>
                 </div>
@@ -557,7 +557,7 @@ function AdminLayoutContent({
               {showUserMenu && (
                 <div className="absolute bottom-full left-0 right-0 mb-2 bg-white dark:bg-zinc-900 rounded-xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] dark:shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)] border border-zinc-200 dark:border-zinc-800 overflow-hidden fade-in z-50">
                   <div className="p-3 border-b border-zinc-100 dark:border-zinc-800">
-                    <p className="text-[10px] text-zinc-500 dark:text-zinc-400 font-medium uppercase tracking-wide">{t('auth.signedInAs')}</p>
+                    <p className="text-xs text-zinc-500 dark:text-zinc-400 font-medium uppercase tracking-wide">{t('auth.signedInAs')}</p>
                     <p className="text-sm font-medium text-zinc-900 dark:text-white truncate mt-0.5">
                       {(session?.user as any)?.username}
                     </p>

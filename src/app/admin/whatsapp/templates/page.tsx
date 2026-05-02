@@ -140,15 +140,15 @@ export default function WhatsAppTemplatesPage() {
     };
 
     return (
-      <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800">
+      <div className="card-soft">
         <div className="px-3 py-2.5 border-b border-gray-200 dark:border-gray-800">
           <div className="flex items-center justify-between">
             <div>
               <h3 className="text-sm font-semibold text-gray-900 dark:text-white">{config.title}</h3>
-              <p className="text-[10px] text-gray-500 dark:text-gray-400 mt-0.5">{config.description}</p>
+              <p className="text-xs text-gray-500 dark:text-zinc-400 dark:text-gray-400 mt-0.5">{config.description}</p>
             </div>
             {template && (
-              <span className={`px-1.5 py-0.5 text-[10px] font-medium rounded ${template.isActive ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
+              <span className={`px-1.5 py-0.5 text-xs font-medium rounded ${template.isActive ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
                 {template.isActive ? 'Aktif' : 'Nonaktif'}
               </span>
             )}
@@ -162,13 +162,13 @@ export default function WhatsAppTemplatesPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
               </svg>
               <p className="text-xs">{t('whatsapp.templateNotCreated')}</p>
-              <p className="text-[10px] mt-0.5">{t('whatsapp.createDefaultOrManual')}</p>
+              <p className="text-xs mt-0.5">{t('whatsapp.createDefaultOrManual')}</p>
             </div>
           ) : (
             <>
               {/* Message Textarea */}
               <div>
-                <label className="block text-[10px] font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1">
+                <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1">
                   {t('whatsapp.templateMessage')}
                 </label>
                 <textarea
@@ -179,7 +179,7 @@ export default function WhatsAppTemplatesPage() {
                   rows={10}
                   placeholder="Tulis template WhatsApp Anda di sini..."
                 />
-                <p className="text-[10px] text-gray-500 dark:text-gray-400 mt-1">{message.length} {t('whatsapp.characters')}</p>
+                <p className="text-xs text-gray-500 dark:text-zinc-400 dark:text-gray-400 mt-1">{message.length} {t('whatsapp.characters')}</p>
               </div>
 
               {/* Variables */}
@@ -188,7 +188,7 @@ export default function WhatsAppTemplatesPage() {
                   <svg className="w-3 h-3 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
-                  <label className="text-[10px] font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wider">
+                  <label className="text-xs font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wider">
                     {t('whatsapp.availableVariables')}
                   </label>
                 </div>
@@ -199,7 +199,7 @@ export default function WhatsAppTemplatesPage() {
                         key={variable}
                         type="button"
                         onClick={() => insertVariable(variable)}
-                        className="px-2 py-1 text-[10px] bg-white dark:bg-gray-800 hover:bg-blue-100 dark:hover:bg-blue-900 border border-blue-300 dark:border-blue-700 rounded font-mono transition-colors text-gray-700 dark:text-gray-300"
+                        className="px-2 py-1 text-xs bg-white dark:bg-gray-800 hover:bg-blue-100 dark:hover:bg-blue-900 border border-blue-300 dark:border-blue-700 rounded font-mono transition-colors text-gray-700 dark:text-gray-300"
                       >
                         {variable}
                       </button>
@@ -213,8 +213,8 @@ export default function WhatsAppTemplatesPage() {
 
               {/* Format Info */}
               <div className="bg-gray-50 dark:bg-gray-800/50 p-2 rounded-md border border-gray-200 dark:border-gray-700">
-                <p className="text-[10px] font-medium text-gray-700 dark:text-gray-300 mb-1">{t('whatsapp.waFormat')}:</p>
-                <div className="grid grid-cols-2 gap-1 text-[10px] text-gray-600 dark:text-gray-400">
+                <p className="text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">{t('whatsapp.waFormat')}:</p>
+                <div className="grid grid-cols-2 gap-1 text-xs text-gray-600 dark:text-gray-400">
                   <div>• *bold* → <strong>bold</strong></div>
                   <div>• _italic_ → <em>italic</em></div>
                   <div>• ~strikethrough~ → <del>strikethrough</del></div>
@@ -279,7 +279,7 @@ export default function WhatsAppTemplatesPage() {
       <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950">
         <div className="flex flex-col items-center gap-2">
           <div className="w-6 h-6 border-2 border-teal-500 border-t-transparent rounded-full animate-spin" />
-          <span className="text-xs text-gray-500 dark:text-gray-400">Loading...</span>
+          <span className="page-subtitle">Loading...</span>
         </div>
       </div>
     );
@@ -296,17 +296,17 @@ export default function WhatsAppTemplatesPage() {
             </svg>
             {t('whatsapp.templatesTitle')}
           </h1>
-          <p className="text-[10px] text-gray-500 dark:text-gray-400">{t('whatsapp.templatesSubtitle')}</p>
+          <p className="text-xs text-gray-500 dark:text-zinc-400 dark:text-gray-400">{t('whatsapp.templatesSubtitle')}</p>
         </div>
 
         {/* Tabs */}
-        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-1">
+        <div className="card-soft p-1">
           <div className="flex flex-wrap gap-1">
             {templateTypes.map((type) => (
               <button
                 key={type}
                 onClick={() => setActiveTab(type)}
-                className={`px-2 py-1.5 text-[10px] font-medium rounded transition-colors ${
+                className={`px-2 py-1.5 text-xs font-medium rounded transition-colors ${
                   activeTab === type
                     ? 'bg-teal-600 text-white'
                     : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'
@@ -329,7 +329,7 @@ export default function WhatsAppTemplatesPage() {
             </svg>
             <div className="space-y-1.5">
               <p className="text-xs font-semibold text-blue-900 dark:text-blue-100">📋 {t('whatsapp.howToUse')}</p>
-              <ul className="text-[10px] text-blue-800 dark:text-blue-200 space-y-0.5">
+              <ul className="text-xs text-blue-800 dark:text-blue-200 space-y-0.5">
                 <li>• <strong>Persetujuan Pendaftaran</strong>: Dikirim saat admin approve registrasi baru</li>
                 <li>• <strong>Admin Create User</strong>: Dikirim saat admin create user manual</li>
                 <li>• <strong>Invoice Instalasi</strong>: Dikirim saat mark installed dan invoice dibuat</li>

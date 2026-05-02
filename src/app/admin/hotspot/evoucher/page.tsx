@@ -147,7 +147,7 @@ export default function EVoucherManagementPage() {
     const c = cfg[status] || cfg.PENDING;
     const Icon = c.icon;
     return (
-      <span className={`inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[10px] font-medium ${c.bg}`}>
+      <span className={`inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-xs font-medium ${c.bg}`}>
         <Icon className="w-2.5 h-2.5" />
         {status}
       </span>
@@ -155,15 +155,15 @@ export default function EVoucherManagementPage() {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+          <h1 className="page-title flex items-center gap-2">
             <ShoppingCart className="w-5 h-5 text-primary" />
             {t('evoucher.title')}
           </h1>
-          <p className="text-xs text-gray-500 dark:text-gray-400">{t('evoucher.subtitle')}</p>
+          <p className="page-subtitle">{t('evoucher.subtitle')}</p>
         </div>
         <button
           onClick={loadOrders}
@@ -177,55 +177,55 @@ export default function EVoucherManagementPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-3 md:grid-cols-6 gap-2">
-        <div className="bg-white dark:bg-gray-900 p-2.5 rounded-lg border border-gray-200 dark:border-gray-800">
+        <div className="bg-white dark:bg-gray-900 p-2.5 rounded-lg card-soft">
           <div className="flex items-center justify-between">
             <div>
-              <div className="text-[10px] font-medium text-gray-500 uppercase">{t('common.total')}</div>
+              <div className="text-xs font-medium text-gray-500 uppercase">{t('common.total')}</div>
               <div className="text-lg font-bold text-gray-900 dark:text-white">{stats.total}</div>
             </div>
             <Package className="w-4 h-4 text-gray-400" />
           </div>
         </div>
-        <div className="bg-white dark:bg-gray-900 p-2.5 rounded-lg border border-gray-200 dark:border-gray-800">
+        <div className="bg-white dark:bg-gray-900 p-2.5 rounded-lg card-soft">
           <div className="flex items-center justify-between">
             <div>
-              <div className="text-[10px] font-medium text-yellow-600 uppercase">{t('evoucher.pending')}</div>
+              <div className="text-xs font-medium text-yellow-600 uppercase">{t('evoucher.pending')}</div>
               <div className="text-lg font-bold text-yellow-600">{stats.pending}</div>
             </div>
             <Clock className="w-4 h-4 text-yellow-400" />
           </div>
         </div>
-        <div className="bg-white dark:bg-gray-900 p-2.5 rounded-lg border border-gray-200 dark:border-gray-800">
+        <div className="bg-white dark:bg-gray-900 p-2.5 rounded-lg card-soft">
           <div className="flex items-center justify-between">
             <div>
-              <div className="text-[10px] font-medium text-green-600 uppercase">{t('evoucher.paid')}</div>
+              <div className="text-xs font-medium text-green-600 uppercase">{t('evoucher.paid')}</div>
               <div className="text-lg font-bold text-green-600">{stats.paid}</div>
             </div>
             <CheckCircle className="w-4 h-4 text-green-400" />
           </div>
         </div>
-        <div className="bg-white dark:bg-gray-900 p-2.5 rounded-lg border border-gray-200 dark:border-gray-800">
+        <div className="bg-white dark:bg-gray-900 p-2.5 rounded-lg card-soft">
           <div className="flex items-center justify-between">
             <div>
-              <div className="text-[10px] font-medium text-red-600 uppercase">{t('evoucher.cancelled')}</div>
+              <div className="text-xs font-medium text-red-600 uppercase">{t('evoucher.cancelled')}</div>
               <div className="text-lg font-bold text-red-600">{stats.cancelled}</div>
             </div>
             <Ban className="w-4 h-4 text-red-400" />
           </div>
         </div>
-        <div className="bg-white dark:bg-gray-900 p-2.5 rounded-lg border border-gray-200 dark:border-gray-800">
+        <div className="bg-white dark:bg-gray-900 p-2.5 rounded-lg card-soft">
           <div className="flex items-center justify-between">
             <div>
-              <div className="text-[10px] font-medium text-gray-500 uppercase">{t('evoucher.expired')}</div>
+              <div className="text-xs font-medium text-gray-500 uppercase">{t('evoucher.expired')}</div>
               <div className="text-lg font-bold text-gray-600">{stats.expired}</div>
             </div>
             <XCircle className="w-4 h-4 text-gray-400" />
           </div>
         </div>
-        <div className="bg-white dark:bg-gray-900 p-2.5 rounded-lg border border-gray-200 dark:border-gray-800">
+        <div className="bg-white dark:bg-gray-900 p-2.5 rounded-lg card-soft">
           <div className="flex items-center justify-between">
             <div>
-              <div className="text-[10px] font-medium text-blue-600 uppercase">{t('evoucher.revenue')}</div>
+              <div className="text-xs font-medium text-blue-600 uppercase">{t('evoucher.revenue')}</div>
               <div className="text-sm font-bold text-blue-600">{formatCurrency(stats.revenue)}</div>
             </div>
             <TrendingUp className="w-4 h-4 text-blue-400" />
@@ -234,7 +234,7 @@ export default function EVoucherManagementPage() {
       </div>
 
       {/* Filters */}
-      <div className="bg-white dark:bg-gray-900 p-3 rounded-lg border border-gray-200 dark:border-gray-800">
+      <div className="bg-white dark:bg-gray-900 p-3 rounded-lg card-soft">
         <div className="flex flex-col sm:flex-row gap-2 items-start sm:items-center">
           <div className="flex items-center gap-1.5">
             <Filter className="w-3.5 h-3.5 text-gray-500" />
@@ -265,7 +265,7 @@ export default function EVoucherManagementPage() {
       </div>
 
       {/* Table */}
-      <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 overflow-hidden">
+      <div className="card-soft overflow-hidden">
         {loading ? (
           <div className="text-center py-8">
             <RefreshCw className="w-5 h-5 animate-spin mx-auto text-primary" />
@@ -275,14 +275,14 @@ export default function EVoucherManagementPage() {
             <table className="w-full">
               <thead className="bg-gray-50 dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-700">
                 <tr>
-                  <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase">{t('evoucher.order')}</th>
-                  <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase">{t('evoucher.customer')}</th>
-                  <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase hidden sm:table-cell">{t('evoucher.profile')}</th>
-                  <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase">{t('evoucher.quantity')}</th>
-                  <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase">{t('evoucher.amount')}</th>
-                  <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase">{t('common.status')}</th>
-                  <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase hidden md:table-cell">{t('common.date')}</th>
-                  <th className="px-3 py-2 text-right text-[10px] font-medium text-gray-500 uppercase">{t('common.actions')}</th>
+                  <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">{t('evoucher.order')}</th>
+                  <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">{t('evoucher.customer')}</th>
+                  <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase hidden sm:table-cell">{t('evoucher.profile')}</th>
+                  <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">{t('evoucher.quantity')}</th>
+                  <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">{t('evoucher.amount')}</th>
+                  <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">{t('common.status')}</th>
+                  <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase hidden md:table-cell">{t('common.date')}</th>
+                  <th className="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase">{t('common.actions')}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
@@ -293,17 +293,17 @@ export default function EVoucherManagementPage() {
                 ) : (
                   filteredOrders.map((order) => (
                     <tr key={order.id} className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
-                      <td className="px-3 py-2 font-mono text-[10px] text-gray-900 dark:text-white">{order.orderNumber}</td>
+                      <td className="px-3 py-2 font-mono text-xs text-gray-900 dark:text-white">{order.orderNumber}</td>
                       <td className="px-3 py-2">
                         <div className="font-medium text-xs text-gray-900 dark:text-white">{order.customerName}</div>
-                        <div className="text-[10px] text-gray-500">{order.customerPhone}</div>
+                        <div className="text-xs text-gray-500 dark:text-zinc-400">{order.customerPhone}</div>
                       </td>
                       <td className="px-3 py-2 text-xs hidden sm:table-cell">{order.profile.name}</td>
                       <td className="px-3 py-2 text-xs">{order.quantity}x</td>
                       <td className="px-3 py-2 text-xs font-medium">{formatCurrency(order.totalAmount)}</td>
                       <td className="px-3 py-2">{getStatusBadge(order.status)}</td>
                       <td className="px-3 py-2 hidden md:table-cell">
-                        <div className="text-[10px]">{formatToWIB(order.createdAt)}</div>
+                        <div className="text-xs">{formatToWIB(order.createdAt)}</div>
                         {order.paidAt && <div className="text-[9px] text-green-600">Paid: {formatToWIB(order.paidAt)}</div>}
                       </td>
                       <td className="px-3 py-2 text-right">

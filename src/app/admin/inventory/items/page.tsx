@@ -253,7 +253,7 @@ export default function InventoryItemsPage() {
         <div className="absolute inset-0 bg-[linear-gradient(rgba(188,19,254,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(188,19,254,0.03)_1px,transparent_1px)] bg-[size:50px_50px]"></div>
       </div>
       <div className="relative z-10 space-y-6">
-        <div className="space-y-4">
+        <div className="space-y-5">
           <div>
             <h1 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-[#00f7ff] via-white to-[#ff44cc] bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(0,247,255,0.5)] flex items-center gap-2">
               <Package className="h-6 w-6 text-[#00f7ff]" />
@@ -265,11 +265,11 @@ export default function InventoryItemsPage() {
           </div>
 
           {/* Stats Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div className="bg-card/80 backdrop-blur-xl rounded-xl border-2 border-[#bc13fe]/30 p-2.5 sm:p-4 shadow-[0_0_20px_rgba(188,19,254,0.2)] hover:border-[#bc13fe]/50 transition-all">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-[10px] text-muted-foreground uppercase tracking-wider">{t('inventory.totalItems')}</p>
+                  <p className="text-xs text-muted-foreground uppercase tracking-wider">{t('inventory.totalItems')}</p>
                   <p className="text-lg font-bold text-foreground">
                     {stats.totalItems}
                   </p>
@@ -281,7 +281,7 @@ export default function InventoryItemsPage() {
             <div className="bg-card/80 backdrop-blur-xl rounded-xl border-2 border-[#bc13fe]/30 p-2.5 sm:p-4 shadow-[0_0_20px_rgba(188,19,254,0.2)] hover:border-[#bc13fe]/50 transition-all">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-[10px] text-muted-foreground uppercase tracking-wider">{t('inventory.lowStock')}</p>
+                  <p className="text-xs text-muted-foreground uppercase tracking-wider">{t('inventory.lowStock')}</p>
                   <p className="text-lg font-bold text-orange-500">{stats.lowStock}</p>
                 </div>
                 <AlertTriangle className="h-6 w-6 text-orange-500" />
@@ -291,7 +291,7 @@ export default function InventoryItemsPage() {
             <div className="bg-card/80 backdrop-blur-xl rounded-xl border-2 border-[#bc13fe]/30 p-2.5 sm:p-4 shadow-[0_0_20px_rgba(188,19,254,0.2)] hover:border-[#bc13fe]/50 transition-all">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-[10px] text-muted-foreground uppercase tracking-wider">{t('inventory.outOfStock')}</p>
+                  <p className="text-xs text-muted-foreground uppercase tracking-wider">{t('inventory.outOfStock')}</p>
                   <p className="text-lg font-bold text-destructive">{stats.outOfStock}</p>
                 </div>
                 <TrendingDown className="h-6 w-6 text-destructive" />
@@ -301,7 +301,7 @@ export default function InventoryItemsPage() {
             <div className="bg-card/80 backdrop-blur-xl rounded-xl border-2 border-[#bc13fe]/30 p-2.5 sm:p-4 shadow-[0_0_20px_rgba(188,19,254,0.2)] hover:border-[#bc13fe]/50 transition-all">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-[10px] text-muted-foreground uppercase tracking-wider">{t('inventory.totalValue')}</p>
+                  <p className="text-xs text-muted-foreground uppercase tracking-wider">{t('inventory.totalValue')}</p>
                   <p className="text-lg font-bold text-success">
                     Rp {stats.totalValue.toLocaleString('id-ID')}
                   </p>
@@ -313,7 +313,7 @@ export default function InventoryItemsPage() {
 
           {/* Actions Bar */}
           <div className="bg-card rounded-lg shadow-sm border border-border p-3">
-            <div className="flex flex-col lg:flex-row gap-3 items-start lg:items-center justify-between">
+            <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
               {/* Search */}
               <div className="relative flex-1">
                 <Search className="absolute left-2.5 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -399,7 +399,7 @@ export default function InventoryItemsPage() {
                       <p className="text-sm font-medium text-foreground truncate">{item.name}</p>
                       <p className="text-xs font-mono text-muted-foreground">{item.sku}</p>
                     </div>
-                    <span className={`px-1.5 py-0.5 text-[10px] font-medium rounded-full ml-2 shrink-0 ${
+                    <span className={`px-1.5 py-0.5 text-xs font-medium rounded-full ml-2 shrink-0 ${
                       item.stockStatus === 'out_of_stock' ? 'bg-destructive/20 text-destructive' :
                       item.stockStatus === 'low_stock' ? 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300' :
                       'bg-success/20 text-success'
@@ -414,7 +414,7 @@ export default function InventoryItemsPage() {
                     <div>
                       <span className="text-muted-foreground">Stock:</span>{' '}
                       <span className={`font-medium ${item.stockStatus === 'out_of_stock' ? 'text-destructive' : item.stockStatus === 'low_stock' ? 'text-orange-600' : 'text-success'}`}>{item.currentStock}</span>
-                      <span className="text-muted-foreground text-[10px]"> (min: {item.minimumStock})</span>
+                      <span className="text-muted-foreground text-xs"> (min: {item.minimumStock})</span>
                     </div>
                     {item.location && <div><span className="text-muted-foreground">📍</span> <span className="text-foreground">{item.location}</span></div>}
                     <div><span className="text-muted-foreground">Buy:</span> <span className="text-foreground">Rp {item.purchasePrice.toLocaleString('id-ID')}</span></div>
@@ -439,31 +439,31 @@ export default function InventoryItemsPage() {
               <table className="w-full">
                 <thead className="bg-muted">
                   <tr>
-                    <th className="px-3 py-2 text-left text-[10px] font-medium text-muted-foreground uppercase tracking-wider">
+                    <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                       SKU
                     </th>
-                    <th className="px-3 py-2 text-left text-[10px] font-medium text-muted-foreground uppercase tracking-wider">
+                    <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                       Name
                     </th>
-                    <th className="px-3 py-2 text-left text-[10px] font-medium text-muted-foreground uppercase tracking-wider">
+                    <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                       Category
                     </th>
-                    <th className="px-3 py-2 text-left text-[10px] font-medium text-muted-foreground uppercase tracking-wider">
+                    <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                       Stock
                     </th>
-                    <th className="px-3 py-2 text-left text-[10px] font-medium text-muted-foreground uppercase tracking-wider">
+                    <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                       Unit
                     </th>
-                    <th className="px-3 py-2 text-left text-[10px] font-medium text-muted-foreground uppercase tracking-wider">
+                    <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                       Purchase Price
                     </th>
-                    <th className="px-3 py-2 text-left text-[10px] font-medium text-muted-foreground uppercase tracking-wider">
+                    <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                       Selling Price
                     </th>
-                    <th className="px-3 py-2 text-left text-[10px] font-medium text-muted-foreground uppercase tracking-wider">
+                    <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                       Status
                     </th>
-                    <th className="px-3 py-2 text-left text-[10px] font-medium text-muted-foreground uppercase tracking-wider">
+                    <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                       Actions
                     </th>
                   </tr>
@@ -482,7 +482,7 @@ export default function InventoryItemsPage() {
                           {item.name}
                         </div>
                         {item.location && (
-                          <div className="text-[10px] text-muted-foreground">
+                          <div className="text-xs text-muted-foreground">
                             📍 {item.location}
                           </div>
                         )}
@@ -501,7 +501,7 @@ export default function InventoryItemsPage() {
                         >
                           {item.currentStock}
                         </div>
-                        <div className="text-[10px] text-muted-foreground">
+                        <div className="text-xs text-muted-foreground">
                           Min: {item.minimumStock}
                         </div>
                       </td>
@@ -516,7 +516,7 @@ export default function InventoryItemsPage() {
                       </td>
                       <td className="px-3 py-2 text-xs">
                         <span
-                          className={`px-1.5 py-0.5 text-[10px] font-medium rounded-full ${item.stockStatus === 'out_of_stock'
+                          className={`px-1.5 py-0.5 text-xs font-medium rounded-full ${item.stockStatus === 'out_of_stock'
                               ? 'bg-destructive/20 text-destructive'
                               : item.stockStatus === 'low_stock'
                                 ? 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300'
@@ -622,7 +622,7 @@ export default function InventoryItemsPage() {
                     <ModalLabel>{t('inventory.notes')}</ModalLabel>
                     <ModalTextarea value={formData.notes} onChange={(e) => setFormData({ ...formData, notes: e.target.value })} rows={2} />
                   </div>
-                  <div className="md:col-span-2 flex items-center gap-3">
+                  <div className="md:col-span-2 flex items-center gap-4">
                     <label className="flex items-center gap-2 text-sm text-foreground cursor-pointer">
                       <input type="checkbox" checked={formData.isActive} onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })} className="rounded border-[#bc13fe]/50 bg-[#0a0520] text-[#00f7ff] focus:ring-[#00f7ff] w-4 h-4" />
                       <span>{t('common.active')}</span>

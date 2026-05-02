@@ -262,15 +262,15 @@ export default function CustomerAssignmentPage() {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+          <h1 className="page-title flex items-center gap-2">
             <Link2 className="h-5 w-5 text-purple-600" />
             Customer - ODP Assignment
           </h1>
-          <p className="text-xs text-gray-500 dark:text-gray-400">
+          <p className="page-subtitle">
             Assign customers to ODP ports for FTTH network
           </p>
         </div>
@@ -284,20 +284,20 @@ export default function CustomerAssignmentPage() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-3 gap-3">
-        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-3">
+      <div className="grid grid-cols-3 gap-4">
+        <div className="card-soft p-5">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-[10px] text-gray-500 uppercase">Total Assignments</p>
+              <p className="text-xs text-gray-500 dark:text-zinc-400 uppercase">Total Assignments</p>
               <p className="text-base font-bold text-purple-600">{assignments.length}</p>
             </div>
             <Link2 className="h-5 w-5 text-purple-600" />
           </div>
         </div>
-        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-3">
+        <div className="card-soft p-5">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-[10px] text-gray-500 uppercase">Unique ODPs</p>
+              <p className="text-xs text-gray-500 dark:text-zinc-400 uppercase">Unique ODPs</p>
               <p className="text-base font-bold text-blue-600">
                 {new Set(assignments.map(a => a.odpId)).size}
               </p>
@@ -305,10 +305,10 @@ export default function CustomerAssignmentPage() {
             <Box className="h-5 w-5 text-blue-600" />
           </div>
         </div>
-        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-3">
+        <div className="card-soft p-5">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-[10px] text-gray-500 uppercase">Avg Distance</p>
+              <p className="text-xs text-gray-500 dark:text-zinc-400 uppercase">Avg Distance</p>
               <p className="text-base font-bold text-green-600">
                 {assignments.length > 0 
                   ? (assignments.reduce((sum, a) => sum + (a.distance || 0), 0) / assignments.length).toFixed(2)
@@ -321,7 +321,7 @@ export default function CustomerAssignmentPage() {
       </div>
 
       {/* Search Filter */}
-      <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-3">
+      <div className="card-soft p-5">
         <div className="flex items-center gap-2">
           <Search className="h-4 w-4 text-gray-400" />
           <input
@@ -343,7 +343,7 @@ export default function CustomerAssignmentPage() {
       </div>
 
       {/* Table */}
-      <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 overflow-hidden">
+      <div className="card-soft overflow-hidden">
         <div className="px-3 py-2 border-b dark:border-gray-800">
           <span className="text-xs font-medium">Assignment List ({filteredAssignments.length})</span>
         </div>
@@ -351,12 +351,12 @@ export default function CustomerAssignmentPage() {
           <table className="w-full">
             <thead className="bg-gray-50 dark:bg-gray-800/50">
               <tr>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase">Customer</th>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase">ODP</th>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase hidden sm:table-cell">Port</th>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase hidden md:table-cell">Distance</th>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase hidden lg:table-cell">Notes</th>
-                <th className="px-3 py-2 text-right text-[10px] font-medium text-gray-500 uppercase"></th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Customer</th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">ODP</th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase hidden sm:table-cell">Port</th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase hidden md:table-cell">Distance</th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase hidden lg:table-cell">Notes</th>
+                <th className="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase"></th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
@@ -374,7 +374,7 @@ export default function CustomerAssignmentPage() {
                         <User className="h-4 w-4 text-teal-600" />
                         <div>
                           <span className="text-xs font-medium block">{assignment.customer.name}</span>
-                          <span className="text-[10px] text-gray-500">@{assignment.customer.username}</span>
+                          <span className="text-xs text-gray-500 dark:text-zinc-400">@{assignment.customer.username}</span>
                         </div>
                       </div>
                     </td>
@@ -384,7 +384,7 @@ export default function CustomerAssignmentPage() {
                           <Box className="h-3 w-3 text-blue-600" />
                           <span className="text-xs">{assignment.odp.name}</span>
                         </div>
-                        <div className="flex items-center gap-1 text-[10px] text-gray-500">
+                        <div className="flex items-center gap-1 text-xs text-gray-500 dark:text-zinc-400">
                           <Server className="h-2.5 w-2.5" />
                           {assignment.odp.olt?.name}
                           {assignment.odp.odc && (
@@ -398,7 +398,7 @@ export default function CustomerAssignmentPage() {
                       </div>
                     </td>
                     <td className="px-3 py-2 hidden sm:table-cell">
-                      <span className="px-1.5 py-0.5 text-[10px] bg-purple-100 text-purple-700 dark:bg-purple-900/30 rounded font-mono">
+                      <span className="px-1.5 py-0.5 text-xs bg-purple-100 text-purple-700 dark:bg-purple-900/30 rounded font-mono">
                         Port {assignment.portNumber}
                       </span>
                     </td>
@@ -441,14 +441,14 @@ export default function CustomerAssignmentPage() {
 
       {/* Add/Edit Dialog */}
       {isDialogOpen && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white dark:bg-gray-900 rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+          <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="px-4 py-3 border-b dark:border-gray-800 flex items-center justify-between">
               <div>
                 <h2 className="text-sm font-semibold">
                   {editingAssignment ? 'Edit Assignment' : 'New Assignment'}
                 </h2>
-                <p className="text-[10px] text-gray-500">
+                <p className="text-xs text-gray-500 dark:text-zinc-400">
                   Assign customer to ODP port
                 </p>
               </div>
@@ -460,10 +460,10 @@ export default function CustomerAssignmentPage() {
               </button>
             </div>
             
-            <form onSubmit={handleSubmit} className="p-4 space-y-4">
+            <form onSubmit={handleSubmit} className="p-4 space-y-5">
               {/* Customer Selection */}
               <div>
-                <label className="block text-[10px] font-medium mb-1">Customer *</label>
+                <label className="block text-xs font-medium mb-1.5">Customer *</label>
                 {selectedCustomer ? (
                   <div className="p-2 bg-teal-50 dark:bg-teal-900/20 border border-teal-200 dark:border-teal-800 rounded">
                     <div className="flex items-center justify-between">
@@ -471,26 +471,26 @@ export default function CustomerAssignmentPage() {
                         <User className="h-4 w-4 text-teal-600" />
                         <div>
                           <span className="text-xs font-medium">{selectedCustomer.name}</span>
-                          <span className="text-[10px] text-gray-500 ml-2">@{selectedCustomer.username}</span>
+                          <span className="text-xs text-gray-500 dark:text-zinc-400 ml-2">@{selectedCustomer.username}</span>
                         </div>
                       </div>
                       {!editingAssignment && (
                         <button
                           type="button"
                           onClick={() => { setSelectedCustomer(null); setSelectedCustomerId(''); setNearestOdps([]); }}
-                          className="text-[10px] text-red-600 hover:underline"
+                          className="text-xs text-red-600 hover:underline"
                         >
                           Change
                         </button>
                       )}
                     </div>
                     {selectedCustomer.latitude && selectedCustomer.longitude ? (
-                      <div className="mt-1 flex items-center gap-1 text-[10px] text-gray-500">
+                      <div className="mt-1 flex items-center gap-1 text-xs text-gray-500 dark:text-zinc-400">
                         <MapPin className="h-2.5 w-2.5" />
                         GPS: {selectedCustomer.latitude.toFixed(6)}, {selectedCustomer.longitude.toFixed(6)}
                       </div>
                     ) : (
-                      <div className="mt-1 text-[10px] text-amber-600">
+                      <div className="mt-1 text-xs text-amber-600">
                         ⚠ No GPS coordinates - distance cannot be calculated
                       </div>
                     )}
@@ -505,7 +505,7 @@ export default function CustomerAssignmentPage() {
                         searchCustomers(e.target.value);
                       }}
                       placeholder="Search customer by name or username..."
-                      className="w-full px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800"
+                      className="w-full input-premium"
                     />
                     {isSearching && (
                       <RefreshCcw className="absolute right-2 top-1/2 -translate-y-1/2 h-3 w-3 animate-spin text-gray-400" />
@@ -520,7 +520,7 @@ export default function CustomerAssignmentPage() {
                             className="w-full px-3 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700"
                           >
                             <div className="text-xs font-medium">{customer.name}</div>
-                            <div className="text-[10px] text-gray-500">
+                            <div className="text-xs text-gray-500 dark:text-zinc-400">
                               @{customer.username} • {customer.phone || 'No phone'}
                             </div>
                           </button>
@@ -534,7 +534,7 @@ export default function CustomerAssignmentPage() {
               {/* Nearest ODPs */}
               {selectedCustomer && (
                 <div>
-                  <label className="block text-[10px] font-medium mb-1">
+                  <label className="block text-xs font-medium mb-1.5">
                     Select ODP * 
                     {loadingNearestOdps && (
                       <RefreshCcw className="inline h-2.5 w-2.5 ml-1 animate-spin" />
@@ -566,7 +566,7 @@ export default function CustomerAssignmentPage() {
                             <Box className="h-3 w-3 text-blue-600" />
                             <span className="text-xs font-medium">{odp.name}</span>
                           </div>
-                          <div className="flex items-center gap-2 mt-1 text-[10px] text-gray-500">
+                          <div className="flex items-center gap-2 mt-1 text-xs text-gray-500 dark:text-zinc-400">
                             <span className="flex items-center gap-0.5">
                               <Navigation className="h-2.5 w-2.5 text-green-600" />
                               {odp.distance?.toFixed(2)} km
@@ -590,12 +590,12 @@ export default function CustomerAssignmentPage() {
               {/* Port Selection */}
               {selectedOdpId && (
                 <div>
-                  <label className="block text-[10px] font-medium mb-1">Port Number *</label>
+                  <label className="block text-xs font-medium mb-1.5">Port Number *</label>
                   <select
                     value={selectedPort}
                     onChange={(e) => setSelectedPort(e.target.value)}
                     required
-                    className="w-full px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800"
+                    className="w-full input-premium"
                   >
                     <option value="">Select port</option>
                     {(nearestOdps.find(o => o.id === selectedOdpId)?.availablePorts || []).map(port => (
@@ -607,13 +607,13 @@ export default function CustomerAssignmentPage() {
 
               {/* Notes */}
               <div>
-                <label className="block text-[10px] font-medium mb-1">Notes</label>
+                <label className="block text-xs font-medium mb-1.5">Notes</label>
                 <textarea
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
                   rows={2}
                   placeholder="Optional notes about this assignment..."
-                  className="w-full px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800"
+                  className="w-full input-premium"
                 />
               </div>
 
@@ -621,7 +621,7 @@ export default function CustomerAssignmentPage() {
                 <button
                   type="button"
                   onClick={() => { setIsDialogOpen(false); setEditingAssignment(null); resetForm(); }}
-                  className="px-3 py-1.5 text-xs border dark:border-gray-700 rounded hover:bg-gray-100 dark:hover:bg-gray-800"
+                  className="btn-premium border border-gray-200 dark:border-zinc-700 text-gray-600 hover:bg-gray-50"
                 >
                   Cancel
                 </button>

@@ -271,7 +271,7 @@ export default function ManagementPage() {
       <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950">
         <div className="flex flex-col items-center gap-2">
           <div className="w-6 h-6 border-2 border-teal-500 border-t-transparent rounded-full animate-spin" />
-          <span className="text-xs text-gray-500 dark:text-gray-400">{t('common.loading')}</span>
+          <span className="page-subtitle">{t('common.loading')}</span>
         </div>
       </div>
     );
@@ -284,7 +284,7 @@ export default function ManagementPage() {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
             <h1 className="text-base font-semibold text-gray-900 dark:text-white">{t('management.title')}</h1>
-            <p className="text-[10px] text-gray-500 dark:text-gray-400">{t('management.subtitle')}</p>
+            <p className="text-xs text-gray-500 dark:text-zinc-400 dark:text-gray-400">{t('management.subtitle')}</p>
           </div>
           <button
             onClick={openCreateModal}
@@ -299,7 +299,7 @@ export default function ManagementPage() {
 
         {/* Stats */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-          <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-2">
+          <div className="card-soft p-2">
             <div className="flex items-center gap-2">
               <div className="p-1.5 bg-teal-100 dark:bg-teal-900/30 rounded">
                 <svg className="w-3.5 h-3.5 text-teal-600 dark:text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -308,11 +308,11 @@ export default function ManagementPage() {
               </div>
               <div>
                 <p className="text-lg font-bold text-gray-900 dark:text-white">{users.length}</p>
-                <p className="text-[10px] text-gray-500 dark:text-gray-400">{t('management.totalUsers')}</p>
+                <p className="text-xs text-gray-500 dark:text-zinc-400 dark:text-gray-400">{t('management.totalUsers')}</p>
               </div>
             </div>
           </div>
-          <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-2">
+          <div className="card-soft p-2">
             <div className="flex items-center gap-2">
               <div className="p-1.5 bg-red-100 dark:bg-red-900/30 rounded">
                 <svg className="w-3.5 h-3.5 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -323,11 +323,11 @@ export default function ManagementPage() {
                 <p className="text-lg font-bold text-gray-900 dark:text-white">
                   {users.filter(u => u.role === 'SUPER_ADMIN').length}
                 </p>
-                <p className="text-[10px] text-gray-500 dark:text-gray-400">{t('management.superAdmin')}</p>
+                <p className="text-xs text-gray-500 dark:text-zinc-400 dark:text-gray-400">{t('management.superAdmin')}</p>
               </div>
             </div>
           </div>
-          <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-2">
+          <div className="card-soft p-2">
             <div className="flex items-center gap-2">
               <div className="p-1.5 bg-blue-100 dark:bg-blue-900/30 rounded">
                 <svg className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -338,11 +338,11 @@ export default function ManagementPage() {
                 <p className="text-lg font-bold text-gray-900 dark:text-white">
                   {users.filter(u => u.role === 'CUSTOMER_SERVICE').length}
                 </p>
-                <p className="text-[10px] text-gray-500 dark:text-gray-400">{t('management.customerService')}</p>
+                <p className="text-xs text-gray-500 dark:text-zinc-400 dark:text-gray-400">{t('management.customerService')}</p>
               </div>
             </div>
           </div>
-          <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-2">
+          <div className="card-soft p-2">
             <div className="flex items-center gap-2">
               <div className="p-1.5 bg-purple-100 dark:bg-purple-900/30 rounded">
                 <svg className="w-3.5 h-3.5 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -354,30 +354,30 @@ export default function ManagementPage() {
                 <p className="text-lg font-bold text-gray-900 dark:text-white">
                   {users.filter(u => u.role === 'TECHNICIAN').length}
                 </p>
-                <p className="text-[10px] text-gray-500 dark:text-gray-400">{t('management.technician')}</p>
+                <p className="text-xs text-gray-500 dark:text-zinc-400 dark:text-gray-400">{t('management.technician')}</p>
               </div>
             </div>
           </div>
         </div>
 
         {/* Users Table */}
-        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 overflow-hidden">
+        <div className="card-soft overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
                 <tr className="border-b border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/50">
-                  <th className="px-3 py-2 text-left text-[10px] font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">{t('management.username')}</th>
-                  <th className="px-3 py-2 text-left text-[10px] font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider hidden sm:table-cell">{t('management.email')}</th>
-                  <th className="px-3 py-2 text-left text-[10px] font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">{t('management.role')}</th>
-                  <th className="px-3 py-2 text-left text-[10px] font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider hidden md:table-cell">{t('management.permissions')}</th>
-                  <th className="px-3 py-2 text-left text-[10px] font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider hidden lg:table-cell">{t('management.createdAt')}</th>
-                  <th className="px-3 py-2 text-center text-[10px] font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">{t('common.actions')}</th>
+                  <th className="px-3 py-2 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">{t('management.username')}</th>
+                  <th className="px-3 py-2 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider hidden sm:table-cell">{t('management.email')}</th>
+                  <th className="px-3 py-2 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">{t('management.role')}</th>
+                  <th className="px-3 py-2 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider hidden md:table-cell">{t('management.permissions')}</th>
+                  <th className="px-3 py-2 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider hidden lg:table-cell">{t('management.createdAt')}</th>
+                  <th className="px-3 py-2 text-center text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">{t('common.actions')}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
                 {users.length === 0 ? (
                   <tr>
-                    <td colSpan={6} className="px-3 py-8 text-center text-xs text-gray-500 dark:text-gray-400">
+                    <td colSpan={6} className="px-3 py-8 text-center page-subtitle">
                       {t('management.noUsersFound')}
                     </td>
                   </tr>
@@ -387,13 +387,13 @@ export default function ManagementPage() {
                       <td className="px-3 py-1.5">
                         <div className="flex items-center gap-2">
                           <div className="w-6 h-6 rounded-full bg-teal-100 dark:bg-teal-900/30 flex items-center justify-center">
-                            <span className="text-[10px] font-semibold text-teal-600 dark:text-teal-400 uppercase">
+                            <span className="text-xs font-semibold text-teal-600 dark:text-teal-400 uppercase">
                               {user.username.charAt(0)}
                             </span>
                           </div>
                           <div>
                             <p className="text-xs font-medium text-gray-900 dark:text-white">{user.username}</p>
-                            <p className="text-[10px] text-gray-500 dark:text-gray-400 sm:hidden">{user.email}</p>
+                            <p className="text-xs text-gray-500 dark:text-zinc-400 dark:text-gray-400 sm:hidden">{user.email}</p>
                           </div>
                         </div>
                       </td>
@@ -401,7 +401,7 @@ export default function ManagementPage() {
                         <span className="text-xs text-gray-600 dark:text-gray-300">{user.email}</span>
                       </td>
                       <td className="px-3 py-1.5">
-                        <span className={`inline-flex px-1.5 py-0.5 text-[10px] font-medium rounded ${getRoleBadgeColor(user.role)}`}>
+                        <span className={`inline-flex px-1.5 py-0.5 text-xs font-medium rounded ${getRoleBadgeColor(user.role)}`}>
                           {user.role.replace('_', ' ')}
                         </span>
                       </td>
@@ -424,12 +424,12 @@ export default function ManagementPage() {
                               )}
                             </>
                           ) : (
-                            <span className="text-[10px] text-gray-400">-</span>
+                            <span className="text-xs text-gray-400">-</span>
                           )}
                         </div>
                       </td>
                       <td className="px-3 py-1.5 hidden lg:table-cell">
-                        <span className="text-[10px] text-gray-500 dark:text-gray-400">
+                        <span className="text-xs text-gray-500 dark:text-zinc-400 dark:text-gray-400">
                           {new Date(user.createdAt).toLocaleDateString('id-ID', {
                             day: '2-digit',
                             month: 'short',
@@ -471,7 +471,7 @@ export default function ManagementPage() {
       {/* Modal */}
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 bg-black/50 backdrop-blur-sm">
-          <div className="bg-white dark:bg-gray-900 rounded-lg shadow-xl w-full max-w-lg max-h-[90vh] overflow-hidden">
+          <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-hidden">
             <div className="flex items-center justify-between px-4 py-2.5 border-b border-gray-200 dark:border-gray-800">
               <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
                 {editingUser ? t('management.editUser') : t('management.addNewUser')}
@@ -492,7 +492,7 @@ export default function ManagementPage() {
               <div className="p-4 space-y-3">
                 {/* Username */}
                 <div>
-                  <label className="block text-[10px] font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1">
+                  <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1">
                     {t('management.username')}
                   </label>
                   <input
@@ -506,7 +506,7 @@ export default function ManagementPage() {
                 
                 {/* Email */}
                 <div>
-                  <label className="block text-[10px] font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1">
+                  <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1">
                     {t('management.email')}
                   </label>
                   <input
@@ -520,7 +520,7 @@ export default function ManagementPage() {
                 
                 {/* Password */}
                 <div>
-                  <label className="block text-[10px] font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1">
+                  <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1">
                     {t('management.password')} {editingUser && <span className="text-gray-400">({t('management.passwordHint')})</span>}
                   </label>
                   <input
@@ -534,7 +534,7 @@ export default function ManagementPage() {
                 
                 {/* Role */}
                 <div>
-                  <label className="block text-[10px] font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1">
+                  <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1">
                     {t('management.role')}
                   </label>
                   <select
@@ -548,20 +548,20 @@ export default function ManagementPage() {
                       </option>
                     ))}
                   </select>
-                  <p className="text-[10px] text-gray-500 dark:text-gray-400 mt-1">
+                  <p className="text-xs text-gray-500 dark:text-zinc-400 dark:text-gray-400 mt-1">
                     {t('management.roleAutoLoad')}
                   </p>
                 </div>
 
                 {/* Permissions */}
                 <div>
-                  <label className="block text-[10px] font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1.5">
+                  <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1.5">
                     {t('management.permissions')}
                   </label>
                   <div className="border border-gray-200 dark:border-gray-700 rounded-md p-2 max-h-48 overflow-y-auto space-y-2">
                     {Object.entries(permissionsByCategory).map(([category, perms]) => (
                       <div key={category}>
-                        <p className="text-[10px] font-semibold text-gray-700 dark:text-gray-300 mb-1 uppercase tracking-wider">
+                        <p className="text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1 uppercase tracking-wider">
                           {category}
                         </p>
                         <div className="grid grid-cols-2 gap-1">
@@ -576,14 +576,14 @@ export default function ManagementPage() {
                                 onChange={() => togglePermission(perm.id)}
                                 className="w-3 h-3 rounded border-gray-300 text-teal-600 focus:ring-teal-500"
                               />
-                              <span className="text-[10px] text-gray-700 dark:text-gray-300">{perm.name}</span>
+                              <span className="text-xs text-gray-700 dark:text-gray-300">{perm.name}</span>
                             </label>
                           ))}
                         </div>
                       </div>
                     ))}
                     {permissions.length === 0 && (
-                      <p className="text-[10px] text-gray-400 text-center py-2">{t('management.noPermissions')}</p>
+                      <p className="text-xs text-gray-400 text-center py-2">{t('management.noPermissions')}</p>
                     )}
                   </div>
                 </div>

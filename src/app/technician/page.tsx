@@ -180,7 +180,7 @@ export default function TechnicianHomePage() {
       {/* Header Info */}
       <div className="px-5 py-4 flex items-center justify-between sticky top-1 z-40 bg-background/80 backdrop-blur-xl border-b border-border">
         <div>
-          <p className="text-[10px] text-cyan-400 font-bold tracking-widest uppercase mb-0.5">Technician</p>
+          <p className="text-xs text-cyan-400 font-bold tracking-widest uppercase mb-0.5">Technician</p>
           <div className="flex items-center gap-2">
             <User className="w-4 h-4 text-muted-foreground" />
             <h1 className="text-sm font-bold text-foreground line-clamp-1">{technician?.name}</h1>
@@ -226,7 +226,7 @@ export default function TechnicianHomePage() {
                   <MapPin className="w-4 h-4 text-amber-400 flex-shrink-0 mt-0.5" />
                   <p className="text-xs text-amber-100/70 line-clamp-2 leading-relaxed">
                     {activeTask.customerAddress}
-                    <span className="block mt-1 text-[10px] text-amber-400/80 underline decoration-amber-400/30">Buka di Maps</span>
+                    <span className="block mt-1 text-xs text-amber-400/80 underline decoration-amber-400/30">Buka di Maps</span>
                   </p>
                 </div>
 
@@ -275,11 +275,11 @@ export default function TechnicianHomePage() {
                   <span className={`text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border ${getPriorityColor(wo.priority)}`}>
                     {wo.priority}
                   </span>
-                  <span className="text-[10px] text-cyan-400/80 font-medium bg-cyan-500/10 px-2 py-0.5 rounded border border-cyan-500/20">
+                  <span className="text-xs text-cyan-400/80 font-medium bg-cyan-500/10 px-2 py-0.5 rounded border border-cyan-500/20">
                     {wo.issueType.replace('_', ' ')}
                   </span>
                 </div>
-                <div className="text-[10px] text-muted-foreground flex items-center gap-1">
+                <div className="text-xs text-muted-foreground flex items-center gap-1">
                   <Clock className="w-3 h-3" /> {new Date(wo.createdAt).toLocaleDateString('id-ID')}
                 </div>
               </div>
@@ -329,9 +329,9 @@ export default function TechnicianHomePage() {
                 <div key={wo.id} className="bg-background/50 border border-emerald-500/10 rounded-lg p-2.5 flex items-center justify-between opacity-70">
                   <div>
                     <h4 className="text-xs font-bold text-foreground line-clamp-1">{wo.customerName}</h4>
-                    <p className="text-[10px] text-muted-foreground">{wo.issueType.replace('_', ' ')}</p>
+                    <p className="text-xs text-muted-foreground">{wo.issueType.replace('_', ' ')}</p>
                   </div>
-                  <span className="text-[10px] text-emerald-500 font-bold bg-emerald-500/10 px-2 py-1 rounded">
+                  <span className="text-xs text-emerald-500 font-bold bg-emerald-500/10 px-2 py-1 rounded">
                     Selesai
                   </span>
                 </div>

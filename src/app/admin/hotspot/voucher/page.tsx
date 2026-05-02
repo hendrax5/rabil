@@ -279,40 +279,40 @@ export default function HotspotVoucherPage() {
   const stats = { total: vouchers.length, waiting: vouchers.filter(v => v.status === 'WAITING').length, active: vouchers.filter(v => v.status === 'ACTIVE').length, expired: vouchers.filter(v => v.status === 'EXPIRED').length, totalValue: vouchers.filter(v => v.status === 'WAITING').reduce((sum, v) => sum + Number(v.profile.sellingPrice), 0) };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-lg font-semibold text-gray-900 dark:text-gray-100">{t('hotspot.title')}</h1>
-          <p className="text-xs text-gray-500 dark:text-gray-400">{t('hotspot.generateVoucher')}</p>
+          <h1 className="page-title">{t('hotspot.title')}</h1>
+          <p className="page-subtitle">{t('hotspot.generateVoucher')}</p>
         </div>
         <div className="flex gap-1.5 flex-wrap">
-          <Button variant="outline" size="sm" onClick={handleDownloadTemplate} className="h-7 text-[10px] px-2"><Download className="h-3 w-3 mr-1" />{t('nav.template')}</Button>
-          <Button variant="outline" size="sm" onClick={handleExportExcel} className="h-7 text-[10px] px-2 border-green-500 text-green-600 hover:bg-green-50"><Download className="h-3 w-3 mr-1" />Excel</Button>
-          <Button variant="outline" size="sm" onClick={handleExportPDFList} className="h-7 text-[10px] px-2 border-red-500 text-red-600 hover:bg-red-50"><Download className="h-3 w-3 mr-1" />PDF</Button>
-          <Button variant="outline" size="sm" onClick={handleExportVoucherCards} className="h-7 text-[10px] px-2 border-purple-500 text-purple-600 hover:bg-purple-50"><Printer className="h-3 w-3 mr-1" />Cards</Button>
-          <Button variant="outline" size="sm" onClick={() => setIsImportDialogOpen(true)} className="h-7 text-[10px] px-2"><Upload className="h-3 w-3 mr-1" />{t('common.import')}</Button>
+          <Button variant="outline" size="sm" onClick={handleDownloadTemplate} className="h-7 text-xs px-2"><Download className="h-3 w-3 mr-1" />{t('nav.template')}</Button>
+          <Button variant="outline" size="sm" onClick={handleExportExcel} className="h-7 text-xs px-2 border-green-500 text-green-600 hover:bg-green-50"><Download className="h-3 w-3 mr-1" />Excel</Button>
+          <Button variant="outline" size="sm" onClick={handleExportPDFList} className="h-7 text-xs px-2 border-red-500 text-red-600 hover:bg-red-50"><Download className="h-3 w-3 mr-1" />PDF</Button>
+          <Button variant="outline" size="sm" onClick={handleExportVoucherCards} className="h-7 text-xs px-2 border-purple-500 text-purple-600 hover:bg-purple-50"><Printer className="h-3 w-3 mr-1" />Cards</Button>
+          <Button variant="outline" size="sm" onClick={() => setIsImportDialogOpen(true)} className="h-7 text-xs px-2"><Upload className="h-3 w-3 mr-1" />{t('common.import')}</Button>
           <Dialog open={isGenerateDialogOpen} onOpenChange={setIsGenerateDialogOpen}>
-            <DialogTrigger asChild><Button size="sm" className="h-7 text-[10px] px-2"><Plus className="h-3 w-3 mr-1" />{t('hotspot.generateVoucher')}</Button></DialogTrigger>
+            <DialogTrigger asChild><Button size="sm" className="h-7 text-xs px-2"><Plus className="h-3 w-3 mr-1" />{t('hotspot.generateVoucher')}</Button></DialogTrigger>
             <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
               <DialogHeader><DialogTitle className="text-sm">{t('hotspot.generateVoucher')}</DialogTitle><DialogDescription className="text-xs">{t('hotspot.bulkGenerate')}</DialogDescription></DialogHeader>
               <form onSubmit={handleGenerate} className="space-y-3">
-                <div><Label className="text-[10px]">{t('nav.router')}</Label><Select value={formData.routerId} onValueChange={(v) => setFormData({ ...formData, routerId: v === 'all' ? '' : v })}><SelectTrigger className="h-8 text-xs"><SelectValue placeholder={t('common.all')} /></SelectTrigger><SelectContent><SelectItem value="all">{t('common.all')} (Global)</SelectItem>{routers.map(r => <SelectItem key={r.id} value={r.id}>{r.name}</SelectItem>)}</SelectContent></Select></div>
+                <div><Label className="text-xs">{t('nav.router')}</Label><Select value={formData.routerId} onValueChange={(v) => setFormData({ ...formData, routerId: v === 'all' ? '' : v })}><SelectTrigger className="h-8 text-xs"><SelectValue placeholder={t('common.all')} /></SelectTrigger><SelectContent><SelectItem value="all">{t('common.all')} (Global)</SelectItem>{routers.map(r => <SelectItem key={r.id} value={r.id}>{r.name}</SelectItem>)}</SelectContent></Select></div>
                 <div className="grid grid-cols-2 gap-2">
-                  <div><Label className="text-[10px]">{t('common.type')}</Label><Select value={formData.voucherType} onValueChange={(v) => setFormData({ ...formData, voucherType: v })}><SelectTrigger className="h-8 text-xs"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="same">User=Pass</SelectItem><SelectItem value="different">Different</SelectItem></SelectContent></Select></div>
-                  <div><Label className="text-[10px]">{t('hotspot.code')} {t('common.type')}</Label><Select value={formData.codeType} onValueChange={(v) => setFormData({ ...formData, codeType: v })}><SelectTrigger className="h-8 text-xs"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="alpha-upper">UPPER</SelectItem><SelectItem value="alpha-lower">lower</SelectItem><SelectItem value="numeric">123456</SelectItem><SelectItem value="alphanumeric-upper">ABC123</SelectItem></SelectContent></Select></div>
+                  <div><Label className="text-xs">{t('common.type')}</Label><Select value={formData.voucherType} onValueChange={(v) => setFormData({ ...formData, voucherType: v })}><SelectTrigger className="h-8 text-xs"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="same">User=Pass</SelectItem><SelectItem value="different">Different</SelectItem></SelectContent></Select></div>
+                  <div><Label className="text-xs">{t('hotspot.code')} {t('common.type')}</Label><Select value={formData.codeType} onValueChange={(v) => setFormData({ ...formData, codeType: v })}><SelectTrigger className="h-8 text-xs"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="alpha-upper">UPPER</SelectItem><SelectItem value="alpha-lower">lower</SelectItem><SelectItem value="numeric">123456</SelectItem><SelectItem value="alphanumeric-upper">ABC123</SelectItem></SelectContent></Select></div>
                 </div>
                 <div className="grid grid-cols-2 gap-2">
-                  <div><Label className="text-[10px]">Prefix</Label><Input value={formData.prefix} onChange={(e) => setFormData({ ...formData, prefix: e.target.value.toUpperCase() })} maxLength={5} className="h-8 text-xs" placeholder="HS-" /></div>
-                  <div><Label className="text-[10px]">Length (4-10)</Label><Input type="number" min="4" max="10" value={formData.codeLength} onChange={(e) => setFormData({ ...formData, codeLength: e.target.value })} className="h-8 text-xs" required /></div>
+                  <div><Label className="text-xs">Prefix</Label><Input value={formData.prefix} onChange={(e) => setFormData({ ...formData, prefix: e.target.value.toUpperCase() })} maxLength={5} className="h-8 text-xs" placeholder="HS-" /></div>
+                  <div><Label className="text-xs">Length (4-10)</Label><Input type="number" min="4" max="10" value={formData.codeLength} onChange={(e) => setFormData({ ...formData, codeLength: e.target.value })} className="h-8 text-xs" required /></div>
                 </div>
                 <div className="flex items-center justify-between p-2 bg-gray-50 dark:bg-gray-800 rounded">
-                  <div><Label className="text-[10px]">Lock MAC</Label><p className="text-[9px] text-gray-500">Bind to first device</p></div>
+                  <div><Label className="text-xs">Lock MAC</Label><p className="text-[9px] text-gray-500">Bind to first device</p></div>
                   <Switch checked={formData.lockMac} onCheckedChange={(c) => setFormData({ ...formData, lockMac: c })} />
                 </div>
-                <div><Label className="text-[10px]">{t('nav.agent')}</Label><Select value={formData.agentId} onValueChange={(v) => setFormData({ ...formData, agentId: v === 'none' ? '' : v })}><SelectTrigger className="h-8 text-xs"><SelectValue placeholder="No Agent" /></SelectTrigger><SelectContent><SelectItem value="none">No Agent</SelectItem>{agents.map(a => <SelectItem key={a.id} value={a.id}>{a.name}</SelectItem>)}</SelectContent></Select></div>
-                <div><Label className="text-[10px]">{t('hotspot.profile')} *</Label><Select value={formData.profileId} onValueChange={(v) => setFormData({ ...formData, profileId: v })} required><SelectTrigger className="h-8 text-xs"><SelectValue placeholder={t('common.select')} /></SelectTrigger><SelectContent>{profiles.map(p => <SelectItem key={p.id} value={p.id}>{p.name} - {formatCurrency(p.sellingPrice)}</SelectItem>)}</SelectContent></Select></div>
-                <div><Label className="text-[10px]">{t('common.quantity')} *</Label><Input type="number" min="1" max="500" value={formData.quantity} onChange={(e) => setFormData({ ...formData, quantity: e.target.value })} className="h-8 text-xs" required /></div>
+                <div><Label className="text-xs">{t('nav.agent')}</Label><Select value={formData.agentId} onValueChange={(v) => setFormData({ ...formData, agentId: v === 'none' ? '' : v })}><SelectTrigger className="h-8 text-xs"><SelectValue placeholder="No Agent" /></SelectTrigger><SelectContent><SelectItem value="none">No Agent</SelectItem>{agents.map(a => <SelectItem key={a.id} value={a.id}>{a.name}</SelectItem>)}</SelectContent></Select></div>
+                <div><Label className="text-xs">{t('hotspot.profile')} *</Label><Select value={formData.profileId} onValueChange={(v) => setFormData({ ...formData, profileId: v })} required><SelectTrigger className="h-8 text-xs"><SelectValue placeholder={t('common.select')} /></SelectTrigger><SelectContent>{profiles.map(p => <SelectItem key={p.id} value={p.id}>{p.name} - {formatCurrency(p.sellingPrice)}</SelectItem>)}</SelectContent></Select></div>
+                <div><Label className="text-xs">{t('common.quantity')} *</Label><Input type="number" min="1" max="500" value={formData.quantity} onChange={(e) => setFormData({ ...formData, quantity: e.target.value })} className="h-8 text-xs" required /></div>
                 {selectedProfile && <div className="p-2 bg-teal-50 dark:bg-teal-900/20 rounded text-xs text-teal-700 dark:text-teal-300"><strong>{t('common.total')}:</strong> {formatCurrency(selectedProfile.sellingPrice * parseInt(formData.quantity || '0'))}</div>}
                 <DialogFooter className="gap-2"><Button type="button" variant="outline" size="sm" onClick={() => setIsGenerateDialogOpen(false)} className="h-7 text-xs">{t('common.cancel')}</Button><Button type="submit" size="sm" disabled={generating} className="h-7 text-xs">{generating ? <><Loader2 className="h-3 w-3 mr-1 animate-spin" />{t('common.loading')}</> : t('hotspot.generateVoucher')}</Button></DialogFooter>
               </form>
@@ -323,25 +323,25 @@ export default function HotspotVoucherPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
-        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-2">
+        <div className="card-soft p-2">
           <div className="flex items-center justify-between"><div><p className="text-[9px] text-gray-500 uppercase">{t('common.total')}</p><p className="text-base font-bold text-teal-600">{stats.total}</p></div><Ticket className="h-4 w-4 text-teal-600" /></div>
         </div>
-        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-2">
+        <div className="card-soft p-2">
           <div className="flex items-center justify-between"><div><p className="text-[9px] text-gray-500 uppercase">{t('hotspot.waiting')}</p><p className="text-base font-bold text-yellow-600">{stats.waiting}</p></div><Ticket className="h-4 w-4 text-yellow-600" /></div>
         </div>
-        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-2">
+        <div className="card-soft p-2">
           <div className="flex items-center justify-between"><div><p className="text-[9px] text-gray-500 uppercase">{t('hotspot.active')}</p><p className="text-base font-bold text-green-600">{stats.active}</p></div><Ticket className="h-4 w-4 text-green-600" /></div>
         </div>
-        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-2">
+        <div className="card-soft p-2">
           <div className="flex items-center justify-between"><div><p className="text-[9px] text-gray-500 uppercase">{t('hotspot.expired')}</p><p className="text-base font-bold text-red-600">{stats.expired}</p></div><Ticket className="h-4 w-4 text-red-600" /></div>
         </div>
-        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-2 col-span-2 sm:col-span-1">
+        <div className="card-soft p-2 col-span-2 sm:col-span-1">
           <div className="flex items-center justify-between"><div><p className="text-[9px] text-gray-500 uppercase">{t('common.total')} {t('common.price')}</p><p className="text-sm font-bold text-purple-600">{formatCurrency(stats.totalValue)}</p></div><Ticket className="h-4 w-4 text-purple-600" /></div>
         </div>
       </div>
 
       {/* Filters */}
-      <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-3">
+      <div className="card-soft p-5">
         <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
           <select value={filterProfile} onChange={(e) => setFilterProfile(e.target.value)} className="px-2 py-1.5 text-xs bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded"><option value="">{t('common.all')} {t('nav.profiles')}</option><option value="all">{t('common.all')} {t('nav.profiles')}</option>{profiles.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}</select>
           <select value={filterRouter} onChange={(e) => setFilterRouter(e.target.value)} className="px-2 py-1.5 text-xs bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded"><option value="">{t('common.all')} {t('nav.routers')}</option><option value="all">{t('common.all')} {t('nav.routers')}</option>{routers.map(r => <option key={r.id} value={r.id}>{r.name}</option>)}</select>
@@ -352,20 +352,20 @@ export default function HotspotVoucherPage() {
       </div>
 
       {/* Vouchers Table */}
-      <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 overflow-hidden">
+      <div className="card-soft overflow-hidden">
         <div className="px-3 py-2 border-b dark:border-gray-800 flex flex-wrap items-center justify-between gap-2">
           <span className="text-xs font-medium">{t('nav.voucher')} ({vouchers.length})</span>
           <div className="flex gap-1 flex-wrap">
             {selectedVouchers.length > 0 && (
               <>
-                <button onClick={handleDeleteSelected} disabled={deletingVouchers} className="px-2 py-1 text-[10px] bg-red-600 text-white rounded flex items-center gap-0.5">{deletingVouchers ? <Loader2 className="h-2.5 w-2.5 animate-spin" /> : <Trash2 className="h-2.5 w-2.5" />}{t('common.delete')} ({selectedVouchers.length})</button>
-                <button onClick={handleSendWhatsApp} className="px-2 py-1 text-[10px] bg-green-600 text-white rounded flex items-center gap-0.5"><MessageCircle className="h-2.5 w-2.5" />WA ({selectedVouchers.length})</button>
-                <button onClick={handlePrintSelected} className="px-2 py-1 text-[10px] bg-primary text-white rounded flex items-center gap-0.5"><Printer className="h-2.5 w-2.5" />{t('common.print')} ({selectedVouchers.length})</button>
+                <button onClick={handleDeleteSelected} disabled={deletingVouchers} className="px-2 py-1 text-xs bg-red-600 text-white rounded flex items-center gap-0.5">{deletingVouchers ? <Loader2 className="h-2.5 w-2.5 animate-spin" /> : <Trash2 className="h-2.5 w-2.5" />}{t('common.delete')} ({selectedVouchers.length})</button>
+                <button onClick={handleSendWhatsApp} className="px-2 py-1 text-xs bg-green-600 text-white rounded flex items-center gap-0.5"><MessageCircle className="h-2.5 w-2.5" />WA ({selectedVouchers.length})</button>
+                <button onClick={handlePrintSelected} className="px-2 py-1 text-xs bg-primary text-white rounded flex items-center gap-0.5"><Printer className="h-2.5 w-2.5" />{t('common.print')} ({selectedVouchers.length})</button>
               </>
             )}
-            {filterBatch && filterBatch !== 'all' && <button onClick={handlePrintBatch} className="px-2 py-1 text-[10px] bg-gray-600 text-white rounded flex items-center gap-0.5"><Printer className="h-2.5 w-2.5" />Batch</button>}
-            {stats.expired > 0 && <button onClick={async () => { const c = await showConfirm(`${t('common.delete')} ${t('hotspot.expired')}?`); if (!c) return; const res = await fetch('/api/hotspot/voucher/delete-expired', { method: 'POST' }); const data = await res.json(); if (res.ok) { await showSuccess(`${data.count} ${t('notifications.deleted')}`); loadVouchers(); } else { await showError(data.error); } }} className="px-2 py-1 text-[10px] bg-red-600 text-white rounded flex items-center gap-0.5"><Trash2 className="h-2.5 w-2.5" />{t('hotspot.expired')} ({stats.expired})</button>}
-            {filterBatch && filterBatch !== 'all' && <button onClick={() => setDeleteBatchCode(filterBatch)} className="px-2 py-1 text-[10px] bg-red-600 text-white rounded flex items-center gap-0.5"><Trash2 className="h-2.5 w-2.5" />{t('common.delete')} Batch</button>}
+            {filterBatch && filterBatch !== 'all' && <button onClick={handlePrintBatch} className="px-2 py-1 text-xs bg-gray-600 text-white rounded flex items-center gap-0.5"><Printer className="h-2.5 w-2.5" />Batch</button>}
+            {stats.expired > 0 && <button onClick={async () => { const c = await showConfirm(`${t('common.delete')} ${t('hotspot.expired')}?`); if (!c) return; const res = await fetch('/api/hotspot/voucher/delete-expired', { method: 'POST' }); const data = await res.json(); if (res.ok) { await showSuccess(`${data.count} ${t('notifications.deleted')}`); loadVouchers(); } else { await showError(data.error); } }} className="px-2 py-1 text-xs bg-red-600 text-white rounded flex items-center gap-0.5"><Trash2 className="h-2.5 w-2.5" />{t('hotspot.expired')} ({stats.expired})</button>}
+            {filterBatch && filterBatch !== 'all' && <button onClick={() => setDeleteBatchCode(filterBatch)} className="px-2 py-1 text-xs bg-red-600 text-white rounded flex items-center gap-0.5"><Trash2 className="h-2.5 w-2.5" />{t('common.delete')} Batch</button>}
           </div>
         </div>
         <div className="overflow-x-auto">
@@ -373,16 +373,16 @@ export default function HotspotVoucherPage() {
             <TableHeader>
               <TableRow>
                 <TableHead className="w-8 py-2"><input type="checkbox" checked={selectedVouchers.length > 0 && selectedVouchers.length === vouchers.filter(v => v.status === 'WAITING').length} onChange={handleSelectAll} className="rounded border-gray-300 w-3 h-3" /></TableHead>
-                <TableHead className="text-[10px] py-2">{t('hotspot.code')}</TableHead>
-                <TableHead className="text-[10px] py-2 hidden sm:table-cell">{t('hotspot.profile')}</TableHead>
-                <TableHead className="text-[10px] py-2 hidden md:table-cell">{t('nav.router')}</TableHead>
-                <TableHead className="text-[10px] py-2 hidden lg:table-cell">{t('nav.agent')}</TableHead>
-                <TableHead className="text-[10px] py-2 hidden xl:table-cell">Batch</TableHead>
-                <TableHead className="text-[10px] py-2">{t('hotspot.price')}</TableHead>
-                <TableHead className="text-[10px] py-2">{t('common.status')}</TableHead>
-                <TableHead className="text-[10px] py-2 hidden sm:table-cell">First Login</TableHead>
-                <TableHead className="text-[10px] py-2 hidden md:table-cell">{t('hotspot.validUntil')}</TableHead>
-                <TableHead className="text-[10px] py-2 text-right"></TableHead>
+                <TableHead className="text-xs py-2">{t('hotspot.code')}</TableHead>
+                <TableHead className="text-xs py-2 hidden sm:table-cell">{t('hotspot.profile')}</TableHead>
+                <TableHead className="text-xs py-2 hidden md:table-cell">{t('nav.router')}</TableHead>
+                <TableHead className="text-xs py-2 hidden lg:table-cell">{t('nav.agent')}</TableHead>
+                <TableHead className="text-xs py-2 hidden xl:table-cell">Batch</TableHead>
+                <TableHead className="text-xs py-2">{t('hotspot.price')}</TableHead>
+                <TableHead className="text-xs py-2">{t('common.status')}</TableHead>
+                <TableHead className="text-xs py-2 hidden sm:table-cell">First Login</TableHead>
+                <TableHead className="text-xs py-2 hidden md:table-cell">{t('hotspot.validUntil')}</TableHead>
+                <TableHead className="text-xs py-2 text-right"></TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -403,8 +403,8 @@ export default function HotspotVoucherPage() {
                       {v.status === 'ACTIVE' && <Badge className="text-[9px] px-1 bg-green-100 text-green-700 dark:bg-green-900/30">{t('hotspot.active')}</Badge>}
                       {v.status === 'EXPIRED' && <Badge className="text-[9px] px-1 bg-red-100 text-red-700 dark:bg-red-900/30">{t('hotspot.expired')}</Badge>}
                     </TableCell>
-                    <TableCell className="py-1.5 text-[10px] hidden sm:table-cell">{v.firstLoginAt ? <div><div>{formatDateOnly(v.firstLoginAt)}</div><div className="text-gray-500">{formatTimeOnly(v.firstLoginAt)}</div></div> : <span className="text-gray-400 italic">-</span>}</TableCell>
-                    <TableCell className="py-1.5 text-[10px] hidden md:table-cell">{v.expiresAt ? <div><div>{formatDateOnly(v.expiresAt)}</div>{v.status === 'ACTIVE' && <div className="text-teal-600 font-medium">{calculateTimeLeft(v.expiresAt)}</div>}</div> : <span className="text-gray-400">-</span>}</TableCell>
+                    <TableCell className="py-1.5 text-xs hidden sm:table-cell">{v.firstLoginAt ? <div><div>{formatDateOnly(v.firstLoginAt)}</div><div className="text-gray-500">{formatTimeOnly(v.firstLoginAt)}</div></div> : <span className="text-gray-400 italic">-</span>}</TableCell>
+                    <TableCell className="py-1.5 text-xs hidden md:table-cell">{v.expiresAt ? <div><div>{formatDateOnly(v.expiresAt)}</div>{v.status === 'ACTIVE' && <div className="text-teal-600 font-medium">{calculateTimeLeft(v.expiresAt)}</div>}</div> : <span className="text-gray-400">-</span>}</TableCell>
                     <TableCell className="py-1.5 text-right"><button onClick={() => handleDeleteVoucher(v.id, v.code)} className="p-1 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded"><Trash2 className="h-3 w-3" /></button></TableCell>
                   </TableRow>
                 ))
@@ -418,7 +418,7 @@ export default function HotspotVoucherPage() {
       <Dialog open={isWhatsAppDialogOpen} onOpenChange={setIsWhatsAppDialogOpen}>
         <DialogContent className="max-w-sm">
           <DialogHeader><DialogTitle className="text-sm">{t('whatsapp.send')}</DialogTitle><DialogDescription className="text-xs">{t('whatsapp.send')} {selectedVouchers.length} voucher(s)</DialogDescription></DialogHeader>
-          <div><Label className="text-[10px]">{t('whatsapp.phoneNumber')}</Label><Input type="tel" placeholder="628123456789" value={whatsappPhone} onChange={(e) => setWhatsappPhone(e.target.value)} className="h-8 text-xs" /></div>
+          <div><Label className="text-xs">{t('whatsapp.phoneNumber')}</Label><Input type="tel" placeholder="628123456789" value={whatsappPhone} onChange={(e) => setWhatsappPhone(e.target.value)} className="h-8 text-xs" /></div>
           <DialogFooter className="gap-2"><Button variant="outline" size="sm" onClick={() => { setIsWhatsAppDialogOpen(false); setWhatsappPhone(''); }} className="h-7 text-xs">{t('common.cancel')}</Button><Button size="sm" onClick={handleWhatsAppSubmit} disabled={sendingWhatsApp || !whatsappPhone} className="h-7 text-xs">{sendingWhatsApp ? <><Loader2 className="h-3 w-3 mr-1 animate-spin" />{t('common.loading')}</> : <><MessageCircle className="h-3 w-3 mr-1" />{t('whatsapp.send')}</>}</Button></DialogFooter>
         </DialogContent>
       </Dialog>
@@ -427,7 +427,7 @@ export default function HotspotVoucherPage() {
       <Dialog open={isPrintDialogOpen} onOpenChange={setIsPrintDialogOpen}>
         <DialogContent className="max-w-sm">
           <DialogHeader><DialogTitle className="text-sm">{t('hotspot.printVoucher')}</DialogTitle><DialogDescription className="text-xs">{t('common.select')} {t('nav.template')} ({selectedVouchers.length} voucher)</DialogDescription></DialogHeader>
-          <div><Label className="text-[10px]">{t('nav.template')}</Label><Select value={selectedTemplate} onValueChange={setSelectedTemplate}><SelectTrigger className="h-8 text-xs"><SelectValue placeholder={t('common.select')} /></SelectTrigger><SelectContent>{templates.map(t => <SelectItem key={t.id} value={t.id}>{t.name} {t.isDefault && '(Default)'}</SelectItem>)}</SelectContent></Select></div>
+          <div><Label className="text-xs">{t('nav.template')}</Label><Select value={selectedTemplate} onValueChange={setSelectedTemplate}><SelectTrigger className="h-8 text-xs"><SelectValue placeholder={t('common.select')} /></SelectTrigger><SelectContent>{templates.map(t => <SelectItem key={t.id} value={t.id}>{t.name} {t.isDefault && '(Default)'}</SelectItem>)}</SelectContent></Select></div>
           {templates.length === 0 && <p className="text-xs text-yellow-600">{t('common.noData')}</p>}
           <DialogFooter className="gap-2"><Button variant="outline" size="sm" onClick={() => setIsPrintDialogOpen(false)} className="h-7 text-xs">{t('common.cancel')}</Button><Button size="sm" onClick={handlePrint} disabled={!selectedTemplate} className="h-7 text-xs"><Printer className="h-3 w-3 mr-1" />{t('common.print')}</Button></DialogFooter>
         </DialogContent>
@@ -438,9 +438,9 @@ export default function HotspotVoucherPage() {
         <DialogContent className="max-w-sm">
           <DialogHeader><DialogTitle className="text-sm">{t('common.import')} CSV</DialogTitle><DialogDescription className="text-xs">{t('common.upload')} {t('hotspot.code')}</DialogDescription></DialogHeader>
           <div className="space-y-3">
-            <div><Label className="text-[10px]">CSV File *</Label><div className="flex items-center gap-2"><Input type="file" accept=".csv" onChange={(e) => setImportFile(e.target.files?.[0] || null)} className="flex-1 h-8 text-xs" />{importFile && <FileSpreadsheet className="h-4 w-4 text-green-600" />}</div></div>
-            <div><Label className="text-[10px]">{t('hotspot.profile')} *</Label><Select value={importProfileId} onValueChange={setImportProfileId}><SelectTrigger className="h-8 text-xs"><SelectValue placeholder={t('common.select')} /></SelectTrigger><SelectContent>{profiles.map(p => <SelectItem key={p.id} value={p.id}>{p.name} - {formatCurrency(p.sellingPrice)}</SelectItem>)}</SelectContent></Select></div>
-            <div><Label className="text-[10px]">Batch Code</Label><Input value={importBatchCode} onChange={(e) => setImportBatchCode(e.target.value)} className="h-8 text-xs" placeholder="Auto-generate" /></div>
+            <div><Label className="text-xs">CSV File *</Label><div className="flex items-center gap-2"><Input type="file" accept=".csv" onChange={(e) => setImportFile(e.target.files?.[0] || null)} className="flex-1 h-8 text-xs" />{importFile && <FileSpreadsheet className="h-4 w-4 text-green-600" />}</div></div>
+            <div><Label className="text-xs">{t('hotspot.profile')} *</Label><Select value={importProfileId} onValueChange={setImportProfileId}><SelectTrigger className="h-8 text-xs"><SelectValue placeholder={t('common.select')} /></SelectTrigger><SelectContent>{profiles.map(p => <SelectItem key={p.id} value={p.id}>{p.name} - {formatCurrency(p.sellingPrice)}</SelectItem>)}</SelectContent></Select></div>
+            <div><Label className="text-xs">Batch Code</Label><Input value={importBatchCode} onChange={(e) => setImportBatchCode(e.target.value)} className="h-8 text-xs" placeholder="Auto-generate" /></div>
             {importResult && <div className="p-2 border rounded bg-gray-50 dark:bg-gray-800 text-xs"><div className="flex items-center gap-1 text-green-600"><Check className="h-3 w-3" />{importResult.success} {t('notifications.success')}</div>{importResult.failed > 0 && <div className="text-red-600">{importResult.failed} {t('notifications.failed')}</div>}</div>}
           </div>
           <DialogFooter className="gap-2"><Button variant="outline" size="sm" onClick={() => { setIsImportDialogOpen(false); setImportFile(null); setImportProfileId(''); setImportBatchCode(''); setImportResult(null); }} className="h-7 text-xs">{t('common.cancel')}</Button><Button size="sm" onClick={handleImport} disabled={!importFile || !importProfileId || importing} className="h-7 text-xs">{importing ? <><Loader2 className="h-3 w-3 mr-1 animate-spin" />{t('common.loading')}</> : <><Upload className="h-3 w-3 mr-1" />{t('common.import')}</>}</Button></DialogFooter>

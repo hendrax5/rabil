@@ -237,13 +237,13 @@ export default function SuppliersPage() {
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-foreground truncate">{supplier.name}</p>
                       {supplier.address && (
-                        <div className="flex items-center gap-1 text-[10px] text-muted-foreground mt-0.5">
+                        <div className="flex items-center gap-1 text-xs text-muted-foreground mt-0.5">
                           <MapPin className="h-3 w-3 shrink-0" />
                           <span className="truncate">{supplier.address}</span>
                         </div>
                       )}
                     </div>
-                    <span className={`px-1.5 py-0.5 text-[10px] font-medium rounded-full ml-2 shrink-0 ${
+                    <span className={`px-1.5 py-0.5 text-xs font-medium rounded-full ml-2 shrink-0 ${
                       supplier.isActive ? 'bg-success/20 text-success' : 'bg-muted text-muted-foreground'
                     }`}>
                       {supplier.isActive ? t('common.active') : t('common.inactive')}
@@ -418,7 +418,7 @@ export default function SuppliersPage() {
                     <ModalLabel>{t('inventory.notes')}</ModalLabel>
                     <ModalTextarea value={formData.notes} onChange={(e) => setFormData({ ...formData, notes: e.target.value })} rows={2} />
                   </div>
-                  <div className="md:col-span-2 flex items-center gap-3">
+                  <div className="md:col-span-2 flex items-center gap-4">
                     <label className="flex items-center gap-2 text-sm text-foreground cursor-pointer">
                       <input type="checkbox" checked={formData.isActive} onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })} className="rounded border-[#bc13fe]/50 bg-[#0a0520] text-[#00f7ff] focus:ring-[#00f7ff] w-4 h-4" />
                       <span>{t('common.active')}</span>

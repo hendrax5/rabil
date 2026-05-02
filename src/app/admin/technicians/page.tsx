@@ -489,7 +489,7 @@ export default function TechniciansManagementPage() {
             <ModalTitle>{editingTechnician ? t('technician.editTechnician') : t('technician.addTechnician')}</ModalTitle>
           </ModalHeader>
           <form onSubmit={handleSubmit}>
-            <ModalBody className="space-y-4">
+            <ModalBody className="space-y-5">
               <div>
                 <ModalLabel required>{t('common.name')}</ModalLabel>
                 <ModalInput type="text" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} required />
@@ -497,25 +497,25 @@ export default function TechniciansManagementPage() {
               <div>
                 <ModalLabel required>{t('technician.phoneNumber')}</ModalLabel>
                 <ModalInput type="tel" value={formData.phoneNumber} onChange={(e) => setFormData({ ...formData, phoneNumber: e.target.value })} placeholder="08123456789" required />
-                <p className="text-[10px] text-muted-foreground mt-1">{t('technician.phoneHelp')}</p>
+                <p className="text-xs text-muted-foreground mt-1">{t('technician.phoneHelp')}</p>
               </div>
               <div>
                 <ModalLabel>{t('common.email')}</ModalLabel>
                 <ModalInput type="email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} />
               </div>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-4">
                 <label className="flex items-center gap-2 text-sm text-foreground cursor-pointer">
                   <input type="checkbox" checked={formData.isActive} onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })} className="rounded border-[#bc13fe]/50 bg-[#0a0520] text-[#00f7ff] focus:ring-[#00f7ff] w-4 h-4" />
                   <span>{t('common.active')}</span>
                 </label>
               </div>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-4">
                 <label className="flex items-center gap-2 text-sm text-foreground cursor-pointer">
                   <input type="checkbox" checked={formData.requireOtp} onChange={(e) => setFormData({ ...formData, requireOtp: e.target.checked })} className="rounded border-[#bc13fe]/50 bg-[#0a0520] text-[#00f7ff] focus:ring-[#00f7ff] w-4 h-4" />
                   <span>{t('technician.requireOtp')}</span>
                 </label>
               </div>
-              <p className="text-[10px] text-muted-foreground">{t('technician.requireOtpHelp')}</p>
+              <p className="text-xs text-muted-foreground">{t('technician.requireOtpHelp')}</p>
             </ModalBody>
             <ModalFooter>
               <ModalButton type="button" variant="secondary" onClick={() => { setIsDialogOpen(false); setEditingTechnician(null); resetForm(); }}>{t('common.cancel')}</ModalButton>

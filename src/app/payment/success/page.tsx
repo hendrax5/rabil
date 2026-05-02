@@ -63,20 +63,20 @@ function PaymentSuccessContent() {
 
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
           <div className="bg-gradient-to-r from-green-600 to-emerald-600 px-4 py-3 text-white">
-            <div className="flex items-center justify-between mb-1"><span className="text-[10px] opacity-80">Invoice</span>{isPaid && <span className="px-2 py-0.5 bg-white/20 rounded-full text-[10px] font-medium">LUNAS</span>}</div>
+            <div className="flex items-center justify-between mb-1"><span className="text-xs opacity-80">Invoice</span>{isPaid && <span className="px-2 py-0.5 bg-white/20 rounded-full text-xs font-medium">LUNAS</span>}</div>
             <p className="text-sm font-bold">#{invoice.invoiceNumber}</p>
           </div>
           <div className="p-4 space-y-4">
             <div className="text-center py-4 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-lg">
-              <p className="text-[10px] text-gray-500 mb-1">Total Pembayaran</p>
+              <p className="text-xs text-gray-500 mb-1">Total Pembayaran</p>
               <p className="text-2xl font-bold text-green-600 dark:text-green-400">{formatCurrency(invoice.amount)}</p>
             </div>
             <div className="space-y-3">
-              <div className="flex items-start gap-2"><User className="w-4 h-4 text-gray-400 mt-0.5" /><div><p className="text-[10px] text-gray-500">Pelanggan</p><p className="text-xs font-semibold text-gray-900 dark:text-white">{customerName}</p><p className="text-[10px] text-gray-500">{customerPhone}</p></div></div>
-              {invoice.paidAt && <div className="flex items-start gap-2"><CreditCard className="w-4 h-4 text-gray-400 mt-0.5" /><div><p className="text-[10px] text-gray-500">Tanggal Pembayaran</p><p className="text-xs font-semibold text-gray-900 dark:text-white">{new Date(invoice.paidAt).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</p></div></div>}
-              {expiryDate && <div className="flex items-start gap-2"><Calendar className="w-4 h-4 text-gray-400 mt-0.5" /><div><p className="text-[10px] text-gray-500">Masa Aktif Sampai</p><p className="text-xs font-semibold text-green-600 dark:text-green-400">{new Date(expiryDate).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</p></div></div>}
+              <div className="flex items-start gap-2"><User className="w-4 h-4 text-gray-400 mt-0.5" /><div><p className="text-xs text-gray-500">Pelanggan</p><p className="text-xs font-semibold text-gray-900 dark:text-white">{customerName}</p><p className="text-xs text-gray-500">{customerPhone}</p></div></div>
+              {invoice.paidAt && <div className="flex items-start gap-2"><CreditCard className="w-4 h-4 text-gray-400 mt-0.5" /><div><p className="text-xs text-gray-500">Tanggal Pembayaran</p><p className="text-xs font-semibold text-gray-900 dark:text-white">{new Date(invoice.paidAt).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</p></div></div>}
+              {expiryDate && <div className="flex items-start gap-2"><Calendar className="w-4 h-4 text-gray-400 mt-0.5" /><div><p className="text-xs text-gray-500">Masa Aktif Sampai</p><p className="text-xs font-semibold text-green-600 dark:text-green-400">{new Date(expiryDate).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</p></div></div>}
             </div>
-            {isPaid && <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-2.5"><p className="text-[10px] text-green-800 dark:text-green-300 text-center">✅ Layanan telah diaktifkan kembali</p></div>}
+            {isPaid && <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-2.5"><p className="text-xs text-green-800 dark:text-green-300 text-center">✅ Layanan telah diaktifkan kembali</p></div>}
           </div>
         </div>
 
@@ -85,7 +85,7 @@ function PaymentSuccessContent() {
           <button onClick={() => router.push('/')} className="flex-1 flex items-center justify-center gap-1.5 px-4 py-2.5 text-xs font-medium text-white bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 rounded-lg">Selesai<ArrowRight className="w-3.5 h-3.5" /></button>
         </div>
 
-        <p className="text-center text-[10px] text-gray-500">Terima kasih atas pembayaran Anda! 🙏</p>
+        <p className="text-center text-xs text-gray-500">Terima kasih atas pembayaran Anda! 🙏</p>
       </div>
     </div>
   );

@@ -202,7 +202,7 @@ export default function CategoriesPage() {
               >
                 <div className="flex justify-between items-start mb-3">
                   <div className="flex-1">
-                    <h3 className="text-lg font-semibold text-foreground">
+                    <h3 className="page-title text-foreground">
                       {category.name}
                     </h3>
                     {category.description && (
@@ -246,7 +246,7 @@ export default function CategoriesPage() {
               <ModalTitle>{editingCategory ? t('inventory.editCategory') : t('inventory.addCategory')}</ModalTitle>
             </ModalHeader>
             <form onSubmit={handleSubmit}>
-              <ModalBody className="space-y-4">
+              <ModalBody className="space-y-5">
                 <div>
                   <ModalLabel required>{t('common.name')}</ModalLabel>
                   <ModalInput type="text" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} required />

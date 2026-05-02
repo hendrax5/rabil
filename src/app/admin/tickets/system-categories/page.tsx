@@ -42,7 +42,7 @@ export default function SystemTicketCategoriesPage() {
     <div className="bg-background relative overflow-hidden">
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-4">
           <div className="p-2 rounded-lg bg-cyan-500/20">
             <Tag className="w-6 h-6 text-cyan-400" />
           </div>
@@ -58,7 +58,7 @@ export default function SystemTicketCategoriesPage() {
 
         {/* System Info Alert */}
         <div className="bg-cyan-500/10 border border-cyan-500/30 rounded-lg p-4">
-          <div className="flex items-start gap-3">
+          <div className="flex items-start gap-4">
             <Info className="w-5 h-5 text-cyan-400 flex-shrink-0 mt-0.5" />
             <div>
               <h3 className="text-sm font-medium text-cyan-400">

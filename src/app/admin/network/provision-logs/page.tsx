@@ -93,12 +93,12 @@ export default function ProvisionLogsPage() {
 
         <div className="flex-1 overflow-auto">
           {loading ? (
-            <div className="flex flex-col items-center justify-center h-full text-muted-foreground space-y-4">
+            <div className="flex flex-col items-center justify-center h-full text-muted-foreground space-y-5">
               <RefreshCcw className="w-8 h-8 animate-spin text-primary" />
               <p>Loading provision logs...</p>
             </div>
           ) : filteredLogs.length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-full text-muted-foreground space-y-4">
+            <div className="flex flex-col items-center justify-center h-full text-muted-foreground space-y-5">
               <div className="w-16 h-16 bg-muted/50 rounded-full flex items-center justify-center">
                 <Search className="w-8 h-8" />
               </div>

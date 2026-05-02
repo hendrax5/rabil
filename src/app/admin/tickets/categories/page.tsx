@@ -332,7 +332,7 @@ export default function TicketCategoriesPage() {
             <ModalTitle>{editingCategory ? t('ticket.editCategory') : t('ticket.addCategory')}</ModalTitle>
           </ModalHeader>
           <form onSubmit={handleSubmit}>
-            <ModalBody className="space-y-4">
+            <ModalBody className="space-y-5">
               <div>
                 <ModalLabel required>{t('ticket.categoryName')}</ModalLabel>
                 <ModalInput type="text" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} required />
@@ -351,7 +351,7 @@ export default function TicketCategoriesPage() {
                   ))}
                 </div>
               </div>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-4">
                 <label className="flex items-center gap-2 text-sm text-foreground cursor-pointer">
                   <input type="checkbox" checked={formData.isActive} onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })} className="rounded border-[#bc13fe]/50 bg-[#0a0520] text-[#00f7ff] focus:ring-[#00f7ff] w-4 h-4" />
                   <span>{t('ticket.active')}</span>

@@ -147,7 +147,7 @@ export default function CustomerDashboard() {
             <Shield className="w-5 h-5" />
             <div>
               <h1 className="text-sm font-bold">{companyName}</h1>
-              <p className="text-[10px] text-teal-100">Customer Portal</p>
+              <p className="text-xs text-teal-100">Customer Portal</p>
             </div>
           </div>
           <button onClick={handleLogout} className="flex items-center gap-1.5 px-2.5 py-1 text-xs bg-white/10 hover:bg-white/20 rounded-lg transition">
@@ -159,7 +159,7 @@ export default function CustomerDashboard() {
       {/* Main */}
       <div className="max-w-3xl mx-auto p-3 space-y-3">
         {/* Profile Card */}
-        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-3">
+        <div className="bg-white dark:bg-gray-900 rounded-lg card-soft p-5">
           <div className="flex items-center gap-2 mb-3">
             <div className="p-2 bg-teal-100 dark:bg-teal-900/20 rounded-lg">
               <User className="w-4 h-4 text-teal-600" />
@@ -167,17 +167,17 @@ export default function CustomerDashboard() {
             <h2 className="text-sm font-semibold">Informasi Akun</h2>
           </div>
           <div className="grid grid-cols-2 gap-2 text-xs">
-            <div><span className="text-gray-500 block text-[10px]">Nama</span><span className="font-medium">{user.name}</span></div>
-            <div><span className="text-gray-500 block text-[10px]">No. HP</span><span className="font-medium">{user.phone}</span></div>
-            <div><span className="text-gray-500 block text-[10px]">Username</span><span className="font-mono text-[10px]">{user.username}</span></div>
-            <div><span className="text-gray-500 block text-[10px]">Paket</span><span className="font-medium">{user.profile.name}</span></div>
-            <div><span className="text-gray-500 block text-[10px]">Speed</span><span className="font-medium">{user.profile.downloadSpeed}/{user.profile.uploadSpeed} Mbps</span></div>
-            <div><span className="text-gray-500 block text-[10px]">Status</span>
-              {isExpired ? <span className="px-1.5 py-0.5 bg-red-100 text-red-700 text-[10px] rounded">Expired</span>
-              : user.status === 'active' ? <span className="px-1.5 py-0.5 bg-green-100 text-green-700 text-[10px] rounded">Aktif</span>
-              : <span className="px-1.5 py-0.5 bg-gray-100 text-gray-700 text-[10px] rounded">{user.status}</span>}
+            <div><span className="text-gray-500 block text-xs">Nama</span><span className="font-medium">{user.name}</span></div>
+            <div><span className="text-gray-500 block text-xs">No. HP</span><span className="font-medium">{user.phone}</span></div>
+            <div><span className="text-gray-500 block text-xs">Username</span><span className="font-mono text-xs">{user.username}</span></div>
+            <div><span className="text-gray-500 block text-xs">Paket</span><span className="font-medium">{user.profile.name}</span></div>
+            <div><span className="text-gray-500 block text-xs">Speed</span><span className="font-medium">{user.profile.downloadSpeed}/{user.profile.uploadSpeed} Mbps</span></div>
+            <div><span className="text-gray-500 block text-xs">Status</span>
+              {isExpired ? <span className="px-1.5 py-0.5 bg-red-100 text-red-700 text-xs rounded">Expired</span>
+              : user.status === 'active' ? <span className="px-1.5 py-0.5 bg-green-100 text-green-700 text-xs rounded">Aktif</span>
+              : <span className="px-1.5 py-0.5 bg-gray-100 text-gray-700 text-xs rounded">{user.status}</span>}
             </div>
-            <div className="col-span-2"><span className="text-gray-500 block text-[10px]">Expired</span>
+            <div className="col-span-2"><span className="text-gray-500 block text-xs">Expired</span>
               <span className="font-medium">{expiredDate.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
                 {!isExpired && <span className="text-gray-500 ml-1">({daysLeft} hari lagi)</span>}
               </span>
@@ -186,7 +186,7 @@ export default function CustomerDashboard() {
         </div>
 
         {/* ONT/WiFi Card */}
-        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-3">
+        <div className="bg-white dark:bg-gray-900 rounded-lg card-soft p-5">
           <div className="flex items-center gap-2 mb-3">
             <div className="p-2 bg-purple-100 dark:bg-purple-900/20 rounded-lg">
               <Wifi className="w-4 h-4 text-purple-600" />
@@ -199,18 +199,18 @@ export default function CustomerDashboard() {
           : (
             <div className="space-y-3">
               <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">
-                <div><span className="text-gray-500 block text-[10px]">Model</span><span className="font-medium">{ontDevice.manufacturer} {ontDevice.model}</span></div>
-                <div><span className="text-gray-500 block text-[10px]">Status</span>
-                  <span className={`px-1.5 py-0.5 text-[10px] rounded ${ontDevice.connectionStatus === 'Online' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>{ontDevice.connectionStatus}</span>
+                <div><span className="text-gray-500 block text-xs">Model</span><span className="font-medium">{ontDevice.manufacturer} {ontDevice.model}</span></div>
+                <div><span className="text-gray-500 block text-xs">Status</span>
+                  <span className={`px-1.5 py-0.5 text-xs rounded ${ontDevice.connectionStatus === 'Online' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>{ontDevice.connectionStatus}</span>
                 </div>
-                <div><span className="text-gray-500 block text-[10px]">IP</span><span className="font-mono text-[10px]">{ontDevice.ipAddress}</span></div>
-                <div><span className="text-gray-500 block text-[10px]">RX Power</span><span className="font-medium">{ontDevice.rxPower} dBm</span></div>
+                <div><span className="text-gray-500 block text-xs">IP</span><span className="font-mono text-xs">{ontDevice.ipAddress}</span></div>
+                <div><span className="text-gray-500 block text-xs">RX Power</span><span className="font-medium">{ontDevice.rxPower} dBm</span></div>
               </div>
               
               <div className="pt-2 border-t border-gray-200 dark:border-gray-700">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-[10px] font-semibold text-gray-700 dark:text-gray-300">WiFi Settings</span>
-                  {!editingWifi && <button onClick={() => { setEditingWifi(true); setWifiForm({ ssid: ontDevice.wifiSSID, password: '' }); }} className="text-[10px] text-teal-600 flex items-center gap-0.5"><Edit2 className="w-2.5 h-2.5" />Edit</button>}
+                  <span className="text-xs font-semibold text-gray-700 dark:text-gray-300">WiFi Settings</span>
+                  {!editingWifi && <button onClick={() => { setEditingWifi(true); setWifiForm({ ssid: ontDevice.wifiSSID, password: '' }); }} className="text-xs text-teal-600 flex items-center gap-0.5"><Edit2 className="w-2.5 h-2.5" />Edit</button>}
                 </div>
                 
                 {editingWifi ? (
@@ -218,16 +218,16 @@ export default function CustomerDashboard() {
                     <input type="text" value={wifiForm.ssid} onChange={(e) => setWifiForm({ ...wifiForm, ssid: e.target.value })} className="w-full px-2 py-1 text-xs border rounded" placeholder="SSID baru" />
                     <input type="text" value={wifiForm.password} onChange={(e) => setWifiForm({ ...wifiForm, password: e.target.value })} className="w-full px-2 py-1 text-xs border rounded" placeholder="Password baru (8-63 karakter)" />
                     <div className="flex gap-1">
-                      <button onClick={handleUpdateWifi} disabled={updatingWifi} className="flex-1 px-2 py-1 bg-teal-600 text-white text-[10px] rounded disabled:opacity-50 flex items-center justify-center gap-1">
+                      <button onClick={handleUpdateWifi} disabled={updatingWifi} className="flex-1 px-2 py-1 bg-teal-600 text-white text-xs rounded disabled:opacity-50 flex items-center justify-center gap-1">
                         {updatingWifi ? <Loader2 className="w-3 h-3 animate-spin" /> : <Check className="w-3 h-3" />}Simpan
                       </button>
-                      <button onClick={() => { setEditingWifi(false); setWifiForm({ ssid: '', password: '' }); }} className="px-2 py-1 border text-[10px] rounded"><X className="w-3 h-3" /></button>
+                      <button onClick={() => { setEditingWifi(false); setWifiForm({ ssid: '', password: '' }); }} className="px-2 py-1 border text-xs rounded"><X className="w-3 h-3" /></button>
                     </div>
                   </div>
                 ) : (
                   <div className="grid grid-cols-2 gap-2 text-xs">
-                    <div><span className="text-gray-500 block text-[10px]">SSID</span><span className="font-medium">{ontDevice.wifiSSID}</span></div>
-                    <div><span className="text-gray-500 block text-[10px]">Status</span><span className={ontDevice.wifiEnabled ? 'text-green-600' : 'text-red-600'}>{ontDevice.wifiEnabled ? 'Aktif' : 'Off'}</span></div>
+                    <div><span className="text-gray-500 block text-xs">SSID</span><span className="font-medium">{ontDevice.wifiSSID}</span></div>
+                    <div><span className="text-gray-500 block text-xs">Status</span><span className={ontDevice.wifiEnabled ? 'text-green-600' : 'text-red-600'}>{ontDevice.wifiEnabled ? 'Aktif' : 'Off'}</span></div>
                   </div>
                 )}
               </div>
@@ -236,7 +236,7 @@ export default function CustomerDashboard() {
         </div>
 
         {/* Invoices Card */}
-        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-3">
+        <div className="bg-white dark:bg-gray-900 rounded-lg card-soft p-5">
           <div className="flex items-center gap-2 mb-3">
             <div className="p-2 bg-green-100 dark:bg-green-900/20 rounded-lg">
               <Receipt className="w-4 h-4 text-green-600" />
@@ -256,13 +256,13 @@ export default function CustomerDashboard() {
                     <div className="flex justify-between items-start">
                       <div>
                         <p className="font-mono text-xs font-semibold">{invoice.invoiceNumber}</p>
-                        <p className="text-[10px] text-gray-500 mt-0.5">Due: {dueDate.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
+                        <p className="text-xs text-gray-500 mt-0.5">Due: {dueDate.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
                       </div>
                       <div className="text-right">
                         <p className="text-xs font-bold">{formatCurrency(invoice.amount)}</p>
-                        {isPaid ? <span className="px-1.5 py-0.5 bg-green-100 text-green-700 text-[10px] rounded">Lunas</span>
-                        : isOverdue ? <span className="px-1.5 py-0.5 bg-red-100 text-red-700 text-[10px] rounded">Terlambat</span>
-                        : <span className="px-1.5 py-0.5 bg-yellow-100 text-yellow-700 text-[10px] rounded">Belum Bayar</span>}
+                        {isPaid ? <span className="px-1.5 py-0.5 bg-green-100 text-green-700 text-xs rounded">Lunas</span>
+                        : isOverdue ? <span className="px-1.5 py-0.5 bg-red-100 text-red-700 text-xs rounded">Terlambat</span>
+                        : <span className="px-1.5 py-0.5 bg-yellow-100 text-yellow-700 text-xs rounded">Belum Bayar</span>}
                       </div>
                     </div>
                     {!isPaid && invoice.paymentLink && (

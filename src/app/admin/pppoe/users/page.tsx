@@ -502,138 +502,138 @@ export default function PppoeUsersPage() {
   if (loading) { return <div className="flex items-center justify-center h-64"><p className="text-xs text-gray-500">{t('common.loading')}</p></div>; }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-lg font-semibold text-gray-900 dark:text-gray-100">{t('pppoe.title')}</h1>
-          <p className="text-xs text-gray-500 dark:text-gray-400">{t('pppoe.subtitle')}</p>
+          <h1 className="page-title">{t('pppoe.title')}</h1>
+          <p className="page-subtitle">{t('pppoe.subtitle')}</p>
         </div>
-        <div className="flex gap-1.5 flex-wrap">
-          <button onClick={() => { setIsSyncDialogOpen(true); setSyncPreview(null); setSyncResult(null); setSyncRouterId(''); setSyncProfileId(''); }} className="inline-flex items-center px-2 py-1.5 text-xs border border-blue-500 text-blue-600 rounded hover:bg-blue-50 dark:hover:bg-blue-900/20"><RefreshCcw className="h-3 w-3 mr-1" />Sync MikroTik</button>
-          <button onClick={handleDownloadTemplate} className="inline-flex items-center px-2 py-1.5 text-xs border border-gray-300 dark:border-gray-600 rounded hover:bg-gray-50 dark:hover:bg-gray-700"><Download className="h-3 w-3 mr-1" />{t('pppoe.template')}</button>
-          <button onClick={handleExportExcel} className="inline-flex items-center px-2 py-1.5 text-xs border border-green-500 text-green-600 rounded hover:bg-green-50 dark:hover:bg-green-900/20"><Download className="h-3 w-3 mr-1" />Excel</button>
-          <button onClick={handleExportPDF} className="inline-flex items-center px-2 py-1.5 text-xs border border-red-500 text-red-600 rounded hover:bg-red-50 dark:hover:bg-red-900/20"><Download className="h-3 w-3 mr-1" />PDF</button>
-          <button onClick={() => setIsImportDialogOpen(true)} className="inline-flex items-center px-2 py-1.5 text-xs border border-gray-300 dark:border-gray-600 rounded hover:bg-gray-50 dark:hover:bg-gray-700"><Upload className="h-3 w-3 mr-1" />{t('common.import')}</button>
-          {canCreate && (<button onClick={() => { resetForm(); setEditingUser(null); setIsDialogOpen(true); }} className="inline-flex items-center px-3 py-1.5 text-xs bg-primary hover:bg-primary/90 text-white rounded"><Plus className="h-3 w-3 mr-1" />{t('pppoe.addUser')}</button>)}
+        <div className="flex gap-2 flex-wrap">
+          <button onClick={() => { setIsSyncDialogOpen(true); setSyncPreview(null); setSyncResult(null); setSyncRouterId(''); setSyncProfileId(''); }} className="btn-premium border border-blue-200 dark:border-blue-800 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20"><RefreshCcw className="h-3.5 w-3.5" />Sync MikroTik</button>
+          <button onClick={handleDownloadTemplate} className="btn-premium border border-gray-200 dark:border-zinc-700 text-gray-600 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-800"><Download className="h-3.5 w-3.5" />{t('pppoe.template')}</button>
+          <button onClick={handleExportExcel} className="btn-premium border border-emerald-200 dark:border-emerald-800 text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-900/20"><Download className="h-3.5 w-3.5" />Excel</button>
+          <button onClick={handleExportPDF} className="btn-premium border border-red-200 dark:border-red-800 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20"><Download className="h-3.5 w-3.5" />PDF</button>
+          <button onClick={() => setIsImportDialogOpen(true)} className="btn-premium border border-gray-200 dark:border-zinc-700 text-gray-600 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-800"><Upload className="h-3.5 w-3.5" />{t('common.import')}</button>
+          {canCreate && (<button onClick={() => { resetForm(); setEditingUser(null); setIsDialogOpen(true); }} className="btn-premium bg-primary hover:bg-primary/90 text-white"><Plus className="h-3.5 w-3.5" />{t('pppoe.addUser')}</button>)}
         </div>
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-3 gap-3">
-        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-3">
-          <div className="flex items-center justify-between">
-            <div><p className="text-[10px] text-gray-500 uppercase">{t('pppoe.active')}</p><p className="text-base font-bold text-green-600">{activeUsers}</p></div>
-            <Users className="h-5 w-5 text-green-600" />
+      <div className="grid grid-cols-3 gap-4">
+        <div className="stat-card" style={{ '--stat-accent': '#10b981' } as React.CSSProperties}>
+          <div className="flex items-center gap-4">
+            <div className="icon-container bg-emerald-50 dark:bg-emerald-900/20"><Users className="h-5 w-5 text-emerald-600" /></div>
+            <div><p className="text-xs text-gray-500 dark:text-zinc-400 font-medium">{t('pppoe.active')}</p><p className="text-xl font-bold text-emerald-600 mt-0.5">{activeUsers}</p></div>
           </div>
         </div>
-        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-3">
-          <div className="flex items-center justify-between">
-            <div><p className="text-[10px] text-gray-500 uppercase">{t('pppoe.expired')}</p><p className="text-base font-bold text-red-600">{expiredUsers}</p></div>
-            <Users className="h-5 w-5 text-red-600" />
+        <div className="stat-card" style={{ '--stat-accent': '#ef4444' } as React.CSSProperties}>
+          <div className="flex items-center gap-4">
+            <div className="icon-container bg-red-50 dark:bg-red-900/20"><Users className="h-5 w-5 text-red-600" /></div>
+            <div><p className="text-xs text-gray-500 dark:text-zinc-400 font-medium">{t('pppoe.expired')}</p><p className="text-xl font-bold text-red-600 mt-0.5">{expiredUsers}</p></div>
           </div>
         </div>
-        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-3">
-          <div className="flex items-center justify-between">
-            <div><p className="text-[10px] text-gray-500 uppercase">{t('common.total')}</p><p className="text-base font-bold text-teal-600">{users.length}</p></div>
-            <Users className="h-5 w-5 text-teal-600" />
+        <div className="stat-card" style={{ '--stat-accent': '#0d9488' } as React.CSSProperties}>
+          <div className="flex items-center gap-4">
+            <div className="icon-container bg-teal-50 dark:bg-teal-900/20"><Users className="h-5 w-5 text-teal-600" /></div>
+            <div><p className="text-xs text-gray-500 dark:text-zinc-400 font-medium">{t('common.total')}</p><p className="text-xl font-bold text-teal-600 mt-0.5">{users.length}</p></div>
           </div>
         </div>
       </div>
 
       {/* Search and Filters */}
-      <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-3">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+      <div className="card-soft p-5">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div className="md:col-span-2 relative">
-            <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-3.5 w-3.5 text-gray-400" />
-            <input type="text" placeholder={t('common.search')} value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="w-full pl-7 pr-7 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800" />
-            {searchQuery && <button onClick={() => setSearchQuery('')} className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"><X className="h-3 w-3" /></button>}
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+            <input type="text" placeholder={t('common.search')} value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="input-premium w-full pl-10 pr-8" />
+            {searchQuery && <button onClick={() => setSearchQuery('')} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"><X className="h-4 w-4" /></button>}
           </div>
-          <select value={filterProfile} onChange={(e) => setFilterProfile(e.target.value)} className="px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800">
+          <select value={filterProfile} onChange={(e) => setFilterProfile(e.target.value)} className="input-premium">
             <option value="">{t('pppoe.allProfiles')}</option>
             {profiles.map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
           </select>
-          <select value={filterRouter} onChange={(e) => setFilterRouter(e.target.value)} className="px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800">
+          <select value={filterRouter} onChange={(e) => setFilterRouter(e.target.value)} className="input-premium">
             <option value="">{t('pppoe.allNas')}</option><option value="global">{t('pppoe.global')}</option>
             {routers.map((r) => <option key={r.id} value={r.id}>{r.name}</option>)}
           </select>
         </div>
-        <div className="flex items-center gap-1.5 mt-2">
-          <Filter className="h-3 w-3 text-gray-500" /><span className="text-[10px] text-gray-500">{t('common.status')}:</span>
+        <div className="flex items-center gap-2 mt-3">
+          <Filter className="h-3.5 w-3.5 text-gray-500" /><span className="text-xs text-gray-500">{t('common.status')}:</span>
           {['', 'active', 'isolated', 'blocked'].map(s => (
-            <button key={s} onClick={() => setFilterStatus(s)} className={`px-2 py-0.5 text-[10px] rounded-full transition ${filterStatus === s ? (s === '' ? 'bg-teal-600 text-white' : s === 'active' ? 'bg-green-600 text-white' : s === 'isolated' ? 'bg-yellow-600 text-white' : 'bg-red-600 text-white') : 'bg-gray-100 dark:bg-gray-800 text-gray-600'}`}>
+            <button key={s} onClick={() => setFilterStatus(s)} className={`badge-pill transition ${filterStatus === s ? (s === '' ? 'bg-teal-600 text-white' : s === 'active' ? 'bg-green-600 text-white' : s === 'isolated' ? 'bg-yellow-600 text-white' : 'bg-red-600 text-white') : 'bg-gray-100 dark:bg-zinc-800 text-gray-600 dark:text-zinc-400 hover:bg-gray-200 dark:hover:bg-zinc-700'}`}>
               {s === '' ? t('common.all') : s === 'active' ? t('pppoe.active') : s === 'isolated' ? t('pppoe.isolir') : t('pppoe.block')}
             </button>
           ))}
-          {(searchQuery || filterProfile || filterRouter || filterStatus) && <button onClick={() => { setSearchQuery(''); setFilterProfile(''); setFilterRouter(''); setFilterStatus(''); }} className="ml-auto text-[10px] text-teal-600 hover:text-teal-700">{t('common.reset')}</button>}
+          {(searchQuery || filterProfile || filterRouter || filterStatus) && <button onClick={() => { setSearchQuery(''); setFilterProfile(''); setFilterRouter(''); setFilterStatus(''); }} className="ml-auto text-xs text-teal-600 hover:text-teal-700 font-medium">{t('common.reset')}</button>}
         </div>
-        <div className="mt-2 text-[10px] text-gray-500">{t('table.showing')} {filteredUsers.length} {t('table.of')} {users.length}</div>
+        <div className="mt-3 text-xs text-gray-500">{t('table.showing')} {filteredUsers.length} {t('table.of')} {users.length}</div>
       </div>
 
       {/* Users Table */}
-      <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 overflow-hidden">
-        <div className="px-3 py-2 border-b dark:border-gray-800 flex items-center justify-between">
-          <span className="text-xs font-medium">{t('pppoe.usersList')}</span>
+      <div className="card-soft overflow-hidden">
+        <div className="px-5 py-3 border-b border-gray-100 dark:border-zinc-800 flex items-center justify-between">
+          <span className="text-sm font-semibold">{t('pppoe.usersList')}</span>
           {selectedUsers.size > 0 && (
-            <div className="flex items-center gap-1">
-              <span className="text-[10px] text-gray-500">{selectedUsers.size} {t('pppoe.selected')}</span>
-              <button onClick={() => handleBulkStatusChange('active')} className="px-1.5 py-0.5 text-[10px] bg-green-600 text-white rounded flex items-center gap-0.5"><Shield className="h-2.5 w-2.5" />{t('pppoe.active')}</button>
-              <button onClick={() => handleBulkStatusChange('isolated')} className="px-1.5 py-0.5 text-[10px] bg-yellow-600 text-white rounded flex items-center gap-0.5"><ShieldOff className="h-2.5 w-2.5" />{t('pppoe.isolir')}</button>
-              <button onClick={() => handleBulkStatusChange('blocked')} className="px-1.5 py-0.5 text-[10px] bg-red-600 text-white rounded flex items-center gap-0.5"><Ban className="h-2.5 w-2.5" />{t('pppoe.block')}</button>
-              <button onClick={handleExportSelected} className="px-1.5 py-0.5 text-[10px] bg-teal-600 text-white rounded flex items-center gap-0.5"><Download className="h-2.5 w-2.5" />{t('common.export')}</button>
-              <button onClick={handleBulkDelete} className="px-1.5 py-0.5 text-[10px] bg-gray-600 text-white rounded flex items-center gap-0.5"><Trash2 className="h-2.5 w-2.5" />{t('common.delete')}</button>
+            <div className="flex items-center gap-1.5">
+              <span className="text-xs text-gray-500">{selectedUsers.size} {t('pppoe.selected')}</span>
+              <button onClick={() => handleBulkStatusChange('active')} className="badge-pill bg-green-600 text-white"><Shield className="h-3 w-3" />{t('pppoe.active')}</button>
+              <button onClick={() => handleBulkStatusChange('isolated')} className="badge-pill bg-yellow-600 text-white"><ShieldOff className="h-3 w-3" />{t('pppoe.isolir')}</button>
+              <button onClick={() => handleBulkStatusChange('blocked')} className="badge-pill bg-red-600 text-white"><Ban className="h-3 w-3" />{t('pppoe.block')}</button>
+              <button onClick={handleExportSelected} className="badge-pill bg-teal-600 text-white"><Download className="h-3 w-3" />{t('common.export')}</button>
+              <button onClick={handleBulkDelete} className="badge-pill bg-gray-600 text-white"><Trash2 className="h-3 w-3" />{t('common.delete')}</button>
             </div>
           )}
         </div>
         <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="bg-gray-50 dark:bg-gray-800/50">
+          <table className="w-full table-premium">
+            <thead className="bg-gray-50/80 dark:bg-zinc-800/50">
               <tr>
-                <th className="px-2 py-2 text-center w-8"><input type="checkbox" checked={selectedUsers.size === filteredUsers.length && filteredUsers.length > 0} onChange={toggleSelectAll} className="rounded border-gray-300 w-3 h-3" /></th>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase">{t('pppoe.username')}</th>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase">{t('common.name')}</th>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase hidden md:table-cell">{t('common.phone')}</th>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase hidden lg:table-cell">{t('pppoe.profile')}</th>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase hidden sm:table-cell">{t('pppoe.expired')}</th>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase">{t('pppoe.status')}</th>
-                <th className="px-3 py-2 text-right text-[10px] font-medium text-gray-500 uppercase"></th>
+                <th className="px-3 py-3 text-center w-10"><input type="checkbox" checked={selectedUsers.size === filteredUsers.length && filteredUsers.length > 0} onChange={toggleSelectAll} className="rounded border-gray-300 w-3.5 h-3.5" /></th>
+                <th className="text-left">{t('pppoe.username')}</th>
+                <th className="text-left">{t('common.name')}</th>
+                <th className="text-left hidden md:table-cell">{t('common.phone')}</th>
+                <th className="text-left hidden lg:table-cell">{t('pppoe.profile')}</th>
+                <th className="text-left hidden sm:table-cell">{t('pppoe.expired')}</th>
+                <th className="text-left">{t('pppoe.status')}</th>
+                <th className="text-right"></th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
+            <tbody className="divide-y divide-gray-100 dark:divide-zinc-800">
               {filteredUsers.length === 0 ? (
-                <tr><td colSpan={8} className="px-3 py-8 text-center text-gray-500 text-xs">{users.length === 0 ? t('pppoe.noUsers') : t('pppoe.noMatch')}</td></tr>
+                <tr><td colSpan={8} className="px-4 py-12 text-center text-gray-500 text-sm">{users.length === 0 ? t('pppoe.noUsers') : t('pppoe.noMatch')}</td></tr>
               ) : (
                 filteredUsers.map((user) => (
-                  <tr key={user.id} className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
-                    <td className="px-2 py-2 text-center"><input type="checkbox" checked={selectedUsers.has(user.id)} onChange={() => toggleSelectUser(user.id)} className="rounded border-gray-300 w-3 h-3" /></td>
-                    <td className="px-3 py-2"><p className="font-medium text-xs">{user.username}</p>{user.ipAddress && <p className="text-[10px] text-gray-500">IP: {user.ipAddress}</p>}</td>
-                    <td className="px-3 py-2"><p className="text-xs">{user.name}</p>{user.email && <p className="text-[10px] text-gray-500 truncate max-w-[120px]">{user.email}</p>}</td>
-                    <td className="px-3 py-2 text-xs hidden md:table-cell">{user.phone}</td>
-                    <td className="px-3 py-2 hidden lg:table-cell"><span className="text-xs font-medium">{user.profile.name}</span><br/><span className="text-[10px] text-gray-500 font-mono">{user.profile.groupName}</span></td>
-                    <td className="px-3 py-2 text-xs hidden sm:table-cell">{user.expiredAt ? <span className={isExpired(user.expiredAt) ? 'text-red-600 font-medium' : ''}>{formatWIB(user.expiredAt, 'dd/MM/yyyy')}</span> : '-'}</td>
-                    <td className="px-3 py-2">
-                      <div className="flex flex-col gap-0.5">
-                        <span className={`inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-medium ${user.status === 'active' ? 'bg-green-100 text-green-700 dark:bg-green-900/30' : user.status === 'isolated' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30' : 'bg-red-100 text-red-700 dark:bg-red-900/30'}`}>{user.status}</span>
-                        {user.syncedToRadius && <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-medium bg-purple-100 text-purple-700 dark:bg-purple-900/30"><CheckCircle2 className="h-2 w-2 mr-0.5" />{t('pppoe.synced')}</span>}
+                  <tr key={user.id} className="hover:bg-gray-50/50 dark:hover:bg-zinc-800/30 transition-colors">
+                    <td className="px-3 py-3 text-center"><input type="checkbox" checked={selectedUsers.has(user.id)} onChange={() => toggleSelectUser(user.id)} className="rounded border-gray-300 w-3.5 h-3.5" /></td>
+                    <td><p className="font-medium text-[13px]">{user.username}</p>{user.ipAddress && <p className="text-xs text-gray-500 mt-0.5">IP: {user.ipAddress}</p>}</td>
+                    <td><p className="text-[13px]">{user.name}</p>{user.email && <p className="text-xs text-gray-500 truncate max-w-[140px] mt-0.5">{user.email}</p>}</td>
+                    <td className="hidden md:table-cell text-[13px]">{user.phone}</td>
+                    <td className="hidden lg:table-cell"><span className="text-[13px] font-medium">{user.profile.name}</span><br/><span className="text-xs text-gray-500 font-mono">{user.profile.groupName}</span></td>
+                    <td className="hidden sm:table-cell text-[13px]">{user.expiredAt ? <span className={isExpired(user.expiredAt) ? 'text-red-600 font-medium' : ''}>{formatWIB(user.expiredAt, 'dd/MM/yyyy')}</span> : '-'}</td>
+                    <td>
+                      <div className="flex flex-col gap-1">
+                        <span className={`badge-pill w-fit ${user.status === 'active' ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400' : user.status === 'isolated' ? 'bg-amber-50 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400' : 'bg-red-50 text-red-700 dark:bg-red-900/30 dark:text-red-400'}`}>{user.status}</span>
+                        {user.syncedToRadius && <span className="badge-pill w-fit bg-violet-50 text-violet-700 dark:bg-violet-900/30 dark:text-violet-400"><CheckCircle2 className="h-2.5 w-2.5" />{t('pppoe.synced')}</span>}
                       </div>
                     </td>
-                    <td className="px-3 py-2 text-right">
-                      <div className="flex justify-end gap-0.5">
+                    <td className="text-right">
+                      <div className="flex justify-end gap-1">
                         <div className="relative">
-                          <button onClick={() => setActionMenuOpen(actionMenuOpen === user.id ? null : user.id)} className="p-1 text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 rounded"><MoreVertical className="h-3 w-3" /></button>
+                          <button onClick={() => setActionMenuOpen(actionMenuOpen === user.id ? null : user.id)} className="p-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-zinc-700 rounded-lg transition-colors"><MoreVertical className="h-4 w-4" /></button>
                           {actionMenuOpen === user.id && (
-                            <div className="absolute right-0 mt-1 w-32 bg-white dark:bg-gray-800 rounded shadow-lg border dark:border-gray-700 z-10">
-                              <button onClick={() => handleStatusChange(user.id, 'active')} className="w-full px-2 py-1.5 text-left text-[10px] hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-1.5"><Shield className="h-3 w-3 text-green-600" />{t('pppoe.active')}</button>
-                              <button onClick={() => handleStatusChange(user.id, 'isolated')} className="w-full px-2 py-1.5 text-left text-[10px] hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-1.5"><ShieldOff className="h-3 w-3 text-yellow-600" />{t('pppoe.isolir')}</button>
-                              <button onClick={() => handleStatusChange(user.id, 'blocked')} className="w-full px-2 py-1.5 text-left text-[10px] hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-1.5"><Ban className="h-3 w-3 text-red-600" />{t('pppoe.block')}</button>
+                            <div className="absolute right-0 mt-1 w-36 bg-white dark:bg-zinc-800 rounded-xl shadow-lg border border-gray-100 dark:border-zinc-700 z-10 py-1">
+                              <button onClick={() => handleStatusChange(user.id, 'active')} className="w-full px-3 py-2 text-left text-xs hover:bg-gray-50 dark:hover:bg-zinc-700 flex items-center gap-2 transition-colors"><Shield className="h-3.5 w-3.5 text-green-600" />{t('pppoe.active')}</button>
+                              <button onClick={() => handleStatusChange(user.id, 'isolated')} className="w-full px-3 py-2 text-left text-xs hover:bg-gray-50 dark:hover:bg-zinc-700 flex items-center gap-2 transition-colors"><ShieldOff className="h-3.5 w-3.5 text-yellow-600" />{t('pppoe.isolir')}</button>
+                              <button onClick={() => handleStatusChange(user.id, 'blocked')} className="w-full px-3 py-2 text-left text-xs hover:bg-gray-50 dark:hover:bg-zinc-700 flex items-center gap-2 transition-colors"><Ban className="h-3.5 w-3.5 text-red-600" />{t('pppoe.block')}</button>
                             </div>
                           )}
                         </div>
-                        <button onClick={() => handleEdit(user)} className="p-1 text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 rounded"><Pencil className="h-3 w-3" /></button>
-                                <button onClick={() => setDeleteUserId(user.id)} className="p-1 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded"><Trash2 className="h-3 w-3" /></button>
-                                <button onClick={() => openAssignModal(user)} className="p-1 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded" title="Assign Modem (Auto Provisioning)"><Router className="h-3 w-3" /></button>
-                              </div>
-                            </td>
+                        <button onClick={() => handleEdit(user)} className="p-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-zinc-700 rounded-lg transition-colors"><Pencil className="h-4 w-4" /></button>
+                        <button onClick={() => setDeleteUserId(user.id)} className="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"><Trash2 className="h-4 w-4" /></button>
+                        <button onClick={() => openAssignModal(user)} className="p-2 text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors" title="Assign Modem"><Router className="h-4 w-4" /></button>
+                      </div>
+                    </td>
                           </tr>
                 ))
               )}
@@ -644,48 +644,48 @@ export default function PppoeUsersPage() {
 
       {/* Add New User Dialog */}
       {isDialogOpen && !editingUser && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white dark:bg-gray-900 rounded-lg shadow-xl max-w-xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="px-4 py-3 border-b dark:border-gray-800">
-              <h2 className="text-sm font-semibold">{t('pppoe.addUser')}</h2>
-              <p className="text-[10px] text-gray-500">{t('pppoe.createPppoe')}</p>
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+          <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl max-w-xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="px-6 py-4 border-b border-gray-100 dark:border-zinc-800">
+              <h2 className="text-base font-semibold">{t('pppoe.addUser')}</h2>
+              <p className="text-xs text-gray-500 dark:text-zinc-400 mt-0.5">{t('pppoe.createPppoe')}</p>
             </div>
-            <form onSubmit={handleSubmit} className="p-4 space-y-3">
-              <div className="grid grid-cols-2 gap-3">
-                <div><label className="block text-[10px] font-medium mb-1">{t('pppoe.username')} *</label><input type="text" value={formData.username} onChange={(e) => setFormData({ ...formData, username: e.target.value })} required className="w-full px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800" /></div>
-                <div><label className="block text-[10px] font-medium mb-1">{t('pppoe.password')} *</label>
-                  <div className="relative"><input type={showPassword ? 'text' : 'password'} value={formData.password} onChange={(e) => setFormData({ ...formData, password: e.target.value })} required={!editingUser} className="w-full px-2 py-1.5 pr-7 text-xs border dark:border-gray-700 rounded dark:bg-gray-800" />
-                    <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500">{showPassword ? <EyeOff className="h-3 w-3" /> : <Eye className="h-3 w-3" />}</button>
+            <form onSubmit={handleSubmit} className="p-6 space-y-5">
+              <div className="grid grid-cols-2 gap-4">
+                <div><label className="block text-xs font-medium mb-1.5">{t('pppoe.username')} *</label><input type="text" value={formData.username} onChange={(e) => setFormData({ ...formData, username: e.target.value })} required className="input-premium w-full" /></div>
+                <div><label className="block text-xs font-medium mb-1.5">{t('pppoe.password')} *</label>
+                  <div className="relative"><input type={showPassword ? 'text' : 'password'} value={formData.password} onChange={(e) => setFormData({ ...formData, password: e.target.value })} required={!editingUser} className="input-premium w-full pr-9" />
+                    <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600">{showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}</button>
                   </div>
                 </div>
               </div>
-              <div><label className="block text-[10px] font-medium mb-1">{t('pppoe.profile')} *</label><select value={formData.profileId} onChange={(e) => setFormData({ ...formData, profileId: e.target.value })} required className="w-full px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800"><option value="">{t('common.select')}</option>{profiles.map((p) => <option key={p.id} value={p.id}>{p.name} - Rp {p.price.toLocaleString('id-ID')}</option>)}</select></div>
-              <div><label className="block text-[10px] font-medium mb-1">NAS ({t('common.optional')})</label><select value={formData.routerId} onChange={(e) => setFormData({ ...formData, routerId: e.target.value })} className="w-full px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800"><option value="">{t('pppoe.global')}</option>{routers.map((r) => <option key={r.id} value={r.id}>{r.name} ({r.ipAddress})</option>)}</select></div>
-              <div className="grid grid-cols-2 gap-3">
-                <div><label className="block text-[10px] font-medium mb-1">{t('common.name')} *</label><input type="text" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} required className="w-full px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800" /></div>
-                <div><label className="block text-[10px] font-medium mb-1">{t('common.phone')} *</label><input type="tel" value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} required className="w-full px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800" /></div>
+              <div><label className="block text-xs font-medium mb-1.5">{t('pppoe.profile')} *</label><select value={formData.profileId} onChange={(e) => setFormData({ ...formData, profileId: e.target.value })} required className="input-premium w-full"><option value="">{t('common.select')}</option>{profiles.map((p) => <option key={p.id} value={p.id}>{p.name} - Rp {p.price.toLocaleString('id-ID')}</option>)}</select></div>
+              <div><label className="block text-xs font-medium mb-1.5">NAS ({t('common.optional')})</label><select value={formData.routerId} onChange={(e) => setFormData({ ...formData, routerId: e.target.value })} className="input-premium w-full"><option value="">{t('pppoe.global')}</option>{routers.map((r) => <option key={r.id} value={r.id}>{r.name} ({r.ipAddress})</option>)}</select></div>
+              <div className="grid grid-cols-2 gap-4">
+                <div><label className="block text-xs font-medium mb-1.5">{t('common.name')} *</label><input type="text" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} required className="input-premium w-full" /></div>
+                <div><label className="block text-xs font-medium mb-1.5">{t('common.phone')} *</label><input type="tel" value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} required className="input-premium w-full" /></div>
               </div>
-              <div><label className="block text-[10px] font-medium mb-1">{t('common.email')}</label><input type="email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className="w-full px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800" /></div>
-              <div><label className="block text-[10px] font-medium mb-1">{t('common.address')}</label><input type="text" value={formData.address} onChange={(e) => setFormData({ ...formData, address: e.target.value })} className="w-full px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800" /></div>
+              <div><label className="block text-xs font-medium mb-1.5">{t('common.email')}</label><input type="email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className="input-premium w-full" /></div>
+              <div><label className="block text-xs font-medium mb-1.5">{t('common.address')}</label><input type="text" value={formData.address} onChange={(e) => setFormData({ ...formData, address: e.target.value })} className="input-premium w-full" /></div>
               <div>
-                <div className="flex items-center justify-between mb-1"><label className="text-[10px] font-medium">{t('pppoe.gpsLocation')}</label>
-                  <div className="flex gap-1">
-                    <button type="button" onClick={() => setShowMapPicker(true)} className="inline-flex items-center px-2 py-0.5 text-[10px] bg-teal-600 text-white rounded"><Map className="h-2.5 w-2.5 mr-1" />{t('pppoe.openMap')}</button>
-                    <button type="button" onClick={async () => { if (navigator.geolocation) { navigator.geolocation.getCurrentPosition((p) => { setFormData({ ...formData, latitude: p.coords.latitude.toFixed(6), longitude: p.coords.longitude.toFixed(6) }); }, async (e) => { await showError('GPS failed'); }, { enableHighAccuracy: true, timeout: 10000 }); } }} className="inline-flex items-center px-2 py-0.5 text-[10px] bg-green-600 text-white rounded"><MapPin className="h-2.5 w-2.5 mr-1" />{t('pppoe.autoGps')}</button>
+                <div className="flex items-center justify-between mb-1.5"><label className="text-xs font-medium">{t('pppoe.gpsLocation')}</label>
+                  <div className="flex gap-1.5">
+                    <button type="button" onClick={() => setShowMapPicker(true)} className="btn-premium bg-teal-600 text-white text-xs hover:bg-teal-700"><Map className="h-3 w-3" />{t('pppoe.openMap')}</button>
+                    <button type="button" onClick={async () => { if (navigator.geolocation) { navigator.geolocation.getCurrentPosition((p) => { setFormData({ ...formData, latitude: p.coords.latitude.toFixed(6), longitude: p.coords.longitude.toFixed(6) }); }, async (e) => { await showError('GPS failed'); }, { enableHighAccuracy: true, timeout: 10000 }); } }} className="btn-premium bg-green-600 text-white text-xs hover:bg-green-700"><MapPin className="h-3 w-3" />{t('pppoe.autoGps')}</button>
                   </div>
                 </div>
-                <div className="grid grid-cols-2 gap-2">
-                  <input type="number" step="any" value={formData.latitude} onChange={(e) => setFormData({ ...formData, latitude: e.target.value })} placeholder={t('pppoe.latitude')} className="w-full px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800" />
-                  <input type="number" step="any" value={formData.longitude} onChange={(e) => setFormData({ ...formData, longitude: e.target.value })} placeholder={t('pppoe.longitude')} className="w-full px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800" />
+                <div className="grid grid-cols-2 gap-4">
+                  <input type="number" step="any" value={formData.latitude} onChange={(e) => setFormData({ ...formData, latitude: e.target.value })} placeholder={t('pppoe.latitude')} className="input-premium w-full" />
+                  <input type="number" step="any" value={formData.longitude} onChange={(e) => setFormData({ ...formData, longitude: e.target.value })} placeholder={t('pppoe.longitude')} className="input-premium w-full" />
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-3">
-                <div><label className="block text-[10px] font-medium mb-1">{t('pppoe.staticIp')}</label><input type="text" value={formData.ipAddress} onChange={(e) => setFormData({ ...formData, ipAddress: e.target.value })} placeholder="10.10.10.2" className="w-full px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800" /></div>
-                <div><label className="block text-[10px] font-medium mb-1">{t('pppoe.expiryDate')}</label><input type="date" value={formData.expiredAt} onChange={(e) => setFormData({ ...formData, expiredAt: e.target.value })} className="w-full px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800" /></div>
+              <div className="grid grid-cols-2 gap-4">
+                <div><label className="block text-xs font-medium mb-1.5">{t('pppoe.staticIp')}</label><input type="text" value={formData.ipAddress} onChange={(e) => setFormData({ ...formData, ipAddress: e.target.value })} placeholder="10.10.10.2" className="input-premium w-full" /></div>
+                <div><label className="block text-xs font-medium mb-1.5">{t('pppoe.expiryDate')}</label><input type="date" value={formData.expiredAt} onChange={(e) => setFormData({ ...formData, expiredAt: e.target.value })} className="input-premium w-full" /></div>
               </div>
-              <div className="flex justify-end gap-2 pt-3 border-t dark:border-gray-800">
-                <button type="button" onClick={() => { setIsDialogOpen(false); setEditingUser(null); resetForm(); }} className="px-3 py-1.5 text-xs border dark:border-gray-700 rounded hover:bg-gray-100 dark:hover:bg-gray-800">{t('common.cancel')}</button>
-                <button type="submit" className="px-3 py-1.5 text-xs bg-primary text-white rounded hover:bg-primary/90">{t('common.create')}</button>
+              <div className="flex justify-end gap-2.5 pt-4 border-t border-gray-100 dark:border-zinc-800">
+                <button type="button" onClick={() => { setIsDialogOpen(false); setEditingUser(null); resetForm(); }} className="btn-premium border border-gray-200 dark:border-zinc-700 text-gray-600 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-800">{t('common.cancel')}</button>
+                <button type="submit" className="btn-premium bg-primary text-white hover:bg-primary/90">{t('common.create')}</button>
               </div>
             </form>
           </div>
@@ -697,24 +697,24 @@ export default function PppoeUsersPage() {
 
       {/* Import Dialog */}
       {isImportDialogOpen && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white dark:bg-gray-900 rounded-lg shadow-xl max-w-md w-full p-4 max-h-[90vh] overflow-y-auto">
-            <h2 className="text-sm font-semibold mb-1">{t('pppoe.importCsv')}</h2>
-            <p className="text-[10px] text-gray-500 mb-4">{t('common.upload')} CSV</p>
-            <div className="space-y-3">
-              <div><label className="block text-[10px] font-medium mb-1">{t('pppoe.selectFile')} *</label><input type="file" accept=".csv" onChange={(e) => setImportFile(e.target.files?.[0] || null)} className="w-full px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800" /></div>
-              <div><label className="block text-[10px] font-medium mb-1">{t('pppoe.profile')} *</label><select value={importProfileId} onChange={(e) => setImportProfileId(e.target.value)} className="w-full px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800"><option value="">{t('common.select')}</option>{profiles.map((p) => <option key={p.id} value={p.id}>{p.name} - Rp {p.price.toLocaleString('id-ID')}</option>)}</select></div>
-              <div><label className="block text-[10px] font-medium mb-1">NAS</label><select value={importRouterId} onChange={(e) => setImportRouterId(e.target.value)} className="w-full px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800"><option value="">{t('pppoe.global')}</option>{routers.map((r) => <option key={r.id} value={r.id}>{r.name}</option>)}</select></div>
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+          <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl max-w-md w-full p-6 max-h-[90vh] overflow-y-auto">
+            <h2 className="text-base font-semibold mb-0.5">{t('pppoe.importCsv')}</h2>
+            <p className="text-xs text-gray-500 dark:text-zinc-400 mb-5">{t('common.upload')} CSV</p>
+            <div className="space-y-5">
+              <div><label className="block text-xs font-medium mb-1.5">{t('pppoe.selectFile')} *</label><input type="file" accept=".csv" onChange={(e) => setImportFile(e.target.files?.[0] || null)} className="input-premium w-full" /></div>
+              <div><label className="block text-xs font-medium mb-1.5">{t('pppoe.profile')} *</label><select value={importProfileId} onChange={(e) => setImportProfileId(e.target.value)} className="input-premium w-full"><option value="">{t('common.select')}</option>{profiles.map((p) => <option key={p.id} value={p.id}>{p.name} - Rp {p.price.toLocaleString('id-ID')}</option>)}</select></div>
+              <div><label className="block text-xs font-medium mb-1.5">NAS</label><select value={importRouterId} onChange={(e) => setImportRouterId(e.target.value)} className="input-premium w-full"><option value="">{t('pppoe.global')}</option>{routers.map((r) => <option key={r.id} value={r.id}>{r.name}</option>)}</select></div>
               {importResult && (
-                <div className="p-2 border rounded bg-gray-50 dark:bg-gray-800 text-xs">
-                  <div className="flex items-center gap-1 text-green-600"><CheckCircle2 className="h-3 w-3" />{importResult.success} {t('common.create')}</div>
-                  {importResult.failed > 0 && <div className="text-red-600 mt-1">{importResult.failed} {t('notifications.failed')}</div>}
+                <div className="p-3 rounded-xl bg-gray-50 dark:bg-zinc-800 text-sm">
+                  <div className="flex items-center gap-1.5 text-green-600"><CheckCircle2 className="h-4 w-4" />{importResult.success} {t('common.create')}</div>
+                  {importResult.failed > 0 && <div className="text-red-600 mt-1.5">{importResult.failed} {t('notifications.failed')}</div>}
                 </div>
               )}
             </div>
-            <div className="flex justify-end gap-2 mt-4">
-              <button onClick={() => { setIsImportDialogOpen(false); setImportFile(null); setImportProfileId(''); setImportRouterId(''); setImportResult(null); }} className="px-3 py-1.5 text-xs border dark:border-gray-700 rounded">{t('common.cancel')}</button>
-              <button onClick={handleImport} disabled={!importFile || !importProfileId || importing} className="px-3 py-1.5 text-xs bg-primary text-white rounded disabled:opacity-50">{importing ? t('notifications.processing') : t('common.import')}</button>
+            <div className="flex justify-end gap-2.5 mt-5">
+              <button onClick={() => { setIsImportDialogOpen(false); setImportFile(null); setImportProfileId(''); setImportRouterId(''); setImportResult(null); }} className="btn-premium border border-gray-200 dark:border-zinc-700 text-gray-600 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-800">{t('common.cancel')}</button>
+              <button onClick={handleImport} disabled={!importFile || !importProfileId || importing} className="btn-premium bg-primary text-white hover:bg-primary/90 disabled:opacity-50">{importing ? t('notifications.processing') : t('common.import')}</button>
             </div>
           </div>
         </div>
@@ -725,13 +725,13 @@ export default function PppoeUsersPage() {
 
       {/* Delete Dialog */}
       {deleteUserId && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white dark:bg-gray-900 rounded-lg shadow-xl max-w-sm w-full p-4">
-            <h2 className="text-sm font-semibold mb-1">{t('pppoe.deleteUser')}</h2>
-            <p className="text-xs text-gray-500 mb-4">{t('pppoe.deleteConfirm')}</p>
-            <div className="flex justify-end gap-2">
-              <button onClick={() => setDeleteUserId(null)} className="px-3 py-1.5 text-xs border dark:border-gray-700 rounded">{t('common.cancel')}</button>
-              <button onClick={handleDelete} className="px-3 py-1.5 text-xs bg-red-600 text-white rounded">{t('common.delete')}</button>
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+          <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl max-w-sm w-full p-6">
+            <h2 className="text-base font-semibold mb-1">{t('pppoe.deleteUser')}</h2>
+            <p className="text-sm text-gray-500 dark:text-zinc-400 mb-5">{t('pppoe.deleteConfirm')}</p>
+            <div className="flex justify-end gap-2.5">
+              <button onClick={() => setDeleteUserId(null)} className="btn-premium border border-gray-200 dark:border-zinc-700 text-gray-600 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-800">{t('common.cancel')}</button>
+              <button onClick={handleDelete} className="btn-premium bg-red-600 text-white hover:bg-red-700">{t('common.delete')}</button>
             </div>
           </div>
         </div>
@@ -739,36 +739,36 @@ export default function PppoeUsersPage() {
 
       {/* Sync from MikroTik Dialog */}
       {isSyncDialogOpen && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white dark:bg-gray-900 rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col">
-            <div className="px-4 py-3 border-b dark:border-gray-800">
-              <h2 className="text-sm font-semibold flex items-center gap-2">
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+          <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+            <div className="px-6 py-4 border-b border-gray-100 dark:border-zinc-800">
+              <h2 className="text-base font-semibold flex items-center gap-2">
                 <RefreshCcw className="h-4 w-4 text-blue-600" />
                 Sync PPPoE dari MikroTik
               </h2>
-              <p className="text-[10px] text-gray-500">Import PPPoE secrets dari MikroTik ke database RADIUS</p>
+              <p className="text-xs text-gray-500 dark:text-zinc-400 mt-0.5">Import PPPoE secrets dari MikroTik ke database RADIUS</p>
             </div>
             
-            <div className="p-4 space-y-3 overflow-y-auto flex-1">
+            <div className="p-6 space-y-5 overflow-y-auto flex-1">
               {/* Step 1: Select Router */}
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-[10px] font-medium mb-1">Pilih Router *</label>
+                  <label className="block text-xs font-medium mb-1.5">Pilih Router *</label>
                   <select 
                     value={syncRouterId} 
                     onChange={(e) => { setSyncRouterId(e.target.value); setSyncPreview(null); setSyncResult(null); }}
-                    className="w-full px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800"
+                    className="input-premium w-full"
                   >
                     <option value="">-- Pilih Router --</option>
                     {routers.map((r) => <option key={r.id} value={r.id}>{r.name} ({r.ipAddress})</option>)}
                   </select>
                 </div>
                 <div>
-                  <label className="block text-[10px] font-medium mb-1">Profile Tujuan *</label>
+                  <label className="block text-xs font-medium mb-1.5">Profile Tujuan *</label>
                   <select 
                     value={syncProfileId} 
                     onChange={(e) => setSyncProfileId(e.target.value)}
-                    className="w-full px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800"
+                    className="input-premium w-full"
                   >
                     <option value="">-- Pilih Profile --</option>
                     {profiles.map((p) => <option key={p.id} value={p.id}>{p.name} - Rp {p.price.toLocaleString('id-ID')}</option>)}
@@ -779,16 +779,16 @@ export default function PppoeUsersPage() {
               <button 
                 onClick={handleSyncPreview} 
                 disabled={!syncRouterId || syncLoading}
-                className="w-full px-3 py-2 text-xs bg-blue-600 hover:bg-blue-700 text-white rounded disabled:opacity-50 flex items-center justify-center gap-2"
+                className="btn-premium w-full bg-blue-600 hover:bg-blue-700 text-white disabled:opacity-50 justify-center"
               >
                 {syncLoading ? (
                   <>
-                    <RefreshCcw className="h-3 w-3 animate-spin" />
+                    <RefreshCcw className="h-3.5 w-3.5 animate-spin" />
                     Mengambil data dari MikroTik...
                   </>
                 ) : (
                   <>
-                    <Search className="h-3 w-3" />
+                    <Search className="h-3.5 w-3.5" />
                     Preview PPPoE Secrets
                   </>
                 )}
@@ -809,13 +809,13 @@ export default function PppoeUsersPage() {
                     <div className="flex gap-2">
                       <button 
                         onClick={() => toggleSyncSelectAll(true)} 
-                        className="text-[10px] text-blue-600 hover:underline"
+                        className="text-xs text-blue-600 hover:underline"
                       >
                         Pilih Semua Baru
                       </button>
                       <button 
                         onClick={() => toggleSyncSelectAll(false)} 
-                        className="text-[10px] text-gray-500 hover:underline"
+                        className="text-xs text-gray-500 dark:text-zinc-400 hover:underline"
                       >
                         Batal Pilih
                       </button>
@@ -877,13 +877,13 @@ export default function PppoeUsersPage() {
                 <div className={`p-3 rounded-lg border ${syncResult.stats?.failed > 0 ? 'bg-yellow-50 border-yellow-200 dark:bg-yellow-900/20' : 'bg-green-50 border-green-200 dark:bg-green-900/20'}`}>
                   <div className="text-xs space-y-1">
                     <div className="font-medium">{syncResult.message}</div>
-                    <div className="flex gap-4 text-[10px]">
+                    <div className="flex gap-4 text-xs">
                       <span className="text-green-600">✓ Imported: {syncResult.stats?.imported}</span>
                       <span className="text-yellow-600">⊘ Skipped: {syncResult.stats?.skipped}</span>
                       <span className="text-red-600">✗ Failed: {syncResult.stats?.failed}</span>
                     </div>
                     {syncResult.errors?.length > 0 && (
-                      <div className="mt-2 text-[10px] text-red-600">
+                      <div className="mt-2 text-xs text-red-600">
                         Errors: {syncResult.errors.map((e: any) => `${e.username}: ${e.error}`).join(', ')}
                       </div>
                     )}
@@ -892,7 +892,7 @@ export default function PppoeUsersPage() {
               )}
 
               {/* Info */}
-              <div className="p-2 bg-blue-50 dark:bg-blue-900/20 rounded text-[10px] text-blue-700 dark:text-blue-300">
+              <div className="p-2 bg-blue-50 dark:bg-blue-900/20 rounded text-xs text-blue-700 dark:text-blue-300">
                 <p className="font-medium mb-1">ℹ️ Informasi:</p>
                 <ul className="list-disc list-inside space-y-0.5">
                   <li>User yang sudah ada di database akan di-skip (tidak akan duplikat)</li>
@@ -907,7 +907,7 @@ export default function PppoeUsersPage() {
             <div className="px-4 py-3 border-t dark:border-gray-800 flex justify-end gap-2">
               <button 
                 onClick={() => { setIsSyncDialogOpen(false); setSyncPreview(null); setSyncResult(null); }}
-                className="px-3 py-1.5 text-xs border dark:border-gray-700 rounded hover:bg-gray-50 dark:hover:bg-gray-800"
+                className="btn-premium border border-gray-200 dark:border-zinc-700 text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800"
               >
                 {t('common.cancel')}
               </button>
@@ -935,14 +935,14 @@ export default function PppoeUsersPage() {
 
       {/* Assign Modem Dialog */}
       {isAssignModalOpen && userToAssign && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white dark:bg-gray-900 rounded-lg shadow-xl max-w-lg w-full max-h-[90vh] overflow-hidden flex flex-col">
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+          <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-hidden flex flex-col">
             <div className="px-4 py-3 border-b dark:border-gray-800">
               <h2 className="text-sm font-semibold flex items-center gap-2">
                 <Router className="h-4 w-4 text-blue-600" />
                 Assign Modem untuk {userToAssign.username}
               </h2>
-              <p className="text-[10px] text-gray-500">Auto Provisioning Modem via TR-069</p>
+              <p className="text-xs text-gray-500 dark:text-zinc-400">Auto Provisioning Modem via TR-069</p>
             </div>
             
             <div className="p-4 space-y-3 overflow-y-auto flex-1">
@@ -971,14 +971,14 @@ export default function PppoeUsersPage() {
                   ) : (
                     <>
                       <div>
-                        <label className="block text-[10px] font-medium mb-1">Pilih Modem (GenieACS) *</label>
+                        <label className="block text-xs font-medium mb-1.5">Pilih Modem (GenieACS) *</label>
                         <select 
                           value={assignFormData.deviceId} 
                           onChange={(e: any) => {
                             const dev = unassignedDevices.find((d: any) => d._id === e.target.value);
                             setAssignFormData({ ...assignFormData, deviceId: e.target.value, macAddress: dev?.mac || dev?.summary?.mac || '' });
                           }}
-                          className="w-full px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800"
+                          className="w-full input-premium"
                         >
                           <option value="">-- Pilih Modem Tersedia --</option>
                           {unassignedDevices.map((d: any) => (
@@ -988,7 +988,7 @@ export default function PppoeUsersPage() {
                           ))}
                         </select>
                         {unassignedDevices.length === 0 && (
-                          <p className="text-[10px] text-red-500 mt-1">Tidak ada modem baru/tersedia di ACS.</p>
+                          <p className="text-xs text-red-500 mt-1">Tidak ada modem baru/tersedia di ACS.</p>
                         )}
                       </div>
 
@@ -1004,30 +1004,30 @@ export default function PppoeUsersPage() {
                         </label>
 
                         {assignFormData.saveWifi && (
-                          <div className="grid grid-cols-2 gap-3 pl-6">
+                          <div className="grid grid-cols-2 gap-4 pl-6">
                             <div>
-                              <label className="block text-[10px] text-gray-500 mb-1">WLAN SSID</label>
+                              <label className="block text-xs text-gray-500 dark:text-zinc-400 mb-1">WLAN SSID</label>
                               <input 
                                 type="text" 
                                 value={assignFormData.wifiSsid} 
                                 onChange={(e: any) => setAssignFormData({...assignFormData, wifiSsid: e.target.value})}
-                                className="w-full px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800"
+                                className="w-full input-premium"
                               />
                             </div>
                             <div>
-                              <label className="block text-[10px] text-gray-500 mb-1">Wi-Fi Password</label>
+                              <label className="block text-xs text-gray-500 dark:text-zinc-400 mb-1">Wi-Fi Password</label>
                               <input 
                                 type="text" 
                                 value={assignFormData.wifiPassword} 
                                 onChange={(e: any) => setAssignFormData({...assignFormData, wifiPassword: e.target.value})}
-                                className="w-full px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800"
+                                className="w-full input-premium"
                               />
                             </div>
                           </div>
                         )}
                       </div>
 
-                      <div className="p-2 bg-blue-50 dark:bg-blue-900/20 rounded text-[10px] text-blue-700 dark:text-blue-300 mt-2">
+                      <div className="p-2 bg-blue-50 dark:bg-blue-900/20 rounded text-xs text-blue-700 dark:text-blue-300 mt-2">
                         <p className="font-medium mb-1">ℹ️ Informasi Provisioning:</p>
                         <ul className="list-disc list-inside space-y-0.5 ml-1">
                           <li>PPPoE Username: <span className="font-mono">{userToAssign.username}</span></li>
@@ -1043,11 +1043,11 @@ export default function PppoeUsersPage() {
               {assignTab === 'olt' && (
                 <div className="space-y-3">
                   <div>
-                    <label className="block text-[10px] font-medium mb-1">Pilih OLT *</label>
+                    <label className="block text-xs font-medium mb-1.5">Pilih OLT *</label>
                     <select 
                       value={selectedOltId} 
                       onChange={(e: any) => handleFetchUncfgOnus(e.target.value)}
-                      className="w-full px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800"
+                      className="w-full input-premium"
                     >
                       <option value="">-- Pilih OLT ZTE --</option>
                       {olts.map((o: any) => (
@@ -1057,14 +1057,14 @@ export default function PppoeUsersPage() {
                       ))}
                     </select>
                     {olts.length === 0 && (
-                      <p className="text-[10px] text-red-500 mt-1">Belum ada OLT ZTE terdaftar.</p>
+                      <p className="text-xs text-red-500 mt-1">Belum ada OLT ZTE terdaftar.</p>
                     )}
                   </div>
 
                   {selectedOltId && (
-                    <div className="border border-gray-200 dark:border-gray-800 rounded p-2">
+                    <div className="card-soft p-2">
                       <div className="flex items-center justify-between mb-2">
-                        <label className="text-[10px] font-medium text-gray-500">Unconfigured ONUs</label>
+                        <label className="text-xs font-medium text-gray-500">Unconfigured ONUs</label>
                         <button 
                           onClick={() => handleFetchUncfgOnus(selectedOltId, true)}
                           className="p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded text-gray-500"
@@ -1091,7 +1091,7 @@ export default function PppoeUsersPage() {
                               />
                               <div className="flex-1">
                                 <p className="text-xs font-medium font-mono">{onu.sn}</p>
-                                <p className="text-[10px] text-gray-500">Board: {onu.board} | Port: {onu.port}</p>
+                                <p className="text-xs text-gray-500 dark:text-zinc-400">Board: {onu.board} | Port: {onu.port}</p>
                               </div>
                             </label>
                           ))}
@@ -1103,28 +1103,28 @@ export default function PppoeUsersPage() {
                   {oltAssignData.sn && (
                     <div className="space-y-3 mt-3 border-t dark:border-gray-800 pt-3">
                       <div className="flex items-center justify-between bg-white dark:bg-gray-800 p-1.5 rounded border border-gray-200 dark:border-gray-700">
-                        <span className="text-[10px] font-bold text-gray-700 dark:text-gray-300">Mode:</span>
+                        <span className="text-xs font-bold text-gray-700 dark:text-gray-300">Mode:</span>
                         <div className="flex bg-gray-100 dark:bg-gray-900 p-0.5 rounded">
                           <button
                             type="button"
                             onClick={() => setOltAssignData({...oltAssignData, mode: 'pppoe'})}
-                            className={`px-3 py-1 text-[10px] font-medium rounded ${oltAssignData.mode === 'pppoe' ? 'bg-teal-600 text-white' : 'text-gray-500 hover:text-gray-700'}`}
+                            className={`px-3 py-1 text-xs font-medium rounded ${oltAssignData.mode === 'pppoe' ? 'bg-teal-600 text-white' : 'text-gray-500 hover:text-gray-700'}`}
                           >
                             PPPoE Router
                           </button>
                           <button
                             type="button"
                             onClick={() => setOltAssignData({...oltAssignData, mode: 'bridge'})}
-                            className={`px-3 py-1 text-[10px] font-medium rounded ${oltAssignData.mode === 'bridge' ? 'bg-teal-600 text-white' : 'text-gray-500 hover:text-gray-700'}`}
+                            className={`px-3 py-1 text-xs font-medium rounded ${oltAssignData.mode === 'bridge' ? 'bg-teal-600 text-white' : 'text-gray-500 hover:text-gray-700'}`}
                           >
                             Bridge
                           </button>
                         </div>
                       </div>
 
-                      <div className="grid grid-cols-1 gap-3">
+                      <div className="grid grid-cols-1 gap-4">
                         <div>
-                          <label className="block text-[10px] font-medium mb-1">ONU Type</label>
+                          <label className="block text-xs font-medium mb-1.5">ONU Type</label>
                           <select
                             value={oltAssignData.onuType || (onuTypes.length > 0 ? onuTypes[0] : '')}
                             onChange={(e) => setOltAssignData({...oltAssignData, onuType: e.target.value})}
@@ -1138,7 +1138,7 @@ export default function PppoeUsersPage() {
 
                       {oltAssignData.mode === 'pppoe' && (
                         <div className="p-2 bg-blue-50 dark:bg-blue-900/20 rounded border border-blue-100 dark:border-blue-800">
-                          <p className="text-[10px] font-semibold text-blue-800 dark:text-blue-300 mb-2">Automated PPPoE Push:</p>
+                          <p className="text-xs font-semibold text-blue-800 dark:text-blue-300 mb-2">Automated PPPoE Push:</p>
                           <div className="grid grid-cols-2 gap-2">
                             <div>
                                <p className="text-[9px] text-gray-500">Username:</p>
@@ -1164,7 +1164,7 @@ export default function PppoeUsersPage() {
             <div className="px-4 py-3 border-t dark:border-gray-800 flex justify-end gap-2">
               <button 
                 onClick={() => { setIsAssignModalOpen(false); setUserToAssign(null); }}
-                className="px-3 py-1.5 text-xs border dark:border-gray-700 rounded hover:bg-gray-50 dark:hover:bg-gray-800"
+                className="btn-premium border border-gray-200 dark:border-zinc-700 text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800"
               >
                 {t('common.cancel')}
               </button>

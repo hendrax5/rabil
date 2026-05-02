@@ -131,14 +131,14 @@ export default function GenieACSSettingsPage() {
   }
 
   return (
-    <div className="space-y-4 max-w-2xl">
+    <div className="space-y-5 max-w-2xl">
       {/* Header */}
       <div className="bg-gradient-to-r from-teal-600 to-cyan-600 rounded-lg p-4 text-white">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4">
             <Server className="w-5 h-5" />
             <div>
-              <h1 className="text-lg font-semibold">GenieACS Settings</h1>
+              <h1 className="page-title">GenieACS Settings</h1>
               <p className="text-sm text-teal-100">Konfigurasi koneksi ke server GenieACS TR-069</p>
             </div>
           </div>
@@ -150,9 +150,9 @@ export default function GenieACSSettingsPage() {
 
       {/* Quick Stats */}
       {settings.isActive && (
-        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-4">
+        <div className="card-soft p-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-4">
               <div className="p-2 rounded-lg bg-teal-100 dark:bg-teal-900/30">
                 <Server className="w-4 h-4 text-teal-600" />
               </div>
@@ -173,13 +173,13 @@ export default function GenieACSSettingsPage() {
       )}
 
       {/* Settings Form */}
-      <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 overflow-hidden">
+      <div className="card-soft overflow-hidden">
         <div className="p-3 border-b border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-800">
           <h2 className="text-sm font-semibold text-gray-800 dark:text-gray-200">Konfigurasi Server</h2>
           <p className="text-xs text-gray-500 mt-0.5">Masukkan kredensial untuk terhubung ke GenieACS NBI API</p>
         </div>
 
-        <form onSubmit={handleSaveSettings} className="p-4 space-y-4">
+        <form onSubmit={handleSaveSettings} className="p-4 space-y-5">
           {/* Status Info */}
           {settings.hasPassword && (
             <div className="flex items-center gap-2 p-3 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
@@ -266,7 +266,7 @@ export default function GenieACSSettingsPage() {
       </div>
 
       {/* Help Section */}
-      <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-4">
+      <div className="card-soft p-4">
         <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-200 mb-2">Bantuan</h3>
         <ul className="text-xs text-gray-600 dark:text-gray-400 space-y-1.5">
           <li className="flex items-start gap-2">

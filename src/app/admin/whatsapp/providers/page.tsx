@@ -338,7 +338,7 @@ export default function WhatsAppProvidersPage() {
       <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950">
         <div className="flex flex-col items-center gap-2">
           <div className="w-6 h-6 border-2 border-teal-500 border-t-transparent rounded-full animate-spin" />
-          <span className="text-xs text-gray-500 dark:text-gray-400">Loading...</span>
+          <span className="page-subtitle">Loading...</span>
         </div>
       </div>
     );
@@ -351,7 +351,7 @@ export default function WhatsAppProvidersPage() {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
             <h1 className="text-base font-semibold text-gray-900 dark:text-white">{t('whatsapp.providersTitle')}</h1>
-            <p className="text-[10px] text-gray-500 dark:text-gray-400">{t('whatsapp.providersSubtitle')}</p>
+            <p className="text-xs text-gray-500 dark:text-zinc-400 dark:text-gray-400">{t('whatsapp.providersSubtitle')}</p>
           </div>
           <button
             onClick={() => setShowForm(true)}
@@ -365,22 +365,22 @@ export default function WhatsAppProvidersPage() {
         </div>
 
         {/* Provider Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {providers.map((provider) => (
             <div 
               key={provider.id} 
-              className={`bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-3 space-y-2.5 ${!provider.isActive ? 'opacity-60' : ''}`}
+              className={`card-soft p-5 space-y-2.5 ${!provider.isActive ? 'opacity-60' : ''}`}
             >
               {/* Header */}
               <div className="flex items-start justify-between">
                 <div>
                   <h3 className="text-sm font-semibold text-gray-900 dark:text-white">{provider.name}</h3>
                   <div className="flex gap-1.5 items-center mt-1 flex-wrap">
-                    <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-medium ${getTypeColor(provider.type)}`}>
+                    <span className={`inline-flex px-1.5 py-0.5 rounded text-xs font-medium ${getTypeColor(provider.type)}`}>
                       {provider.type.toUpperCase()}
                     </span>
                     {providerStatuses[provider.id] && (
-                      <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-medium ${
+                      <span className={`inline-flex px-1.5 py-0.5 rounded text-xs font-medium ${
                         providerStatuses[provider.id].connected 
                           ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' 
                           : 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
@@ -411,18 +411,18 @@ export default function WhatsAppProvidersPage() {
               <div className="space-y-1.5 text-xs">
                 <div>
                   <span className="text-gray-500 dark:text-gray-400">{t('whatsapp.baseUrl')}:</span>
-                  <p className="font-mono text-[10px] text-gray-700 dark:text-gray-300 break-all">{provider.apiUrl}</p>
+                  <p className="font-mono text-xs text-gray-700 dark:text-gray-300 break-all">{provider.apiUrl}</p>
                 </div>
                 {provider.senderNumber && (
                   <div>
                     <span className="text-gray-500 dark:text-gray-400">{t('whatsapp.senderNumber')}:</span>
-                    <span className="font-mono text-[10px] text-gray-700 dark:text-gray-300 ml-1">{provider.senderNumber}</span>
+                    <span className="font-mono text-xs text-gray-700 dark:text-gray-300 ml-1">{provider.senderNumber}</span>
                   </div>
                 )}
                 {providerStatuses[provider.id]?.phone && (
                   <div>
                     <span className="text-gray-500 dark:text-gray-400">{t('whatsapp.connected')}:</span>
-                    <span className="font-mono text-[10px] text-green-600 dark:text-green-400 ml-1">{providerStatuses[provider.id].phone}</span>
+                    <span className="font-mono text-xs text-green-600 dark:text-green-400 ml-1">{providerStatuses[provider.id].phone}</span>
                   </div>
                 )}
                 <div>
@@ -430,7 +430,7 @@ export default function WhatsAppProvidersPage() {
                   <span className="font-semibold text-gray-900 dark:text-white ml-1">{provider.priority}</span>
                 </div>
                 {provider.description && (
-                  <p className="text-[10px] text-gray-500 dark:text-gray-400">{provider.description}</p>
+                  <p className="text-xs text-gray-500 dark:text-zinc-400 dark:text-gray-400">{provider.description}</p>
                 )}
               </div>
               
@@ -440,7 +440,7 @@ export default function WhatsAppProvidersPage() {
                   {(provider.type === 'waha' || provider.type === 'mpwa' || provider.type === 'gowa' || provider.type === 'BAILEYS_LOCAL') && (
                     <button
                       onClick={() => showQrCode(provider)}
-                      className="flex-1 h-7 bg-blue-600 hover:bg-blue-700 text-white text-[10px] font-medium rounded flex items-center justify-center gap-1 transition-colors"
+                      className="flex-1 h-7 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded flex items-center justify-center gap-1 transition-colors"
                     >
                       <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
@@ -450,7 +450,7 @@ export default function WhatsAppProvidersPage() {
                   )}
                   <button
                     onClick={() => editProvider(provider)}
-                    className="flex-1 h-7 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 text-[10px] font-medium rounded flex items-center justify-center gap-1 transition-colors"
+                    className="flex-1 h-7 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 text-xs font-medium rounded flex items-center justify-center gap-1 transition-colors"
                   >
                     <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -459,7 +459,7 @@ export default function WhatsAppProvidersPage() {
                   </button>
                   <button
                     onClick={() => deleteProvider(provider.id)}
-                    className="h-7 px-2 bg-red-600 hover:bg-red-700 text-white text-[10px] font-medium rounded transition-colors"
+                    className="h-7 px-2 bg-red-600 hover:bg-red-700 text-white text-xs font-medium rounded transition-colors"
                     title="Delete"
                   >
                     <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -471,7 +471,7 @@ export default function WhatsAppProvidersPage() {
                   <button
                     onClick={() => restartSession(provider)}
                     disabled={restartingProvider === provider.id}
-                    className="w-full h-7 bg-yellow-500 hover:bg-yellow-600 text-white text-[10px] font-medium rounded flex items-center justify-center gap-1 transition-colors disabled:opacity-50"
+                    className="w-full h-7 bg-yellow-500 hover:bg-yellow-600 text-white text-xs font-medium rounded flex items-center justify-center gap-1 transition-colors disabled:opacity-50"
                   >
                     {restartingProvider === provider.id ? (
                       <>
@@ -497,11 +497,11 @@ export default function WhatsAppProvidersPage() {
 
         {/* Empty State */}
         {providers.length === 0 && !showForm && (
-          <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-8 text-center">
+          <div className="card-soft p-8 text-center">
             <svg className="w-12 h-12 mx-auto text-gray-300 dark:text-gray-600 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
             </svg>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mb-3">{t('whatsapp.noProviders')}</p>
+            <p className="page-subtitle mb-3">{t('whatsapp.noProviders')}</p>
             <button
               onClick={() => setShowForm(true)}
               className="h-7 px-3 bg-teal-600 hover:bg-teal-700 text-white text-xs font-medium rounded-md transition-colors inline-flex items-center gap-1.5"
@@ -518,7 +518,7 @@ export default function WhatsAppProvidersPage() {
       {/* Form Modal */}
       {showForm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 bg-black/50 backdrop-blur-sm" onClick={() => resetForm()}>
-          <div className="bg-white dark:bg-gray-900 rounded-lg shadow-xl w-full max-w-lg max-h-[90vh] overflow-hidden" onClick={(e) => e.stopPropagation()}>
+          <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-hidden" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between px-4 py-2.5 border-b border-gray-200 dark:border-gray-800">
               <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
                 {editingProvider ? t('whatsapp.editProvider') : t('whatsapp.addProvider')}
@@ -531,9 +531,9 @@ export default function WhatsAppProvidersPage() {
             </div>
             <form onSubmit={handleSubmit} className="overflow-y-auto max-h-[calc(90vh-100px)]">
               <div className="p-4 space-y-3">
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-[10px] font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1">{t('whatsapp.providerName')}</label>
+                    <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1">{t('whatsapp.providerName')}</label>
                     <input
                       type="text"
                       value={formData.name}
@@ -544,7 +544,7 @@ export default function WhatsAppProvidersPage() {
                     />
                   </div>
                   <div>
-                    <label className="block text-[10px] font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1">{t('whatsapp.providerType')}</label>
+                    <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1">{t('whatsapp.providerType')}</label>
                     <select
                       value={formData.type}
                       onChange={(e) => {
@@ -567,9 +567,9 @@ export default function WhatsAppProvidersPage() {
                   </div>
                 </div>
                 
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-[10px] font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1">{t('whatsapp.baseUrl')}</label>
+                    <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1">{t('whatsapp.baseUrl')}</label>
                     <input
                       type="text"
                       value={formData.type === 'BAILEYS_LOCAL' ? 'http://wa-engine:3006' : formData.apiUrl}
@@ -581,7 +581,7 @@ export default function WhatsAppProvidersPage() {
                     />
                   </div>
                   <div>
-                    <label className="block text-[10px] font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1">
+                    <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1">
                       {t('whatsapp.apiKey')} {(formData.type === 'mpwa' || formData.type === 'gowa') && '*'}
                     </label>
                     <input
@@ -601,7 +601,7 @@ export default function WhatsAppProvidersPage() {
                 
                 {formData.type === 'mpwa' && (
                   <div>
-                    <label className="block text-[10px] font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1">{t('whatsapp.senderNumber')} *</label>
+                    <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1">{t('whatsapp.senderNumber')} *</label>
                     <input
                       type="text"
                       value={formData.senderNumber}
@@ -614,7 +614,7 @@ export default function WhatsAppProvidersPage() {
                 )}
                 
                 <div>
-                  <label className="block text-[10px] font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1">{t('whatsapp.priority')} (0=Primary)</label>
+                  <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1">{t('whatsapp.priority')} (0=Primary)</label>
                   <input
                     type="number"
                     value={formData.priority}
@@ -626,7 +626,7 @@ export default function WhatsAppProvidersPage() {
                 </div>
                 
                 <div>
-                  <label className="block text-[10px] font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1">{t('whatsapp.description')}</label>
+                  <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1">{t('whatsapp.description')}</label>
                   <textarea
                     value={formData.description}
                     onChange={(e) => setFormData({...formData, description: e.target.value})}
@@ -660,7 +660,7 @@ export default function WhatsAppProvidersPage() {
       {/* QR Modal */}
       {showQrModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 bg-black/50 backdrop-blur-sm" onClick={() => setShowQrModal(false)}>
-          <div className="bg-white dark:bg-gray-900 rounded-lg shadow-xl w-full max-w-sm" onClick={(e) => e.stopPropagation()}>
+          <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl w-full max-w-sm" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between px-4 py-2.5 border-b border-gray-200 dark:border-gray-800">
               <h3 className="text-sm font-semibold text-gray-900 dark:text-white">{t('whatsapp.qrCode')} - {qrProvider?.name}</h3>
               <button onClick={() => setShowQrModal(false)} className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 rounded transition-colors">
@@ -673,12 +673,12 @@ export default function WhatsAppProvidersPage() {
               {qrLoading ? (
                 <div className="flex flex-col items-center space-y-2 py-8">
                   <div className="w-8 h-8 border-2 border-teal-500 border-t-transparent rounded-full animate-spin" />
-                  <p className="text-xs text-gray-500 dark:text-gray-400">{t('common.loading')}</p>
+                  <p className="page-subtitle">{t('common.loading')}</p>
                 </div>
               ) : qrImage ? (
                 <>
                   <img src={qrImage} alt="QR Code" className="w-48 h-48 border rounded" />
-                  <p className="text-[10px] text-gray-500 dark:text-gray-400 text-center">
+                  <p className="text-xs text-gray-500 dark:text-zinc-400 dark:text-gray-400 text-center">
                     {t('whatsapp.scanWhatsapp')}
                   </p>
                   <button

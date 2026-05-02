@@ -714,7 +714,7 @@ export default function NetworkMapPage() {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -737,7 +737,7 @@ export default function NetworkMapPage() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3">
+      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
         <div className="bg-red-50 dark:bg-red-900/20 rounded-lg p-3 border border-red-200 dark:border-red-800">
           <div className="flex items-center gap-2 text-red-600 dark:text-red-400">
             <Server className="w-4 h-4" />
@@ -1387,14 +1387,14 @@ export default function NetworkMapPage() {
                         <div className="grid grid-cols-2 gap-2">
                           {customer.profile && (
                             <div>
-                              <p className="text-[10px] text-gray-400 uppercase font-semibold tracking-wider mb-0.5">Paket</p>
+                              <p className="text-xs text-gray-400 uppercase font-semibold tracking-wider mb-0.5">Paket</p>
                               <p className="text-sm font-semibold text-gray-800 leading-tight">{customer.profile.name}</p>
                               <p className="text-xs text-green-600 font-medium">{formatCurrency(customer.profile.price)}</p>
                             </div>
                           )}
                           {customer.router && (
                             <div>
-                              <p className="text-[10px] text-gray-400 uppercase font-semibold tracking-wider mb-0.5">Router</p>
+                              <p className="text-xs text-gray-400 uppercase font-semibold tracking-wider mb-0.5">Router</p>
                               <p className="text-sm font-semibold text-gray-800 leading-tight">{customer.router.shortname || customer.router.nasname}</p>
                             </div>
                           )}
@@ -1404,7 +1404,7 @@ export default function NetworkMapPage() {
                       {/* Network Connection */}
                       {customer.odpAssignment && (
                         <div className="border-t border-gray-100 pt-3 mb-3">
-                          <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider mb-2">Koneksi Jaringan</p>
+                          <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Koneksi Jaringan</p>
                           <div className="flex items-center gap-2 flex-wrap">
                             <span className="inline-flex items-center gap-1 px-2 py-1 bg-green-50 text-green-700 rounded text-xs font-medium border border-green-200">
                               <Radio className="w-3 h-3" />
@@ -1418,7 +1418,7 @@ export default function NetworkMapPage() {
                       {/* Technical Info */}
                       {(customer.ipAddress || customer.macAddress) && (
                         <div className="border-t border-gray-100 pt-3 mb-3">
-                          <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider mb-2">Info Teknis</p>
+                          <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Info Teknis</p>
                           <div className="flex flex-wrap gap-1.5">
                             {customer.ipAddress && (
                               <span className="px-2 py-1 bg-gray-50 text-gray-600 rounded text-[11px] font-mono border border-gray-100">
@@ -1437,12 +1437,12 @@ export default function NetworkMapPage() {
                       {/* Dates */}
                       <div className="border-t border-gray-100 pt-3 mb-3 grid grid-cols-2 gap-2 text-xs">
                         <div>
-                          <p className="text-gray-400 text-[10px] uppercase tracking-wider mb-0.5">Terdaftar</p>
+                          <p className="text-gray-400 text-xs uppercase tracking-wider mb-0.5">Terdaftar</p>
                           <p className="font-medium text-gray-700 text-xs">{formatDate(customer.createdAt)}</p>
                         </div>
                         {customer.expiredAt && (
                           <div>
-                            <p className="text-gray-400 text-[10px] uppercase tracking-wider mb-0.5">Expired</p>
+                            <p className="text-gray-400 text-xs uppercase tracking-wider mb-0.5">Expired</p>
                             <p className="font-medium text-gray-700 text-xs">{formatDate(customer.expiredAt)}</p>
                           </div>
                         )}

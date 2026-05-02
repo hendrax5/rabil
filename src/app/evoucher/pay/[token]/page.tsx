@@ -79,14 +79,14 @@ export default function EVoucherPaymentPage() {
           <div className="space-y-2 mb-4">
             {order.vouchers.map((voucher, idx) => (
               <div key={idx} className="bg-gradient-to-r from-teal-50 to-cyan-50 dark:from-teal-900/20 dark:to-cyan-900/20 rounded-lg p-3 text-center">
-                <p className="text-[10px] text-gray-500 mb-1">Kode Voucher #{idx + 1}</p>
+                <p className="text-xs text-gray-500 mb-1">Kode Voucher #{idx + 1}</p>
                 <p className="text-xl font-bold font-mono text-teal-600 dark:text-teal-400 tracking-wider">{voucher.code}</p>
               </div>
             ))}
           </div>
           <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-3 mb-4">
             <p className="text-xs font-semibold text-gray-900 dark:text-white mb-2">Cara Menggunakan:</p>
-            <div className="space-y-1.5 text-[10px] text-gray-600 dark:text-gray-400">
+            <div className="space-y-1.5 text-xs text-gray-600 dark:text-gray-400">
               <div className="flex items-center gap-1.5"><CheckCircle className="w-3 h-3 text-green-500 flex-shrink-0" /><span>Hubungkan ke WiFi</span></div>
               <div className="flex items-center gap-1.5"><CheckCircle className="w-3 h-3 text-green-500 flex-shrink-0" /><span>Buka browser dan masukkan kode voucher</span></div>
               <div className="flex items-center gap-1.5"><CheckCircle className="w-3 h-3 text-green-500 flex-shrink-0" /><span>Klik login dan nikmati internet!</span></div>
@@ -120,7 +120,7 @@ export default function EVoucherPaymentPage() {
               <div className="space-y-2">{paymentGateways.map((gateway) => (
                 <button key={gateway.id} onClick={() => handlePayment(gateway.provider)} disabled={processing} className="w-full flex items-center justify-between p-3 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-teal-500 dark:hover:border-teal-500 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-all disabled:opacity-50">
                   <div className="flex items-center gap-2.5"><div className="w-8 h-8 bg-gradient-to-br from-teal-500 to-cyan-500 rounded-lg flex items-center justify-center"><CreditCard className="w-4 h-4 text-white" /></div><span className="text-xs font-semibold text-gray-900 dark:text-white">{gateway.name}</span></div>
-                  {processing ? <Loader2 className="w-4 h-4 animate-spin text-gray-400" /> : <span className="text-[10px] text-gray-500">Bayar →</span>}
+                  {processing ? <Loader2 className="w-4 h-4 animate-spin text-gray-400" /> : <span className="text-xs text-gray-500">Bayar →</span>}
                 </button>
               ))}</div>
             )}

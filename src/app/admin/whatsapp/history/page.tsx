@@ -114,7 +114,7 @@ export default function WhatsAppHistoryPage() {
       <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950">
         <div className="flex flex-col items-center gap-2">
           <div className="w-6 h-6 border-2 border-teal-500 border-t-transparent rounded-full animate-spin" />
-          <span className="text-xs text-gray-500 dark:text-gray-400">Loading...</span>
+          <span className="page-subtitle">Loading...</span>
         </div>
       </div>
     );
@@ -131,12 +131,12 @@ export default function WhatsAppHistoryPage() {
             </svg>
             {t('whatsapp.historyTitle')}
           </h1>
-          <p className="text-[10px] text-gray-500 dark:text-gray-400">{t('whatsapp.historySubtitle')}</p>
+          <p className="text-xs text-gray-500 dark:text-zinc-400 dark:text-gray-400">{t('whatsapp.historySubtitle')}</p>
         </div>
 
         {/* Stats Cards */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-          <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-2">
+          <div className="card-soft p-2">
             <div className="flex items-center gap-2">
               <div className="p-1.5 bg-blue-100 dark:bg-blue-900/30 rounded">
                 <svg className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -145,11 +145,11 @@ export default function WhatsAppHistoryPage() {
               </div>
               <div>
                 <p className="text-lg font-bold text-gray-900 dark:text-white">{stats.total}</p>
-                <p className="text-[10px] text-gray-500 dark:text-gray-400">{t('whatsapp.totalMessages')}</p>
+                <p className="text-xs text-gray-500 dark:text-zinc-400 dark:text-gray-400">{t('whatsapp.totalMessages')}</p>
               </div>
             </div>
           </div>
-          <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-2">
+          <div className="card-soft p-2">
             <div className="flex items-center gap-2">
               <div className="p-1.5 bg-green-100 dark:bg-green-900/30 rounded">
                 <svg className="w-3.5 h-3.5 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -158,11 +158,11 @@ export default function WhatsAppHistoryPage() {
               </div>
               <div>
                 <p className="text-lg font-bold text-green-600">{stats.sent}</p>
-                <p className="text-[10px] text-gray-500 dark:text-gray-400">{t('whatsapp.sentToday')}</p>
+                <p className="text-xs text-gray-500 dark:text-zinc-400 dark:text-gray-400">{t('whatsapp.sentToday')}</p>
               </div>
             </div>
           </div>
-          <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-2">
+          <div className="card-soft p-2">
             <div className="flex items-center gap-2">
               <div className="p-1.5 bg-red-100 dark:bg-red-900/30 rounded">
                 <svg className="w-3.5 h-3.5 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -171,11 +171,11 @@ export default function WhatsAppHistoryPage() {
               </div>
               <div>
                 <p className="text-lg font-bold text-red-600">{stats.failed}</p>
-                <p className="text-[10px] text-gray-500 dark:text-gray-400">{t('whatsapp.failedToday')}</p>
+                <p className="text-xs text-gray-500 dark:text-zinc-400 dark:text-gray-400">{t('whatsapp.failedToday')}</p>
               </div>
             </div>
           </div>
-          <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-2">
+          <div className="card-soft p-2">
             <div className="flex items-center gap-2">
               <div className="p-1.5 bg-purple-100 dark:bg-purple-900/30 rounded">
                 <svg className="w-3.5 h-3.5 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -184,21 +184,21 @@ export default function WhatsAppHistoryPage() {
               </div>
               <div>
                 <p className="text-lg font-bold text-purple-600">{stats.last24Hours}</p>
-                <p className="text-[10px] text-gray-500 dark:text-gray-400">{t('whatsapp.activityToday')}</p>
+                <p className="text-xs text-gray-500 dark:text-zinc-400 dark:text-gray-400">{t('whatsapp.activityToday')}</p>
               </div>
             </div>
           </div>
         </div>
 
         {/* Filters */}
-        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-3">
+        <div className="card-soft p-5">
           <div className="flex flex-wrap items-center gap-2">
             <div className="flex gap-1">
               {['all', 'sent', 'failed'].map((status) => (
                 <button
                   key={status}
                   onClick={() => { setStatusFilter(status); setPage(1); }}
-                  className={`h-7 px-2.5 text-[10px] font-medium rounded transition-colors ${
+                  className={`h-7 px-2.5 text-xs font-medium rounded transition-colors ${
                     statusFilter === status
                       ? status === 'sent' ? 'bg-green-600 text-white' : status === 'failed' ? 'bg-red-600 text-white' : 'bg-teal-600 text-white'
                       : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
@@ -230,7 +230,7 @@ export default function WhatsAppHistoryPage() {
         </div>
 
         {/* History Table */}
-        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 overflow-hidden">
+        <div className="card-soft overflow-hidden">
           {loading ? (
             <div className="flex items-center justify-center py-12">
               <div className="w-6 h-6 border-2 border-teal-500 border-t-transparent rounded-full animate-spin" />
@@ -248,12 +248,12 @@ export default function WhatsAppHistoryPage() {
                 <table className="w-full">
                   <thead>
                     <tr className="border-b border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/50">
-                      <th className="px-3 py-2 text-left text-[10px] font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">{t('common.time')}</th>
-                      <th className="px-3 py-2 text-left text-[10px] font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">{t('whatsapp.number')}</th>
-                      <th className="px-3 py-2 text-left text-[10px] font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider hidden md:table-cell">{t('whatsapp.message')}</th>
-                      <th className="px-3 py-2 text-left text-[10px] font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider hidden sm:table-cell">{t('whatsapp.provider')}</th>
-                      <th className="px-3 py-2 text-left text-[10px] font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">{t('common.status')}</th>
-                      <th className="px-3 py-2 text-center text-[10px] font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">{t('common.action')}</th>
+                      <th className="px-3 py-2 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">{t('common.time')}</th>
+                      <th className="px-3 py-2 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">{t('whatsapp.number')}</th>
+                      <th className="px-3 py-2 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider hidden md:table-cell">{t('whatsapp.message')}</th>
+                      <th className="px-3 py-2 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider hidden sm:table-cell">{t('whatsapp.provider')}</th>
+                      <th className="px-3 py-2 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">{t('common.status')}</th>
+                      <th className="px-3 py-2 text-center text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">{t('common.action')}</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
@@ -266,7 +266,7 @@ export default function WhatsAppHistoryPage() {
                               locale: localeId,
                             })}
                           </div>
-                          <div className="text-[10px] text-gray-500 dark:text-gray-400">
+                          <div className="text-xs text-gray-500 dark:text-zinc-400 dark:text-gray-400">
                             {new Date(item.sentAt).toLocaleString('id-ID', { 
                               timeZone: 'Asia/Jakarta',
                               dateStyle: 'short',
@@ -284,23 +284,23 @@ export default function WhatsAppHistoryPage() {
                         </td>
                         <td className="px-3 py-1.5 hidden sm:table-cell">
                           {item.providerName ? (
-                            <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-medium ${getProviderColor(item.providerType)}`}>
+                            <span className={`inline-flex px-1.5 py-0.5 rounded text-xs font-medium ${getProviderColor(item.providerType)}`}>
                               {item.providerName}
                             </span>
                           ) : (
-                            <span className="text-[10px] text-gray-400">-</span>
+                            <span className="text-xs text-gray-400">-</span>
                           )}
                         </td>
                         <td className="px-3 py-1.5">
                           {item.status === 'sent' ? (
-                            <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-[10px] font-medium rounded">
+                            <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs font-medium rounded">
                               <svg className="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                               </svg>
                               {t('whatsapp.sent')}
                             </span>
                           ) : (
-                            <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 text-[10px] font-medium rounded">
+                            <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 text-xs font-medium rounded">
                               <svg className="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                               </svg>
@@ -328,14 +328,14 @@ export default function WhatsAppHistoryPage() {
 
               {/* Pagination */}
               <div className="flex items-center justify-between px-3 py-2 border-t border-gray-200 dark:border-gray-800">
-                <span className="text-[10px] text-gray-500 dark:text-gray-400">
+                <span className="text-xs text-gray-500 dark:text-zinc-400 dark:text-gray-400">
                   {t('whatsapp.page')} {page} {t('table.of')} {totalPages}
                 </span>
                 <div className="flex gap-1">
                   <button
                     onClick={() => setPage(page - 1)}
                     disabled={page === 1 || loading}
-                    className="h-6 px-2 text-[10px] font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors disabled:opacity-50 flex items-center gap-1"
+                    className="h-6 px-2 text-xs font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors disabled:opacity-50 flex items-center gap-1"
                   >
                     <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -345,7 +345,7 @@ export default function WhatsAppHistoryPage() {
                   <button
                     onClick={() => setPage(page + 1)}
                     disabled={page === totalPages || loading}
-                    className="h-6 px-2 text-[10px] font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors disabled:opacity-50 flex items-center gap-1"
+                    className="h-6 px-2 text-xs font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors disabled:opacity-50 flex items-center gap-1"
                   >
                     {t('whatsapp.next')}
                     <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">

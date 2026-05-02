@@ -102,7 +102,7 @@ export default function VPNPage() {
             </CardHeader>
             <CardContent className="pt-6">
               {errorMsg && <div className="text-sm text-red-600 mb-4 bg-red-50 p-2 rounded">{errorMsg}</div>}
-              <form onSubmit={handleCreate} className="space-y-4">
+              <form onSubmit={handleCreate} className="space-y-5">
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Username/Router ID</label>
                   <input type="text" required value={formData.username} onChange={e => setFormData({...formData, username: e.target.value})} className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:ring-indigo-500" placeholder="nas-cabang-1" />

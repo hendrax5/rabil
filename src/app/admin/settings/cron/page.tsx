@@ -211,7 +211,7 @@ export default function CronSettingsPage() {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -243,7 +243,7 @@ export default function CronSettingsPage() {
                   <Clock className="w-4 h-4 text-gray-500" />
                   <h3 className="font-semibold text-sm text-gray-900 dark:text-white">{job.name}</h3>
                 </div>
-                <p className="text-xs text-gray-500 dark:text-gray-400">{job.description}</p>
+                <p className="page-subtitle">{job.description}</p>
               </div>
 
               {/* Stats */}
@@ -312,11 +312,11 @@ export default function CronSettingsPage() {
         <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
           <div className="flex items-center justify-between flex-wrap gap-4">
             <div>
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+              <h2 className="page-title flex items-center gap-2">
                 <Activity className="w-5 h-5" />
                 Execution History
               </h2>
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+              <p className="page-subtitle mt-0.5">
                 Last 50 executions
               </p>
             </div>

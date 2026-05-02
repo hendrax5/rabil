@@ -230,11 +230,11 @@ export default function SendMessagePage() {
         {/* Header */}
         <div>
           <h1 className="text-base font-semibold text-gray-900 dark:text-white">{t('whatsapp.sendTitle')}</h1>
-          <p className="text-[10px] text-gray-500 dark:text-gray-400">{t('whatsapp.sendSubtitle')}</p>
+          <p className="text-xs text-gray-500 dark:text-zinc-400 dark:text-gray-400">{t('whatsapp.sendSubtitle')}</p>
         </div>
 
         {/* Tabs */}
-        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-1 inline-flex gap-1">
+        <div className="card-soft p-1 inline-flex gap-1">
           <button
             onClick={() => setActiveTab('single')}
             className={`px-3 py-1.5 text-xs font-medium rounded transition-colors flex items-center gap-1.5 ${
@@ -261,15 +261,15 @@ export default function SendMessagePage() {
 
         {/* Single Message Tab */}
         {activeTab === 'single' && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="card-soft">
               <div className="px-3 py-2.5 border-b border-gray-200 dark:border-gray-800">
                 <h3 className="text-sm font-semibold text-gray-900 dark:text-white">{t('whatsapp.sendMessage')}</h3>
-                <p className="text-[10px] text-gray-500 dark:text-gray-400">{t('whatsapp.messageViaSent')}</p>
+                <p className="text-xs text-gray-500 dark:text-zinc-400 dark:text-gray-400">{t('whatsapp.messageViaSent')}</p>
               </div>
               <form onSubmit={handleSingleSend} className="p-3 space-y-3">
                 <div>
-                  <label className="block text-[10px] font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1">{t('whatsapp.phoneNumber')}</label>
+                  <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1">{t('whatsapp.phoneNumber')}</label>
                   <input
                     type="text"
                     value={phoneNumber}
@@ -280,7 +280,7 @@ export default function SendMessagePage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1">{t('whatsapp.message')}</label>
+                  <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1">{t('whatsapp.message')}</label>
                   <textarea
                     value={singleMessage}
                     onChange={(e) => setSingleMessage(e.target.value)}
@@ -289,7 +289,7 @@ export default function SendMessagePage() {
                     className="w-full px-2.5 py-2 text-xs bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md focus:ring-1 focus:ring-teal-500 focus:border-teal-500 text-gray-900 dark:text-white resize-none"
                     required
                   />
-                  <p className="text-[10px] text-gray-500 dark:text-gray-400 mt-0.5">{singleMessage.length} {t('whatsapp.characters')}</p>
+                  <p className="text-xs text-gray-500 dark:text-zinc-400 dark:text-gray-400 mt-0.5">{singleMessage.length} {t('whatsapp.characters')}</p>
                 </div>
                 <button
                   type="submit"
@@ -316,10 +316,10 @@ export default function SendMessagePage() {
               </form>
             </div>
 
-            <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800">
+            <div className="card-soft">
               <div className="px-3 py-2.5 border-b border-gray-200 dark:border-gray-800">
                 <h3 className="text-sm font-semibold text-gray-900 dark:text-white">{t('whatsapp.result')}</h3>
-                <p className="text-[10px] text-gray-500 dark:text-gray-400">{t('whatsapp.sendStatus')}</p>
+                <p className="text-xs text-gray-500 dark:text-zinc-400 dark:text-gray-400">{t('whatsapp.sendStatus')}</p>
               </div>
               <div className="p-3 flex items-center justify-center min-h-[200px]">
                 {!result ? (
@@ -330,7 +330,7 @@ export default function SendMessagePage() {
                     <p className="text-xs">{t('whatsapp.sendToSeeResult')}</p>
                   </div>
                 ) : result.success ? (
-                  <div className="flex items-center gap-3 text-green-600">
+                  <div className="flex items-center gap-4 text-green-600">
                     <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
@@ -340,7 +340,7 @@ export default function SendMessagePage() {
                     </div>
                   </div>
                 ) : (
-                  <div className="flex items-center gap-3 text-red-600">
+                  <div className="flex items-center gap-4 text-red-600">
                     <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
@@ -359,11 +359,11 @@ export default function SendMessagePage() {
         {activeTab === 'broadcast' && (
           <div className="space-y-3">
             {/* Filters */}
-            <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800">
+            <div className="card-soft">
               <div className="px-3 py-2.5 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between">
                 <div>
                   <h3 className="text-sm font-semibold text-gray-900 dark:text-white">{t('whatsapp.filterUsers')}</h3>
-                  <p className="text-[10px] text-gray-500 dark:text-gray-400">{t('whatsapp.selectForBroadcast')}</p>
+                  <p className="text-xs text-gray-500 dark:text-zinc-400 dark:text-gray-400">{t('whatsapp.selectForBroadcast')}</p>
                 </div>
                 <span className="px-2 py-1 bg-teal-100 dark:bg-teal-900/30 text-teal-700 dark:text-teal-400 text-xs font-medium rounded">
                   {selectedUsers.size} / {users.length} {t('whatsapp.selected')}
@@ -377,15 +377,15 @@ export default function SendMessagePage() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
-                    <span className="text-[10px] font-semibold text-blue-900 dark:text-blue-100">{t('whatsapp.filterByNetwork')}</span>
+                    <span className="text-xs font-semibold text-blue-900 dark:text-blue-100">{t('whatsapp.filterByNetwork')}</span>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                     <div>
-                      <label className="block text-[10px] font-medium text-gray-600 dark:text-gray-400 mb-0.5">ODC</label>
+                      <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-0.5">ODC</label>
                       <select
                         value={odcFilter || 'all'}
                         onChange={(e) => { setOdcFilter(e.target.value === 'all' ? '' : e.target.value); setOdpFilters([]); }}
-                        className="w-full h-7 px-2 text-[10px] bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded focus:ring-1 focus:ring-teal-500 focus:border-teal-500 text-gray-900 dark:text-white"
+                        className="w-full h-7 px-2 text-xs bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded focus:ring-1 focus:ring-teal-500 focus:border-teal-500 text-gray-900 dark:text-white"
                       >
                         <option value="all">{t('whatsapp.allOdcs')}</option>
                         {filters.odcs.map((odc) => (
@@ -395,7 +395,7 @@ export default function SendMessagePage() {
                     </div>
                     <div>
                       <div className="flex items-center justify-between mb-0.5">
-                        <label className="text-[10px] font-medium text-gray-600 dark:text-gray-400">ODP</label>
+                        <label className="text-xs font-medium text-gray-600 dark:text-gray-400">ODP</label>
                         {odpFilters.length > 0 && (
                           <button onClick={() => setOdpFilters([])} className="text-[9px] text-teal-600 hover:underline">
                             {t('common.clear')} ({odpFilters.length})
@@ -404,7 +404,7 @@ export default function SendMessagePage() {
                       </div>
                       <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded p-1.5 max-h-20 overflow-y-auto">
                         {getFilteredOdps().length === 0 ? (
-                          <p className="text-[10px] text-gray-400 text-center py-1">
+                          <p className="text-xs text-gray-400 text-center py-1">
                             {odcFilter ? t('whatsapp.noOdps') : t('whatsapp.selectOdcFirst')}
                           </p>
                         ) : (
@@ -417,7 +417,7 @@ export default function SendMessagePage() {
                                   onChange={() => toggleOdpFilter(odp.id)}
                                   className="w-3 h-3 rounded border-gray-300 text-teal-600 focus:ring-teal-500"
                                 />
-                                <span className="text-[10px] text-gray-700 dark:text-gray-300">{odp.name}</span>
+                                <span className="text-xs text-gray-700 dark:text-gray-300">{odp.name}</span>
                               </label>
                             ))}
                           </div>
@@ -430,11 +430,11 @@ export default function SendMessagePage() {
                 {/* Other Filters */}
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                   <div>
-                    <label className="block text-[10px] font-medium text-gray-600 dark:text-gray-400 mb-0.5">Status</label>
+                    <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-0.5">Status</label>
                     <select
                       value={statusFilter || 'all'}
                       onChange={(e) => setStatusFilter(e.target.value === 'all' ? '' : e.target.value)}
-                      className="w-full h-7 px-2 text-[10px] bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded focus:ring-1 focus:ring-teal-500 focus:border-teal-500 text-gray-900 dark:text-white"
+                      className="w-full h-7 px-2 text-xs bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded focus:ring-1 focus:ring-teal-500 focus:border-teal-500 text-gray-900 dark:text-white"
                     >
                       <option value="all">{t('whatsapp.allStatus')}</option>
                       {filters.statuses.map((status) => (
@@ -443,11 +443,11 @@ export default function SendMessagePage() {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-[10px] font-medium text-gray-600 dark:text-gray-400 mb-0.5">Profile</label>
+                    <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-0.5">Profile</label>
                     <select
                       value={profileFilter || 'all'}
                       onChange={(e) => setProfileFilter(e.target.value === 'all' ? '' : e.target.value)}
-                      className="w-full h-7 px-2 text-[10px] bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded focus:ring-1 focus:ring-teal-500 focus:border-teal-500 text-gray-900 dark:text-white"
+                      className="w-full h-7 px-2 text-xs bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded focus:ring-1 focus:ring-teal-500 focus:border-teal-500 text-gray-900 dark:text-white"
                     >
                       <option value="all">{t('whatsapp.allProfiles')}</option>
                       {filters.profiles.map((profile) => (
@@ -456,11 +456,11 @@ export default function SendMessagePage() {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-[10px] font-medium text-gray-600 dark:text-gray-400 mb-0.5">Router</label>
+                    <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-0.5">Router</label>
                     <select
                       value={routerFilter || 'all'}
                       onChange={(e) => setRouterFilter(e.target.value === 'all' ? '' : e.target.value)}
-                      className="w-full h-7 px-2 text-[10px] bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded focus:ring-1 focus:ring-teal-500 focus:border-teal-500 text-gray-900 dark:text-white"
+                      className="w-full h-7 px-2 text-xs bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded focus:ring-1 focus:ring-teal-500 focus:border-teal-500 text-gray-900 dark:text-white"
                     >
                       <option value="all">{t('whatsapp.allRouters')}</option>
                       {filters.routers.map((router) => (
@@ -469,13 +469,13 @@ export default function SendMessagePage() {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-[10px] font-medium text-gray-600 dark:text-gray-400 mb-0.5">Address</label>
+                    <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-0.5">Address</label>
                     <input
                       type="text"
                       placeholder={t('whatsapp.searchAddress')}
                       value={addressFilter}
                       onChange={(e) => setAddressFilter(e.target.value)}
-                      className="w-full h-7 px-2 text-[10px] bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded focus:ring-1 focus:ring-teal-500 focus:border-teal-500 text-gray-900 dark:text-white"
+                      className="w-full h-7 px-2 text-xs bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded focus:ring-1 focus:ring-teal-500 focus:border-teal-500 text-gray-900 dark:text-white"
                     />
                   </div>
                 </div>
@@ -510,7 +510,7 @@ export default function SendMessagePage() {
                         <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
                           {users.length === 0 ? (
                             <tr>
-                              <td colSpan={7} className="px-2 py-6 text-center text-[10px] text-gray-400">{t('whatsapp.noUsersFound')}</td>
+                              <td colSpan={7} className="px-2 py-6 text-center text-xs text-gray-400">{t('whatsapp.noUsersFound')}</td>
                             </tr>
                           ) : (
                             users.map((user) => (
@@ -523,10 +523,10 @@ export default function SendMessagePage() {
                                     className="w-3 h-3 rounded border-gray-300 text-teal-600 focus:ring-teal-500"
                                   />
                                 </td>
-                                <td className="px-2 py-1 text-[10px] font-medium text-gray-900 dark:text-white">{user.name}</td>
-                                <td className="px-2 py-1 text-[10px] text-gray-600 dark:text-gray-400 hidden sm:table-cell">{user.username}</td>
-                                <td className="px-2 py-1 text-[10px] text-gray-600 dark:text-gray-400 font-mono">{user.phone || '-'}</td>
-                                <td className="px-2 py-1 text-[10px] text-gray-600 dark:text-gray-400 hidden md:table-cell">{user.profile?.name || '-'}</td>
+                                <td className="px-2 py-1 text-xs font-medium text-gray-900 dark:text-white">{user.name}</td>
+                                <td className="px-2 py-1 text-xs text-gray-600 dark:text-gray-400 hidden sm:table-cell">{user.username}</td>
+                                <td className="px-2 py-1 text-xs text-gray-600 dark:text-gray-400 font-mono">{user.phone || '-'}</td>
+                                <td className="px-2 py-1 text-xs text-gray-600 dark:text-gray-400 hidden md:table-cell">{user.profile?.name || '-'}</td>
                                 <td className="px-2 py-1 hidden lg:table-cell">
                                   {user.odpAssignment ? (
                                     <span className="text-[9px] text-gray-600 dark:text-gray-400">
@@ -555,19 +555,19 @@ export default function SendMessagePage() {
             </div>
 
             {/* Broadcast Message */}
-            <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800">
+            <div className="card-soft">
               <div className="px-3 py-2.5 border-b border-gray-200 dark:border-gray-800">
                 <h3 className="text-sm font-semibold text-gray-900 dark:text-white">{t('whatsapp.broadcastMessage')}</h3>
-                <p className="text-[10px] text-gray-500 dark:text-gray-400">
+                <p className="text-xs text-gray-500 dark:text-zinc-400 dark:text-gray-400">
                   Variabel: {'{{customerName}}'}, {'{{username}}'}, {'{{profileName}}'}, {'{{companyName}}'}
                 </p>
               </div>
               <div className="p-3 space-y-3">
                 <div>
-                  <label className="block text-[10px] font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1">{t('whatsapp.loadFromTemplate')}</label>
+                  <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1">{t('whatsapp.loadFromTemplate')}</label>
                   <select
                     onChange={(e) => e.target.value && loadTemplate(e.target.value)}
-                    className="w-full h-7 px-2 text-[10px] bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded focus:ring-1 focus:ring-teal-500 focus:border-teal-500 text-gray-900 dark:text-white"
+                    className="w-full h-7 px-2 text-xs bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded focus:ring-1 focus:ring-teal-500 focus:border-teal-500 text-gray-900 dark:text-white"
                   >
                     <option value="">{t('whatsapp.selectTemplate')}</option>
                     {templates.map((template) => (
@@ -583,7 +583,7 @@ export default function SendMessagePage() {
                   rows={6}
                   className="w-full px-2.5 py-2 text-xs bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md focus:ring-1 focus:ring-teal-500 focus:border-teal-500 text-gray-900 dark:text-white resize-none"
                 />
-                <p className="text-[10px] text-gray-500 dark:text-gray-400">{broadcastMessage.length} {t('whatsapp.characters')}</p>
+                <p className="text-xs text-gray-500 dark:text-zinc-400 dark:text-gray-400">{broadcastMessage.length} {t('whatsapp.characters')}</p>
 
                 <button
                   onClick={handleBroadcast}
@@ -610,7 +610,7 @@ export default function SendMessagePage() {
 
                 {broadcastResult && (
                   <div className="p-2.5 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
-                    <p className="text-[10px] font-medium text-blue-900 dark:text-blue-100 mb-1.5">{t('whatsapp.broadcastSummary')}:</p>
+                    <p className="text-xs font-medium text-blue-900 dark:text-blue-100 mb-1.5">{t('whatsapp.broadcastSummary')}:</p>
                     <div className="grid grid-cols-3 gap-2 text-center">
                       <div>
                         <p className="text-lg font-bold text-gray-900 dark:text-white">{broadcastResult.total}</p>

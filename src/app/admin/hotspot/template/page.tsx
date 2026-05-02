@@ -173,15 +173,15 @@ export default function VoucherTemplatesPage() {
   );
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+          <h1 className="page-title flex items-center gap-2">
             <FileCode className="w-5 h-5 text-primary" />
             {t('hotspot.templateTitle')}
           </h1>
-          <p className="text-xs text-gray-500 dark:text-gray-400">{t('hotspot.templateSubtitle')}</p>
+          <p className="page-subtitle">{t('hotspot.templateSubtitle')}</p>
         </div>
         <div className="flex gap-2">
           <button
@@ -204,14 +204,14 @@ export default function VoucherTemplatesPage() {
       {loading ? (
         <div className="text-center py-8 text-xs text-gray-500">{t('common.loading')}</div>
       ) : (
-        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 overflow-hidden">
+        <div className="card-soft overflow-hidden">
           <table className="w-full">
             <thead className="bg-gray-50 dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-700">
               <tr>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase">{t('common.name')}</th>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase">{t('common.status')}</th>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase">{t('common.default')}</th>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase">{t('common.actions')}</th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">{t('common.name')}</th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">{t('common.status')}</th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">{t('common.default')}</th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">{t('common.actions')}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
@@ -221,7 +221,7 @@ export default function VoucherTemplatesPage() {
                     <span className="font-medium text-xs text-gray-900 dark:text-white">{template.name}</span>
                   </td>
                   <td className="px-3 py-2">
-                    <span className={`px-1.5 py-0.5 rounded text-[10px] font-medium ${
+                    <span className={`px-1.5 py-0.5 rounded text-xs font-medium ${
                       template.isActive
                         ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
                         : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'
@@ -231,7 +231,7 @@ export default function VoucherTemplatesPage() {
                   </td>
                   <td className="px-3 py-2">
                     {template.isDefault && (
-                      <span className="px-1.5 py-0.5 rounded text-[10px] font-medium bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400">
+                      <span className="px-1.5 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400">
                         {t('common.default')}
                       </span>
                     )}
@@ -271,13 +271,13 @@ export default function VoucherTemplatesPage() {
       {/* Add/Edit Dialog */}
       {showDialog && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-          <div className="bg-white dark:bg-gray-900 rounded-lg shadow-xl max-w-3xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+          <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-hidden flex flex-col">
             <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between">
               <div>
                 <h2 className="text-sm font-semibold text-gray-900 dark:text-white">
                   {editingTemplate ? t('hotspot.editTemplate') : t('hotspot.addTemplate')}
                 </h2>
-                <p className="text-[10px] text-gray-500">{t('hotspot.configureTemplate')}</p>
+                <p className="text-xs text-gray-500 dark:text-zinc-400">{t('hotspot.configureTemplate')}</p>
               </div>
               <button onClick={handleCloseDialog} className="p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded">
                 <X className="w-4 h-4" />
@@ -285,7 +285,7 @@ export default function VoucherTemplatesPage() {
             </div>
             <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-4 space-y-3">
               <div>
-                <label className="block text-[10px] font-medium text-gray-700 dark:text-gray-300 mb-1">{t('hotspot.templateName')} *</label>
+                <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">{t('hotspot.templateName')} *</label>
                 <input
                   type="text"
                   value={formData.name}
@@ -296,13 +296,13 @@ export default function VoucherTemplatesPage() {
                 />
               </div>
               <div>
-                <label className="block text-[10px] font-medium text-gray-700 dark:text-gray-300 mb-1">{t('hotspot.htmlTemplate')}</label>
+                <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">{t('hotspot.htmlTemplate')}</label>
                 <textarea
                   value={formData.htmlTemplate}
                   onChange={(e) => setFormData({ ...formData, htmlTemplate: e.target.value })}
                   required
                   rows={12}
-                  className="w-full px-2.5 py-1.5 border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 rounded-md text-[10px] font-mono"
+                  className="w-full px-2.5 py-1.5 border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 rounded-md text-xs font-mono"
                   placeholder="Enter HTML template..."
                 />
                 <p className="text-[9px] text-gray-400 mt-1">
@@ -362,7 +362,7 @@ export default function VoucherTemplatesPage() {
       {/* Preview Dialog */}
       {showPreview && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-          <div className="bg-white dark:bg-gray-900 rounded-lg shadow-xl max-w-3xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+          <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-hidden flex flex-col">
             <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between">
               <h2 className="text-sm font-semibold text-gray-900 dark:text-white">{t('hotspot.previewTemplate')}</h2>
               <button onClick={() => setShowPreview(false)} className="p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded">

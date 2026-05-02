@@ -252,7 +252,7 @@ export default function AdminTicketDetailPage() {
           <ArrowLeft size={24} />
         </Link>
         <div className="flex-1">
-          <div className="flex items-center gap-3 mb-2">
+          <div className="flex items-center gap-4 mb-2">
             <span className="text-lg font-mono text-muted-foreground">#{ticket.ticketNumber}</span>
             
             {/* Status - Editable */}
@@ -373,7 +373,7 @@ export default function AdminTicketDetailPage() {
           </div>
 
           {/* Messages */}
-          <div className="space-y-4">
+          <div className="space-y-5">
             <h3 className="font-semibold text-foreground">{t('ticket.conversation')}</h3>
             {messages.map((msg) => (
               <div
@@ -386,7 +386,7 @@ export default function AdminTicketDetailPage() {
                     : 'bg-card border-border'
                 }`}
               >
-                <div className="flex items-start gap-3">
+                <div className="flex items-start gap-4">
                   <div className="flex-shrink-0">
                     <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
                       msg.isInternal ? 'bg-warning/20' : 'bg-primary/10'

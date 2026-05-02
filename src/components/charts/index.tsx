@@ -402,11 +402,11 @@ interface ChartCardProps {
 
 export function ChartCard({ title, subtitle, children, action }: ChartCardProps) {
   return (
-    <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-3">
-      <div className="flex items-center justify-between mb-3">
+    <div className="card-soft p-5">
+      <div className="flex items-center justify-between mb-4">
         <div>
           <h3 className="text-sm font-semibold text-gray-900 dark:text-white">{title}</h3>
-          {subtitle && <p className="text-[10px] text-gray-500 dark:text-gray-400">{subtitle}</p>}
+          {subtitle && <p className="text-xs text-gray-500 dark:text-zinc-400 mt-0.5">{subtitle}</p>}
         </div>
         {action}
       </div>

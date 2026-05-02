@@ -258,15 +258,15 @@ export default function SessionsPage() {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+          <h1 className="page-title flex items-center gap-2">
             <Activity className="w-5 h-5 text-primary" />
             {t('sessions.title')}
           </h1>
-          <p className="text-xs text-gray-500 dark:text-gray-400">{t('sessions.subtitle')}</p>
+          <p className="page-subtitle">{t('sessions.subtitle')}</p>
         </div>
         <div className="flex items-center gap-2">
           <button
@@ -278,7 +278,7 @@ export default function SessionsPage() {
           </button>
           <button
             onClick={handleExportPDF}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-xs bg-red-600 text-white rounded-md hover:bg-red-700"
+            className="flex items-center gap-1.5 btn-premium bg-red-600 text-white hover:bg-red-700-md hover:bg-red-700"
           >
             <Download className="w-3.5 h-3.5" />
             PDF
@@ -302,25 +302,25 @@ export default function SessionsPage() {
 
       {/* Stats */}
       {stats && (
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-          <div className="bg-white dark:bg-gray-900 p-3 rounded-lg border border-gray-200 dark:border-gray-800">
-            <div className="text-[10px] font-medium text-gray-500 uppercase">{t('sessions.active')}</div>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="bg-white dark:bg-gray-900 p-3 rounded-lg card-soft">
+            <div className="text-xs font-medium text-gray-500 uppercase">{t('sessions.active')}</div>
             <div className="text-lg font-bold text-gray-900 dark:text-white">{stats.total}</div>
           </div>
-          <div className="bg-white dark:bg-gray-900 p-3 rounded-lg border border-gray-200 dark:border-gray-800">
-            <div className="text-[10px] font-medium text-gray-500 uppercase flex items-center gap-1">
+          <div className="bg-white dark:bg-gray-900 p-3 rounded-lg card-soft">
+            <div className="text-xs font-medium text-gray-500 uppercase flex items-center gap-1">
               <Wifi className="w-3 h-3" /> PPPoE
             </div>
             <div className="text-lg font-bold text-teal-600">{stats.pppoe}</div>
           </div>
-          <div className="bg-white dark:bg-gray-900 p-3 rounded-lg border border-gray-200 dark:border-gray-800">
-            <div className="text-[10px] font-medium text-gray-500 uppercase flex items-center gap-1">
+          <div className="bg-white dark:bg-gray-900 p-3 rounded-lg card-soft">
+            <div className="text-xs font-medium text-gray-500 uppercase flex items-center gap-1">
               <WifiOff className="w-3 h-3" /> Hotspot
             </div>
             <div className="text-lg font-bold text-orange-600">{stats.hotspot}</div>
           </div>
-          <div className="bg-white dark:bg-gray-900 p-3 rounded-lg border border-gray-200 dark:border-gray-800">
-            <div className="text-[10px] font-medium text-gray-500 uppercase">{t('dashboard.bandwidth')}</div>
+          <div className="bg-white dark:bg-gray-900 p-3 rounded-lg card-soft">
+            <div className="text-xs font-medium text-gray-500 uppercase">{t('dashboard.bandwidth')}</div>
             <div className="text-lg font-bold text-green-600">{stats.totalBandwidthFormatted}</div>
           </div>
         </div>
@@ -333,17 +333,17 @@ export default function SessionsPage() {
             <Activity className="w-3.5 h-3.5 text-teal-600" />
             All-Time Statistics
           </h2>
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-3 gap-4">
             <div>
-              <div className="text-[10px] text-gray-600 dark:text-gray-400">Total Sessions</div>
+              <div className="text-xs text-gray-600 dark:text-gray-400">Total Sessions</div>
               <div className="text-base font-bold text-gray-900 dark:text-white">{allTimeStats.totalSessions.toLocaleString()}</div>
             </div>
             <div>
-              <div className="text-[10px] text-gray-600 dark:text-gray-400">Bandwidth Used</div>
+              <div className="text-xs text-gray-600 dark:text-gray-400">Bandwidth Used</div>
               <div className="text-base font-bold text-teal-600">{allTimeStats.totalBandwidthFormatted}</div>
             </div>
             <div>
-              <div className="text-[10px] text-gray-600 dark:text-gray-400">Total Duration</div>
+              <div className="text-xs text-gray-600 dark:text-gray-400">Total Duration</div>
               <div className="text-base font-bold text-cyan-600">{allTimeStats.totalDurationFormatted}</div>
             </div>
           </div>
@@ -351,7 +351,7 @@ export default function SessionsPage() {
       )}
 
       {/* Filters */}
-      <div className="bg-white dark:bg-gray-900 p-3 rounded-lg border border-gray-200 dark:border-gray-800">
+      <div className="bg-white dark:bg-gray-900 p-3 rounded-lg card-soft">
         <div className="flex flex-col sm:flex-row gap-2 items-start sm:items-center justify-between">
           <div className="flex flex-wrap gap-2 items-center">
             <div className="flex items-center gap-1.5">
@@ -406,7 +406,7 @@ export default function SessionsPage() {
       </div>
 
       {/* Sessions Table */}
-      <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 overflow-hidden">
+      <div className="card-soft overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="bg-gray-50 dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-700">
@@ -419,16 +419,16 @@ export default function SessionsPage() {
                     className="rounded border-gray-300 w-3.5 h-3.5"
                   />
                 </th>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase">{t('common.type')}</th>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase">{t('sessions.username')}</th>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase hidden md:table-cell">User/Voucher</th>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase hidden lg:table-cell">Router</th>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase hidden sm:table-cell">{t('sessions.ipAddress')}</th>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase">{t('sessions.duration')}</th>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase hidden lg:table-cell">↑</th>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase hidden lg:table-cell">↓</th>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase">{t('sessions.total')}</th>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase"></th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">{t('common.type')}</th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">{t('sessions.username')}</th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase hidden md:table-cell">User/Voucher</th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase hidden lg:table-cell">Router</th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase hidden sm:table-cell">{t('sessions.ipAddress')}</th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">{t('sessions.duration')}</th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase hidden lg:table-cell">↑</th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase hidden lg:table-cell">↓</th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">{t('sessions.total')}</th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase"></th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
@@ -450,7 +450,7 @@ export default function SessionsPage() {
                       />
                     </td>
                     <td className="px-3 py-2">
-                      <span className={`inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[10px] font-medium ${
+                      <span className={`inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-xs font-medium ${
                         session.type === 'pppoe' 
                           ? 'bg-teal-100 text-teal-700 dark:bg-teal-900/30 dark:text-teal-400'
                           : 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400'
@@ -459,35 +459,35 @@ export default function SessionsPage() {
                         {session.type.toUpperCase()}
                       </span>
                     </td>
-                    <td className="px-3 py-2 font-mono text-[10px] text-gray-900 dark:text-white">{session.username}</td>
+                    <td className="px-3 py-2 font-mono text-xs text-gray-900 dark:text-white">{session.username}</td>
                     <td className="px-3 py-2 text-xs hidden md:table-cell">
                       {session.user && (
                         <div>
-                          <div className="font-medium text-gray-900 dark:text-white text-[10px]">{session.user.name}</div>
+                          <div className="font-medium text-gray-900 dark:text-white text-xs">{session.user.name}</div>
                           <div className="text-[9px] text-gray-500">{session.user.profile}</div>
                         </div>
                       )}
                       {session.voucher && (
                         <div>
-                          <div className="font-medium text-gray-900 dark:text-white text-[10px]">{session.voucher.profile}</div>
+                          <div className="font-medium text-gray-900 dark:text-white text-xs">{session.voucher.profile}</div>
                           {session.voucher.agent && (
                             <div className="text-[9px] text-purple-600">🏪 {session.voucher.agent.name}</div>
                           )}
                         </div>
                       )}
                     </td>
-                    <td className="px-3 py-2 text-[10px] text-gray-600 dark:text-gray-400 hidden lg:table-cell">
+                    <td className="px-3 py-2 text-xs text-gray-600 dark:text-gray-400 hidden lg:table-cell">
                       {session.router?.name || '-'}
                     </td>
-                    <td className="px-3 py-2 font-mono text-[10px] text-gray-600 dark:text-gray-400 hidden sm:table-cell">
+                    <td className="px-3 py-2 font-mono text-xs text-gray-600 dark:text-gray-400 hidden sm:table-cell">
                       {session.framedIpAddress}
                     </td>
-                    <td className="px-3 py-2 text-[10px] font-medium text-gray-900 dark:text-white">
+                    <td className="px-3 py-2 text-xs font-medium text-gray-900 dark:text-white">
                       {session.durationFormatted}
                     </td>
-                    <td className="px-3 py-2 text-[10px] text-gray-600 dark:text-gray-400 hidden lg:table-cell">{session.uploadFormatted}</td>
-                    <td className="px-3 py-2 text-[10px] text-gray-600 dark:text-gray-400 hidden lg:table-cell">{session.downloadFormatted}</td>
-                    <td className="px-3 py-2 text-[10px] font-medium text-gray-900 dark:text-white">{session.totalFormatted}</td>
+                    <td className="px-3 py-2 text-xs text-gray-600 dark:text-gray-400 hidden lg:table-cell">{session.uploadFormatted}</td>
+                    <td className="px-3 py-2 text-xs text-gray-600 dark:text-gray-400 hidden lg:table-cell">{session.downloadFormatted}</td>
+                    <td className="px-3 py-2 text-xs font-medium text-gray-900 dark:text-white">{session.totalFormatted}</td>
                     <td className="px-3 py-2">
                       <button
                         onClick={() => handleDisconnect([session.sessionId])}

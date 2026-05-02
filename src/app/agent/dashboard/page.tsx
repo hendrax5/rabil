@@ -639,7 +639,7 @@ export default function AgentDashboardPage() {
 
       {/* Generated Vouchers Modal */}
       {showVouchersModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4 z-50">
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-lg w-full max-h-[80vh] overflow-hidden">
             <div className="px-5 py-4 border-b dark:border-gray-700 flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -687,7 +687,7 @@ export default function AgentDashboardPage() {
 
       {/* WhatsApp Dialog */}
       {showWhatsAppDialog && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4 z-50">
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-sm w-full">
             <div className="px-5 py-4 border-b dark:border-gray-700">
               <h2 className="text-base font-semibold">Kirim Voucher via WhatsApp</h2>
@@ -731,7 +731,7 @@ export default function AgentDashboardPage() {
 
       {/* Deposit Modal */}
       {showDepositModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4 z-50">
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-sm w-full">
             <div className="px-5 py-4 border-b dark:border-gray-700">
               <h2 className="text-base font-semibold flex items-center gap-2">

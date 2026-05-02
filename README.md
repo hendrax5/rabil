@@ -4,7 +4,7 @@
     <strong>All-in-One ISP Billing & Network Management Platform</strong>
   </p>
   <p align="center">
-    Modern full-stack billing system for ISP / RTRW.NET with FreeRADIUS, FTTH network mapping, Zero-Touch Provisioning, and integrated payment gateway.
+    Modern full-stack billing system for ISP / RTRW.NET with a premium Enterprise SaaS UI, FreeRADIUS, FTTH network mapping, Zero-Touch Provisioning, and integrated payment gateway.
   </p>
   <p align="center">
     <a href="#-quick-start">Quick Start</a> •

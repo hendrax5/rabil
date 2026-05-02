@@ -310,7 +310,7 @@ export default function DatabaseSettingsPage() {
       {dbHealth && (
         <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm p-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+            <h2 className="page-title flex items-center gap-2">
               <Activity className="w-5 h-5" />
               Database Health
             </h2>
@@ -338,26 +338,26 @@ export default function DatabaseSettingsPage() {
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
             <div className="space-y-1">
-              <p className="text-xs text-gray-500 dark:text-gray-400">Database Size</p>
-              <p className="text-lg font-semibold text-gray-900 dark:text-white">{dbHealth.size}</p>
+              <p className="page-subtitle">Database Size</p>
+              <p className="page-title">{dbHealth.size}</p>
             </div>
             <div className="space-y-1">
-              <p className="text-xs text-gray-500 dark:text-gray-400">Tables</p>
-              <p className="text-lg font-semibold text-gray-900 dark:text-white">{dbHealth.tables}</p>
+              <p className="page-subtitle">Tables</p>
+              <p className="page-title">{dbHealth.tables}</p>
             </div>
             <div className="space-y-1">
-              <p className="text-xs text-gray-500 dark:text-gray-400">Connections</p>
-              <p className="text-lg font-semibold text-gray-900 dark:text-white">{dbHealth.connections}</p>
+              <p className="page-subtitle">Connections</p>
+              <p className="page-title">{dbHealth.connections}</p>
             </div>
             <div className="space-y-1">
-              <p className="text-xs text-gray-500 dark:text-gray-400">Last Backup</p>
-              <p className="text-lg font-semibold text-gray-900 dark:text-white">
+              <p className="page-subtitle">Last Backup</p>
+              <p className="page-title">
                 {dbHealth.lastBackup ? formatWIB(dbHealth.lastBackup, 'dd/MM HH:mm') : 'Never'}
               </p>
             </div>
             <div className="space-y-1">
-              <p className="text-xs text-gray-500 dark:text-gray-400">Uptime</p>
-              <p className="text-lg font-semibold text-gray-900 dark:text-white">{dbHealth.uptime}</p>
+              <p className="page-subtitle">Uptime</p>
+              <p className="page-title">{dbHealth.uptime}</p>
             </div>
             <div>
               <button
@@ -411,7 +411,7 @@ export default function DatabaseSettingsPage() {
           <div className="grid md:grid-cols-2 gap-6">
             {/* Backup Card */}
             <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm p-6">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+              <h3 className="page-title mb-4 flex items-center gap-2">
                 <Download className="w-5 h-5" />
                 Create Backup
               </h3>
@@ -439,7 +439,7 @@ export default function DatabaseSettingsPage() {
 
             {/* Restore Card */}
             <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm p-6">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+              <h3 className="page-title mb-4 flex items-center gap-2">
                 <Upload className="w-5 h-5" />
                 Restore Database
               </h3>
@@ -476,7 +476,7 @@ export default function DatabaseSettingsPage() {
           {/* Backup History */}
           <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
             <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+              <h3 className="page-title flex items-center gap-2">
                 <Clock className="w-5 h-5" />
                 Backup History
               </h3>
@@ -587,12 +587,12 @@ export default function DatabaseSettingsPage() {
       {activeTab === 'telegram' && (
         <div className="space-y-6">
           <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm p-6">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+            <h3 className="page-title mb-4 flex items-center gap-2">
               <Send className="w-5 h-5" />
               Telegram Auto-Backup Configuration
             </h3>
 
-            <div className="space-y-4">
+            <div className="space-y-5">
               {/* Enable Toggle */}
               <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
                 <div>
@@ -628,7 +628,7 @@ export default function DatabaseSettingsPage() {
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 text-gray-900 dark:text-white"
                   disabled={!canEdit}
                 />
-                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                <p className="page-subtitle mt-1">
                   Get token from @BotFather on Telegram
                 </p>
               </div>
@@ -648,7 +648,7 @@ export default function DatabaseSettingsPage() {
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 text-gray-900 dark:text-white"
                   disabled={!canEdit}
                 />
-                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                <p className="page-subtitle mt-1">
                   Get Chat ID from @userinfobot or your group
                 </p>
               </div>
@@ -668,7 +668,7 @@ export default function DatabaseSettingsPage() {
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 text-gray-900 dark:text-white"
                   disabled={!canEdit}
                 />
-                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                <p className="page-subtitle mt-1">
                   Topic ID for backup messages (right-click topic → Copy Link → extract ID)
                 </p>
               </div>
@@ -688,7 +688,7 @@ export default function DatabaseSettingsPage() {
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 text-gray-900 dark:text-white"
                   disabled={!canEdit}
                 />
-                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                <p className="page-subtitle mt-1">
                   Topic ID for health check reports
                 </p>
               </div>
@@ -746,14 +746,14 @@ export default function DatabaseSettingsPage() {
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 text-gray-900 dark:text-white"
                   disabled={!canEdit}
                 />
-                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                <p className="page-subtitle mt-1">
                   Automatically delete old backups, keep only last N files
                 </p>
               </div>
 
               {/* Action Buttons */}
               {canEdit && (
-                <div className="grid grid-cols-2 gap-3 pt-4">
+                <div className="grid grid-cols-2 gap-4 pt-4">
                   <button
                     onClick={handleTestTelegram}
                     disabled={testing}

@@ -181,7 +181,7 @@ export default function RegistrationsPage() {
       REJECTED: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400',
     };
     return (
-      <span className={`px-1.5 py-0.5 rounded text-[10px] font-medium ${styles[status] || 'bg-gray-100 text-gray-700'}`}>
+      <span className={`px-1.5 py-0.5 rounded text-xs font-medium ${styles[status] || 'bg-gray-100 text-gray-700'}`}>
         {status}
       </span>
     );
@@ -196,15 +196,15 @@ export default function RegistrationsPage() {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+          <h1 className="page-title flex items-center gap-2">
             <UserPlus className="w-5 h-5 text-primary" />
             {t('pppoe.registrationsTitle')}
           </h1>
-          <p className="text-xs text-gray-500 dark:text-gray-400">{t('pppoe.registrationsSubtitle')}</p>
+          <p className="page-subtitle">{t('pppoe.registrationsSubtitle')}</p>
         </div>
         <button
           onClick={fetchRegistrations}
@@ -218,37 +218,37 @@ export default function RegistrationsPage() {
       {/* Stats */}
       {stats && (
         <div className="grid grid-cols-3 md:grid-cols-6 gap-2">
-          <div className="bg-white dark:bg-gray-900 p-2.5 rounded-lg border border-gray-200 dark:border-gray-800">
-            <div className="text-[10px] font-medium text-gray-500 uppercase">{t('common.total')}</div>
+          <div className="bg-white dark:bg-gray-900 p-2.5 rounded-lg card-soft">
+            <div className="text-xs font-medium text-gray-500 uppercase">{t('common.total')}</div>
             <div className="text-lg font-bold text-gray-900 dark:text-white">{stats.total}</div>
           </div>
-          <div className="bg-white dark:bg-gray-900 p-2.5 rounded-lg border border-gray-200 dark:border-gray-800">
-            <div className="text-[10px] font-medium text-yellow-600 uppercase flex items-center gap-1">
+          <div className="bg-white dark:bg-gray-900 p-2.5 rounded-lg card-soft">
+            <div className="text-xs font-medium text-yellow-600 uppercase flex items-center gap-1">
               <Clock className="w-2.5 h-2.5" /> {t('pppoe.pending')}
             </div>
             <div className="text-lg font-bold text-yellow-600">{stats.pending}</div>
           </div>
-          <div className="bg-white dark:bg-gray-900 p-2.5 rounded-lg border border-gray-200 dark:border-gray-800">
-            <div className="text-[10px] font-medium text-blue-600 uppercase">{t('pppoe.approved')}</div>
+          <div className="bg-white dark:bg-gray-900 p-2.5 rounded-lg card-soft">
+            <div className="text-xs font-medium text-blue-600 uppercase">{t('pppoe.approved')}</div>
             <div className="text-lg font-bold text-blue-600">{stats.approved}</div>
           </div>
-          <div className="bg-white dark:bg-gray-900 p-2.5 rounded-lg border border-gray-200 dark:border-gray-800">
-            <div className="text-[10px] font-medium text-purple-600 uppercase">{t('pppoe.installed')}</div>
+          <div className="bg-white dark:bg-gray-900 p-2.5 rounded-lg card-soft">
+            <div className="text-xs font-medium text-purple-600 uppercase">{t('pppoe.installed')}</div>
             <div className="text-lg font-bold text-purple-600">{stats.installed}</div>
           </div>
-          <div className="bg-white dark:bg-gray-900 p-2.5 rounded-lg border border-gray-200 dark:border-gray-800">
-            <div className="text-[10px] font-medium text-green-600 uppercase">{t('pppoe.active')}</div>
+          <div className="bg-white dark:bg-gray-900 p-2.5 rounded-lg card-soft">
+            <div className="text-xs font-medium text-green-600 uppercase">{t('pppoe.active')}</div>
             <div className="text-lg font-bold text-green-600">{stats.active}</div>
           </div>
-          <div className="bg-white dark:bg-gray-900 p-2.5 rounded-lg border border-gray-200 dark:border-gray-800">
-            <div className="text-[10px] font-medium text-red-600 uppercase">{t('pppoe.rejected')}</div>
+          <div className="bg-white dark:bg-gray-900 p-2.5 rounded-lg card-soft">
+            <div className="text-xs font-medium text-red-600 uppercase">{t('pppoe.rejected')}</div>
             <div className="text-lg font-bold text-red-600">{stats.rejected}</div>
           </div>
         </div>
       )}
 
       {/* Filters */}
-      <div className="bg-white dark:bg-gray-900 p-3 rounded-lg border border-gray-200 dark:border-gray-800">
+      <div className="bg-white dark:bg-gray-900 p-3 rounded-lg card-soft">
         <div className="flex flex-col sm:flex-row gap-2 items-start sm:items-center">
           <div className="flex items-center gap-1.5">
             <Filter className="w-3.5 h-3.5 text-gray-500" />
@@ -280,19 +280,19 @@ export default function RegistrationsPage() {
       </div>
 
       {/* Table */}
-      <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 overflow-hidden">
+      <div className="card-soft overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="bg-gray-50 dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-700">
               <tr>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase">{t('pppoe.customer')}</th>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase hidden sm:table-cell">{t('pppoe.contact')}</th>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase">{t('pppoe.profile')}</th>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase">{t('common.status')}</th>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase hidden md:table-cell">{t('pppoe.pppoeUser')}</th>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase hidden lg:table-cell">{t('pppoe.invoice')}</th>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase hidden lg:table-cell">{t('common.date')}</th>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase">{t('pppoe.actions')}</th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">{t('pppoe.customer')}</th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase hidden sm:table-cell">{t('pppoe.contact')}</th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">{t('pppoe.profile')}</th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">{t('common.status')}</th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase hidden md:table-cell">{t('pppoe.pppoeUser')}</th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase hidden lg:table-cell">{t('pppoe.invoice')}</th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase hidden lg:table-cell">{t('common.date')}</th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">{t('pppoe.actions')}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
@@ -307,46 +307,46 @@ export default function RegistrationsPage() {
                   <tr key={reg.id} className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
                     <td className="px-3 py-2">
                       <div className="font-medium text-xs text-gray-900 dark:text-white">{reg.name}</div>
-                      <div className="text-[10px] text-gray-500 truncate max-w-[150px]">{reg.address}</div>
+                      <div className="text-xs text-gray-500 dark:text-zinc-400 truncate max-w-[150px]">{reg.address}</div>
                     </td>
                     <td className="px-3 py-2 hidden sm:table-cell">
                       <div className="text-xs">{reg.phone}</div>
-                      {reg.email && <div className="text-[10px] text-gray-500">{reg.email}</div>}
+                      {reg.email && <div className="text-xs text-gray-500 dark:text-zinc-400">{reg.email}</div>}
                     </td>
                     <td className="px-3 py-2">
                       <div className="font-medium text-xs">{reg.profile.name}</div>
-                      <div className="text-[10px] text-gray-500">{reg.profile.downloadSpeed}/{reg.profile.uploadSpeed}M</div>
-                      <div className="text-[10px] text-green-600 font-medium">Rp {reg.profile.price.toLocaleString()}</div>
+                      <div className="text-xs text-gray-500 dark:text-zinc-400">{reg.profile.downloadSpeed}/{reg.profile.uploadSpeed}M</div>
+                      <div className="text-xs text-green-600 font-medium">Rp {reg.profile.price.toLocaleString()}</div>
                     </td>
                     <td className="px-3 py-2">{getStatusBadge(reg.status)}</td>
                     <td className="px-3 py-2 hidden md:table-cell">
                       {reg.pppoeUser ? (
                         <div>
-                          <div className="font-mono text-[10px]">{reg.pppoeUser.username}</div>
+                          <div className="font-mono text-xs">{reg.pppoeUser.username}</div>
                           <span className={`text-[9px] ${reg.pppoeUser.status === 'isolated' ? 'text-orange-600' : 'text-green-600'}`}>
                             {reg.pppoeUser.status}
                           </span>
                         </div>
                       ) : (
-                        <span className="text-gray-400 text-[10px]">-</span>
+                        <span className="text-gray-400 text-xs">-</span>
                       )}
                     </td>
                     <td className="px-3 py-2 hidden lg:table-cell">
                       {reg.invoice ? (
                         <div>
-                          <div className="font-mono text-[10px]">{reg.invoice.invoiceNumber}</div>
-                          <div className="text-[10px] text-gray-500">Rp {reg.invoice.amount.toLocaleString()}</div>
+                          <div className="font-mono text-xs">{reg.invoice.invoiceNumber}</div>
+                          <div className="text-xs text-gray-500 dark:text-zinc-400">Rp {reg.invoice.amount.toLocaleString()}</div>
                           <span className={`text-[9px] ${reg.invoice.status === 'PAID' ? 'text-green-600' : 'text-yellow-600'}`}>
                             {reg.invoice.status}
                           </span>
                         </div>
                       ) : reg.status === 'APPROVED' ? (
-                        <span className="text-blue-600 text-[10px]">{t('pppoe.awaiting')}</span>
+                        <span className="text-blue-600 text-xs">{t('pppoe.awaiting')}</span>
                       ) : (
-                        <span className="text-gray-400 text-[10px]">-</span>
+                        <span className="text-gray-400 text-xs">-</span>
                       )}
                     </td>
-                    <td className="px-3 py-2 text-[10px] text-gray-600 hidden lg:table-cell">
+                    <td className="px-3 py-2 text-xs text-gray-600 hidden lg:table-cell">
                       {formatToWIB(reg.createdAt)}
                     </td>
                     <td className="px-3 py-2">
@@ -380,7 +380,7 @@ export default function RegistrationsPage() {
                           </button>
                         )}
                         {reg.status === 'INSTALLED' && (
-                          <span className="text-[10px] text-gray-500">{t('pppoe.waitPayment')}</span>
+                          <span className="text-xs text-gray-500 dark:text-zinc-400">{t('pppoe.waitPayment')}</span>
                         )}
                       </div>
                     </td>
@@ -395,10 +395,10 @@ export default function RegistrationsPage() {
       {/* Approve Modal */}
       {approveModalOpen && selectedRegistration && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-          <div className="bg-white dark:bg-gray-900 rounded-lg shadow-xl max-w-sm w-full">
+          <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl max-w-sm w-full">
             <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-800">
               <h2 className="text-sm font-semibold text-gray-900 dark:text-white">{t('pppoe.approveRegistration')}</h2>
-              <p className="text-[10px] text-gray-500">{t('pppoe.setInstallFee')}</p>
+              <p className="text-xs text-gray-500 dark:text-zinc-400">{t('pppoe.setInstallFee')}</p>
             </div>
             <div className="p-4 space-y-3">
               <div className="bg-gray-50 dark:bg-gray-800 p-3 rounded-lg space-y-1.5 text-xs">
@@ -452,10 +452,10 @@ export default function RegistrationsPage() {
       {/* Reject Modal */}
       {rejectModalOpen && selectedRegistration && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-          <div className="bg-white dark:bg-gray-900 rounded-lg shadow-xl max-w-sm w-full">
+          <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl max-w-sm w-full">
             <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-800">
               <h2 className="text-sm font-semibold text-gray-900 dark:text-white">{t('pppoe.rejectRegistration')}</h2>
-              <p className="text-[10px] text-gray-500">{t('pppoe.provideReason')}</p>
+              <p className="text-xs text-gray-500 dark:text-zinc-400">{t('pppoe.provideReason')}</p>
             </div>
             <div className="p-4">
               <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">{t('pppoe.rejectionReason')} *</label>
@@ -476,7 +476,7 @@ export default function RegistrationsPage() {
               <button
                 onClick={handleReject}
                 disabled={!rejectionReason || rejecting}
-                className="px-3 py-1.5 text-xs bg-red-600 text-white rounded-md hover:bg-red-700 disabled:opacity-50"
+                className="btn-premium bg-red-600 text-white hover:bg-red-700-md hover:bg-red-700 disabled:opacity-50"
               >
                 {rejecting ? t('pppoe.rejecting') : t('pppoe.reject')}
               </button>

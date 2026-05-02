@@ -132,10 +132,10 @@ export default function DaftarPage() {
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Personal Info */}
             <div className="space-y-3">
-              <p className="text-[10px] font-semibold text-gray-500 uppercase">Informasi Pribadi</p>
+              <p className="text-xs font-semibold text-gray-500 uppercase">Informasi Pribadi</p>
               
               <div>
-                <label className="text-[11px] font-medium text-gray-700">Nama Lengkap <span className="text-red-500">*</span></label>
+                <label className="text-xs font-medium text-gray-700">Nama Lengkap <span className="text-red-500">*</span></label>
                 <input
                   type="text"
                   placeholder="Nama lengkap Anda"
@@ -147,7 +147,7 @@ export default function DaftarPage() {
               </div>
 
               <div>
-                <label className="text-[11px] font-medium text-gray-700">Nomor WhatsApp <span className="text-red-500">*</span></label>
+                <label className="text-xs font-medium text-gray-700">Nomor WhatsApp <span className="text-red-500">*</span></label>
                 <input
                   type="tel"
                   placeholder="08xxxxxxxxxx"
@@ -156,11 +156,11 @@ export default function DaftarPage() {
                   className="w-full mt-1 px-2.5 py-1.5 text-sm border border-gray-300 rounded-lg focus:ring-1 focus:ring-teal-500"
                   required
                 />
-                <p className="text-[10px] text-gray-500 mt-0.5">Untuk komunikasi</p>
+                <p className="text-xs text-gray-500 mt-0.5">Untuk komunikasi</p>
               </div>
 
               <div>
-                <label className="text-[11px] font-medium text-gray-700">Email</label>
+                <label className="text-xs font-medium text-gray-700">Email</label>
                 <input
                   type="email"
                   placeholder="email@example.com (opsional)"
@@ -171,7 +171,7 @@ export default function DaftarPage() {
               </div>
 
               <div>
-                <label className="text-[11px] font-medium text-gray-700">Alamat Lengkap <span className="text-red-500">*</span></label>
+                <label className="text-xs font-medium text-gray-700">Alamat Lengkap <span className="text-red-500">*</span></label>
                 <textarea
                   placeholder="Jalan, RT/RW, Kelurahan, Kecamatan"
                   value={formData.address}
@@ -185,10 +185,10 @@ export default function DaftarPage() {
 
             {/* Package Selection */}
             <div className="space-y-3">
-              <p className="text-[10px] font-semibold text-gray-500 uppercase">Pilih Paket</p>
+              <p className="text-xs font-semibold text-gray-500 uppercase">Pilih Paket</p>
               
               <div>
-                <label className="text-[11px] font-medium text-gray-700">Paket Internet <span className="text-red-500">*</span></label>
+                <label className="text-xs font-medium text-gray-700">Paket Internet <span className="text-red-500">*</span></label>
                 <select
                   value={formData.profileId}
                   onChange={(e) => setFormData({ ...formData, profileId: e.target.value })}
@@ -206,12 +206,12 @@ export default function DaftarPage() {
 
               {selectedProfile && (
                 <div className="bg-teal-50 p-2.5 rounded-lg border border-teal-200">
-                  <h4 className="text-[10px] font-semibold text-teal-800 mb-1.5">Detail Paket</h4>
+                  <h4 className="text-xs font-semibold text-teal-800 mb-1.5">Detail Paket</h4>
                   <div className="space-y-1 text-xs">
                     <div className="flex justify-between"><span className="text-gray-600">Paket:</span><span className="font-medium">{selectedProfile.name}</span></div>
                     <div className="flex justify-between"><span className="text-gray-600">Speed:</span><span className="font-medium">{selectedProfile.downloadSpeed}/{selectedProfile.uploadSpeed} Mbps</span></div>
                     <div className="flex justify-between"><span className="text-gray-600">Harga:</span><span className="font-bold text-teal-700">Rp {selectedProfile.price.toLocaleString()}/bln</span></div>
-                    {selectedProfile.description && <p className="pt-1 border-t border-teal-200 text-gray-700 text-[10px]">{selectedProfile.description}</p>}
+                    {selectedProfile.description && <p className="pt-1 border-t border-teal-200 text-gray-700 text-xs">{selectedProfile.description}</p>}
                   </div>
                 </div>
               )}
@@ -219,7 +219,7 @@ export default function DaftarPage() {
 
             {/* Notes */}
             <div>
-              <label className="text-[11px] font-medium text-gray-700">Catatan (Opsional)</label>
+              <label className="text-xs font-medium text-gray-700">Catatan (Opsional)</label>
               <textarea
                 placeholder="Catatan atau permintaan khusus"
                 value={formData.notes}
@@ -242,13 +242,13 @@ export default function DaftarPage() {
               )}
             </button>
 
-            <p className="text-[10px] text-center text-gray-500">
+            <p className="text-xs text-center text-gray-500">
               Dengan mendaftar, Anda menyetujui syarat dan ketentuan layanan
             </p>
           </form>
         </div>
 
-        <p className="mt-4 text-center text-[10px] text-gray-500">
+        <p className="mt-4 text-center text-xs text-gray-500">
           Powered by NexaRadius
         </p>
       </div>

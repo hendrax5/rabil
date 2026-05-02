@@ -127,7 +127,7 @@ const cyberButtonVariants = cva(
       },
       size: {
         default: 'h-10 px-6 py-2.5 text-xs rounded-lg',
-        sm: 'h-8 px-4 text-[10px] rounded-md',
+        sm: 'h-8 px-4 text-xs rounded-md',
         lg: 'h-12 px-8 text-sm rounded-xl',
         xl: 'h-14 px-10 text-base rounded-xl',
         icon: 'h-10 w-10 rounded-lg',

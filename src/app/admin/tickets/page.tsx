@@ -138,7 +138,7 @@ export default function AdminTicketsPage() {
       
       <div className="relative z-10 space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div className="min-w-0">
           <h1 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-[#00f7ff] via-white to-[#ff44cc] bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(0,247,255,0.5)]">
             {t('ticket.tickets')}
@@ -151,11 +151,11 @@ export default function AdminTicketsPage() {
 
       {/* Stats Cards */}
       {stats && (
-        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2 sm:gap-3 mb-4">
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2 sm:gap-4 mb-4">
           <div className="bg-card/80 backdrop-blur-xl rounded-xl border-2 border-[#bc13fe]/30 p-3 shadow-[0_0_20px_rgba(188,19,254,0.2)] hover:border-[#bc13fe]/50 transition-all">
             <div className="flex items-center justify-between gap-2">
               <div className="min-w-0">
-                <p className="text-[10px] sm:text-xs text-[#00f7ff] uppercase tracking-wide truncate">{t('ticket.totalTickets')}</p>
+                <p className="text-xs sm:text-xs text-[#00f7ff] uppercase tracking-wide truncate">{t('ticket.totalTickets')}</p>
                 <p className="text-lg sm:text-xl font-bold text-foreground mt-1">{stats.total}</p>
               </div>
               <Ticket className="text-[#00f7ff] h-5 w-5 sm:h-6 sm:w-6 drop-shadow-[0_0_15px_rgba(0,247,255,0.6)] flex-shrink-0" />
@@ -165,7 +165,7 @@ export default function AdminTicketsPage() {
           <div className="bg-card/80 backdrop-blur-xl rounded-xl border-2 border-[#bc13fe]/30 p-3 shadow-[0_0_20px_rgba(188,19,254,0.2)] hover:border-[#bc13fe]/50 transition-all">
             <div className="flex items-center justify-between gap-2">
               <div className="min-w-0">
-                <p className="text-[10px] sm:text-xs text-[#00f7ff] uppercase tracking-wide truncate">{t('ticket.openTickets')}</p>
+                <p className="text-xs sm:text-xs text-[#00f7ff] uppercase tracking-wide truncate">{t('ticket.openTickets')}</p>
                 <p className="text-lg sm:text-xl font-bold text-foreground mt-1">{stats.byStatus.open}</p>
               </div>
               <TrendingUp className="text-[#00f7ff] h-5 w-5 sm:h-6 sm:w-6 drop-shadow-[0_0_15px_rgba(0,247,255,0.6)] flex-shrink-0" />
@@ -175,7 +175,7 @@ export default function AdminTicketsPage() {
           <div className="bg-card/80 backdrop-blur-xl rounded-xl border-2 border-[#bc13fe]/30 p-3 shadow-[0_0_20px_rgba(188,19,254,0.2)] hover:border-[#bc13fe]/50 transition-all">
             <div className="flex items-center justify-between gap-2">
               <div className="min-w-0">
-                <p className="text-[10px] sm:text-xs text-[#00f7ff] uppercase tracking-wide truncate">{t('ticket.urgentTickets')}</p>
+                <p className="text-xs sm:text-xs text-[#00f7ff] uppercase tracking-wide truncate">{t('ticket.urgentTickets')}</p>
                 <p className="text-lg sm:text-xl font-bold text-foreground mt-1">{stats.byPriority.urgent}</p>
               </div>
               <AlertCircle className="text-red-400 h-5 w-5 sm:h-6 sm:w-6 drop-shadow-[0_0_15px_rgba(239,68,68,0.6)] flex-shrink-0" />
@@ -185,7 +185,7 @@ export default function AdminTicketsPage() {
           <div className="bg-card/80 backdrop-blur-xl rounded-xl border-2 border-[#bc13fe]/30 p-3 shadow-[0_0_20px_rgba(188,19,254,0.2)] hover:border-[#bc13fe]/50 transition-all">
             <div className="flex items-center justify-between gap-2">
               <div className="min-w-0">
-                <p className="text-[10px] sm:text-xs text-[#00f7ff] uppercase tracking-wide truncate">{t('ticket.unassigned')}</p>
+                <p className="text-xs sm:text-xs text-[#00f7ff] uppercase tracking-wide truncate">{t('ticket.unassigned')}</p>
                 <p className="text-lg sm:text-xl font-bold text-foreground mt-1">{stats.unassigned}</p>
               </div>
               <Users className="text-amber-400 h-5 w-5 sm:h-6 sm:w-6 drop-shadow-[0_0_15px_rgba(251,191,36,0.6)] flex-shrink-0" />
@@ -195,7 +195,7 @@ export default function AdminTicketsPage() {
           <div className="bg-card/80 backdrop-blur-xl rounded-xl border-2 border-[#bc13fe]/30 p-3 shadow-[0_0_20px_rgba(188,19,254,0.2)] hover:border-[#bc13fe]/50 transition-all">
             <div className="flex items-center justify-between gap-2">
               <div className="min-w-0">
-                <p className="text-[10px] sm:text-xs text-[#00f7ff] uppercase tracking-wide truncate">{t('ticket.inProgress')}</p>
+                <p className="text-xs sm:text-xs text-[#00f7ff] uppercase tracking-wide truncate">{t('ticket.inProgress')}</p>
                 <p className="text-lg sm:text-xl font-bold text-foreground mt-1">{stats.byStatus.inProgress}</p>
               </div>
               <Clock className="text-amber-400 h-5 w-5 sm:h-6 sm:w-6 drop-shadow-[0_0_15px_rgba(251,191,36,0.6)] flex-shrink-0" />
@@ -205,7 +205,7 @@ export default function AdminTicketsPage() {
           <div className="bg-card/80 backdrop-blur-xl rounded-xl border-2 border-[#bc13fe]/30 p-3 shadow-[0_0_20px_rgba(188,19,254,0.2)] hover:border-[#bc13fe]/50 transition-all">
             <div className="flex items-center justify-between gap-2">
               <div className="min-w-0">
-                <p className="text-[10px] sm:text-xs text-[#00f7ff] uppercase tracking-wide truncate">{t('ticket.resolved')}</p>
+                <p className="text-xs sm:text-xs text-[#00f7ff] uppercase tracking-wide truncate">{t('ticket.resolved')}</p>
                 <p className="text-lg sm:text-xl font-bold text-foreground mt-1">{stats.byStatus.resolved}</p>
               </div>
               <CheckCircle className="text-green-400 h-5 w-5 sm:h-6 sm:w-6 drop-shadow-[0_0_15px_rgba(34,197,94,0.6)] flex-shrink-0" />
@@ -215,7 +215,7 @@ export default function AdminTicketsPage() {
           <div className="col-span-2 sm:col-span-1 bg-card/80 backdrop-blur-xl rounded-xl border-2 border-[#bc13fe]/30 p-3 shadow-[0_0_20px_rgba(188,19,254,0.2)] hover:border-[#bc13fe]/50 transition-all">
             <div className="flex items-center justify-between gap-2">
               <div className="min-w-0">
-                <p className="text-[10px] sm:text-xs text-[#00f7ff] uppercase tracking-wide truncate">{t('ticket.avgResponseTime')}</p>
+                <p className="text-xs sm:text-xs text-[#00f7ff] uppercase tracking-wide truncate">{t('ticket.avgResponseTime')}</p>
                 <p className="text-lg sm:text-xl font-bold text-foreground mt-1">
                   {stats.avgResponseTimeHours.toFixed(1)} {t('ticket.hours')}
                 </p>
@@ -228,7 +228,7 @@ export default function AdminTicketsPage() {
 
       {/* Filters */}
       <div className="bg-card rounded-lg shadow-sm border border-border p-3 mb-4">
-        <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-2 sm:gap-3">
+        <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-2 sm:gap-4">
           <Filter className="h-4 w-4 text-muted-foreground hidden sm:block" />
           
           <div className="flex-1 min-w-0 sm:min-w-[180px]">
@@ -286,30 +286,30 @@ export default function AdminTicketsPage() {
             <p className="text-sm text-muted-foreground">{t('ticket.noTicketsFound')}</p>
           </div>
         ) : (
-          <div className="space-y-4">
+          <div className="space-y-5">
             <div className="overflow-x-auto hidden md:block">
               <table className="w-full">
               <thead className="bg-muted border-b border-border">
                 <tr>
-                  <th className="px-3 py-2 text-left text-[10px] font-medium text-muted-foreground uppercase tracking-wider">
+                  <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                     {t('ticket.ticketNumber')}
                   </th>
-                  <th className="px-3 py-2 text-left text-[10px] font-medium text-muted-foreground uppercase tracking-wider">
+                  <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                     {t('ticket.customer')}
                   </th>
-                  <th className="px-3 py-2 text-left text-[10px] font-medium text-muted-foreground uppercase tracking-wider">
+                  <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                     {t('ticket.subject')}
                   </th>
-                  <th className="px-3 py-2 text-left text-[10px] font-medium text-muted-foreground uppercase tracking-wider">
+                  <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                     {t('ticket.status')}
                   </th>
-                  <th className="px-3 py-2 text-left text-[10px] font-medium text-muted-foreground uppercase tracking-wider">
+                  <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                     {t('ticket.priority')}
                   </th>
-                  <th className="px-3 py-2 text-left text-[10px] font-medium text-muted-foreground uppercase tracking-wider hidden lg:table-cell">
+                  <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider hidden lg:table-cell">
                     {t('ticket.messages')}
                   </th>
-                  <th className="px-3 py-2 text-left text-[10px] font-medium text-muted-foreground uppercase tracking-wider hidden lg:table-cell">
+                  <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider hidden lg:table-cell">
                     {t('ticket.created')}
                   </th>
                 </tr>
@@ -338,7 +338,7 @@ export default function AdminTicketsPage() {
                         </span>
                         {ticket.category && (
                           <span
-                            className="px-1.5 py-0.5 rounded text-[10px] font-medium text-foreground whitespace-nowrap"
+                            className="px-1.5 py-0.5 rounded text-xs font-medium text-foreground whitespace-nowrap"
                             style={{ backgroundColor: ticket.category.color }}
                           >
                             {ticket.category.name}
@@ -347,12 +347,12 @@ export default function AdminTicketsPage() {
                       </div>
                     </td>
                     <td className="px-3 py-2 whitespace-nowrap">
-                      <span className={`px-2 py-0.5 rounded-full text-[10px] font-medium ${getStatusColor(ticket.status)}`}>
+                      <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${getStatusColor(ticket.status)}`}>
                         {t(`ticket.status_${ticket.status}`)}
                       </span>
                     </td>
                     <td className="px-3 py-2 whitespace-nowrap">
-                      <span className={`px-2 py-0.5 rounded-full text-[10px] font-medium ${getPriorityColor(ticket.priority)}`}>
+                      <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${getPriorityColor(ticket.priority)}`}>
                         {t(`ticket.priority_${ticket.priority}`)}
                       </span>
                     </td>
@@ -390,7 +390,7 @@ export default function AdminTicketsPage() {
                       </span>
                       <p className="text-xs font-medium text-foreground mt-0.5 line-clamp-2">{ticket.subject}</p>
                     </div>
-                    <span className={`px-2 py-0.5 rounded-full text-[10px] font-medium whitespace-nowrap flex-shrink-0 ${getPriorityColor(ticket.priority)}`}>
+                    <span className={`px-2 py-0.5 rounded-full text-xs font-medium whitespace-nowrap flex-shrink-0 ${getPriorityColor(ticket.priority)}`}>
                       {t(`ticket.priority_${ticket.priority}`)}
                     </span>
                   </div>
@@ -413,11 +413,11 @@ export default function AdminTicketsPage() {
                     )}
                   </div>
                   <div className="flex items-center justify-between mt-2">
-                    <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
+                    <div className="flex items-center gap-1 text-xs text-muted-foreground">
                       <MessageSquare className="h-3 w-3" />
                       {ticket._count.messages}
                     </div>
-                    <span className="text-[10px] text-muted-foreground">
+                    <span className="text-xs text-muted-foreground">
                       {new Date(ticket.createdAt).toLocaleDateString('id-ID', {
                         day: 'numeric',
                         month: 'short',

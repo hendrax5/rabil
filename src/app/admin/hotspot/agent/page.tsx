@@ -255,15 +255,15 @@ export default function AgentPage() {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+          <h1 className="page-title flex items-center gap-2">
             <Users className="w-5 h-5 text-primary" />
             {t('agent.title')}
           </h1>
-          <p className="text-xs text-gray-500 dark:text-gray-400">{t('agent.subtitle')}</p>
+          <p className="page-subtitle">{t('agent.subtitle')}</p>
         </div>
         <div className="flex gap-2">
           <button
@@ -284,28 +284,28 @@ export default function AgentPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-3 gap-2">
-        <div className="bg-white dark:bg-gray-900 p-2.5 rounded-lg border border-gray-200 dark:border-gray-800">
+        <div className="bg-white dark:bg-gray-900 p-2.5 rounded-lg card-soft">
           <div className="flex items-center justify-between">
             <div>
-              <div className="text-[10px] font-medium text-gray-500 uppercase">{t('common.total')}</div>
+              <div className="text-xs font-medium text-gray-500 uppercase">{t('common.total')}</div>
               <div className="text-lg font-bold text-gray-900 dark:text-white">{agents.length}</div>
             </div>
             <Users className="w-4 h-4 text-blue-600" />
           </div>
         </div>
-        <div className="bg-white dark:bg-gray-900 p-2.5 rounded-lg border border-gray-200 dark:border-gray-800">
+        <div className="bg-white dark:bg-gray-900 p-2.5 rounded-lg card-soft">
           <div className="flex items-center justify-between">
             <div>
-              <div className="text-[10px] font-medium text-gray-500 uppercase">{t('common.active')}</div>
+              <div className="text-xs font-medium text-gray-500 uppercase">{t('common.active')}</div>
               <div className="text-lg font-bold text-green-600">{agents.filter((a) => a.isActive).length}</div>
             </div>
             <TrendingUp className="w-4 h-4 text-green-600" />
           </div>
         </div>
-        <div className="bg-white dark:bg-gray-900 p-2.5 rounded-lg border border-gray-200 dark:border-gray-800">
+        <div className="bg-white dark:bg-gray-900 p-2.5 rounded-lg card-soft">
           <div className="flex items-center justify-between">
             <div>
-              <div className="text-[10px] font-medium text-gray-500 uppercase">{t('agent.allTime')}</div>
+              <div className="text-xs font-medium text-gray-500 uppercase">{t('agent.allTime')}</div>
               <div className="text-sm font-bold text-purple-600">
                 {formatCurrency(agents.reduce((sum, a) => sum + a.stats.allTime.total, 0))}
               </div>
@@ -316,21 +316,21 @@ export default function AgentPage() {
       </div>
 
       {/* Table */}
-      <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 overflow-hidden">
+      <div className="card-soft overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="bg-gray-50 dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-700">
               <tr>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase">{t('common.name')}</th>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase hidden sm:table-cell">{t('common.phone')}</th>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase hidden md:table-cell">{t('agent.router')}</th>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase">{t('agent.balance')}</th>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase">
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">{t('common.name')}</th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase hidden sm:table-cell">{t('common.phone')}</th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase hidden md:table-cell">{t('agent.router')}</th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">{t('agent.balance')}</th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">
                   <div>{currentMonthName}</div>
                 </th>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase hidden lg:table-cell">{t('agent.allTime')}</th>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase">{t('common.status')}</th>
-                <th className="px-3 py-2 text-right text-[10px] font-medium text-gray-500 uppercase">{t('common.actions')}</th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase hidden lg:table-cell">{t('agent.allTime')}</th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">{t('common.status')}</th>
+                <th className="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase">{t('common.actions')}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
@@ -343,23 +343,23 @@ export default function AgentPage() {
                   <tr key={agent.id} className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
                     <td className="px-3 py-2">
                       <div className="font-medium text-xs text-gray-900 dark:text-white">{agent.name}</div>
-                      {agent.email && <div className="text-[10px] text-gray-500">{agent.email}</div>}
+                      {agent.email && <div className="text-xs text-gray-500 dark:text-zinc-400">{agent.email}</div>}
                     </td>
                     <td className="px-3 py-2 text-xs hidden sm:table-cell">{agent.phone}</td>
                     <td className="px-3 py-2 hidden md:table-cell">
                       {agent.router ? (
                         <div>
-                          <div className="font-medium text-[10px]">{agent.router.name}</div>
+                          <div className="font-medium text-xs">{agent.router.name}</div>
                           <div className="text-[9px] text-gray-500">{agent.router.nasname}</div>
                         </div>
                       ) : (
-                        <span className="text-[10px] text-gray-400 italic">{t('agent.notAssigned')}</span>
+                        <span className="text-xs text-gray-400 italic">{t('agent.notAssigned')}</span>
                       )}
                     </td>
                     <td className="px-3 py-2">
                       <div className="flex items-center gap-1">
                         <div>
-                          <div className="font-semibold text-[10px] text-green-600">{formatCurrency(agent.balance)}</div>
+                          <div className="font-semibold text-xs text-green-600">{formatCurrency(agent.balance)}</div>
                           {agent.minBalance > 0 && (
                             <div className="text-[9px] text-gray-400">Min: {formatCurrency(agent.minBalance)}</div>
                           )}
@@ -374,15 +374,15 @@ export default function AgentPage() {
                       </div>
                     </td>
                     <td className="px-3 py-2">
-                      <div className="font-medium text-[10px]">{formatCurrency(agent.stats.currentMonth.total)}</div>
+                      <div className="font-medium text-xs">{formatCurrency(agent.stats.currentMonth.total)}</div>
                       <div className="text-[9px] text-gray-500">{agent.stats.currentMonth.count} vcr</div>
                     </td>
                     <td className="px-3 py-2 hidden lg:table-cell">
-                      <div className="font-medium text-[10px]">{formatCurrency(agent.stats.allTime.total)}</div>
+                      <div className="font-medium text-xs">{formatCurrency(agent.stats.allTime.total)}</div>
                       <div className="text-[9px] text-gray-500">{agent.stats.allTime.count} vcr</div>
                     </td>
                     <td className="px-3 py-2">
-                      <span className={`px-1.5 py-0.5 rounded text-[10px] font-medium ${
+                      <span className={`px-1.5 py-0.5 rounded text-xs font-medium ${
                         agent.isActive
                           ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
                           : 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
@@ -426,7 +426,7 @@ export default function AgentPage() {
       {/* Add/Edit Dialog */}
       {isDialogOpen && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-          <div className="bg-white dark:bg-gray-900 rounded-lg shadow-xl max-w-sm w-full">
+          <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl max-w-sm w-full">
             <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-800">
               <h2 className="text-sm font-semibold text-gray-900 dark:text-white">
                 {editingAgent ? t('agent.editAgent') : t('agent.addAgent')}
@@ -434,7 +434,7 @@ export default function AgentPage() {
             </div>
             <form onSubmit={handleSubmit} className="p-4 space-y-3">
               <div>
-                <label className="block text-[10px] font-medium text-gray-700 dark:text-gray-300 mb-1">{t('common.name')} *</label>
+                <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">{t('common.name')} *</label>
                 <input
                   type="text"
                   value={formData.name}
@@ -445,7 +445,7 @@ export default function AgentPage() {
                 />
               </div>
               <div>
-                <label className="block text-[10px] font-medium text-gray-700 dark:text-gray-300 mb-1">{t('common.phone')} *</label>
+                <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">{t('common.phone')} *</label>
                 <input
                   type="tel"
                   value={formData.phone}
@@ -456,7 +456,7 @@ export default function AgentPage() {
                 />
               </div>
               <div>
-                <label className="block text-[10px] font-medium text-gray-700 dark:text-gray-300 mb-1">{t('common.email')}</label>
+                <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">{t('common.email')}</label>
                 <input
                   type="email"
                   value={formData.email}
@@ -466,7 +466,7 @@ export default function AgentPage() {
                 />
               </div>
               <div>
-                <label className="block text-[10px] font-medium text-gray-700 dark:text-gray-300 mb-1">{t('common.address')}</label>
+                <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">{t('common.address')}</label>
                 <textarea
                   value={formData.address}
                   onChange={(e) => setFormData({ ...formData, address: e.target.value })}
@@ -476,7 +476,7 @@ export default function AgentPage() {
                 />
               </div>
               <div>
-                <label className="block text-[10px] font-medium text-gray-700 dark:text-gray-300 mb-1">{t('agent.router')}/NAS</label>
+                <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">{t('agent.router')}/NAS</label>
                 <select
                   value={formData.routerId}
                   onChange={(e) => setFormData({ ...formData, routerId: e.target.value })}
@@ -508,7 +508,7 @@ export default function AgentPage() {
       {/* Delete Confirmation */}
       {deleteAgentId && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-          <div className="bg-white dark:bg-gray-900 rounded-lg shadow-xl max-w-sm w-full p-4">
+          <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl max-w-sm w-full p-4">
             <h2 className="text-sm font-semibold text-gray-900 dark:text-white">{t('agent.deleteAgent')}</h2>
             <p className="text-xs text-gray-600 dark:text-gray-400 mt-1 mb-4">
               {t('agent.deleteConfirm')}
@@ -522,7 +522,7 @@ export default function AgentPage() {
               </button>
               <button
                 onClick={handleDelete}
-                className="px-3 py-1.5 text-xs bg-red-600 text-white rounded-md hover:bg-red-700"
+                className="btn-premium bg-red-600 text-white hover:bg-red-700-md hover:bg-red-700"
               >
                 {t('common.delete')}
               </button>
@@ -534,11 +534,11 @@ export default function AgentPage() {
       {/* Balance Modal */}
       {balanceModalOpen && selectedAgentForBalance && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-          <div className="bg-white dark:bg-gray-900 rounded-lg shadow-xl max-w-sm w-full">
+          <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl max-w-sm w-full">
             <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between">
               <div>
                 <h2 className="text-sm font-semibold text-gray-900 dark:text-white">{t('agent.adjustBalance')}</h2>
-                <p className="text-[10px] text-gray-500">{selectedAgentForBalance.name}</p>
+                <p className="text-xs text-gray-500 dark:text-zinc-400">{selectedAgentForBalance.name}</p>
               </div>
               <button onClick={() => { setBalanceModalOpen(false); setSelectedAgentForBalance(null); }} className="p-1 hover:bg-gray-100 rounded">
                 <X className="w-4 h-4" />
@@ -546,7 +546,7 @@ export default function AgentPage() {
             </div>
             <div className="p-4 space-y-3">
               <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3">
-                <p className="text-[10px] text-gray-600 dark:text-gray-400">{t('agent.currentBalance')}</p>
+                <p className="text-xs text-gray-600 dark:text-gray-400">{t('agent.currentBalance')}</p>
                 <p className="text-lg font-bold text-blue-600">{formatCurrency(selectedAgentForBalance.balance)}</p>
               </div>
               <div className="grid grid-cols-2 gap-2">
@@ -570,7 +570,7 @@ export default function AgentPage() {
                 </button>
               </div>
               <div>
-                <label className="block text-[10px] font-medium text-gray-700 dark:text-gray-300 mb-1">{t('common.amount')} *</label>
+                <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">{t('common.amount')} *</label>
                 <input
                   type="number"
                   value={balanceAmount}
@@ -582,7 +582,7 @@ export default function AgentPage() {
                 />
               </div>
               <div>
-                <label className="block text-[10px] font-medium text-gray-700 dark:text-gray-300 mb-1">{t('common.note')}</label>
+                <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">{t('common.note')}</label>
                 <textarea
                   value={balanceNote}
                   onChange={(e) => setBalanceNote(e.target.value)}
@@ -629,11 +629,11 @@ export default function AgentPage() {
       {/* History Modal */}
       {historyModalOpen && selectedAgent && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-          <div className="bg-white dark:bg-gray-900 rounded-lg shadow-xl max-w-lg w-full max-h-[80vh] overflow-hidden flex flex-col">
+          <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl max-w-lg w-full max-h-[80vh] overflow-hidden flex flex-col">
             <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between">
               <div>
                 <h2 className="text-sm font-semibold text-gray-900 dark:text-white">{selectedAgent.name}</h2>
-                <p className="text-[10px] text-gray-500">{t('agent.salesHistory')}</p>
+                <p className="text-xs text-gray-500 dark:text-zinc-400">{t('agent.salesHistory')}</p>
               </div>
               <button onClick={() => { setHistoryModalOpen(false); setSelectedAgent(null); setSelectedMonthDetail(null); setMonthlyHistory([]); }} className="p-1 hover:bg-gray-100 rounded">
                 <X className="w-4 h-4" />
@@ -653,13 +653,13 @@ export default function AgentPage() {
                     <p className="text-xs font-semibold">
                       {new Date(selectedMonthDetail.year, selectedMonthDetail.month).toLocaleString('id-ID', { month: 'long', year: 'numeric' })}
                     </p>
-                    <div className="grid grid-cols-2 gap-3 mt-2">
+                    <div className="grid grid-cols-2 gap-4 mt-2">
                       <div>
-                        <p className="text-[10px] text-gray-500">{t('agent.totalSales')}</p>
+                        <p className="text-xs text-gray-500 dark:text-zinc-400">{t('agent.totalSales')}</p>
                         <p className="text-sm font-bold">{formatCurrency(selectedMonthDetail.total)}</p>
                       </div>
                       <div>
-                        <p className="text-[10px] text-gray-500">{t('agent.vouchers')}</p>
+                        <p className="text-xs text-gray-500 dark:text-zinc-400">{t('agent.vouchers')}</p>
                         <p className="text-sm font-bold">{selectedMonthDetail.count}</p>
                       </div>
                     </div>
@@ -670,7 +670,7 @@ export default function AgentPage() {
                         <div className="flex justify-between items-start">
                           <div>
                             <p className="font-medium text-xs">{sale.voucherCode}</p>
-                            <p className="text-[10px] text-gray-500">{sale.profileName}</p>
+                            <p className="text-xs text-gray-500 dark:text-zinc-400">{sale.profileName}</p>
                             <p className="text-[9px] text-gray-400 mt-0.5">{formatDate(sale.createdAt)}</p>
                           </div>
                           <p className="font-semibold text-xs text-green-600">{formatCurrency(sale.amount)}</p>
@@ -693,7 +693,7 @@ export default function AgentPage() {
                         <div className="flex justify-between items-center">
                           <div>
                             <p className="font-medium text-xs">{month.monthName}</p>
-                            <p className="text-[10px] text-gray-500">{month.count} vouchers</p>
+                            <p className="text-xs text-gray-500 dark:text-zinc-400">{month.count} vouchers</p>
                           </div>
                           <div className="text-right">
                             <p className="font-semibold text-xs text-green-600">{formatCurrency(month.total)}</p>

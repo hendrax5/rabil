@@ -64,40 +64,40 @@ export default function PPPoEProfilesPage() {
   if (loading) { return <div className="flex items-center justify-center h-64"><p className="text-xs text-gray-500">Loading...</p></div>; }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-lg font-semibold text-gray-900 dark:text-gray-100">{t('pppoe.profilesTitle')}</h1>
-          <p className="text-xs text-gray-500 dark:text-gray-400">{t('pppoe.profilesSubtitle')}</p>
+          <h1 className="page-title">{t('pppoe.profilesTitle')}</h1>
+          <p className="page-subtitle">{t('pppoe.profilesSubtitle')}</p>
         </div>
         <button onClick={() => { resetForm(); setEditingProfile(null); setIsDialogOpen(true); }} className="inline-flex items-center px-3 py-1.5 text-xs bg-primary hover:bg-primary/90 text-white rounded"><Plus className="h-3 w-3 mr-1" />{t('pppoe.addProfile')}</button>
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-3 gap-3">
-        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-3">
+      <div className="grid grid-cols-3 gap-4">
+        <div className="card-soft p-5">
           <div className="flex items-center justify-between">
-            <div><p className="text-[10px] text-gray-500 uppercase">{t('common.total')}</p><p className="text-base font-bold text-teal-600">{profiles.length}</p></div>
+            <div><p className="text-xs text-gray-500 dark:text-zinc-400 uppercase">{t('common.total')}</p><p className="text-base font-bold text-teal-600">{profiles.length}</p></div>
             <FileText className="h-5 w-5 text-teal-600" />
           </div>
         </div>
-        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-3">
+        <div className="card-soft p-5">
           <div className="flex items-center justify-between">
-            <div><p className="text-[10px] text-gray-500 uppercase">{t('pppoe.active')}</p><p className="text-base font-bold text-green-600">{profiles.filter(p => p.isActive).length}</p></div>
+            <div><p className="text-xs text-gray-500 dark:text-zinc-400 uppercase">{t('pppoe.active')}</p><p className="text-base font-bold text-green-600">{profiles.filter(p => p.isActive).length}</p></div>
             <CheckCircle2 className="h-5 w-5 text-green-600" />
           </div>
         </div>
-        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-3">
+        <div className="card-soft p-5">
           <div className="flex items-center justify-between">
-            <div><p className="text-[10px] text-gray-500 uppercase">{t('pppoe.synced')}</p><p className="text-base font-bold text-purple-600">{profiles.filter(p => p.syncedToRadius).length}</p></div>
+            <div><p className="text-xs text-gray-500 dark:text-zinc-400 uppercase">{t('pppoe.synced')}</p><p className="text-base font-bold text-purple-600">{profiles.filter(p => p.syncedToRadius).length}</p></div>
             <CheckCircle2 className="h-5 w-5 text-purple-600" />
           </div>
         </div>
       </div>
 
       {/* Table */}
-      <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 overflow-hidden">
+      <div className="card-soft overflow-hidden">
         <div className="px-3 py-2 border-b dark:border-gray-800">
           <span className="text-xs font-medium">{t('pppoe.profilesList')}</span>
         </div>
@@ -105,13 +105,13 @@ export default function PPPoEProfilesPage() {
           <table className="w-full">
             <thead className="bg-gray-50 dark:bg-gray-800/50">
               <tr>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase">{t('common.name')}</th>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase hidden md:table-cell">Group</th>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase">{t('hotspot.price')}</th>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase hidden sm:table-cell">{t('hotspot.speed')}</th>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase hidden lg:table-cell">{t('pppoe.validity')}</th>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase">{t('common.status')}</th>
-                <th className="px-3 py-2 text-right text-[10px] font-medium text-gray-500 uppercase"></th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">{t('common.name')}</th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase hidden md:table-cell">Group</th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">{t('hotspot.price')}</th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase hidden sm:table-cell">{t('hotspot.speed')}</th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase hidden lg:table-cell">{t('pppoe.validity')}</th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">{t('common.status')}</th>
+                <th className="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase"></th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
@@ -120,7 +120,7 @@ export default function PPPoEProfilesPage() {
               ) : (
                 profiles.map((profile) => (
                   <tr key={profile.id} className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
-                    <td className="px-3 py-2"><p className="font-medium text-xs">{profile.name}</p>{profile.description && <p className="text-[10px] text-gray-500 truncate max-w-[120px]">{profile.description}</p>}</td>
+                    <td className="px-3 py-2"><p className="font-medium text-xs">{profile.name}</p>{profile.description && <p className="text-xs text-gray-500 dark:text-zinc-400 truncate max-w-[120px]">{profile.description}</p>}</td>
                     <td className="px-3 py-2 font-mono text-xs hidden md:table-cell">{profile.groupName}</td>
                     <td className="px-3 py-2 text-xs">Rp {profile.price.toLocaleString('id-ID')}</td>
                     <td className="px-3 py-2 font-mono text-xs hidden sm:table-cell">{profile.downloadSpeed}M/{profile.uploadSpeed}M</td>
@@ -148,33 +148,33 @@ export default function PPPoEProfilesPage() {
 
       {/* Dialog */}
       {isDialogOpen && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white dark:bg-gray-900 rounded-lg shadow-xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+          <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
             <div className="px-4 py-3 border-b dark:border-gray-800">
               <h2 className="text-sm font-semibold">{editingProfile ? t('pppoe.editProfile') : t('pppoe.addProfile')}</h2>
-              <p className="text-[10px] text-gray-500">{editingProfile ? t('pppoe.updateConfig') : t('pppoe.createProfile')}</p>
+              <p className="text-xs text-gray-500 dark:text-zinc-400">{editingProfile ? t('pppoe.updateConfig') : t('pppoe.createProfile')}</p>
             </div>
             <form onSubmit={handleSubmit} className="p-4 space-y-3">
-              <div className="grid grid-cols-2 gap-3">
-                <div><label className="block text-[10px] font-medium mb-1">{t('common.name')} *</label><input type="text" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} required className="w-full px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800" /></div>
-                <div><label className="block text-[10px] font-medium mb-1">{t('pppoe.radiusGroup')} *</label><input type="text" value={formData.groupName} onChange={(e) => setFormData({ ...formData, groupName: e.target.value })} required className="w-full px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800" /><p className="text-[9px] text-gray-500 mt-0.5">{t('pppoe.matchMikrotik')}</p></div>
+              <div className="grid grid-cols-2 gap-4">
+                <div><label className="block text-xs font-medium mb-1.5">{t('common.name')} *</label><input type="text" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} required className="w-full input-premium" /></div>
+                <div><label className="block text-xs font-medium mb-1.5">{t('pppoe.radiusGroup')} *</label><input type="text" value={formData.groupName} onChange={(e) => setFormData({ ...formData, groupName: e.target.value })} required className="w-full input-premium" /><p className="text-[9px] text-gray-500 mt-0.5">{t('pppoe.matchMikrotik')}</p></div>
               </div>
-              <div className="grid grid-cols-2 gap-3">
-                <div><label className="block text-[10px] font-medium mb-1">{t('pppoe.priceIdr')} *</label><input type="number" value={formData.price} onChange={(e) => setFormData({ ...formData, price: e.target.value })} required className="w-full px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800" /></div>
-                <div><label className="block text-[10px] font-medium mb-1">{t('pppoe.validity')} *</label>
+              <div className="grid grid-cols-2 gap-4">
+                <div><label className="block text-xs font-medium mb-1.5">{t('pppoe.priceIdr')} *</label><input type="number" value={formData.price} onChange={(e) => setFormData({ ...formData, price: e.target.value })} required className="w-full input-premium" /></div>
+                <div><label className="block text-xs font-medium mb-1.5">{t('pppoe.validity')} *</label>
                   <div className="flex gap-1">
-                    <input type="number" min="1" value={formData.validityValue} onChange={(e) => setFormData({ ...formData, validityValue: e.target.value })} required className="w-16 px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800" />
-                    <select value={formData.validityUnit} onChange={(e) => setFormData({ ...formData, validityUnit: e.target.value as 'DAYS' | 'MONTHS' })} className="flex-1 px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800"><option value="DAYS">{t('pppoe.days')}</option><option value="MONTHS">{t('pppoe.months')}</option></select>
+                    <input type="number" min="1" value={formData.validityValue} onChange={(e) => setFormData({ ...formData, validityValue: e.target.value })} required className="w-16 input-premium" />
+                    <select value={formData.validityUnit} onChange={(e) => setFormData({ ...formData, validityUnit: e.target.value as 'DAYS' | 'MONTHS' })} className="flex-1 input-premium"><option value="DAYS">{t('pppoe.days')}</option><option value="MONTHS">{t('pppoe.months')}</option></select>
                   </div>
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-3">
-                <div><label className="block text-[10px] font-medium mb-1">{t('pppoe.downloadMbps')} *</label><input type="number" min="1" value={formData.downloadSpeed} onChange={(e) => setFormData({ ...formData, downloadSpeed: e.target.value })} required className="w-full px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800" /></div>
-                <div><label className="block text-[10px] font-medium mb-1">{t('pppoe.uploadMbps')} *</label><input type="number" min="1" value={formData.uploadSpeed} onChange={(e) => setFormData({ ...formData, uploadSpeed: e.target.value })} required className="w-full px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800" /></div>
+              <div className="grid grid-cols-2 gap-4">
+                <div><label className="block text-xs font-medium mb-1.5">{t('pppoe.downloadMbps')} *</label><input type="number" min="1" value={formData.downloadSpeed} onChange={(e) => setFormData({ ...formData, downloadSpeed: e.target.value })} required className="w-full input-premium" /></div>
+                <div><label className="block text-xs font-medium mb-1.5">{t('pppoe.uploadMbps')} *</label><input type="number" min="1" value={formData.uploadSpeed} onChange={(e) => setFormData({ ...formData, uploadSpeed: e.target.value })} required className="w-full input-premium" /></div>
               </div>
-              <div><label className="block text-[10px] font-medium mb-1">{t('common.description')}</label><input type="text" value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} className="w-full px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800" /></div>
+              <div><label className="block text-xs font-medium mb-1.5">{t('common.description')}</label><input type="text" value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} className="w-full input-premium" /></div>
               <div className="flex justify-end gap-2 pt-3 border-t dark:border-gray-800">
-                <button type="button" onClick={() => { setIsDialogOpen(false); setEditingProfile(null); resetForm(); }} className="px-3 py-1.5 text-xs border dark:border-gray-700 rounded">{t('common.cancel')}</button>
+                <button type="button" onClick={() => { setIsDialogOpen(false); setEditingProfile(null); resetForm(); }} className="btn-premium border border-gray-200 dark:border-zinc-700 text-gray-600">{t('common.cancel')}</button>
                 <button type="submit" className="px-3 py-1.5 text-xs bg-primary text-white rounded">{editingProfile ? t('common.update') : t('common.create')}</button>
               </div>
             </form>
@@ -184,13 +184,13 @@ export default function PPPoEProfilesPage() {
 
       {/* Delete Dialog */}
       {deleteProfileId && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white dark:bg-gray-900 rounded-lg shadow-xl max-w-sm w-full p-4">
-            <h2 className="text-sm font-semibold mb-1">{t('pppoe.deleteProfile')}</h2>
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+          <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl max-w-sm w-full p-4">
+            <h2 className="text-base font-semibold mb-1">{t('pppoe.deleteProfile')}</h2>
             <p className="text-xs text-gray-500 mb-4">{t('pppoe.deleteProfileConfirm')}</p>
             <div className="flex justify-end gap-2">
-              <button onClick={() => setDeleteProfileId(null)} className="px-3 py-1.5 text-xs border dark:border-gray-700 rounded">{t('common.cancel')}</button>
-              <button onClick={handleDelete} className="px-3 py-1.5 text-xs bg-red-600 text-white rounded">{t('common.delete')}</button>
+              <button onClick={() => setDeleteProfileId(null)} className="btn-premium border border-gray-200 dark:border-zinc-700 text-gray-600">{t('common.cancel')}</button>
+              <button onClick={handleDelete} className="btn-premium bg-red-600 text-white hover:bg-red-700">{t('common.delete')}</button>
             </div>
           </div>
         </div>

@@ -328,15 +328,15 @@ export default function InvoicesPage() {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'PAID':
-        return <Badge className="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 text-[10px] px-1.5 py-0.5">{t('invoices.paid')}</Badge>;
+        return <Badge className="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 text-xs px-1.5 py-0.5">{t('invoices.paid')}</Badge>;
       case 'PENDING':
-        return <Badge className="bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400 text-[10px] px-1.5 py-0.5">{t('invoices.pending')}</Badge>;
+        return <Badge className="bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400 text-xs px-1.5 py-0.5">{t('invoices.pending')}</Badge>;
       case 'OVERDUE':
-        return <Badge className="bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 text-[10px] px-1.5 py-0.5">{t('invoices.overdue')}</Badge>;
+        return <Badge className="bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 text-xs px-1.5 py-0.5">{t('invoices.overdue')}</Badge>;
       case 'CANCELLED':
-        return <Badge className="bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400 text-[10px] px-1.5 py-0.5">{t('invoices.cancelled')}</Badge>;
+        return <Badge className="bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400 text-xs px-1.5 py-0.5">{t('invoices.cancelled')}</Badge>;
       default:
-        return <Badge className="text-[10px] px-1.5 py-0.5">{status}</Badge>;
+        return <Badge className="text-xs px-1.5 py-0.5">{status}</Badge>;
     }
   };
 
@@ -361,12 +361,12 @@ export default function InvoicesPage() {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-lg font-semibold text-gray-900 dark:text-white">{t('invoices.title')}</h1>
-          <p className="text-xs text-gray-500 dark:text-gray-400">{t('invoices.monthlyBilling')}</p>
+          <h1 className="page-title">{t('invoices.title')}</h1>
+          <p className="page-subtitle">{t('invoices.monthlyBilling')}</p>
         </div>
         <div className="flex gap-1.5 flex-wrap">
           <button onClick={handleExportExcel} className="inline-flex items-center px-2 py-1.5 text-xs border border-green-500 text-green-600 rounded hover:bg-green-50 dark:hover:bg-green-900/20"><Download className="h-3 w-3 mr-1" />Excel</button>
@@ -379,11 +379,11 @@ export default function InvoicesPage() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-3">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="card-soft p-5">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-[10px] font-medium text-gray-500 uppercase">{t('common.total')}</p>
+              <p className="text-xs font-medium text-gray-500 uppercase">{t('common.total')}</p>
               <p className="text-lg font-bold text-gray-900 dark:text-white">{stats.total}</p>
             </div>
             <div className="p-2 rounded-md bg-teal-50 dark:bg-teal-900/20 text-teal-600">
@@ -391,34 +391,34 @@ export default function InvoicesPage() {
             </div>
           </div>
         </div>
-        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-3">
+        <div className="card-soft p-5">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-[10px] font-medium text-gray-500 uppercase">{t('invoices.pending')}</p>
+              <p className="text-xs font-medium text-gray-500 uppercase">{t('invoices.pending')}</p>
               <p className="text-lg font-bold text-gray-900 dark:text-white">{stats.unpaid}</p>
-              <p className="text-[10px] text-gray-500">{formatCurrency(Number(stats.totalUnpaidAmount))}</p>
+              <p className="text-xs text-gray-500 dark:text-zinc-400">{formatCurrency(Number(stats.totalUnpaidAmount))}</p>
             </div>
             <div className="p-2 rounded-md bg-red-50 dark:bg-red-900/20 text-red-600">
               <Clock className="w-4 h-4" />
             </div>
           </div>
         </div>
-        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-3">
+        <div className="card-soft p-5">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-[10px] font-medium text-gray-500 uppercase">{t('invoices.paid')}</p>
+              <p className="text-xs font-medium text-gray-500 uppercase">{t('invoices.paid')}</p>
               <p className="text-lg font-bold text-gray-900 dark:text-white">{stats.paid}</p>
-              <p className="text-[10px] text-gray-500">{formatCurrency(Number(stats.totalPaidAmount))}</p>
+              <p className="text-xs text-gray-500 dark:text-zinc-400">{formatCurrency(Number(stats.totalPaidAmount))}</p>
             </div>
             <div className="p-2 rounded-md bg-green-50 dark:bg-green-900/20 text-green-600">
               <CheckCircle className="w-4 h-4" />
             </div>
           </div>
         </div>
-        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-3">
+        <div className="card-soft p-5">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-[10px] font-medium text-gray-500 uppercase">{t('invoices.overdue')}</p>
+              <p className="text-xs font-medium text-gray-500 uppercase">{t('invoices.overdue')}</p>
               <p className="text-lg font-bold text-gray-900 dark:text-white">{stats.overdue}</p>
             </div>
             <div className="p-2 rounded-md bg-yellow-50 dark:bg-yellow-900/20 text-yellow-600">
@@ -429,7 +429,7 @@ export default function InvoicesPage() {
       </div>
 
       {/* Invoice List */}
-      <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800">
+      <div className="card-soft">
         {/* Tabs & Search */}
         <div className="p-3 border-b border-gray-100 dark:border-gray-800 flex flex-col sm:flex-row gap-2 sm:items-center justify-between">
           <div className="flex gap-1">
@@ -467,14 +467,14 @@ export default function InvoicesPage() {
         <div className="overflow-x-auto">
           <Table>
             <TableHeader>
-              <TableRow className="text-[10px]">
-                <TableHead className="text-[10px] py-2">{t('invoices.invoiceNumber')}</TableHead>
-                <TableHead className="text-[10px] py-2">{t('invoices.customer')}</TableHead>
-                <TableHead className="text-[10px] py-2 hidden md:table-cell">{t('nav.profile')}</TableHead>
-                <TableHead className="text-[10px] py-2 text-right">{t('invoices.amount')}</TableHead>
-                <TableHead className="text-[10px] py-2">{t('invoices.status')}</TableHead>
-                <TableHead className="text-[10px] py-2 hidden sm:table-cell">{t('invoices.dueDate')}</TableHead>
-                <TableHead className="text-[10px] py-2 text-right">{t('common.actions')}</TableHead>
+              <TableRow className="text-xs">
+                <TableHead className="text-xs py-2">{t('invoices.invoiceNumber')}</TableHead>
+                <TableHead className="text-xs py-2">{t('invoices.customer')}</TableHead>
+                <TableHead className="text-xs py-2 hidden md:table-cell">{t('nav.profile')}</TableHead>
+                <TableHead className="text-xs py-2 text-right">{t('invoices.amount')}</TableHead>
+                <TableHead className="text-xs py-2">{t('invoices.status')}</TableHead>
+                <TableHead className="text-xs py-2 hidden sm:table-cell">{t('invoices.dueDate')}</TableHead>
+                <TableHead className="text-xs py-2 text-right">{t('common.actions')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -488,15 +488,15 @@ export default function InvoicesPage() {
               ) : (
                 filteredInvoices.map((invoice) => (
                   <TableRow key={invoice.id} className="text-xs">
-                    <TableCell className="py-2 font-mono text-[10px]">{invoice.invoiceNumber}</TableCell>
+                    <TableCell className="py-2 font-mono text-xs">{invoice.invoiceNumber}</TableCell>
                     <TableCell className="py-2">
                       <div className="font-medium text-xs truncate max-w-[120px]">{invoice.user?.name || invoice.customerName || 'Deleted'}</div>
-                      <div className="text-[10px] text-gray-500 truncate">{invoice.user?.phone || invoice.customerPhone || '-'}</div>
+                      <div className="text-xs text-gray-500 dark:text-zinc-400 truncate">{invoice.user?.phone || invoice.customerPhone || '-'}</div>
                     </TableCell>
-                    <TableCell className="py-2 hidden md:table-cell text-[10px] text-gray-500">{invoice.user?.profile?.name || '-'}</TableCell>
+                    <TableCell className="py-2 hidden md:table-cell text-xs text-gray-500 dark:text-zinc-400">{invoice.user?.profile?.name || '-'}</TableCell>
                     <TableCell className="py-2 text-right font-medium text-xs">{formatCurrency(Number(invoice.amount))}</TableCell>
                     <TableCell className="py-2">{getStatusBadge(invoice.status)}</TableCell>
-                    <TableCell className="py-2 hidden sm:table-cell text-[10px] text-gray-500">{formatDate(invoice.dueDate)}</TableCell>
+                    <TableCell className="py-2 hidden sm:table-cell text-xs text-gray-500 dark:text-zinc-400">{formatDate(invoice.dueDate)}</TableCell>
                     <TableCell className="py-2 text-right">
                       <div className="flex items-center justify-end gap-1">
                         {invoice.paymentLink && (
@@ -516,7 +516,7 @@ export default function InvoicesPage() {
                           </button>
                         )}
                         {(invoice.status === 'PENDING' || invoice.status === 'OVERDUE') && (
-                          <button onClick={() => handleMarkAsPaid(invoice)} className="px-1.5 py-0.5 text-[10px] font-medium bg-primary text-white rounded hover:bg-primary/90">
+                          <button onClick={() => handleMarkAsPaid(invoice)} className="px-1.5 py-0.5 text-xs font-medium bg-primary text-white rounded hover:bg-primary/90">
                             {t('invoices.paid')}
                           </button>
                         )}
@@ -542,50 +542,50 @@ export default function InvoicesPage() {
           </DialogHeader>
           {selectedInvoice && (
             <div className="space-y-3 text-xs">
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <p className="text-[10px] text-gray-500">{t('invoices.invoiceNumber')}</p>
+                  <p className="text-xs text-gray-500 dark:text-zinc-400">{t('invoices.invoiceNumber')}</p>
                   <p className="font-mono font-medium">{selectedInvoice.invoiceNumber}</p>
                 </div>
                 <div>
-                  <p className="text-[10px] text-gray-500">{t('invoices.status')}</p>
+                  <p className="text-xs text-gray-500 dark:text-zinc-400">{t('invoices.status')}</p>
                   <div className="mt-0.5">{getStatusBadge(selectedInvoice.status)}</div>
                 </div>
               </div>
               <div className="border-t pt-3 dark:border-gray-800">
-                <p className="text-[10px] text-gray-500">{t('invoices.customer')}</p>
+                <p className="text-xs text-gray-500 dark:text-zinc-400">{t('invoices.customer')}</p>
                 <p className="font-medium">{selectedInvoice.user?.name || selectedInvoice.customerName || 'Deleted'}</p>
                 <p className="text-gray-500">{selectedInvoice.user?.phone || selectedInvoice.customerPhone || '-'}</p>
               </div>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <p className="text-[10px] text-gray-500">{t('nav.profile')}</p>
+                  <p className="text-xs text-gray-500 dark:text-zinc-400">{t('nav.profile')}</p>
                   <p>{selectedInvoice.user?.profile?.name || '-'}</p>
                 </div>
                 <div>
-                  <p className="text-[10px] text-gray-500">{t('invoices.amount')}</p>
+                  <p className="text-xs text-gray-500 dark:text-zinc-400">{t('invoices.amount')}</p>
                   <p className="text-base font-bold text-green-600">{formatCurrency(Number(selectedInvoice.amount))}</p>
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <p className="text-[10px] text-gray-500">{t('invoices.createdAt')}</p>
+                  <p className="text-xs text-gray-500 dark:text-zinc-400">{t('invoices.createdAt')}</p>
                   <p>{formatDate(selectedInvoice.createdAt)}</p>
                 </div>
                 <div>
-                  <p className="text-[10px] text-gray-500">{t('invoices.dueDate')}</p>
+                  <p className="text-xs text-gray-500 dark:text-zinc-400">{t('invoices.dueDate')}</p>
                   <p>{formatDate(selectedInvoice.dueDate)}</p>
                 </div>
               </div>
               {selectedInvoice.paymentLink && (
                 <div className="border-t pt-3 dark:border-gray-800">
-                  <p className="text-[10px] text-gray-500 mb-1.5">{t('invoices.paymentLink')}</p>
+                  <p className="text-xs text-gray-500 dark:text-zinc-400 mb-1.5">{t('invoices.paymentLink')}</p>
                   <div className="flex items-center gap-1">
                     <input
                       type="text"
                       value={selectedInvoice.paymentLink}
                       readOnly
-                      className="flex-1 px-2 py-1.5 text-[10px] bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded font-mono truncate"
+                      className="flex-1 px-2 py-1.5 text-xs bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded font-mono truncate"
                     />
                     <button onClick={() => handleCopyPaymentLink(selectedInvoice)} className="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded">
                       {copiedId === selectedInvoice.id ? <Check className="h-3.5 w-3.5 text-green-600" /> : <Copy className="h-3.5 w-3.5" />}
@@ -613,15 +613,15 @@ export default function InvoicesPage() {
           </DialogHeader>
           <form onSubmit={confirmPayment} className="space-y-3">
             <div className="text-xs">
-              <p className="text-[10px] text-gray-500">{t('invoices.customer')}</p>
+              <p className="text-xs text-gray-500 dark:text-zinc-400">{t('invoices.customer')}</p>
               <p className="font-medium">{selectedInvoice?.user?.name || selectedInvoice?.customerName || 'Deleted'}</p>
             </div>
             <div className="text-xs">
-              <p className="text-[10px] text-gray-500">{t('invoices.amount')}</p>
+              <p className="text-xs text-gray-500 dark:text-zinc-400">{t('invoices.amount')}</p>
               <p className="text-base font-bold">{formatCurrency(Number(selectedInvoice?.amount || 0))}</p>
             </div>
             <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-md p-2.5">
-              <p className="text-[10px] text-blue-800 dark:text-blue-300">
+              <p className="text-xs text-blue-800 dark:text-blue-300">
                 ℹ️ {t('invoices.expiryExtendedNote')}
               </p>
             </div>

@@ -108,12 +108,12 @@ export default function EVoucherPage() {
                   >
                     <div className="flex justify-between items-start mb-2">
                       <div className="flex-1">
-                        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 bg-gray-100 text-[10px] font-medium rounded mb-1.5">
+                        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 bg-gray-100 text-xs font-medium rounded mb-1.5">
                           <Clock className="w-2.5 h-2.5" />
                           {formatValidity(profile.validityValue, profile.validityUnit)}
                         </span>
                         <h3 className="text-sm font-bold text-gray-900 line-clamp-1">{profile.name}</h3>
-                        <div className="flex items-center text-[10px] text-gray-500 mt-0.5">
+                        <div className="flex items-center text-xs text-gray-500 mt-0.5">
                           <Zap className="w-2.5 h-2.5 mr-0.5 text-teal-600" />
                           {profile.downloadSpeed}/{profile.uploadSpeed} Mbps
                         </div>
@@ -124,10 +124,10 @@ export default function EVoucherPage() {
                     </div>
                     <div className="pt-2 border-t flex justify-between items-center">
                       <div>
-                        <p className="text-[10px] text-gray-500">Harga</p>
+                        <p className="text-xs text-gray-500">Harga</p>
                         <p className="text-sm font-bold text-teal-600">{formatCurrency(profile.sellingPrice)}</p>
                       </div>
-                      <button className={`px-2 py-1 text-[10px] font-medium rounded ${
+                      <button className={`px-2 py-1 text-xs font-medium rounded ${
                         selectedProfile?.id === profile.id 
                           ? 'bg-teal-600 text-white' 
                           : 'border border-gray-300 text-gray-600 hover:bg-gray-50'
@@ -153,26 +153,26 @@ export default function EVoucherPage() {
               <div className="p-3 space-y-3">
                 {selectedProfile ? (
                   <div className="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-lg p-2.5">
-                    <p className="text-[10px] font-semibold text-gray-500 uppercase mb-1">Paket Dipilih</p>
+                    <p className="text-xs font-semibold text-gray-500 uppercase mb-1">Paket Dipilih</p>
                     <p className="text-sm font-bold text-gray-900">{selectedProfile.name}</p>
-                    <p className="text-[10px] text-gray-600 mt-0.5">
+                    <p className="text-xs text-gray-600 mt-0.5">
                       {formatValidity(selectedProfile.validityValue, selectedProfile.validityUnit)} • {selectedProfile.downloadSpeed}/{selectedProfile.uploadSpeed} Mbps
                     </p>
                     <div className="pt-2 mt-2 border-t border-teal-200 flex justify-between items-baseline">
-                      <span className="text-[10px] text-gray-600">Total Bayar</span>
+                      <span className="text-xs text-gray-600">Total Bayar</span>
                       <span className="text-lg font-bold text-teal-600">{formatCurrency(selectedProfile.sellingPrice)}</span>
                     </div>
                   </div>
                 ) : (
                   <div className="bg-gray-50 rounded-lg p-4 text-center border-2 border-dashed border-gray-300">
                     <Wifi className="w-6 h-6 text-gray-400 mx-auto mb-1" />
-                    <p className="text-[10px] text-gray-500">Pilih paket terlebih dahulu</p>
+                    <p className="text-xs text-gray-500">Pilih paket terlebih dahulu</p>
                   </div>
                 )}
 
                 <form onSubmit={handlePurchase} className="space-y-3">
                   <div>
-                    <label className="flex items-center gap-1 text-[11px] font-medium text-gray-700 mb-1">
+                    <label className="flex items-center gap-1 text-xs font-medium text-gray-700 mb-1">
                       <User className="w-3 h-3" /> Nama Lengkap *
                     </label>
                     <input
@@ -186,7 +186,7 @@ export default function EVoucherPage() {
                   </div>
 
                   <div>
-                    <label className="flex items-center gap-1 text-[11px] font-medium text-gray-700 mb-1">
+                    <label className="flex items-center gap-1 text-xs font-medium text-gray-700 mb-1">
                       <Phone className="w-3 h-3" /> Nomor WhatsApp *
                     </label>
                     <input
@@ -197,7 +197,7 @@ export default function EVoucherPage() {
                       placeholder="08123456789"
                       className="w-full px-2.5 py-1.5 text-sm border border-gray-300 rounded-lg focus:ring-1 focus:ring-teal-500"
                     />
-                    <p className="text-[10px] text-gray-500 mt-0.5">Kode voucher akan dikirim ke nomor ini</p>
+                    <p className="text-xs text-gray-500 mt-0.5">Kode voucher akan dikirim ke nomor ini</p>
                   </div>
 
                   <button
@@ -212,7 +212,7 @@ export default function EVoucherPage() {
                     )}
                   </button>
 
-                  <p className="text-[10px] text-center text-gray-500">
+                  <p className="text-xs text-center text-gray-500">
                     Dengan melanjutkan, Anda menyetujui syarat & ketentuan
                   </p>
                 </form>
@@ -224,7 +224,7 @@ export default function EVoucherPage() {
 
       {/* Footer */}
       <div className="mt-8 py-4 border-t border-gray-200">
-        <p className="text-center text-[10px] text-gray-500">Powered by NexaRadius</p>
+        <p className="text-center text-xs text-gray-500">Powered by NexaRadius</p>
       </div>
     </div>
   );

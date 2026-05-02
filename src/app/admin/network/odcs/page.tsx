@@ -175,15 +175,15 @@ export default function ODCsPage() {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+          <h1 className="page-title flex items-center gap-2">
             <HardDrive className="h-5 w-5 text-orange-600" />
             ODC Management
           </h1>
-          <p className="text-xs text-gray-500 dark:text-gray-400">
+          <p className="page-subtitle">
             Manage Optical Distribution Cabinets (ODC) for FTTH network
           </p>
         </div>
@@ -197,20 +197,20 @@ export default function ODCsPage() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-3 gap-3">
-        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-3">
+      <div className="grid grid-cols-3 gap-4">
+        <div className="card-soft p-5">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-[10px] text-gray-500 uppercase">Total ODCs</p>
+              <p className="text-xs text-gray-500 dark:text-zinc-400 uppercase">Total ODCs</p>
               <p className="text-base font-bold text-orange-600">{odcs.length}</p>
             </div>
             <HardDrive className="h-5 w-5 text-orange-600" />
           </div>
         </div>
-        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-3">
+        <div className="card-soft p-5">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-[10px] text-gray-500 uppercase">Active</p>
+              <p className="text-xs text-gray-500 dark:text-zinc-400 uppercase">Active</p>
               <p className="text-base font-bold text-green-600">
                 {odcs.filter(o => o.status === 'active').length}
               </p>
@@ -218,10 +218,10 @@ export default function ODCsPage() {
             <Activity className="h-5 w-5 text-green-600" />
           </div>
         </div>
-        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-3">
+        <div className="card-soft p-5">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-[10px] text-gray-500 uppercase">Total ODPs</p>
+              <p className="text-xs text-gray-500 dark:text-zinc-400 uppercase">Total ODPs</p>
               <p className="text-base font-bold text-blue-600">
                 {odcs.reduce((sum, o) => sum + (o._count?.odps || 0), 0)}
               </p>
@@ -232,9 +232,9 @@ export default function ODCsPage() {
       </div>
 
       {/* Filter */}
-      <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-3">
-        <div className="flex items-center gap-3">
-          <label className="text-[10px] font-medium text-gray-500">Filter by OLT:</label>
+      <div className="card-soft p-5">
+        <div className="flex items-center gap-4">
+          <label className="text-xs font-medium text-gray-500">Filter by OLT:</label>
           <select
             value={filterOlt}
             onChange={(e) => setFilterOlt(e.target.value)}
@@ -245,14 +245,14 @@ export default function ODCsPage() {
               <option key={olt.id} value={olt.id}>{olt.name}</option>
             ))}
           </select>
-          <span className="text-[10px] text-gray-500">
+          <span className="text-xs text-gray-500 dark:text-zinc-400">
             Showing {filteredOdcs.length} of {odcs.length} ODCs
           </span>
         </div>
       </div>
 
       {/* Table */}
-      <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 overflow-hidden">
+      <div className="card-soft overflow-hidden">
         <div className="px-3 py-2 border-b dark:border-gray-800">
           <span className="text-xs font-medium">ODC List</span>
         </div>
@@ -260,13 +260,13 @@ export default function ODCsPage() {
           <table className="w-full">
             <thead className="bg-gray-50 dark:bg-gray-800/50">
               <tr>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase">Name</th>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase">OLT</th>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase hidden sm:table-cell">PON Port</th>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase hidden md:table-cell">Location</th>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase">Ports/ODPs</th>
-                <th className="px-3 py-2 text-left text-[10px] font-medium text-gray-500 uppercase">Status</th>
-                <th className="px-3 py-2 text-right text-[10px] font-medium text-gray-500 uppercase"></th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">OLT</th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase hidden sm:table-cell">PON Port</th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase hidden md:table-cell">Location</th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Ports/ODPs</th>
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                <th className="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase"></th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
@@ -292,7 +292,7 @@ export default function ODCsPage() {
                       </div>
                     </td>
                     <td className="px-3 py-2 text-xs hidden sm:table-cell">
-                      <span className="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-[10px] font-mono">
+                      <span className="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-xs font-mono">
                         PON {odc.ponPort}
                       </span>
                     </td>
@@ -309,17 +309,17 @@ export default function ODCsPage() {
                     </td>
                     <td className="px-3 py-2">
                       <div className="flex items-center gap-1">
-                        <span className="px-1.5 py-0.5 text-[10px] bg-orange-100 text-orange-700 dark:bg-orange-900/30 rounded">
+                        <span className="px-1.5 py-0.5 text-xs bg-orange-100 text-orange-700 dark:bg-orange-900/30 rounded">
                           {odc.portCount} ports
                         </span>
-                        <span className="px-1.5 py-0.5 text-[10px] bg-blue-100 text-blue-700 dark:bg-blue-900/30 rounded">
+                        <span className="px-1.5 py-0.5 text-xs bg-blue-100 text-blue-700 dark:bg-blue-900/30 rounded">
                           {odc._count?.odps || 0} ODPs
                         </span>
                       </div>
                     </td>
                     <td className="px-3 py-2">
                       <span
-                        className={`px-1.5 py-0.5 text-[10px] rounded font-medium ${
+                        className={`px-1.5 py-0.5 text-xs rounded font-medium ${
                           odc.status === 'active'
                             ? 'bg-green-100 text-green-700 dark:bg-green-900/30'
                             : 'bg-red-100 text-red-700 dark:bg-red-900/30'
@@ -354,12 +354,12 @@ export default function ODCsPage() {
 
       {/* Add/Edit Dialog */}
       {isDialogOpen && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white dark:bg-gray-900 rounded-lg shadow-xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+          <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
             <div className="px-4 py-3 border-b dark:border-gray-800 flex items-center justify-between">
               <div>
                 <h2 className="text-sm font-semibold">{editingOdc ? 'Edit ODC' : 'Add ODC'}</h2>
-                <p className="text-[10px] text-gray-500">Configure Optical Distribution Cabinet</p>
+                <p className="text-xs text-gray-500 dark:text-zinc-400">Configure Optical Distribution Cabinet</p>
               </div>
               <button
                 onClick={() => { setIsDialogOpen(false); setEditingOdc(null); resetForm(); }}
@@ -370,25 +370,25 @@ export default function ODCsPage() {
             </div>
             <form onSubmit={handleSubmit} className="p-4 space-y-3">
               <div>
-                <label className="block text-[10px] font-medium mb-1">Name *</label>
+                <label className="block text-xs font-medium mb-1.5">Name *</label>
                 <input
                   type="text"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   required
                   placeholder="ODC-01"
-                  className="w-full px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800"
+                  className="w-full input-premium"
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-[10px] font-medium mb-1">OLT *</label>
+                  <label className="block text-xs font-medium mb-1.5">OLT *</label>
                   <select
                     value={formData.oltId}
                     onChange={(e) => setFormData({ ...formData, oltId: e.target.value })}
                     required
-                    className="w-full px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800"
+                    className="w-full input-premium"
                   >
                     <option value="">Select OLT</option>
                     {olts.map(olt => (
@@ -397,7 +397,7 @@ export default function ODCsPage() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-[10px] font-medium mb-1">PON Port *</label>
+                  <label className="block text-xs font-medium mb-1.5">PON Port *</label>
                   <input
                     type="number"
                     value={formData.ponPort}
@@ -405,29 +405,29 @@ export default function ODCsPage() {
                     required
                     min="1"
                     placeholder="1"
-                    className="w-full px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800"
+                    className="w-full input-premium"
                   />
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-[10px] font-medium mb-1">Port Count</label>
+                  <label className="block text-xs font-medium mb-1.5">Port Count</label>
                   <input
                     type="number"
                     value={formData.portCount}
                     onChange={(e) => setFormData({ ...formData, portCount: e.target.value })}
                     min="1"
                     placeholder="8"
-                    className="w-full px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800"
+                    className="w-full input-premium"
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] font-medium mb-1">Status</label>
+                  <label className="block text-xs font-medium mb-1.5">Status</label>
                   <select
                     value={formData.status}
                     onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-                    className="w-full px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800"
+                    className="w-full input-premium"
                   >
                     <option value="active">Active</option>
                     <option value="inactive">Inactive</option>
@@ -438,12 +438,12 @@ export default function ODCsPage() {
 
               <div>
                 <div className="flex items-center justify-between mb-1">
-                  <label className="text-[10px] font-medium">GPS Location *</label>
+                  <label className="text-xs font-medium">GPS Location *</label>
                   <div className="flex gap-1">
                     <button
                       type="button"
                       onClick={() => setShowMapPicker(true)}
-                      className="inline-flex items-center px-2 py-0.5 text-[10px] bg-teal-600 text-white rounded"
+                      className="inline-flex items-center px-2 py-0.5 text-xs bg-teal-600 text-white rounded"
                     >
                       <Map className="h-2.5 w-2.5 mr-1" />
                       Open Map
@@ -479,7 +479,7 @@ export default function ODCsPage() {
                           { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
                         );
                       }}
-                      className="inline-flex items-center px-2 py-0.5 text-[10px] bg-green-600 text-white rounded"
+                      className="inline-flex items-center px-2 py-0.5 text-xs bg-green-600 text-white rounded"
                     >
                       <MapPin className="h-2.5 w-2.5 mr-1" />
                       Auto GPS
@@ -494,7 +494,7 @@ export default function ODCsPage() {
                     onChange={(e) => setFormData({ ...formData, latitude: e.target.value })}
                     required
                     placeholder="Latitude"
-                    className="w-full px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800"
+                    className="w-full input-premium"
                   />
                   <input
                     type="number"
@@ -503,7 +503,7 @@ export default function ODCsPage() {
                     onChange={(e) => setFormData({ ...formData, longitude: e.target.value })}
                     required
                     placeholder="Longitude"
-                    className="w-full px-2 py-1.5 text-xs border dark:border-gray-700 rounded dark:bg-gray-800"
+                    className="w-full input-premium"
                   />
                 </div>
               </div>
@@ -525,7 +525,7 @@ export default function ODCsPage() {
                 <button
                   type="button"
                   onClick={() => { setIsDialogOpen(false); setEditingOdc(null); resetForm(); }}
-                  className="px-3 py-1.5 text-xs border dark:border-gray-700 rounded hover:bg-gray-100 dark:hover:bg-gray-800"
+                  className="btn-premium border border-gray-200 dark:border-zinc-700 text-gray-600 hover:bg-gray-50"
                 >
                   Cancel
                 </button>

@@ -101,7 +101,7 @@ export default function CompanySettingsPage() {
       </div>
 
       {/* Form */}
-      <form onSubmit={handleSubmit} className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-3">
+      <form onSubmit={handleSubmit} className="card-soft p-5">
         <div className="space-y-3">
           {/* Nama Perusahaan */}
           <div>
@@ -120,7 +120,7 @@ export default function CompanySettingsPage() {
           </div>
 
           {/* Email & Phone - 2 columns on desktop */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="flex items-center gap-1.5 text-[11px] font-medium text-gray-700 dark:text-gray-300 mb-1">
                 <Mail className="w-3 h-3" />
@@ -181,7 +181,7 @@ export default function CompanySettingsPage() {
               placeholder="https://billing.domain.com"
               required
             />
-            <p className="mt-1 text-[10px] text-gray-500">{t('settings.baseUrlHelp')}</p>
+            <p className="mt-1 text-xs text-gray-500 dark:text-zinc-400">{t('settings.baseUrlHelp')}</p>
           </div>
 
           {/* Submit Button */}

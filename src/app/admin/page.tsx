@@ -47,6 +47,9 @@ interface StatCard {
   change?: string | null;
   icon: React.ReactNode;
   color: string;
+  iconBg?: string;
+  iconColor?: string;
+  accent?: string;
 }
 
 interface DashboardData {
@@ -228,7 +231,7 @@ export default function AdminDashboard() {
     }
   };
 
-  const getStats = (): (StatCard & { gradient: string; shadow: string })[] => {
+  const getStats = () => {
     const placeholder = { value: '-', change: null };
     const data = dashboardData?.stats || {
       totalUsers: placeholder,
@@ -255,36 +258,40 @@ export default function AdminDashboard() {
           value: typeof data.totalUsers.value === 'number' ? data.totalUsers.value.toLocaleString() : '-',
           change: data.totalUsers.change,
           icon: <Users className="w-5 h-5" />,
-          color: 'text-white',
-          gradient: 'from-blue-600 to-cyan-500',
-          shadow: 'shadow-blue-500/20',
+          color: 'text-blue-600',
+          iconBg: 'bg-blue-50 dark:bg-blue-900/20',
+          iconColor: 'text-blue-600',
+          accent: '#3b82f6',
         },
         {
           title: t('dashboard.activeSessions'),
           value: typeof data.activeSessions.value === 'number' ? data.activeSessions.value.toLocaleString() : '-',
           change: data.activeSessions.change,
           icon: <Activity className="w-5 h-5" />,
-          color: 'text-white',
-          gradient: 'from-emerald-500 to-teal-400',
-          shadow: 'shadow-emerald-500/20',
+          color: 'text-emerald-600',
+          iconBg: 'bg-emerald-50 dark:bg-emerald-900/20',
+          iconColor: 'text-emerald-600',
+          accent: '#10b981',
         },
         {
           title: 'Komisi Dibayar',
           value: formatCurrency(dashboardData.commission.earned),
           change: null,
           icon: <DollarSign className="w-5 h-5" />,
-          color: 'text-white',
-          gradient: 'from-violet-600 to-purple-500',
-          shadow: 'shadow-violet-500/20',
+          color: 'text-violet-600',
+          iconBg: 'bg-violet-50 dark:bg-violet-900/20',
+          iconColor: 'text-violet-600',
+          accent: '#8b5cf6',
         },
         {
           title: 'Potensi Komisi',
           value: formatCurrency(dashboardData.commission.potential),
           change: null,
           icon: <TrendingUp className="w-5 h-5" />,
-          color: 'text-white',
-          gradient: 'from-amber-500 to-orange-400',
-          shadow: 'shadow-amber-500/20',
+          color: 'text-amber-600',
+          iconBg: 'bg-amber-50 dark:bg-amber-900/20',
+          iconColor: 'text-amber-600',
+          accent: '#f59e0b',
         },
       ];
     }
@@ -295,36 +302,40 @@ export default function AdminDashboard() {
         value: typeof data.totalUsers.value === 'number' ? data.totalUsers.value.toLocaleString() : '-',
         change: data.totalUsers.change,
         icon: <Users className="w-5 h-5" />,
-        color: 'text-white',
-        gradient: 'from-blue-600 to-cyan-500',
-        shadow: 'shadow-blue-500/20',
+        color: 'text-blue-600',
+        iconBg: 'bg-blue-50 dark:bg-blue-900/20',
+        iconColor: 'text-blue-600',
+        accent: '#3b82f6',
       },
       {
         title: t('dashboard.activeSessions'),
         value: typeof data.activeSessions.value === 'number' ? data.activeSessions.value.toLocaleString() : '-',
         change: data.activeSessions.change,
         icon: <Activity className="w-5 h-5" />,
-        color: 'text-white',
-        gradient: 'from-emerald-500 to-teal-400',
-        shadow: 'shadow-emerald-500/20',
+        color: 'text-emerald-600',
+        iconBg: 'bg-emerald-50 dark:bg-emerald-900/20',
+        iconColor: 'text-emerald-600',
+        accent: '#10b981',
       },
       {
         title: t('dashboard.pendingInvoices'),
         value: typeof data.pendingInvoices.value === 'number' ? data.pendingInvoices.value.toLocaleString() : '-',
         change: data.pendingInvoices.change,
         icon: <Receipt className="w-5 h-5" />,
-        color: 'text-white',
-        gradient: 'from-amber-500 to-orange-400',
-        shadow: 'shadow-amber-500/20',
+        color: 'text-amber-600',
+        iconBg: 'bg-amber-50 dark:bg-amber-900/20',
+        iconColor: 'text-amber-600',
+        accent: '#f59e0b',
       },
       {
         title: t('dashboard.revenue'),
         value: data.revenue.value || '-',
         change: data.revenue.change,
         icon: <DollarSign className="w-5 h-5" />,
-        color: 'text-white',
-        gradient: 'from-rose-500 to-pink-500',
-        shadow: 'shadow-rose-500/20',
+        color: 'text-rose-600',
+        iconBg: 'bg-rose-50 dark:bg-rose-900/20',
+        iconColor: 'text-rose-600',
+        accent: '#f43f5e',
       },
     ];
   };
@@ -334,12 +345,12 @@ export default function AdminDashboard() {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-bold text-gray-900 dark:text-white">{t('dashboard.title')}</h1>
-          <p className="text-sm text-gray-500 dark:text-slate-400 flex items-center gap-1.5 mt-0.5">
+          <h1 className="page-title">{t('dashboard.title')}</h1>
+          <p className="page-subtitle flex items-center gap-1.5">
             <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
             {tzInfo.name} • {currentTime}
           </p>
@@ -347,15 +358,15 @@ export default function AdminDashboard() {
         <button
           onClick={handleRefreshAnalytics}
           disabled={analyticsLoading}
-          className="flex items-center gap-1.5 px-4 py-2 text-sm font-medium bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 disabled:opacity-50 transition-colors dark:text-slate-200 shadow-sm"
+          className="btn-premium bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-700 text-gray-700 dark:text-zinc-200 hover:bg-gray-50 dark:hover:bg-zinc-800 disabled:opacity-50 shadow-sm"
         >
           <RefreshCw className={`w-4 h-4 ${analyticsLoading ? 'animate-spin' : ''}`} />
           {t('common.refresh')}
         </button>
       </div>
 
-      {/* Stats Grid - RadbooX Style */}
-      <CyberStagger className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+      {/* Stats Grid */}
+      <CyberStagger className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
         {loading ? (
           <div className="col-span-full flex items-center justify-center py-12">
             <Loader2 className="h-6 w-6 animate-spin text-slate-400" />
@@ -364,42 +375,30 @@ export default function AdminDashboard() {
           getStats().map((stat) => (
             <div
               key={stat.title}
-              className={`relative overflow-hidden rounded-2xl p-5 shadow-lg ${stat.shadow} bg-gradient-to-br ${stat.gradient} hover:-translate-y-1 transition-transform duration-300`}
+              className="stat-card"
+              style={{ '--stat-accent': stat.accent } as React.CSSProperties}
             >
-              {/* RadbooX Style Decorative Circles */}
-              <div className="absolute -right-6 -top-6 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
-              <div className="absolute -right-8 -bottom-8 w-24 h-24 bg-black/10 rounded-full mix-blend-overlay"></div>
-              <div className="absolute right-4 top-4 w-16 h-16 border-4 border-white/10 rounded-full"></div>
+              <div className="flex items-start justify-between">
+                <div className={`icon-container ${stat.iconBg}`}>
+                  <div className={stat.iconColor}>{stat.icon}</div>
+                </div>
+              </div>
               
-              <div className="relative z-10 flex flex-col h-full justify-between">
-                <div className="flex items-start justify-between mb-4">
-                  <div className={`p-2.5 rounded-xl bg-white/20 backdrop-blur-md ${stat.color}`}>
-                    {stat.icon}
-                  </div>
-                  <button className="p-1.5 rounded-lg hover:bg-white/20 text-white/70 hover:text-white transition-colors">
-                    <span className="sr-only">More</span>
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" /></svg>
-                  </button>
-                </div>
-                
-                <div>
-                  <p className="text-sm font-medium text-white/80 mb-1">
-                    {stat.title}
+              <div className="mt-4">
+                <p className="text-sm font-medium text-gray-500 dark:text-zinc-400">
+                  {stat.title}
+                </p>
+                <h3 className={`text-2xl sm:text-3xl font-bold tracking-tight mt-1 ${stat.color} dark:${stat.color.replace('-600', '-400')}`}>
+                  {stat.value}
+                </h3>
+                {stat.change && (
+                  <p className="text-xs font-medium text-gray-500 dark:text-zinc-400 mt-2 flex items-center gap-1.5">
+                    <span className={`badge-pill ${stat.change.startsWith('+') ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400' : 'bg-red-50 text-red-700 dark:bg-red-900/30 dark:text-red-400'}`}>
+                      {stat.change}
+                    </span>
+                    <span>vs last month</span>
                   </p>
-                  <div className="flex items-end gap-2">
-                    <h3 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
-                      {stat.value}
-                    </h3>
-                  </div>
-                  {stat.change && (
-                    <p className="text-xs font-medium text-white/70 mt-2 flex items-center gap-1">
-                      <span className="bg-white/20 px-1.5 py-0.5 rounded text-white">
-                        {stat.change}
-                      </span>
-                      <span>vs last month</span>
-                    </p>
-                  )}
-                </div>
+                )}
               </div>
             </div>
           ))
@@ -407,7 +406,7 @@ export default function AdminDashboard() {
       </CyberStagger>
 
       {/* Charts Row 1: Revenue */}
-      <CyberStagger className="grid grid-cols-1 lg:grid-cols-3 gap-3" staggerDelay={0.15}>
+      <CyberStagger className="grid grid-cols-1 lg:grid-cols-3 gap-5" staggerDelay={0.15}>
         <div className="lg:col-span-2">
           <ChartCard 
             title={t('dashboard.monthlyRevenue')} 
@@ -435,7 +434,7 @@ export default function AdminDashboard() {
       </CyberStagger>
 
       {/* Charts Row 2: Users & Hotspot */}
-      <CyberStagger className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3" staggerDelay={0.1}>
+      <CyberStagger className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5" staggerDelay={0.1}>
         <ChartCard 
           title={t('dashboard.userByStatus')} 
           subtitle={t('dashboard.pppoeUsers')}
@@ -486,7 +485,7 @@ export default function AdminDashboard() {
       </CyberStagger>
 
       {/* Charts Row 3: Sessions & Financial */}
-      <CyberStagger className="grid grid-cols-1 lg:grid-cols-2 gap-3" staggerDelay={0.15}>
+      <CyberStagger className="grid grid-cols-1 lg:grid-cols-2 gap-5" staggerDelay={0.15}>
         <ChartCard 
           title={t('dashboard.activeSessions')} 
           subtitle={t('dashboard.last24Hours')}
@@ -513,7 +512,7 @@ export default function AdminDashboard() {
       </CyberStagger>
 
       {/* Charts Row 4: Financial Overview */}
-      <CyberStagger className="grid grid-cols-1 lg:grid-cols-3 gap-3" staggerDelay={0.15}>
+      <CyberStagger className="grid grid-cols-1 lg:grid-cols-3 gap-4" staggerDelay={0.15}>
         <div className="lg:col-span-2">
           <ChartCard 
             title={t('dashboard.incomeVsExpense')} 
@@ -541,7 +540,7 @@ export default function AdminDashboard() {
       </CyberStagger>
 
       {/* Original Sections: Activities & Network */}
-      <CyberStagger className="grid grid-cols-1 lg:grid-cols-2 gap-3" staggerDelay={0.2}>
+      <CyberStagger className="grid grid-cols-1 lg:grid-cols-2 gap-4" staggerDelay={0.2}>
         {/* Recent Activities */}
         <div className="bg-white/80 dark:bg-zinc-950/70 backdrop-blur-xl rounded-[20px] border border-gray-200/50 dark:border-gray-800/50 p-5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.1)]">
           <h2 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">{t('dashboard.recentActivities')}</h2>
@@ -561,12 +560,12 @@ export default function AdminDashboard() {
                     <p className="text-xs font-medium text-gray-900 dark:text-white truncate">
                       {activity.user}
                     </p>
-                    <p className="text-[10px] text-gray-500 dark:text-gray-400 truncate">
+                    <p className="text-xs text-gray-500 dark:text-zinc-400 dark:text-gray-400 truncate">
                       {activity.action}
                     </p>
                   </div>
                   <div className="text-right ml-2 flex-shrink-0">
-                    <p className="text-[10px] text-gray-500">{formatWIB(activity.time, 'HH:mm')}</p>
+                    <p className="text-xs text-gray-500 dark:text-zinc-400">{formatWIB(activity.time, 'HH:mm')}</p>
                     <span className={`inline-block px-1.5 py-0.5 text-[9px] font-medium rounded ${
                       activity.status === 'success'
                         ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
@@ -594,7 +593,7 @@ export default function AdminDashboard() {
                 </div>
                 <div>
                   <p className="text-xs font-medium text-gray-900 dark:text-white">{t('dashboard.pppoeUsers')}</p>
-                  <p className="text-[10px] text-gray-500">{t('dashboard.activeConnections')}</p>
+                  <p className="text-xs text-gray-500 dark:text-zinc-400">{t('dashboard.activeConnections')}</p>
                 </div>
               </div>
               <p className="text-sm font-semibold text-gray-900 dark:text-white">
@@ -609,7 +608,7 @@ export default function AdminDashboard() {
                 </div>
                 <div>
                   <p className="text-xs font-medium text-gray-900 dark:text-white">{t('dashboard.hotspotSessions')}</p>
-                  <p className="text-[10px] text-gray-500">{t('dashboard.activeVouchers')}</p>
+                  <p className="text-xs text-gray-500 dark:text-zinc-400">{t('dashboard.activeVouchers')}</p>
                 </div>
               </div>
               <p className="text-sm font-semibold text-gray-900 dark:text-white">
@@ -624,7 +623,7 @@ export default function AdminDashboard() {
                 </div>
                 <div>
                   <p className="text-xs font-medium text-gray-900 dark:text-white">{t('dashboard.bandwidth')}</p>
-                  <p className="text-[10px] text-gray-500">{t('dashboard.allTimeUsage')}</p>
+                  <p className="text-xs text-gray-500 dark:text-zinc-400">{t('dashboard.allTimeUsage')}</p>
                 </div>
               </div>
               <p className="text-sm font-semibold text-gray-900 dark:text-white">
@@ -658,12 +657,12 @@ export default function AdminDashboard() {
                 {radiusStatus?.status === 'running' ? (
                   <>
                     <CheckCircle2 className="w-2.5 h-2.5 text-green-600" />
-                    <span className="text-[10px] text-green-600 truncate">{radiusStatus.uptime}</span>
+                    <span className="text-xs text-green-600 truncate">{radiusStatus.uptime}</span>
                   </>
                 ) : (
                   <>
                     <XCircle className="w-2.5 h-2.5 text-red-600" />
-                    <span className="text-[10px] text-red-600">{t('system.offline')}</span>
+                    <span className="text-xs text-red-600">{t('system.offline')}</span>
                   </>
                 )}
               </div>
@@ -702,12 +701,12 @@ export default function AdminDashboard() {
                 {dashboardData?.systemStatus?.database ? (
                   <>
                     <CheckCircle2 className="w-2.5 h-2.5 text-green-600" />
-                    <span className="text-[10px] text-green-600">{t('system.connected')}</span>
+                    <span className="text-xs text-green-600">{t('system.connected')}</span>
                   </>
                 ) : (
                   <>
                     <XCircle className="w-2.5 h-2.5 text-red-600" />
-                    <span className="text-[10px] text-red-600">{t('system.disconnected')}</span>
+                    <span className="text-xs text-red-600">{t('system.disconnected')}</span>
                   </>
                 )}
               </div>
@@ -733,12 +732,12 @@ export default function AdminDashboard() {
                 {dashboardData?.systemStatus?.api ? (
                   <>
                     <CheckCircle2 className="w-2.5 h-2.5 text-green-600" />
-                    <span className="text-[10px] text-green-600">{t('system.running')}</span>
+                    <span className="text-xs text-green-600">{t('system.running')}</span>
                   </>
                 ) : (
                   <>
                     <XCircle className="w-2.5 h-2.5 text-red-600" />
-                    <span className="text-[10px] text-red-600">{t('system.stopped')}</span>
+                    <span className="text-xs text-red-600">{t('system.stopped')}</span>
                   </>
                 )}
               </div>

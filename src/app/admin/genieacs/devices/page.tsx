@@ -443,24 +443,24 @@ export default function GenieACSDevicesPage() {
 
   if (!isConfigured) {
     return (
-      <div className="space-y-4">
+      <div className="space-y-5">
         {/* Header */}
         <div className="bg-gradient-to-r from-teal-600 to-cyan-600 rounded-lg p-4 text-white">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4">
             <Server className="w-5 h-5" />
             <div>
-              <h1 className="text-lg font-semibold">GenieACS Devices</h1>
+              <h1 className="page-title">GenieACS Devices</h1>
               <p className="text-sm text-teal-100">Kelola perangkat CPE via TR-069</p>
             </div>
           </div>
         </div>
 
         {/* Not Configured */}
-        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-8 text-center">
+        <div className="card-soft p-8 text-center">
           <div className="w-16 h-16 mx-auto mb-4 bg-yellow-100 dark:bg-yellow-900/30 rounded-full flex items-center justify-center">
             <Info className="w-8 h-8 text-yellow-600" />
           </div>
-          <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2">GenieACS Belum Dikonfigurasi</h2>
+          <h2 className="page-title text-gray-800 dark:text-gray-200 mb-2">GenieACS Belum Dikonfigurasi</h2>
           <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
             Silakan konfigurasi koneksi GenieACS terlebih dahulu di halaman Settings.
           </p>
@@ -490,7 +490,7 @@ export default function GenieACSDevicesPage() {
           </div>
           <a 
             href="/admin/settings/genieacs" 
-            className="flex items-center gap-1 px-2 py-1 text-[10px] font-medium bg-white/20 hover:bg-white/30 rounded transition-colors"
+            className="flex items-center gap-1 px-2 py-1 text-xs font-medium bg-white/20 hover:bg-white/30 rounded transition-colors"
           >
             <Settings2 className="w-3 h-3" />
             Settings
@@ -500,35 +500,35 @@ export default function GenieACSDevicesPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-3 gap-2">
-        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-2">
+        <div className="card-soft p-2">
           <div className="flex items-center gap-2">
             <div className="p-1.5 rounded-lg bg-blue-100 dark:bg-blue-900/30">
               <Server className="w-3 h-3 text-blue-600" />
             </div>
             <div>
-              <p className="text-[10px] text-gray-500">Total</p>
+              <p className="text-xs text-gray-500 dark:text-zinc-400">Total</p>
               <p className="text-sm font-semibold">{devices.length}</p>
             </div>
           </div>
         </div>
-        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-2">
+        <div className="card-soft p-2">
           <div className="flex items-center gap-2">
             <div className="p-1.5 rounded-lg bg-green-100 dark:bg-green-900/30">
               <Wifi className="w-3 h-3 text-green-600" />
             </div>
             <div>
-              <p className="text-[10px] text-gray-500">Online</p>
+              <p className="text-xs text-gray-500 dark:text-zinc-400">Online</p>
               <p className="text-sm font-semibold text-green-600">{onlineCount}</p>
             </div>
           </div>
         </div>
-        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-2">
+        <div className="card-soft p-2">
           <div className="flex items-center gap-2">
             <div className="p-1.5 rounded-lg bg-red-100 dark:bg-red-900/30">
               <WifiOff className="w-3 h-3 text-red-600" />
             </div>
             <div>
-              <p className="text-[10px] text-gray-500">Offline</p>
+              <p className="text-xs text-gray-500 dark:text-zinc-400">Offline</p>
               <p className="text-sm font-semibold text-red-600">{offlineCount}</p>
             </div>
           </div>
@@ -536,7 +536,7 @@ export default function GenieACSDevicesPage() {
       </div>
 
       {/* Devices Table */}
-      <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 overflow-hidden">
+      <div className="card-soft overflow-hidden">
         {/* Search & Actions */}
         <div className="p-3 border-b border-gray-200 dark:border-gray-800">
           <div className="flex gap-2">
@@ -566,15 +566,15 @@ export default function GenieACSDevicesPage() {
           <table className="w-full text-xs">
             <thead>
               <tr className="border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
-                <th className="text-left py-2 px-2 text-[10px] font-semibold text-gray-500 uppercase whitespace-nowrap">Serial Number</th>
-                <th className="text-left py-2 px-2 text-[10px] font-semibold text-gray-500 uppercase whitespace-nowrap">Model</th>
-                <th className="text-left py-2 px-2 text-[10px] font-semibold text-gray-500 uppercase whitespace-nowrap">IP TR069</th>
-                <th className="text-left py-2 px-2 text-[10px] font-semibold text-gray-500 uppercase whitespace-nowrap">PPPoE</th>
-                <th className="text-left py-2 px-2 text-[10px] font-semibold text-gray-500 uppercase whitespace-nowrap">PON</th>
-                <th className="text-left py-2 px-2 text-[10px] font-semibold text-gray-500 uppercase whitespace-nowrap">RX Power</th>
-                <th className="text-left py-2 px-2 text-[10px] font-semibold text-gray-500 uppercase whitespace-nowrap">Uptime</th>
-                <th className="text-center py-2 px-2 text-[10px] font-semibold text-gray-500 uppercase whitespace-nowrap">Status</th>
-                <th className="text-center py-2 px-2 text-[10px] font-semibold text-gray-500 uppercase whitespace-nowrap">Actions</th>
+                <th className="text-left py-2 px-2 text-xs font-semibold text-gray-500 uppercase whitespace-nowrap">Serial Number</th>
+                <th className="text-left py-2 px-2 text-xs font-semibold text-gray-500 uppercase whitespace-nowrap">Model</th>
+                <th className="text-left py-2 px-2 text-xs font-semibold text-gray-500 uppercase whitespace-nowrap">IP TR069</th>
+                <th className="text-left py-2 px-2 text-xs font-semibold text-gray-500 uppercase whitespace-nowrap">PPPoE</th>
+                <th className="text-left py-2 px-2 text-xs font-semibold text-gray-500 uppercase whitespace-nowrap">PON</th>
+                <th className="text-left py-2 px-2 text-xs font-semibold text-gray-500 uppercase whitespace-nowrap">RX Power</th>
+                <th className="text-left py-2 px-2 text-xs font-semibold text-gray-500 uppercase whitespace-nowrap">Uptime</th>
+                <th className="text-center py-2 px-2 text-xs font-semibold text-gray-500 uppercase whitespace-nowrap">Status</th>
+                <th className="text-center py-2 px-2 text-xs font-semibold text-gray-500 uppercase whitespace-nowrap">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -583,7 +583,7 @@ export default function GenieACSDevicesPage() {
                   <td colSpan={9} className="text-center py-8 text-gray-500">
                     <Server className="w-8 h-8 mx-auto mb-2 opacity-50" />
                     <p className="text-xs">Tidak ada device</p>
-                    <p className="text-[10px] text-gray-400 mt-1">Device akan muncul setelah terhubung ke GenieACS</p>
+                    <p className="text-xs text-gray-400 mt-1">Device akan muncul setelah terhubung ke GenieACS</p>
                   </td>
                 </tr>
               ) : (
@@ -592,22 +592,22 @@ export default function GenieACSDevicesPage() {
                     <td className="py-2 px-2">
                       <div>
                         <p className="font-medium text-gray-800 dark:text-gray-200">{device.serialNumber || '-'}</p>
-                        <p className="text-[10px] text-gray-500">{device.manufacturer || '-'}</p>
+                        <p className="text-xs text-gray-500 dark:text-zinc-400">{device.manufacturer || '-'}</p>
                       </div>
                     </td>
                     <td className="py-2 px-2 text-gray-600 dark:text-gray-400 whitespace-nowrap">{device.model || '-'}</td>
-                    <td className="py-2 px-2 font-mono text-[10px] text-gray-600 dark:text-gray-400 whitespace-nowrap">{device.tr069IP || '-'}</td>
+                    <td className="py-2 px-2 font-mono text-xs text-gray-600 dark:text-gray-400 whitespace-nowrap">{device.tr069IP || '-'}</td>
                     <td className="py-2 px-2 whitespace-nowrap">
                       <div>
                         <p className="text-blue-600 dark:text-blue-400">{device.pppoeUsername || '-'}</p>
                         {device.pppoeIP && device.pppoeIP !== '-' && (
-                          <p className="text-[10px] text-gray-500">{device.pppoeIP}</p>
+                          <p className="text-xs text-gray-500 dark:text-zinc-400">{device.pppoeIP}</p>
                         )}
                       </div>
                     </td>
                     <td className="py-2 px-2 whitespace-nowrap">
                       {device.ponMode && device.ponMode !== '-' ? (
-                        <span className="px-1.5 py-0.5 text-[10px] font-medium bg-cyan-100 text-cyan-700 dark:bg-cyan-900/30 dark:text-cyan-400 rounded">
+                        <span className="px-1.5 py-0.5 text-xs font-medium bg-cyan-100 text-cyan-700 dark:bg-cyan-900/30 dark:text-cyan-400 rounded">
                           {device.ponMode}
                         </span>
                       ) : '-'}
@@ -621,7 +621,7 @@ export default function GenieACSDevicesPage() {
                     </td>
                     <td className="py-2 px-2 text-gray-600 dark:text-gray-400 whitespace-nowrap">{device.uptime || '-'}</td>
                     <td className="py-2 px-2 text-center whitespace-nowrap">
-                      <span className={`inline-flex items-center px-1.5 py-0.5 text-[10px] font-medium rounded ${
+                      <span className={`inline-flex items-center px-1.5 py-0.5 text-xs font-medium rounded ${
                         device.status === 'Online' 
                           ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' 
                           : 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
@@ -672,7 +672,7 @@ export default function GenieACSDevicesPage() {
       {/* Device Detail Modal */}
       {showDetailModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-          <div className="bg-white dark:bg-gray-900 rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-hidden mx-4">
+          <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden mx-4">
             {/* Modal Header */}
             <div className="bg-gradient-to-r from-teal-600 to-cyan-600 p-3 text-white flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -680,7 +680,7 @@ export default function GenieACSDevicesPage() {
                 <div>
                   <h2 className="text-sm font-semibold">Device Detail</h2>
                   {selectedDevice && (
-                    <p className="text-[10px] text-teal-100">{selectedDevice.serialNumber} - {selectedDevice.model}</p>
+                    <p className="text-xs text-teal-100">{selectedDevice.serialNumber} - {selectedDevice.model}</p>
                   )}
                 </div>
               </div>
@@ -688,11 +688,11 @@ export default function GenieACSDevicesPage() {
                 {selectedDevice && (
                   <>
                     {selectedDevice.isDualBand && (
-                      <span className="px-2 py-0.5 text-[10px] font-medium rounded bg-purple-500">
+                      <span className="px-2 py-0.5 text-xs font-medium rounded bg-purple-500">
                         Dual Band
                       </span>
                     )}
-                    <span className={`px-2 py-0.5 text-[10px] font-medium rounded ${selectedDevice.status === 'Online' ? 'bg-green-500' : 'bg-red-500'}`}>
+                    <span className={`px-2 py-0.5 text-xs font-medium rounded ${selectedDevice.status === 'Online' ? 'bg-green-500' : 'bg-red-500'}`}>
                       {selectedDevice.status}
                     </span>
                   </>
@@ -710,7 +710,7 @@ export default function GenieACSDevicesPage() {
                   <Loader2 className="w-6 h-6 animate-spin text-teal-600" />
                 </div>
               ) : selectedDevice ? (
-                <div className="space-y-4">
+                <div className="space-y-5">
                   {/* Quick Actions */}
                   <div className="flex flex-wrap gap-2">
                     <button
@@ -827,30 +827,30 @@ export default function GenieACSDevicesPage() {
                           <Radio className="w-3.5 h-3.5 text-cyan-600" />
                           <span className="text-xs font-semibold text-gray-700 dark:text-gray-300">WiFi Networks ({selectedDevice.wlanConfigs.length})</span>
                         </div>
-                        <span className="text-[10px] text-gray-500">{selectedDevice.totalConnected} devices connected</span>
+                        <span className="text-xs text-gray-500 dark:text-zinc-400">{selectedDevice.totalConnected} devices connected</span>
                       </div>
                       <div className="p-3">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                           {selectedDevice.wlanConfigs.map((wlan, idx) => (
                             <div key={idx} className="flex items-center justify-between p-2 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                              <div className="flex items-center gap-3">
+                              <div className="flex items-center gap-4">
                                 <div className={`p-1.5 rounded-lg ${wlan.enabled ? 'bg-green-100 dark:bg-green-900/30' : 'bg-gray-200 dark:bg-gray-700'}`}>
                                   <Wifi className={`w-3 h-3 ${wlan.enabled ? 'text-green-600' : 'text-gray-400'}`} />
                                 </div>
                                 <div>
                                   <p className="text-xs font-medium text-gray-800 dark:text-gray-200">{wlan.ssid || '-'}</p>
-                                  <p className="text-[10px] text-gray-500">
+                                  <p className="text-xs text-gray-500 dark:text-zinc-400">
                                     {wlan.band} • Ch {wlan.channel !== '-' ? wlan.channel : 'Auto'} • {wlan.security || 'Open'}
                                   </p>
                                 </div>
                               </div>
                               <div className="flex items-center gap-2">
                                 <div className="text-right">
-                                  <span className={`px-1.5 py-0.5 text-[10px] font-medium rounded ${wlan.enabled ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-400'}`}>
+                                  <span className={`px-1.5 py-0.5 text-xs font-medium rounded ${wlan.enabled ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-400'}`}>
                                     {wlan.enabled ? 'ON' : 'OFF'}
                                   </span>
                                   {wlan.totalAssociations > 0 && (
-                                    <p className="text-[10px] text-gray-500 mt-0.5">{wlan.totalAssociations} connected</p>
+                                    <p className="text-xs text-gray-500 dark:text-zinc-400 mt-0.5">{wlan.totalAssociations} connected</p>
                                   )}
                                 </div>
                                 <button
@@ -876,19 +876,19 @@ export default function GenieACSDevicesPage() {
                           <Smartphone className="w-3.5 h-3.5 text-indigo-600" />
                           <span className="text-xs font-semibold text-gray-700 dark:text-gray-300">Connected Devices ({selectedDevice.connectedDevices.length})</span>
                         </div>
-                        <span className="text-[10px] text-gray-500">{selectedDevice.connectedDevices.filter(d => d.active).length} online</span>
+                        <span className="text-xs text-gray-500 dark:text-zinc-400">{selectedDevice.connectedDevices.filter(d => d.active).length} online</span>
                       </div>
                       <div className="p-3">
                         <div className="overflow-x-auto">
                           <table className="w-full text-xs">
                             <thead>
                               <tr className="border-b border-gray-200 dark:border-gray-700">
-                                <th className="text-left py-1.5 px-2 text-[10px] font-semibold text-gray-500">Device</th>
-                                <th className="text-left py-1.5 px-2 text-[10px] font-semibold text-gray-500">IP Address</th>
-                                <th className="text-left py-1.5 px-2 text-[10px] font-semibold text-gray-500">MAC Address</th>
-                                <th className="text-left py-1.5 px-2 text-[10px] font-semibold text-gray-500">Interface</th>
-                                <th className="text-center py-1.5 px-2 text-[10px] font-semibold text-gray-500">Signal</th>
-                                <th className="text-center py-1.5 px-2 text-[10px] font-semibold text-gray-500">Status</th>
+                                <th className="text-left py-1.5 px-2 text-xs font-semibold text-gray-500">Device</th>
+                                <th className="text-left py-1.5 px-2 text-xs font-semibold text-gray-500">IP Address</th>
+                                <th className="text-left py-1.5 px-2 text-xs font-semibold text-gray-500">MAC Address</th>
+                                <th className="text-left py-1.5 px-2 text-xs font-semibold text-gray-500">Interface</th>
+                                <th className="text-center py-1.5 px-2 text-xs font-semibold text-gray-500">Signal</th>
+                                <th className="text-center py-1.5 px-2 text-xs font-semibold text-gray-500">Status</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -907,7 +907,7 @@ export default function GenieACSDevicesPage() {
                                       </div>
                                     </td>
                                     <td className="py-1.5 px-2 text-gray-600 dark:text-gray-400">{host.ipAddress}</td>
-                                    <td className="py-1.5 px-2 font-mono text-[10px] text-gray-600 dark:text-gray-400">{host.macAddress}</td>
+                                    <td className="py-1.5 px-2 font-mono text-xs text-gray-600 dark:text-gray-400">{host.macAddress}</td>
                                     <td className="py-1.5 px-2 text-gray-600 dark:text-gray-400">
                                       {host.ssidName || (isWifi ? `WiFi ${host.ssidIndex}` : 'LAN')}
                                     </td>
@@ -919,7 +919,7 @@ export default function GenieACSDevicesPage() {
                                       ) : '-'}
                                     </td>
                                     <td className="py-1.5 px-2 text-center">
-                                      <span className={`px-1.5 py-0.5 text-[10px] font-medium rounded ${host.active ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-400'}`}>
+                                      <span className={`px-1.5 py-0.5 text-xs font-medium rounded ${host.active ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-400'}`}>
                                         {host.active ? 'Online' : 'Offline'}
                                       </span>
                                     </td>
@@ -957,7 +957,7 @@ export default function GenieACSDevicesPage() {
       {/* Edit WiFi Modal */}
       {showEditWifiModal && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 backdrop-blur-sm">
-          <div className="bg-white dark:bg-gray-900 rounded-lg shadow-xl w-full max-w-md mx-4">
+          <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl w-full max-w-md mx-4">
             {/* Modal Header */}
             <div className="bg-gradient-to-r from-teal-600 to-cyan-600 p-3 text-white flex items-center justify-between rounded-t-lg">
               <div className="flex items-center gap-2">
@@ -970,7 +970,7 @@ export default function GenieACSDevicesPage() {
             </div>
 
             {/* Modal Content */}
-            <div className="p-4 space-y-4">
+            <div className="p-4 space-y-5">
               {/* WLAN Index */}
               <div>
                 <label className="block text-[11px] font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -1010,7 +1010,7 @@ export default function GenieACSDevicesPage() {
                   className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 focus:ring-2 focus:ring-teal-500"
                   placeholder="Nama WiFi"
                 />
-                <p className="text-[10px] text-gray-500 mt-1">1-32 karakter</p>
+                <p className="text-xs text-gray-500 dark:text-zinc-400 mt-1">1-32 karakter</p>
               </div>
 
               {/* Security Mode */}
@@ -1047,7 +1047,7 @@ export default function GenieACSDevicesPage() {
                       placeholder="Password WiFi"
                     />
                   </div>
-                  <p className="text-[10px] text-gray-500 mt-1">8-63 karakter</p>
+                  <p className="text-xs text-gray-500 dark:text-zinc-400 mt-1">8-63 karakter</p>
                 </div>
               )}
 
@@ -1055,7 +1055,7 @@ export default function GenieACSDevicesPage() {
               <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
                 <div>
                   <p className="text-xs font-medium text-gray-700 dark:text-gray-300">WiFi Status</p>
-                  <p className="text-[10px] text-gray-500">Aktifkan atau nonaktifkan WiFi</p>
+                  <p className="text-xs text-gray-500 dark:text-zinc-400">Aktifkan atau nonaktifkan WiFi</p>
                 </div>
                 <button
                   type="button"

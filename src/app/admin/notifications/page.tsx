@@ -126,7 +126,7 @@ export default function NotificationsPage() {
             </div>
           </div>
           {unreadCount > 0 && (
-            <span className="px-1.5 py-0.5 text-[10px] font-medium bg-white/20 rounded">
+            <span className="px-1.5 py-0.5 text-xs font-medium bg-white/20 rounded">
               {unreadCount} belum dibaca
             </span>
           )}
@@ -134,16 +134,16 @@ export default function NotificationsPage() {
       </div>
 
       {/* Stats & Filters */}
-      <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-3">
+      <div className="card-soft p-5">
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4">
             <div className="text-center">
-              <p className="text-[10px] text-gray-500">Total</p>
+              <p className="text-xs text-gray-500 dark:text-zinc-400">Total</p>
               <p className="text-lg font-bold text-gray-800 dark:text-white">{notifications.length}</p>
             </div>
             <div className="h-8 w-px bg-gray-200 dark:bg-gray-700"></div>
             <div className="text-center">
-              <p className="text-[10px] text-gray-500">Belum Dibaca</p>
+              <p className="text-xs text-gray-500 dark:text-zinc-400">Belum Dibaca</p>
               <p className="text-lg font-bold text-teal-600">{unreadCount}</p>
             </div>
           </div>
@@ -152,7 +152,7 @@ export default function NotificationsPage() {
             <div className="flex bg-gray-100 dark:bg-gray-800 rounded-lg p-0.5">
               <button
                 onClick={() => setFilter('all')}
-                className={`px-2.5 py-1 text-[10px] font-medium rounded-md transition ${
+                className={`px-2.5 py-1 text-xs font-medium rounded-md transition ${
                   filter === 'all'
                     ? 'bg-teal-600 text-white'
                     : 'text-gray-600 dark:text-gray-400 hover:text-gray-900'
@@ -162,7 +162,7 @@ export default function NotificationsPage() {
               </button>
               <button
                 onClick={() => setFilter('unread')}
-                className={`px-2.5 py-1 text-[10px] font-medium rounded-md transition ${
+                className={`px-2.5 py-1 text-xs font-medium rounded-md transition ${
                   filter === 'unread'
                     ? 'bg-teal-600 text-white'
                     : 'text-gray-600 dark:text-gray-400 hover:text-gray-900'
@@ -174,7 +174,7 @@ export default function NotificationsPage() {
             {unreadCount > 0 && (
               <button
                 onClick={markAllAsRead}
-                className="flex items-center gap-1 px-2 py-1 bg-green-600 hover:bg-green-700 text-white text-[10px] font-medium rounded-lg transition"
+                className="flex items-center gap-1 px-2 py-1 bg-green-600 hover:bg-green-700 text-white text-xs font-medium rounded-lg transition"
               >
                 <CheckCheck className="w-3 h-3" />
                 Tandai Semua
@@ -185,7 +185,7 @@ export default function NotificationsPage() {
       </div>
 
       {/* Notifications List */}
-      <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 overflow-hidden">
+      <div className="card-soft overflow-hidden">
         {loading ? (
           <div className="flex items-center justify-center py-8">
             <Loader2 className="w-5 h-5 animate-spin text-teal-600" />
@@ -194,7 +194,7 @@ export default function NotificationsPage() {
           <div className="text-center py-8 text-gray-400">
             <Bell className="w-10 h-10 mx-auto mb-2 opacity-30" />
             <p className="text-sm font-medium">Tidak ada notifikasi</p>
-            <p className="text-[10px] mt-0.5">
+            <p className="text-xs mt-0.5">
               {filter === 'unread' ? 'Semua sudah dibaca!' : 'Belum ada notifikasi'}
             </p>
           </div>
@@ -225,7 +225,7 @@ export default function NotificationsPage() {
                         <p className="text-xs text-gray-600 dark:text-gray-400 mt-0.5 line-clamp-2">
                           {notif.message}
                         </p>
-                        <p className="text-[10px] text-gray-500 mt-1">
+                        <p className="text-xs text-gray-500 dark:text-zinc-400 mt-1">
                           {formatWIB(notif.createdAt, 'dd MMM yyyy HH:mm')}
                         </p>
                       </Link>
@@ -237,7 +237,7 @@ export default function NotificationsPage() {
                         <p className="text-xs text-gray-600 dark:text-gray-400 mt-0.5 line-clamp-2">
                           {notif.message}
                         </p>
-                        <p className="text-[10px] text-gray-500 mt-1">
+                        <p className="text-xs text-gray-500 dark:text-zinc-400 mt-1">
                           {formatWIB(notif.createdAt, 'dd MMM yyyy HH:mm')}
                         </p>
                       </>

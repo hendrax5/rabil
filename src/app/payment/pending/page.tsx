@@ -63,18 +63,18 @@ function PaymentPendingContent() {
 
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
           <div className="bg-gradient-to-r from-teal-600 to-cyan-600 px-4 py-3 text-white">
-            <div className="flex items-center justify-between mb-1"><span className="text-[10px] opacity-80">Invoice</span><span className="px-2 py-0.5 bg-white/20 rounded-full text-[10px] font-medium">PENDING</span></div>
+            <div className="flex items-center justify-between mb-1"><span className="text-xs opacity-80">Invoice</span><span className="px-2 py-0.5 bg-white/20 rounded-full text-xs font-medium">PENDING</span></div>
             <p className="text-sm font-bold">#{invoice.invoiceNumber}</p>
           </div>
           <div className="p-4 space-y-4">
             <div className="text-center py-4 bg-gradient-to-br from-teal-50 to-cyan-50 dark:from-teal-900/20 dark:to-cyan-900/20 rounded-lg">
-              <p className="text-[10px] text-gray-500 mb-1">Total Pembayaran</p>
+              <p className="text-xs text-gray-500 mb-1">Total Pembayaran</p>
               <p className="text-2xl font-bold text-teal-600 dark:text-teal-400">{formatCurrency(invoice.amount)}</p>
             </div>
             <div className="bg-teal-50 dark:bg-teal-900/20 border border-teal-200 dark:border-teal-800 rounded-lg p-3">
               <div className="flex items-start gap-2">
                 <Info className="w-4 h-4 text-teal-600 dark:text-teal-400 mt-0.5 flex-shrink-0" />
-                <div className="text-[10px] text-teal-800 dark:text-teal-300 space-y-1">
+                <div className="text-xs text-teal-800 dark:text-teal-300 space-y-1">
                   <p className="font-semibold">Langkah Selanjutnya:</p>
                   <ol className="list-decimal list-inside space-y-0.5 ml-1">
                     <li>Selesaikan pembayaran</li>
@@ -84,7 +84,7 @@ function PaymentPendingContent() {
                 </div>
               </div>
             </div>
-            <div className="flex items-center justify-center gap-1.5 text-[10px] text-gray-500"><div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></div><span>Auto-refresh setiap 5 detik</span></div>
+            <div className="flex items-center justify-center gap-1.5 text-xs text-gray-500"><div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></div><span>Auto-refresh setiap 5 detik</span></div>
             {invoice.paymentLink && (
               <a href={invoice.paymentLink} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-1.5 w-full px-4 py-2 text-xs font-medium text-white bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 rounded-lg">
                 <ExternalLink className="w-3.5 h-3.5" />Buka Halaman Pembayaran
@@ -100,7 +100,7 @@ function PaymentPendingContent() {
           <button onClick={() => router.push(`/pay/${token}`)} className="w-full px-4 py-2.5 text-xs font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">Kembali ke Invoice</button>
         </div>
 
-        <p className="text-center text-[10px] text-gray-500">Halaman akan otomatis redirect setelah pembayaran berhasil</p>
+        <p className="text-center text-xs text-gray-500">Halaman akan otomatis redirect setelah pembayaran berhasil</p>
       </div>
     </div>
   );
