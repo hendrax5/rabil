@@ -58,12 +58,11 @@ export async function GET(
     ]);
 
     // Force update the cache before returning using background technique
-    // @ts-ignore
     await prisma.networkOLT.update({
       where: { id: oltId },
       data: {
-        uncfgOnus: uncfgs,
-        onuTypes: onuTypes,
+        uncfgOnus: uncfgs as any,
+        onuTypes: onuTypes as any,
         lastSync: new Date()
       }
     });

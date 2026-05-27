@@ -47,7 +47,7 @@ export async function GET(request: NextRequest) {
     const currentYear = now.getFullYear();
 
     // Calculate voucher statistics based on status
-    const soldVouchers = allVouchers.filter((v) => v.status === 'SOLD' || v.status === 'ACTIVE' || v.status === 'EXPIRED');
+    const soldVouchers = allVouchers.filter((v) => v.status === 'ACTIVE' || v.status === 'EXPIRED');
     const usedVouchers = allVouchers.filter((v) => v.status === 'ACTIVE' || v.status === 'EXPIRED');
     
     // Current month sold vouchers - Convert UTC to WIB before comparison

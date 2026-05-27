@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Check if user is SUPER_ADMIN
-    if (session.user.role !== 'SUPER_ADMIN') {
+    if ((session?.user as any)?.role !== 'SUPER_ADMIN') {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Get backup info
-    const backup = await prisma.backup.findUnique({
+    const backup = await prisma.backupHistory.findUnique({
       where: { id: backupId },
     });
 
@@ -52,9 +52,16 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    if (!backup.filepath) {
+      return NextResponse.json(
+        { error: 'Backup file path is empty' },
+        { status: 400 }
+      );
+    }
+
     // Check if file exists
     try {
-      await fs.access(backup.filePath);
+      await fs.access(backup.filepath);
     } catch {
       return NextResponse.json(
         { error: 'Backup file not found on disk' },
@@ -69,8 +76,8 @@ export async function POST(request: NextRequest) {
         chatId: settings.chatId,
         topicId: settings.backupTopicId || undefined,
       },
-      backup.filePath,
-      backup.fileSize
+      backup.filepath,
+      backup.filesize
     );
 
     if (!result.success) {

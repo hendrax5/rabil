@@ -160,7 +160,7 @@ export function UserStatusPieChart({ data, loading, height = 200 }: UserStatusPi
             <Cell key={`cell-${index}`} fill={PIE_COLORS[index % PIE_COLORS.length]} />
           ))}
         </Pie>
-        <Tooltip formatter={(value: number) => [value.toLocaleString('id-ID'), 'User']} />
+        <Tooltip formatter={(value: any) => [value ? Number(value).toLocaleString('id-ID') : '0', 'User']} />
       </PieChart>
     </ResponsiveContainer>
   );
@@ -252,7 +252,7 @@ export function VoucherStatusPieChart({ data, loading, height = 200 }: VoucherSt
             <Cell key={`cell-${index}`} fill={statusColors[entry.name as string] || PIE_COLORS[index % PIE_COLORS.length]} />
           ))}
         </Pie>
-        <Tooltip formatter={(value: number) => [value.toLocaleString('id-ID'), 'Voucher']} />
+        <Tooltip formatter={(value: any) => [value ? Number(value).toLocaleString('id-ID') : '0', 'Voucher']} />
         <Legend 
           layout="horizontal" 
           verticalAlign="bottom" 
@@ -324,7 +324,7 @@ export function BandwidthChart({ data, loading, height = 200 }: BandwidthChartPr
         <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" vertical={false} />
         <XAxis dataKey="time" tick={{ fontSize: 10 }} tickLine={false} axisLine={false} />
         <YAxis tickFormatter={formatBandwidth} tick={{ fontSize: 10 }} tickLine={false} axisLine={false} />
-        <Tooltip formatter={(value: number) => [formatBandwidth(value), '']} />
+        <Tooltip formatter={(value: any) => [value ? formatBandwidth(Number(value)) : '0 MB', '']} />
         <Area type="monotone" dataKey="upload" stroke={COLORS.success} fill="url(#uploadGradient)" strokeWidth={2} name="Upload" />
         <Area type="monotone" dataKey="download" stroke={COLORS.info} fill="url(#downloadGradient)" strokeWidth={2} name="Download" />
         <Legend wrapperStyle={{ fontSize: '10px' }} />

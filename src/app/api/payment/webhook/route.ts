@@ -2,8 +2,10 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { syncVoucherToRadius } from '@/lib/hotspot-radius-sync';
 import { sendPaymentSuccess, sendVoucherPurchaseSuccess } from '@/lib/whatsapp-notifications';
+import { autoUnsuspendUser } from '@/lib/cron/billing-engine';
 import crypto from 'crypto';
 import { nanoid } from 'nanoid';
+
 
 export const dynamic = 'force-dynamic';
 
@@ -626,12 +628,14 @@ async function handleInvoicePayment(
           const wasIsolatedOrSuspended = user.status === 'isolated' || user.status === 'suspended';
           const newStatus = wasIsolatedOrSuspended ? 'active' : user.status;
           
-          // Update user
+          // Update user & reset bandwidth quota for the new billing cycle
           await prisma.pppoeUser.update({
             where: { id: user.id },
             data: {
               expiredAt: newExpiredAt,
-              status: newStatus
+              status: newStatus,
+              quotaUsedBytes: 0,
+              quotaLastReset: new Date()
             }
           });
           

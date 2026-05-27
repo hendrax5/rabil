@@ -45,7 +45,7 @@ export async function GET() {
 
       // Filter sold vouchers (SOLD, ACTIVE, EXPIRED = terjual)
       const soldVouchers = agent.vouchers.filter((v) => 
-        v.status === 'SOLD' || v.status === 'ACTIVE' || v.status === 'EXPIRED'
+        v.status === 'ACTIVE' || v.status === 'EXPIRED'
       );
 
       // Current month sold vouchers - Convert UTC to WIB before comparison

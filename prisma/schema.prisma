@@ -277,6 +277,10 @@ model pppoeProfile {
   validityValue  Int                         @default(1)
   users          pppoeUser[]
   registrations  registrationRequest[]
+  
+  // FUP / Quota Settings
+  quotaGB        Int?                        // Null = unlimited
+  fupGroupName   String?                     // RADIUS group to map when quota exceeded
 
   @@index([groupName])
   @@map("pppoe_profiles")
@@ -310,6 +314,10 @@ model pppoeUser {
   oltPort        String?
   onuSn          String?
   vlanAcs        String?
+
+  // FUP / Quota Usage
+  quotaUsedBytes BigInt                      @default(0)
+  quotaLastReset DateTime?                   @default(now())
 
   invoices       invoice[]
   tickets        ticket[]
@@ -749,6 +757,8 @@ model networkOLT {
   discoveredOnus discovered_onu[]
   provisionLogs  provision_log[]
   networkOnus    network_onu[]
+  onuAlarms      onuAlarm[]
+  uptimeRecords  uptimeRecord[]
 
   @@map("network_olts")
 }
@@ -1302,4 +1312,66 @@ model network_onu {
   @@unique([oltId, onuId])
   @@unique([oltId, sn])
   @@map("network_onus")
+}
+
+// ONU Alarm tracking
+model onuAlarm {
+  id          String     @id @default(cuid())
+  oltId       String
+  onuId       String
+  sn          String
+  board       String
+  port        String
+  alarmType   String     // LOS, OFFLINE, WEAK_SIGNAL, DEGRADED
+  rxPower     Float?     // dBm at time of alarm
+  threshold   Float?     // dBm threshold that was violated
+  description String     @db.Text
+  resolved    Boolean    @default(false)
+  resolvedAt  DateTime?
+  createdAt   DateTime   @default(now())
+  olt         networkOLT @relation(fields: [oltId], references: [id], onDelete: Cascade)
+
+  @@index([oltId])
+  @@index([resolved])
+  @@index([alarmType])
+  @@index([createdAt])
+  @@map("onu_alarms")
+}
+
+// Uptime/SLA monitoring record
+model uptimeRecord {
+  id          String   @id @default(cuid())
+  deviceType  String   // OLT, ROUTER, SERVER
+  deviceId    String
+  deviceName  String?
+  isUp        Boolean
+  responseMs  Int?     // ping latency in ms
+  cpuUsage    Int?     // CPU load in %
+  memoryUsage Int?     // Memory usage in %
+  checkedAt   DateTime @default(now())
+  oltId       String?
+  olt         networkOLT? @relation(fields: [oltId], references: [id], onDelete: SetNull)
+
+  @@index([deviceId])
+  @@index([deviceType])
+  @@index([checkedAt])
+  @@index([oltId])
+  @@map("uptime_records")
+}
+
+// Billing engine settings
+model billingSettings {
+  id              String   @id @default(cuid())
+  billingType     String   @default("fixed")   // fixed | anniversary
+  billingDay      Int      @default(1)          // 1-28 if fixed type
+  gracePeriod     Int      @default(3)          // days after due before suspend
+  autoSuspend     Boolean  @default(true)       // auto-suspend expired users via CoA
+  autoUnsuspend   Boolean  @default(true)       // auto-unsuspend after payment
+  lateFeeType     String   @default("none")     // none | percent | nominal
+  lateFeeAmount   Float    @default(0)          // % or IDR amount
+  sendInvoiceDay  Int      @default(25)         // day of month to generate next invoice
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("billing_settings")
 }

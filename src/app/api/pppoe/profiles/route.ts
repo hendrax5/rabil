@@ -35,6 +35,8 @@ export async function POST(request: NextRequest) {
       uploadSpeed,
       validityValue,
       validityUnit,
+      quotaGB,
+      fupGroupName,
     } = body;
 
     // Validate required fields
@@ -67,6 +69,8 @@ export async function POST(request: NextRequest) {
         validityValue: parseInt(validityValue),
         validityUnit,
         isActive: true,
+        quotaGB: quotaGB ? parseInt(quotaGB) : null,
+        fupGroupName: fupGroupName || null,
       },
     });
 
@@ -181,6 +185,8 @@ export async function PUT(request: NextRequest) {
       validityValue,
       validityUnit,
       isActive,
+      quotaGB,
+      fupGroupName,
     } = body;
 
     if (!id) {
@@ -219,6 +225,8 @@ export async function PUT(request: NextRequest) {
         ...(validityValue && { validityValue: parseInt(validityValue) }),
         ...(validityUnit && { validityUnit }),
         ...(isActive !== undefined && { isActive }),
+        ...(quotaGB !== undefined && { quotaGB: quotaGB ? parseInt(quotaGB) : null }),
+        ...(fupGroupName !== undefined && { fupGroupName: fupGroupName || null }),
       },
     });
 

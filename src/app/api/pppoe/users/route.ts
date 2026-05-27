@@ -349,6 +349,7 @@ export async function PUT(request: NextRequest) {
       try {
         const oldUsername = currentUser.username;
         const newUsername = username || currentUser.username;
+        const newPassword = password || currentUser.password;
 
         // Delete old RADIUS entries
         await prisma.radcheck.deleteMany({
@@ -407,7 +408,7 @@ export async function PUT(request: NextRequest) {
         await prisma.$executeRaw`DELETE FROM radusergroup WHERE username = ${newUsername}`;
         await prisma.$executeRaw`
           INSERT INTO radusergroup (username, groupname, priority)
-          VALUES (${newUsername}, ${finalProfile.groupName}, 1)
+          VALUES (${newUsername}, ${newProfile.groupName}, 1)
         `;
 
         // 4. Optional: Add static IP to radreply if specified

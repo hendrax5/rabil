@@ -136,7 +136,7 @@
 }
 
 /* Force dark class to have same values */
-.dark {
+.dark, [data-theme="dark"] {
   --background: #0B132B; /* Dark navy main background */
   --foreground: #E0E6F1; /* Text Primary */
   --card: #1C2541; /* Secondary background */
@@ -176,6 +176,215 @@
   --sidebar-border: #2E3A59;
   --sidebar-ring: #3A86FF;
   color-scheme: dark;
+}
+
+/* ===========================================
+   THEME PRESETS DEFINITIONS
+   =========================================== */
+
+/* Cyberpunk Theme */
+[data-theme="cyberpunk"] {
+  --background: #0f0728;
+  --foreground: #f3f0ff;
+  --card: #1c0e3d;
+  --card-foreground: #f3f0ff;
+  --popover: #1c0e3d;
+  --popover-foreground: #f3f0ff;
+  --primary: #bc13fe;
+  --primary-foreground: #ffffff;
+  --secondary: #2f1b63;
+  --secondary-foreground: #f3f0ff;
+  --muted: #2f1b63;
+  --muted-foreground: #d2c4f9;
+  --accent: #00f7ff;
+  --accent-foreground: #09090b;
+  --destructive: #ff3366;
+  --destructive-foreground: #ffffff;
+  --success: #00ff88;
+  --success-foreground: #09090b;
+  --warning: #ff8c00;
+  --warning-foreground: #ffffff;
+  --info: #00f7ff;
+  --info-foreground: #09090b;
+  --border: #3b237c;
+  --input: #1c0e3d;
+  --ring: #bc13fe;
+  --sidebar: #0f0728;
+  --sidebar-foreground: #d2c4f9;
+  --sidebar-primary: #bc13fe;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #1c0e3d;
+  --sidebar-accent-foreground: #f3f0ff;
+  --sidebar-border: #3b237c;
+  --sidebar-ring: #bc13fe;
+  color-scheme: dark;
+}
+
+/* Emerald Forest Theme */
+[data-theme="emerald"] {
+  --background: #06140f;
+  --foreground: #ecfdf5;
+  --card: #0d271e;
+  --card-foreground: #ecfdf5;
+  --popover: #0d271e;
+  --popover-foreground: #ecfdf5;
+  --primary: #10b981;
+  --primary-foreground: #042f1a;
+  --secondary: #12372a;
+  --secondary-foreground: #ecfdf5;
+  --muted: #12372a;
+  --muted-foreground: #a7f3d0;
+  --accent: #f59e0b;
+  --accent-foreground: #042f1a;
+  --destructive: #f43f5e;
+  --destructive-foreground: #ffffff;
+  --success: #10b981;
+  --success-foreground: #ffffff;
+  --warning: #f59e0b;
+  --warning-foreground: #09090b;
+  --info: #3b82f6;
+  --info-foreground: #ffffff;
+  --border: #1a4d3b;
+  --input: #0d271e;
+  --ring: #10b981;
+  --sidebar: #06140f;
+  --sidebar-foreground: #a7f3d0;
+  --sidebar-primary: #10b981;
+  --sidebar-primary-foreground: #042f1a;
+  --sidebar-accent: #0d271e;
+  --sidebar-accent-foreground: #ecfdf5;
+  --sidebar-border: #1a4d3b;
+  --sidebar-ring: #10b981;
+  color-scheme: dark;
+}
+
+/* Retro Amber Theme */
+[data-theme="retro-amber"] {
+  --background: #0c0a09;
+  --foreground: #f5f5f4;
+  --card: #1c1917;
+  --card-foreground: #f5f5f4;
+  --popover: #1c1917;
+  --popover-foreground: #f5f5f4;
+  --primary: #f59e0b;
+  --primary-foreground: #0c0a09;
+  --secondary: #292524;
+  --secondary-foreground: #f5f5f4;
+  --muted: #292524;
+  --muted-foreground: #d6d3d1;
+  --accent: #f59e0b;
+  --accent-foreground: #0c0a09;
+  --destructive: #e7e5e4;
+  --destructive-foreground: #0c0a09;
+  --success: #a8a29e;
+  --success-foreground: #0c0a09;
+  --warning: #d97706;
+  --warning-foreground: #ffffff;
+  --info: #78716c;
+  --info-foreground: #ffffff;
+  --border: #44403c;
+  --input: #1c1917;
+  --ring: #f59e0b;
+  --sidebar: #0c0a09;
+  --sidebar-foreground: #d6d3d1;
+  --sidebar-primary: #f59e0b;
+  --sidebar-primary-foreground: #0c0a09;
+  --sidebar-accent: #1c1917;
+  --sidebar-accent-foreground: #f5f5f4;
+  --sidebar-border: #44403c;
+  --sidebar-ring: #f59e0b;
+  color-scheme: dark;
+}
+
+/* Spacing and density rules */
+:root[data-density="compact"] {
+  --radius: 0.5rem;
+}
+:root[data-density="compact"] .p-6,
+:root[data-density="compact"] [class*="p-6"] {
+  padding: 0.85rem !important;
+}
+:root[data-density="compact"] .p-5,
+:root[data-density="compact"] [class*="p-5"] {
+  padding: 0.75rem !important;
+}
+:root[data-density="compact"] .space-y-5 > * + *,
+:root[data-density="compact"] [class*="space-y-5"] > * + * {
+  margin-top: 0.75rem !important;
+}
+:root[data-density="compact"] .space-y-6 > * + *,
+:root[data-density="compact"] [class*="space-y-6"] > * + * {
+  margin-top: 0.85rem !important;
+}
+:root[data-density="compact"] .gap-6,
+:root[data-density="compact"] [class*="gap-6"] {
+  gap: 0.85rem !important;
+}
+:root[data-density="compact"] .gap-5,
+:root[data-density="compact"] [class*="gap-5"] {
+  gap: 0.75rem !important;
+}
+:root[data-density="compact"] .py-5,
+:root[data-density="compact"] [class*="py-5"] {
+  padding-top: 0.75rem !important;
+  padding-bottom: 0.75rem !important;
+}
+:root[data-density="compact"] .py-6,
+:root[data-density="compact"] [class*="py-6"] {
+  padding-top: 0.85rem !important;
+  padding-bottom: 0.85rem !important;
+}
+
+/* Glassmorphism custom classes and dynamic overrides */
+:root[data-glassmorphic="enabled"] .card-soft,
+:root[data-glassmorphic="enabled"] .bg-white,
+:root[data-glassmorphic="enabled"] [class*="bg-white"],
+:root[data-glassmorphic="enabled"] .bg-zinc-900,
+:root[data-glassmorphic="enabled"] [class*="bg-zinc-900"],
+:root[data-glassmorphic="enabled"] .bg-card,
+:root[data-glassmorphic="enabled"] [class*="bg-card"] {
+  background-color: rgba(255, 255, 255, 0.45) !important;
+  backdrop-filter: blur(16px) saturate(120%) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(120%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+}
+
+:root[data-glassmorphic="enabled"].dark .card-soft,
+:root[data-glassmorphic="enabled"].dark .bg-white,
+:root[data-glassmorphic="enabled"].dark [class*="bg-white"],
+:root[data-glassmorphic="enabled"].dark .bg-zinc-900,
+:root[data-glassmorphic="enabled"].dark [class*="bg-zinc-900"],
+:root[data-glassmorphic="enabled"].dark .bg-card,
+:root[data-glassmorphic="enabled"].dark [class*="bg-card"],
+[data-theme="cyberpunk"]:root[data-glassmorphic="enabled"] .card-soft,
+[data-theme="cyberpunk"]:root[data-glassmorphic="enabled"] .bg-card,
+[data-theme="emerald"]:root[data-glassmorphic="enabled"] .card-soft,
+[data-theme="emerald"]:root[data-glassmorphic="enabled"] .bg-card,
+[data-theme="retro-amber"]:root[data-glassmorphic="enabled"] .card-soft,
+[data-theme="retro-amber"]:root[data-glassmorphic="enabled"] .bg-card {
+  background-color: rgba(15, 23, 42, 0.45) !important;
+  backdrop-filter: blur(16px) saturate(120%) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(120%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Sidebar floating style layout overrides */
+:root[data-sidebar="floating"] aside {
+  top: 1rem !important;
+  left: 1rem !important;
+  height: calc(100vh - 2rem) !important;
+  border-radius: 1.25rem !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05) !important;
+  border: 1px solid var(--border) !important;
+}
+:root[data-sidebar="floating"].dark aside,
+[data-theme="cyberpunk"]:root[data-sidebar="floating"] aside,
+[data-theme="emerald"]:root[data-sidebar="floating"] aside,
+[data-theme="retro-amber"]:root[data-sidebar="floating"] aside {
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4) !important;
+}
+:root[data-sidebar="floating"] .lg\:pl-\[260px\] {
+  padding-left: 280px !important;
 }
 
 /* ===========================================

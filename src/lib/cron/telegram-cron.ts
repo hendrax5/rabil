@@ -1,12 +1,12 @@
-import cron from 'node-cron';
+import cron, { ScheduledTask } from 'node-cron';
 import { prisma } from '@/lib/prisma';
 import { nanoid } from 'nanoid';
 import { sendBackupToTelegram, sendHealthReport } from '@/lib/telegram';
 import { createBackup } from '@/lib/backup';
 import * as fs from 'fs/promises';
 
-let backupCronJob: cron.ScheduledTask | null = null;
-let healthCronJob: cron.ScheduledTask | null = null;
+let backupCronJob: ScheduledTask | null = null;
+let healthCronJob: ScheduledTask | null = null;
 
 /**
  * Create and send database backup to Telegram

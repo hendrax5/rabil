@@ -21,18 +21,19 @@ import {
   Shield,
   Search,
   LogOut,
-  Sun,
-  Moon,
   Router,
   AlertTriangle,
   Timer,
   Package,
   Headset,
   Wrench,
+  Terminal,
+  Zap,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAppStore } from '@/lib/store';
 import NotificationDropdown from '@/components/NotificationDropdown';
+import ThemeSelector from '@/components/ThemeSelector';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useIdleTimeout } from '@/hooks/useIdleTimeout';
@@ -76,22 +77,23 @@ const menuItems: MenuItem[] = [
     ],
   },
   {
-    titleKey: 'nav.invoices',
-    icon: <Receipt className="w-4 h-4" />,
-    href: '/admin/invoices',
-    requiredPermission: 'invoices.view',
-  },
-  {
-    titleKey: 'nav.payment',
+    titleKey: 'nav.billing',
     icon: <CreditCard className="w-4 h-4" />,
-    href: '/admin/payment-gateway',
-    requiredPermission: 'settings.payment',
+    requiredPermission: 'invoices.view',
+    children: [
+      { titleKey: 'nav.invoices', href: '/admin/invoices', requiredPermission: 'invoices.view' },
+      { titleKey: 'Billing Settings', href: '/admin/billing/settings', requiredPermission: 'invoices.view' },
+      { titleKey: 'nav.payment', href: '/admin/payment-gateway', requiredPermission: 'settings.payment' },
+    ],
   },
   {
     titleKey: 'nav.keuangan',
     icon: <Wallet className="w-4 h-4" />,
-    href: '/admin/keuangan',
     requiredPermission: 'keuangan.view',
+    children: [
+      { titleKey: 'Transaksi & P&L', href: '/admin/keuangan', requiredPermission: 'keuangan.view' },
+      { titleKey: 'Laporan Piutang (AR Aging)', href: '/admin/keuangan/ar-aging', requiredPermission: 'keuangan.view' },
+    ],
   },
   {
     titleKey: 'nav.sessions',
@@ -124,6 +126,7 @@ const menuItems: MenuItem[] = [
       { titleKey: 'nav.odpCustomer', href: '/admin/network/customers', requiredPermission: 'network.view' },
       { titleKey: 'nav.vpn', href: '/admin/network/vpn', requiredPermission: 'network.view' },
       { titleKey: 'Provisioning Logs', href: '/admin/network/provision-logs', requiredPermission: 'network.view' },
+      { titleKey: 'SLA & Uptime Monitor', href: '/admin/network/monitoring', requiredPermission: 'network.view' },
     ],
   },
   {
@@ -189,7 +192,7 @@ const groupedItems: Record<string, string[]> = {
   Overview: ['nav.dashboard', 'Tickets'],
   Services: ['nav.pppoe', 'nav.hotspot'],
   Network: ['nav.network', 'nav.genieacs', 'Inventory', 'nav.technicians'],
-  Finance: ['nav.invoices', 'nav.payment', 'nav.keuangan'],
+  Finance: ['nav.billing', 'nav.keuangan'],
   System: ['nav.whatsapp', 'nav.management', 'nav.sessions', 'nav.settingsMenu']
 };
 
@@ -298,7 +301,6 @@ function AdminLayoutContent({
   const [pendingRegistrations, setPendingRegistrations] = useState(0);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [userPermissions, setUserPermissions] = useState<string[]>([]);
-  const [darkMode, setDarkMode] = useState(false);
   const [showIdleWarning, setShowIdleWarning] = useState(false);
   const [idleCountdown, setIdleCountdown] = useState(60);
   const { company, setCompany } = useAppStore();
@@ -350,10 +352,6 @@ function AdminLayoutContent({
 
   useEffect(() => {
     setMounted(true);
-    
-    // Check dark mode
-    const isDark = document.documentElement.classList.contains('dark');
-    setDarkMode(isDark);
   }, []);
 
   // Load user permissions when session is available
@@ -409,14 +407,6 @@ function AdminLayoutContent({
     const interval = setInterval(loadPending, 30000);
     return () => clearInterval(interval);
   }, [status]);
-
-  const toggleDarkMode = () => {
-    const newDark = !darkMode;
-    setDarkMode(newDark);
-    document.documentElement.classList.toggle('dark', newDark);
-    document.documentElement.dataset.theme = newDark ? 'dark' : 'light';
-    localStorage.setItem('theme', newDark ? 'dark' : 'light');
-  };
 
   // Show login page without layout
   if (isLoginPage) {
@@ -606,13 +596,7 @@ function AdminLayoutContent({
             
             {/* Actions */}
             <div className="flex items-center gap-2">
-              <button
-                onClick={toggleDarkMode}
-                className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-colors text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100"
-                title={t('common.toggleTheme')}
-              >
-                {darkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-              </button>
+              <ThemeSelector />
               
               <NotificationDropdown />
               

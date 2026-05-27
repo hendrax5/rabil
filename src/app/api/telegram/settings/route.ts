@@ -13,7 +13,8 @@ export async function GET(request: NextRequest) {
     }
 
     // Check if user is SUPER_ADMIN
-    if (session.user.role !== 'SUPER_ADMIN') {
+    const role = (session as any)?.user?.role;
+    if (role !== 'SUPER_ADMIN') {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
@@ -53,7 +54,8 @@ export async function POST(request: NextRequest) {
     }
 
     // Check if user is SUPER_ADMIN
-    if (session.user.role !== 'SUPER_ADMIN') {
+    const role = (session as any)?.user?.role;
+    if (role !== 'SUPER_ADMIN') {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 

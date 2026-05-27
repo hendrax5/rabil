@@ -60,17 +60,20 @@ export async function checkPermission(userId: string, permissionKey: string) {
  * const authCheck = await requirePermission('users.create');
  * if (!authCheck.authorized) return authCheck.response;
  */
-export async function requirePermission(permissionKey: string) {
+export async function requirePermission(permissionKey: string): Promise<
+  | { authorized: false; response: NextResponse }
+  | { authorized: true; session: any; userId: string }
+> {
   // First check authentication
   const authCheck = await checkAuth();
   if (!authCheck.authorized) {
-    return authCheck;
+    return { authorized: false, response: authCheck.response as any };
   }
 
   // Then check permission
   const permCheck = await checkPermission(authCheck.userId, permissionKey);
   if (!permCheck.authorized) {
-    return permCheck;
+    return { authorized: false, response: permCheck.response as any };
   }
 
   return {

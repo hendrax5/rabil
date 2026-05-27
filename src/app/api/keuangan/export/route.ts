@@ -127,7 +127,7 @@ export async function GET(request: NextRequest) {
 
 function exportToExcel(transactions: any[], stats: any) {
   // Prepare data for Excel
-  const data = transactions.map((t) => ({
+  const data: any[] = transactions.map((t) => ({
     Tanggal: new Date(t.date).toLocaleDateString("id-ID"),
     Deskripsi: t.description,
     Kategori: t.category.name,

@@ -30,6 +30,8 @@ export async function GET() {
       TECHNICIAN: [],
       MARKETING: [],
       VIEWER: [],
+      SALES: [],
+      SALES_MANAGER: [],
     };
 
     rolePermissions.forEach((rp) => {

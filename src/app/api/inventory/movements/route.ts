@@ -116,8 +116,8 @@ export async function POST(request: NextRequest) {
           newStock,
           referenceNo,
           notes,
-          userId: session.user.id,
-          userName: session.user.name || session.user.username,
+          userId: (session.user as any).id,
+          userName: (session.user as any).name || (session.user as any).username,
         },
         include: {
           item: {
@@ -150,7 +150,7 @@ export async function POST(request: NextRequest) {
 export async function DELETE(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
-    if (!session || session.user.role !== 'SUPER_ADMIN') {
+    if (!session || (session.user as any).role !== 'SUPER_ADMIN') {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 

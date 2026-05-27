@@ -18,12 +18,14 @@ export async function getCompanyInfo() {
     return company || {
       name: 'NexaRadius',
       baseUrl: process.env.NEXT_PUBLIC_APP_URL || '',
+      logo: null,
     };
   } catch (error) {
     console.error('Error fetching company info:', error);
     return {
       name: 'NexaRadius',
       baseUrl: process.env.NEXT_PUBLIC_APP_URL || '',
+      logo: null,
     };
   }
 }

@@ -154,8 +154,8 @@ export async function POST(request: Request) {
 
         console.log('[Xendit] Response:', JSON.stringify(result, null, 2));
         
-        transactionId = result.id;
-        paymentUrl = result.invoice_url || result.invoiceUrl || '';
+        transactionId = result.id || '';
+        paymentUrl = result.invoiceUrl || '';
         
         if (!paymentUrl) {
           console.error('[Xendit] No payment URL in response:', result);

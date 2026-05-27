@@ -890,9 +890,9 @@ export default function OLTsPage() {
                            onClick={() => { 
                              setRegisteringOnu(onu); 
                              setRegData({
-                               name:'', mode: 'pppoe', onuType: onuTypes.length > 0 ? onuTypes[0] : '1.ZTE-Home', 
-                               profile: '10M', vlanProfile: '', pppoeUser: '', pppoePass: ''
-                             }); 
+                                vlan: '', mode: 'pppoe', onuType: onuTypes.length > 0 ? onuTypes[0] : '1.ZTE-Home', 
+                                profile: '10M', vlanProfile: '', pppoeUserId: '', vlanAcsProfile: ''
+                              }); 
                            }}
                            className="w-full mt-2 py-1.5 text-xs font-bold text-teal-700 bg-teal-50 hover:bg-teal-100 dark:bg-teal-900/30 dark:text-teal-400 dark:hover:bg-teal-900/50 rounded flex items-center justify-center gap-1 transition-colors"
                          >

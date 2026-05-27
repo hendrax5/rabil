@@ -265,16 +265,17 @@ export async function recordAgentSales(): Promise<{ success: boolean; recorded: 
   })
 
   try {
-    // Get all ACTIVE vouchers that have agent batch codes (contains hyphen pattern)
+    // Get all ACTIVE vouchers that belong to an agent or have agent batch codes
     const activeVouchers = await prisma.hotspotVoucher.findMany({
       where: {
         status: 'ACTIVE',
-        batchCode: {
-          not: null,
-        },
         firstLoginAt: {
           not: null,
         },
+        OR: [
+          { agentId: { not: null } },
+          { batchCode: { not: null } },
+        ],
       },
       include: {
         profile: true,
@@ -284,11 +285,6 @@ export async function recordAgentSales(): Promise<{ success: boolean; recorded: 
     let recordedCount = 0
 
     for (const voucher of activeVouchers) {
-      // Skip if batch code doesn't look like agent format (no hyphen)
-      if (!voucher.batchCode?.includes('-')) {
-        continue
-      }
-
       // Check if sale already recorded
       const existingSale = await prisma.agentSale.findFirst({
         where: {
@@ -300,17 +296,26 @@ export async function recordAgentSales(): Promise<{ success: boolean; recorded: 
         continue // Already recorded
       }
 
-      // Extract agent name from batch code (format: AGENTNAME-TIMESTAMP)
-      const agentNamePattern = voucher.batchCode.split('-')[0]
+      let agent = null;
 
-      // Find agent by matching name pattern (case-insensitive for MySQL)
-      const agent = await prisma.agent.findFirst({
-        where: {
-          name: {
-            equals: agentNamePattern,
+      // 1. Try finding agent by agentId directly
+      if (voucher.agentId) {
+        agent = await prisma.agent.findUnique({
+          where: { id: voucher.agentId },
+        })
+      }
+
+      // 2. Fallback to batchCode pattern parsing
+      if (!agent && voucher.batchCode && voucher.batchCode.includes('-')) {
+        const agentNamePattern = voucher.batchCode.split('-')[0]
+        agent = await prisma.agent.findFirst({
+          where: {
+            name: {
+              equals: agentNamePattern,
+            },
           },
-        },
-      })
+        })
+      }
 
       if (!agent) {
         continue // Skip if agent not found

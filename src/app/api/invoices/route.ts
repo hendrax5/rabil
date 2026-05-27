@@ -53,7 +53,7 @@ export async function DELETE(request: NextRequest) {
 
     // Single delete
     const existingInvoice = await prisma.invoice.findUnique({
-      where: { id },
+      where: { id: id || undefined },
     });
 
     if (!existingInvoice) {
@@ -61,7 +61,7 @@ export async function DELETE(request: NextRequest) {
     }
 
     await prisma.invoice.delete({
-      where: { id },
+      where: { id: id || undefined },
     });
 
     return NextResponse.json({
@@ -294,169 +294,171 @@ export async function PUT(request: NextRequest) {
     // If marking as PAID, extend user's expiredAt based on profile validity
     if (status === 'PAID' && existingInvoice.status !== 'PAID') {
       const user = existingInvoice.user;
-      const profile = user.profile;
+      if (user) {
+        const profile = user.profile;
 
-      if (profile) {
-        // Calculate new expiredAt - ALWAYS extend from current expiredAt
-        // This keeps the billing date consistent (e.g., always on 5th of month)
-        // Even if user pays late, next billing date stays on same day
-        const currentExpiry = user.expiredAt || new Date();
-        let newExpiry = new Date(currentExpiry);
+        if (profile) {
+          // Calculate new expiredAt - ALWAYS extend from current expiredAt
+          // This keeps the billing date consistent (e.g., always on 5th of month)
+          // Even if user pays late, next billing date stays on same day
+          const currentExpiry = user.expiredAt || new Date();
+          let newExpiry = new Date(currentExpiry);
 
-        // Extend based on profile validity
-        switch (profile.validityUnit) {
-          case 'DAYS':
-            newExpiry.setDate(newExpiry.getDate() + profile.validityValue);
-            break;
-          case 'MONTHS':
-            // Keep the same day of month (e.g., 5 Nov → 5 Dec → 5 Jan)
-            newExpiry.setMonth(newExpiry.getMonth() + profile.validityValue);
-            break;
-          case 'HOURS':
-            newExpiry.setHours(newExpiry.getHours() + profile.validityValue);
-            break;
-          case 'MINUTES':
-            newExpiry.setMinutes(newExpiry.getMinutes() + profile.validityValue);
-            break;
-        }
+          // Extend based on profile validity
+          switch (profile.validityUnit) {
+            case 'DAYS':
+              newExpiry.setDate(newExpiry.getDate() + profile.validityValue);
+              break;
+            case 'MONTHS':
+              // Keep the same day of month (e.g., 5 Nov → 5 Dec → 5 Jan)
+              newExpiry.setMonth(newExpiry.getMonth() + profile.validityValue);
+              break;
+            case 'HOURS':
+              newExpiry.setHours(newExpiry.getHours() + profile.validityValue);
+              break;
+            case 'MINUTES':
+              newExpiry.setMinutes(newExpiry.getMinutes() + profile.validityValue);
+              break;
+          }
 
-        // Update user expiredAt and activate if isolated/suspended/expired
-        const shouldActivate = ['isolated', 'suspended', 'expired'].includes(user.status);
+          // Update user expiredAt and activate if isolated/suspended/expired
+          const shouldActivate = ['isolated', 'suspended', 'expired'].includes(user.status);
 
-        await prisma.pppoeUser.update({
-          where: { id: user.id },
-          data: {
-            expiredAt: newExpiry,
-            status: shouldActivate ? 'active' : user.status,
-          },
-        });
-
-        console.log(`[Invoice Payment] User ${user.name}:`);
-        console.log(`  - ExpiredAt: ${currentExpiry.toISOString()} → ${newExpiry.toISOString()}`);
-        
-        // ============================================
-        // AUTO-SYNC TO KEUANGAN TRANSACTIONS
-        // ============================================
-        try {
-          const pppoeCategory = await prisma.transactionCategory.findFirst({
-            where: { name: 'Pembayaran PPPoE', type: 'INCOME' },
+          await prisma.pppoeUser.update({
+            where: { id: user.id },
+            data: {
+              expiredAt: newExpiry,
+              status: shouldActivate ? 'active' : user.status,
+            },
           });
 
-          if (pppoeCategory) {
-            // Check if transaction already exists
-            const existingTransaction = await prisma.transaction.findFirst({
-              where: { reference: `INV-${existingInvoice.invoiceNumber}` },
-            });
-
-            if (!existingTransaction) {
-              // Use raw SQL with NOW() to avoid timezone conversion
-              const paidDate = updateData.paidAt || new Date();
-              await prisma.$executeRaw`
-                INSERT INTO transactions (id, categoryId, type, amount, description, date, reference, notes, createdAt, updatedAt)
-                VALUES (${nanoid()}, ${pppoeCategory.id}, 'INCOME', ${existingInvoice.amount}, 
-                        ${`Pembayaran ${profile.name} - ${user.name}`}, NOW(), 
-                        ${`INV-${existingInvoice.invoiceNumber}`}, 'Manual mark as paid by admin', NOW(), NOW())
-              `;
-              console.log(`  - Keuangan: Transaction synced (${existingInvoice.amount})`);
-            }
-          }
-        } catch (keuanganError) {
-          console.error('  - Keuangan sync error:', keuanganError);
-        }
-        
-        // ============================================
-        // SEND WHATSAPP NOTIFICATION (ALWAYS)
-        // ============================================
-        if (user.phone && profile) {
-          try {
-            await sendPaymentSuccess({
-              customerName: user.name,
-              customerPhone: user.phone,
-              username: user.username,
-              password: user.password,
-              profileName: profile.name,
-              invoiceNumber: existingInvoice.invoiceNumber,
-              amount: existingInvoice.amount,
-            });
-            console.log(`  - WhatsApp: Payment success notification sent`);
-          } catch (waError) {
-            console.error(`  - WhatsApp: Failed to send notification:`, waError);
-            // Don't fail the payment if WhatsApp fails
-          }
-        }
-        
-        if (shouldActivate) {
-          console.log(`  - Status: ${user.status} → active`);
+          console.log(`[Invoice Payment] User ${user.name}:`);
+          console.log(`  - ExpiredAt: ${currentExpiry.toISOString()} → ${newExpiry.toISOString()}`);
           
-          // Restore RADIUS to active profile
+          // ============================================
+          // AUTO-SYNC TO KEUANGAN TRANSACTIONS
+          // ============================================
           try {
-            // 1. Ensure password in radcheck
-            await prisma.$executeRaw`
-              INSERT INTO radcheck (username, attribute, op, value)
-              VALUES (${user.username}, 'Cleartext-Password', ':=', ${user.password})
-              ON DUPLICATE KEY UPDATE value = ${user.password}
-            `;
-
-            // 2. Restore to original group
-            await prisma.$executeRaw`
-              DELETE FROM radusergroup WHERE username = ${user.username}
-            `;
-            await prisma.$executeRaw`
-              INSERT INTO radusergroup (username, groupname, priority)
-              VALUES (${user.username}, ${profile.groupName}, 1)
-            `;
-
-            // 3. Remove isolated message from radreply
-            await prisma.radreply.deleteMany({
-              where: {
-                username: user.username,
-                attribute: 'Reply-Message'
-              }
+            const pppoeCategory = await prisma.transactionCategory.findFirst({
+              where: { name: 'Pembayaran PPPoE', type: 'INCOME' },
             });
-            console.log(`  - Removed isolated message from radreply`);
-            
-            // 4. Restore static IP if exists
-            if (user.ipAddress) {
-              await prisma.$executeRaw`
-                INSERT INTO radreply (username, attribute, op, value)
-                VALUES (${user.username}, 'Framed-IP-Address', ':=', ${user.ipAddress})
-                ON DUPLICATE KEY UPDATE value = ${user.ipAddress}
-              `;
-            } else {
-              // Remove static IP if not configured
-              await prisma.$executeRaw`
-                DELETE FROM radreply WHERE username = ${user.username} AND attribute = 'Framed-IP-Address'
-              `;
-            }
-            
-            console.log(`  - RADIUS: Restored to active profile (${profile.groupName})`);
-            
-            // Update registration status to ACTIVE if this is installation invoice
-            const registration = await prisma.registrationRequest.findFirst({
-              where: {
-                pppoeUserId: user.id,
-                status: 'INSTALLED'
-              }
-            });
-            
-            if (registration) {
-              await prisma.registrationRequest.update({
-                where: { id: registration.id },
-                data: { status: 'ACTIVE' }
+
+            if (pppoeCategory) {
+              // Check if transaction already exists
+              const existingTransaction = await prisma.transaction.findFirst({
+                where: { reference: `INV-${existingInvoice.invoiceNumber}` },
               });
-              console.log(`  - Registration status updated to ACTIVE`);
+
+              if (!existingTransaction) {
+                // Use raw SQL with NOW() to avoid timezone conversion
+                const paidDate = updateData.paidAt || new Date();
+                await prisma.$executeRaw`
+                  INSERT INTO transactions (id, categoryId, type, amount, description, date, reference, notes, createdAt, updatedAt)
+                  VALUES (${nanoid()}, ${pppoeCategory.id}, 'INCOME', ${existingInvoice.amount}, 
+                          ${`Pembayaran ${profile.name} - ${user.name}`}, NOW(), 
+                          ${`INV-${existingInvoice.invoiceNumber}`}, 'Manual mark as paid by admin', NOW(), NOW())
+                `;
+                console.log(`  - Keuangan: Transaction synced (${existingInvoice.amount})`);
+              }
             }
+          } catch (keuanganError) {
+            console.error('  - Keuangan sync error:', keuanganError);
+          }
+          
+          // ============================================
+          // SEND WHATSAPP NOTIFICATION (ALWAYS)
+          // ============================================
+          if (user.phone && profile) {
+            try {
+              await sendPaymentSuccess({
+                customerName: user.name,
+                customerPhone: user.phone,
+                username: user.username,
+                password: user.password,
+                profileName: profile.name,
+                invoiceNumber: existingInvoice.invoiceNumber,
+                amount: existingInvoice.amount,
+              });
+              console.log(`  - WhatsApp: Payment success notification sent`);
+            } catch (waError) {
+              console.error(`  - WhatsApp: Failed to send notification:`, waError);
+              // Don't fail the payment if WhatsApp fails
+            }
+          }
+          
+          if (shouldActivate) {
+            console.log(`  - Status: ${user.status} → active`);
             
-            // 5. Send CoA disconnect to force re-auth with new profile
-            const coaResult = await disconnectPPPoEUser(user.username);
-            if (coaResult.success) {
-            console.log(`  - CoA: User disconnected, will reconnect with active profile`);
-            } else {
-              console.log(`  - CoA: ${coaResult.error || 'No active session'}`);
+            // Restore RADIUS to active profile
+            try {
+              // 1. Ensure password in radcheck
+              await prisma.$executeRaw`
+                INSERT INTO radcheck (username, attribute, op, value)
+                VALUES (${user.username}, 'Cleartext-Password', ':=', ${user.password})
+                ON DUPLICATE KEY UPDATE value = ${user.password}
+              `;
+
+              // 2. Restore to original group
+              await prisma.$executeRaw`
+                DELETE FROM radusergroup WHERE username = ${user.username}
+              `;
+              await prisma.$executeRaw`
+                INSERT INTO radusergroup (username, groupname, priority)
+                VALUES (${user.username}, ${profile.groupName}, 1)
+              `;
+
+              // 3. Remove isolated message from radreply
+              await prisma.radreply.deleteMany({
+                where: {
+                  username: user.username,
+                  attribute: 'Reply-Message'
+                }
+              });
+              console.log(`  - Removed isolated message from radreply`);
+              
+              // 4. Restore static IP if exists
+              if (user.ipAddress) {
+                await prisma.$executeRaw`
+                  INSERT INTO radreply (username, attribute, op, value)
+                  VALUES (${user.username}, 'Framed-IP-Address', ':=', ${user.ipAddress})
+                  ON DUPLICATE KEY UPDATE value = ${user.ipAddress}
+                `;
+              } else {
+                // Remove static IP if not configured
+                await prisma.$executeRaw`
+                  DELETE FROM radreply WHERE username = ${user.username} AND attribute = 'Framed-IP-Address'
+                `;
+              }
+              
+              console.log(`  - RADIUS: Restored to active profile (${profile.groupName})`);
+              
+              // Update registration status to ACTIVE if this is installation invoice
+              const registration = await prisma.registrationRequest.findFirst({
+                where: {
+                  pppoeUserId: user.id,
+                  status: 'INSTALLED'
+                }
+              });
+              
+              if (registration) {
+                await prisma.registrationRequest.update({
+                  where: { id: registration.id },
+                  data: { status: 'ACTIVE' }
+                });
+                console.log(`  - Registration status updated to ACTIVE`);
+              }
+              
+              // 5. Send CoA disconnect to force re-auth with new profile
+              const coaResult = await disconnectPPPoEUser(user.username);
+              if (coaResult.success) {
+                console.log(`  - CoA: User disconnected, will reconnect with active profile`);
+              } else {
+                console.log(`  - CoA: ${(coaResult as any).error || 'No active session'}`);
+              }
+            } catch (radiusError) {
+              console.error(`  - RADIUS sync error:`, radiusError);
+              // Don't fail the payment if RADIUS sync fails
             }
-          } catch (radiusError) {
-            console.error(`  - RADIUS sync error:`, radiusError);
-            // Don't fail the payment if RADIUS sync fails
           }
         }
       }

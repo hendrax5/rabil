@@ -367,3 +367,31 @@ export async function sendVoucherPurchaseSuccess(data: {
     console.error(`[WA] ❌ Failed to send voucher purchase notification:`, error);
   }
 }
+
+/**
+ * Generic helper to send a raw WhatsApp message
+ * Supports 'admin' shortcut to send to company adminPhone
+ */
+export async function sendWhatsAppNotification(phoneOrAdmin: string, message: string) {
+  try {
+    let targetPhone = phoneOrAdmin;
+    
+    if (phoneOrAdmin === 'admin') {
+      const company = await prisma.company.findFirst();
+      targetPhone = company?.adminPhone || '';
+      if (!targetPhone) {
+        console.warn('[WA] Admin phone number is not configured in company settings');
+        return;
+      }
+    }
+    
+    await WhatsAppService.sendMessage({
+      phone: targetPhone,
+      message,
+    });
+    
+    console.log(`[WA] ✅ Notification sent to ${targetPhone}`);
+  } catch (error) {
+    console.error(`[WA] ❌ Failed to send WhatsApp notification:`, error);
+  }
+}

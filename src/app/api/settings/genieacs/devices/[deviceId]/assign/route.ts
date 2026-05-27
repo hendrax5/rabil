@@ -7,10 +7,10 @@ const prisma = new PrismaClient();
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { deviceId: string } }
+  { params }: { params: Promise<{ deviceId: string }> }
 ) {
   try {
-    const deviceId = params.deviceId;
+    const { deviceId } = await params;
     const body = await request.json();
     const { pppoeUserId, saveWifi, wifiSsid, wifiPassword, macAddress } = body;
 
@@ -127,7 +127,7 @@ export async function POST(
           const uncfgs = await getZteUncfgOnu(connStr);
           
           // Try to match by SN (from deviceId or macAddress)
-          const deviceSn = params.deviceId.split('-').pop() || '';
+          const deviceSn = deviceId.split('-').pop() || '';
           let targetOnu = uncfgs.find(u => u.sn.toUpperCase() === deviceSn.toUpperCase());
           
           if (!targetOnu && macAddress) {

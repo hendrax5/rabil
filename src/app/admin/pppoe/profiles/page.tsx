@@ -9,6 +9,7 @@ interface PPPoEProfile {
   downloadSpeed: number; uploadSpeed: number; groupName: string;
   validityValue: number; validityUnit: 'DAYS' | 'MONTHS';
   isActive: boolean; syncedToRadius: boolean; createdAt: string;
+  quotaGB?: number | null; fupGroupName?: string | null;
 }
 
 export default function PPPoEProfilesPage() {
@@ -18,7 +19,18 @@ export default function PPPoEProfilesPage() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingProfile, setEditingProfile] = useState<PPPoEProfile | null>(null);
   const [deleteProfileId, setDeleteProfileId] = useState<string | null>(null);
-  const [formData, setFormData] = useState({ name: '', description: '', price: '', downloadSpeed: '', uploadSpeed: '', groupName: '', validityValue: '1', validityUnit: 'MONTHS' as 'DAYS' | 'MONTHS' });
+  const [formData, setFormData] = useState({ 
+    name: '', 
+    description: '', 
+    price: '', 
+    downloadSpeed: '', 
+    uploadSpeed: '', 
+    groupName: '', 
+    validityValue: '1', 
+    validityUnit: 'MONTHS' as 'DAYS' | 'MONTHS',
+    quotaGB: '',
+    fupGroupName: '',
+  });
 
   useEffect(() => { loadProfiles(); }, []);
 
@@ -32,7 +44,16 @@ export default function PPPoEProfilesPage() {
     e.preventDefault();
     try {
       const method = editingProfile ? 'PUT' : 'POST';
-      const payload = { ...formData, ...(editingProfile && { id: editingProfile.id }), price: parseInt(formData.price), downloadSpeed: parseInt(formData.downloadSpeed), uploadSpeed: parseInt(formData.uploadSpeed), validityValue: parseInt(formData.validityValue) };
+      const payload = { 
+        ...formData, 
+        ...(editingProfile && { id: editingProfile.id }), 
+        price: parseInt(formData.price), 
+        downloadSpeed: parseInt(formData.downloadSpeed), 
+        uploadSpeed: parseInt(formData.uploadSpeed), 
+        validityValue: parseInt(formData.validityValue),
+        quotaGB: formData.quotaGB ? parseInt(formData.quotaGB) : null,
+        fupGroupName: formData.fupGroupName || null,
+      };
       const res = await fetch('/api/pppoe/profiles', { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
       const result = await res.json();
       if (res.ok) { setIsDialogOpen(false); setEditingProfile(null); resetForm(); loadProfiles(); await showSuccess(editingProfile ? 'Updated!' : 'Created!'); }
@@ -42,7 +63,18 @@ export default function PPPoEProfilesPage() {
 
   const handleEdit = (profile: PPPoEProfile) => {
     setEditingProfile(profile);
-    setFormData({ name: profile.name, description: profile.description || '', price: profile.price.toString(), downloadSpeed: profile.downloadSpeed.toString(), uploadSpeed: profile.uploadSpeed.toString(), groupName: profile.groupName, validityValue: profile.validityValue.toString(), validityUnit: profile.validityUnit });
+    setFormData({ 
+      name: profile.name, 
+      description: profile.description || '', 
+      price: profile.price.toString(), 
+      downloadSpeed: profile.downloadSpeed.toString(), 
+      uploadSpeed: profile.uploadSpeed.toString(), 
+      groupName: profile.groupName, 
+      validityValue: profile.validityValue.toString(), 
+      validityUnit: profile.validityUnit,
+      quotaGB: profile.quotaGB ? profile.quotaGB.toString() : '',
+      fupGroupName: profile.fupGroupName || '',
+    });
     setIsDialogOpen(true);
   };
 
@@ -59,7 +91,20 @@ export default function PPPoEProfilesPage() {
     finally { setDeleteProfileId(null); }
   };
 
-  const resetForm = () => { setFormData({ name: '', description: '', price: '', downloadSpeed: '', uploadSpeed: '', groupName: '', validityValue: '1', validityUnit: 'MONTHS' }); };
+  const resetForm = () => { 
+    setFormData({ 
+      name: '', 
+      description: '', 
+      price: '', 
+      downloadSpeed: '', 
+      uploadSpeed: '', 
+      groupName: '', 
+      validityValue: '1', 
+      validityUnit: 'MONTHS',
+      quotaGB: '',
+      fupGroupName: '',
+    }); 
+  };
 
   if (loading) { return <div className="flex items-center justify-center h-64"><p className="text-xs text-gray-500">Loading...</p></div>; }
 
@@ -171,6 +216,10 @@ export default function PPPoEProfilesPage() {
               <div className="grid grid-cols-2 gap-4">
                 <div><label className="block text-xs font-medium mb-1.5">{t('pppoe.downloadMbps')} *</label><input type="number" min="1" value={formData.downloadSpeed} onChange={(e) => setFormData({ ...formData, downloadSpeed: e.target.value })} required className="w-full input-premium" /></div>
                 <div><label className="block text-xs font-medium mb-1.5">{t('pppoe.uploadMbps')} *</label><input type="number" min="1" value={formData.uploadSpeed} onChange={(e) => setFormData({ ...formData, uploadSpeed: e.target.value })} required className="w-full input-premium" /></div>
+              </div>
+              <div className="grid grid-cols-2 gap-4 pt-1">
+                <div><label className="block text-xs font-medium mb-1.5">{t('pppoe.quotaLimit') || 'Quota Limit (GB)'}</label><input type="number" min="0" placeholder="e.g. 500 (Blank = Unlimited)" value={formData.quotaGB} onChange={(e) => setFormData({ ...formData, quotaGB: e.target.value })} className="w-full input-premium" /></div>
+                <div><label className="block text-xs font-medium mb-1.5">{t('pppoe.fupProfile') || 'FUP Throttle Group'}</label><input type="text" placeholder="e.g. FUP_Profile" value={formData.fupGroupName} onChange={(e) => setFormData({ ...formData, fupGroupName: e.target.value })} className="w-full input-premium" /></div>
               </div>
               <div><label className="block text-xs font-medium mb-1.5">{t('common.description')}</label><input type="text" value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} className="w-full input-premium" /></div>
               <div className="flex justify-end gap-2 pt-3 border-t dark:border-gray-800">

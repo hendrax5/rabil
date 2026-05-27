@@ -170,6 +170,22 @@ export const ROLE_TEMPLATES: Record<AdminRole, string[]> = {
     'sessions.view',
     'notifications.view',
   ],
+
+  SALES: [
+    'dashboard.view',
+    'customers.view',
+    'vouchers.view',
+    'vouchers.generate',
+  ],
+
+  SALES_MANAGER: [
+    'dashboard.view',
+    'dashboard.stats',
+    'customers.view',
+    'vouchers.view',
+    'vouchers.generate',
+    'reports.view',
+  ],
 };
 
 /**

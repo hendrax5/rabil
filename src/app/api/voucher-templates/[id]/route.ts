@@ -4,11 +4,12 @@ import { prisma } from '@/lib/prisma';
 // GET single template
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const template = await prisma.voucherTemplate.findUnique({
-      where: { id: params.id }
+      where: { id }
     });
 
     if (!template) {
@@ -31,9 +32,10 @@ export async function GET(
 // PUT update template
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const body = await request.json();
     const { name, htmlTemplate, isDefault, isActive } = body;
 
@@ -42,14 +44,14 @@ export async function PUT(
       await prisma.voucherTemplate.updateMany({
         where: { 
           isDefault: true,
-          id: { not: params.id }
+          id: { not: id }
         },
         data: { isDefault: false }
       });
     }
 
     const template = await prisma.voucherTemplate.update({
-      where: { id: params.id },
+      where: { id },
       data: {
         ...(name && { name }),
         ...(htmlTemplate && { htmlTemplate }),
@@ -79,11 +81,12 @@ export async function PUT(
 // DELETE template
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     await prisma.voucherTemplate.delete({
-      where: { id: params.id }
+      where: { id }
     });
 
     return NextResponse.json({ success: true });

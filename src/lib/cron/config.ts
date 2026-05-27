@@ -83,6 +83,42 @@ export const CRON_JOBS: CronJobConfig[] = [
     enabled: true,
   },
   {
+    type: 'auto_suspend_billing',
+    name: 'Auto Suspend (Billing Engine)',
+    description: 'Suspend expired PPPoE users via RADIUS CoA based on billing settings (grace period, etc)',
+    schedule: '0 * * * *',
+    scheduleLabel: 'Every hour',
+    handler: async () => {
+      const { autoSuspendExpiredUsers } = await import('./billing-engine');
+      return autoSuspendExpiredUsers();
+    },
+    enabled: true,
+  },
+  {
+    type: 'onu_alarm_scan',
+    name: 'ONU Alarm Scan',
+    description: 'Scan all active OLTs for ONU alarms (LOS, offline, weak signal) and alert via WhatsApp',
+    schedule: '*/5 * * * *',
+    scheduleLabel: 'Every 5 minutes',
+    handler: async () => {
+      const { scanOnuAlarms } = await import('./billing-engine');
+      return scanOnuAlarms();
+    },
+    enabled: true,
+  },
+  {
+    type: 'uptime_monitor',
+    name: 'Network Uptime Monitor',
+    description: 'Ping all OLTs and routers to track availability and latency',
+    schedule: '*/5 * * * *',
+    scheduleLabel: 'Every 5 minutes',
+    handler: async () => {
+      const { runUptimeCheck } = await import('../monitoring/uptime');
+      return runUptimeCheck();
+    },
+    enabled: true,
+  },
+  {
     type: 'telegram_backup',
     name: 'Telegram Auto Backup',
     description: 'Automatic database backup to Telegram based on schedule (daily/12h/6h/weekly)',
@@ -103,6 +139,30 @@ export const CRON_JOBS: CronJobConfig[] = [
     handler: async () => {
       const { sendHealthCheckToTelegram } = await import('./telegram-cron');
       return sendHealthCheckToTelegram();
+    },
+    enabled: true,
+  },
+  {
+    type: 'fup_quota_check',
+    name: 'FUP Quota Check & Throttle',
+    description: 'Check bandwidth quota usage for active PPPoE users and throttle if exceeded FUP threshold',
+    schedule: '*/15 * * * *',
+    scheduleLabel: 'Every 15 minutes',
+    handler: async () => {
+      const { runFupQuotaCheck } = await import('./billing-engine');
+      return runFupQuotaCheck();
+    },
+    enabled: true,
+  },
+  {
+    type: 'fup_quota_reset',
+    name: 'FUP Quota Monthly Reset',
+    description: 'Reset monthly bandwidth quotas for active users based on billing day',
+    schedule: '0 0 * * *',
+    scheduleLabel: 'Daily at midnight',
+    handler: async () => {
+      const { resetMonthlyQuotas } = await import('./billing-engine');
+      return resetMonthlyQuotas();
     },
     enabled: true,
   },

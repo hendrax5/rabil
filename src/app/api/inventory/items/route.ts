@@ -145,8 +145,8 @@ export async function POST(request: NextRequest) {
           previousStock: 0,
           newStock: currentStock,
           notes: 'Initial stock',
-          userId: session.user.id,
-          userName: session.user.name || session.user.username,
+          userId: (session.user as any).id,
+          userName: (session.user as any).name || (session.user as any).username,
         },
       });
     }

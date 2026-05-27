@@ -19,11 +19,16 @@ export const metadata: Metadata = {
 
 const themeScript = `(() => {
   try {
-    const stored = localStorage.getItem('theme');
-    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const theme = stored || (prefersDark ? 'dark' : 'light');
-    document.documentElement.classList.toggle('dark', theme === 'dark');
-    document.documentElement.dataset.theme = theme;
+    const storedTheme = localStorage.getItem('theme') || 'dark';
+    const storedDensity = localStorage.getItem('theme-density') || 'spacious';
+    const storedGlass = localStorage.getItem('theme-glassmorphic') || 'disabled';
+    const storedSidebar = localStorage.getItem('theme-sidebar') || 'solid';
+    
+    document.documentElement.classList.toggle('dark', storedTheme !== 'light');
+    document.documentElement.dataset.theme = storedTheme;
+    document.documentElement.dataset.density = storedDensity;
+    document.documentElement.dataset.glassmorphic = storedGlass;
+    document.documentElement.dataset.sidebar = storedSidebar;
   } catch (_) {
   }
 })();`;

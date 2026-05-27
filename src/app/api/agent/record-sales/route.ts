@@ -10,16 +10,17 @@ const prisma = new PrismaClient();
  */
 export async function POST(request: NextRequest) {
   try {
-    // Get all ACTIVE vouchers that have agent batch codes (contains hyphen pattern)
+    // Get all ACTIVE vouchers that belong to an agent or have agent batch codes
     const activeVouchers = await prisma.hotspotVoucher.findMany({
       where: {
         status: 'ACTIVE',
-        batchCode: {
-          not: null,
-        },
         firstLoginAt: {
           not: null,
         },
+        OR: [
+          { agentId: { not: null } },
+          { batchCode: { not: null } }
+        ]
       },
       include: {
         profile: true,
@@ -30,11 +31,6 @@ export async function POST(request: NextRequest) {
     const errors = [];
 
     for (const voucher of activeVouchers) {
-      // Skip if batch code doesn't look like agent format (no hyphen)
-      if (!voucher.batchCode?.includes('-')) {
-        continue;
-      }
-
       // Check if sale already recorded
       const existingSale = await prisma.agentSale.findFirst({
         where: {
@@ -46,22 +42,31 @@ export async function POST(request: NextRequest) {
         continue; // Already recorded
       }
 
-      // Extract agent name from batch code (format: AGENTNAME-TIMESTAMP)
-      const agentNamePattern = voucher.batchCode.split('-')[0];
+      let agent = null;
 
-      // Find agent by matching name pattern (case-insensitive for MySQL)
-      const agent = await prisma.agent.findFirst({
-        where: {
-          name: {
-            equals: agentNamePattern,
+      // 1. Try finding agent by agentId directly
+      if (voucher.agentId) {
+        agent = await prisma.agent.findUnique({
+          where: { id: voucher.agentId },
+        });
+      }
+
+      // 2. Fallback to batchCode pattern parsing
+      if (!agent && voucher.batchCode && voucher.batchCode.includes('-')) {
+        const agentNamePattern = voucher.batchCode.split('-')[0];
+        agent = await prisma.agent.findFirst({
+          where: {
+            name: {
+              equals: agentNamePattern,
+            },
           },
-        },
-      });
+        });
+      }
 
       if (!agent) {
         errors.push({
           voucher: voucher.code,
-          error: `Agent not found for batch: ${voucher.batchCode}`,
+          error: `Agent not found for voucher (agentId: ${voucher.agentId}, batchCode: ${voucher.batchCode})`,
         });
         continue;
       }
